@@ -1,0 +1,28 @@
+#==============================================================
+#
+#  Name: README
+#
+#  Rem:	This is a driver for the SLAC PGP frame grabber with support
+#		for various cameras compatible with the camera-link interface.
+#
+#==============================================================
+#
+EPICS Verions:
+--------------
+This driver has currently been built and tested at SLAC with EPICS 7.0.2
+
+Operating System:
+-------------------
+This driver has been tested for:
+	TODO
+
+Linux Kernel Module:
+---------------------
+This Epics Module should be used with the following version of the
+pgpcard kernel module:
+	TODO
+
+Current Status:
+-------------------
+- Officially supporting Adimec OPAL1000.
+
