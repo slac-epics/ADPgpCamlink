@@ -19,7 +19,16 @@ CHECK_RELEASE = YES
 # Set this when you only want to compile this application
 #   for a subset of the cross-compiled target architectures
 #   that Base is built for.
-CROSS_COMPILER_TARGET_ARCHS = linuxRT-x86_64
+ifeq '$(EPICS_HOST_ARCH)' 'rhel6-x86_64'
+CROSS_COMPILER_TARGET_ARCHS     +=  linuxRT-x86_64
+endif
+CROSS_COMPILER_TARGET_ARCHS := $(filter-out linux-arm%,         $(CROSS_COMPILER_TARGET_ARCHS))
+CROSS_COMPILER_TARGET_ARCHS := $(filter-out linux-x86,          $(CROSS_COMPILER_TARGET_ARCHS))
+CROSS_COMPILER_TARGET_ARCHS := $(filter-out linuxRT-i686,       $(CROSS_COMPILER_TARGET_ARCHS))
+CROSS_COMPILER_TARGET_ARCHS := $(filter-out linuxRT_glibc-i686, $(CROSS_COMPILER_TARGET_ARCHS))
+CROSS_COMPILER_TARGET_ARCHS := $(filter-out linuxRT-arm_zynq,   $(CROSS_COMPILER_TARGET_ARCHS))
+CROSS_COMPILER_TARGET_ARCHS := $(filter-out vxWorks%,           $(CROSS_COMPILER_TARGET_ARCHS))
+CROSS_COMPILER_TARGET_ARCHS := $(filter-out RTEMS%,             $(CROSS_COMPILER_TARGET_ARCHS))
 
 # To install files into a location other than $(TOP) define
 #   INSTALL_LOCATION here.
@@ -33,18 +42,28 @@ CROSS_COMPILER_TARGET_ARCHS = linuxRT-x86_64
 #IOCS_APPL_TOP = </IOC/path/to/application/top>
 
 # Get settings from AREA_DETECTOR, so we only have to configure once for all detectors if we want to
--include $(ADSUPPORT)/configure/CONFIG_SITE
--include $(ADSUPPORT)/configure/CONFIG_SITE.$(EPICS_HOST_ARCH)
--include $(ADSUPPORT)/configure/CONFIG_SITE.$(EPICS_HOST_ARCH).Common
+-include $(AREA_DETECTOR)/configure/CONFIG_SITE
+-include $(AREA_DETECTOR)/configure/CONFIG_SITE.$(EPICS_HOST_ARCH)
+-include $(AREA_DETECTOR)/configure/CONFIG_SITE.$(EPICS_HOST_ARCH).Common
 ifdef T_A
-  -include $(ADSUPPORT)/configure/CONFIG_SITE.Common.$(T_A)
-  -include $(ADSUPPORT)/configure/CONFIG_SITE.$(EPICS_HOST_ARCH).$(T_A)
+  -include $(AREA_DETECTOR)/configure/CONFIG_SITE.Common.$(T_A)
+  -include $(AREA_DETECTOR)/configure/CONFIG_SITE.$(EPICS_HOST_ARCH).$(T_A)
 endif
 
+CONDA_DIR=/reg/neh/home/bhill/miniconda3/envs/rogue-build-noepics
+BOOST_DIR=$(CONDA_DIR)
+PGP_DRIVER_DIR=/reg/neh/home/bhill/git-wa-neh/slaclab/aes-stream-drivers-git
+ROGUE_DIR=/reg/neh/home/bhill/git-wa-neh/slaclab/rogue-git
 
-# Pgp Frame Grabber Linux Kernel Module
-#PGPCARD_TOP=$(PACKAGE_SITE_TOP)/linuxKernel_Modules/pgpcard-clink/R3.0.0
-#PGPCARD_INCLUDE=$(PGPCARD_TOP)/$(PKG_ARCH)/include
-PGPCARD_INCLUDE=/reg/neh/home/bhill/git-wa-neh/slaclab/aes-stream-drivers-git/include
+PGP_DRIVER_INCLUDE	= $(PGP_DRIVER_DIR)/include
+ROGUE_INCLUDE		= $(ROGUE_DIR)/include
+ROGUE_LIB			= $(ROGUE_DIR)/lib
 
-USR_INCLUDES+=-I$(PGPCARD_INCLUDE)
+USR_INCLUDES += -I$(BOOST_DIR)/include
+USR_INCLUDES += -I$(PGP_DRIVER_INCLUDE)
+USR_INCLUDES += -I$(ROGUE_INCLUDE)
+USR_INCLUDES += -I$(CONDA_DIR)/include/python3.7m
+
+USR_CXXFLAGS += -std=c++11
+GNU_DIR       = $(CONDA_DIR)
+CMPLR_PREFIX  = x86_64-conda_cos6-linux-gnu-
