@@ -7,3 +7,4 @@ include
 O.*
 RELEASE_SITE
 *.log
+__pycache__
