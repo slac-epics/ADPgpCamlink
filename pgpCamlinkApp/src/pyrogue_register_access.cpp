@@ -15,26 +15,27 @@ static void check(PyObject* obj, const char * pContext )
 
 void showPyObject_Dir( PyObject * obj, const char * pszObjName )
 {
-	printf( "PyObject_Dir %s:\n", pszObjName );
 	PyObject * objAttributes = PyObject_Dir(obj);
 	if ( !objAttributes )
 	{
-		printf( "NULL PyObject_Dir()\n" );
+		printf( "PyObject_Dir %s: NULL dir obj!\n", pszObjName );
 		return;
 	}
 
 	Py_ssize_t attrSize = PyList_Size(objAttributes);
+	printf( "PyObject_Dir %s: %ld entries\n", pszObjName, attrSize );
 	for ( Py_ssize_t pos = 0; pos < attrSize; pos++ )
 	{
 		PyObject * attrValue = PyList_GetItem(objAttributes, pos);
 		if ( !attrValue )
 			printf( "	NULL!\n" );
-#if 0
-		printf( "	%s\n", PyString_AsString(attrValue) );
+#if 1
+		printf( ", %s", PyUnicode_AsUTF8( attrValue ) );
 #else
 		printf( "	%s\n", PyUnicode_AsUTF8( attrValue ) );
 #endif
 	}
+	printf( "\n" );
 }
 
 int	generic_python_func_call( )
@@ -128,7 +129,7 @@ std::string		ClinkDevGetRogueVersion(
 	PyObject * attr = PyObject_GetAttrString( pClinkDev, "RogueVersion" );
     check(attr,"PyObject_GetAttrString( pClinkDev, \"RogueVersion\" )");
 
-	// Get PollEn.value function
+	// Get value function
 	PyObject * pfunc = PyObject_GetAttrString( attr, "value" );
     check(pfunc, "PyObject_GetAttrString( attr, \"value\" )");
 
@@ -157,16 +158,8 @@ std::string	ClinkDevGetPollEn(
 	PyObject	*	pyPollEnVal = PyObject_CallObject( pfunc, NULL );
     check(pyPollEnVal, "PyObject_CallObject( pfunc, NULL )");
 
-	const char * pszPollEn	= PyUnicode_AsUTF8( pyPollEnVal );
-	if ( !pszPollEn )
-		printf( "ClinkDevGetPollEn: NULL result!\n" );
-	else
-		printf( "ClinkDevGetPollEn: result = %s\n", pszPollEn );
-#if 0
-	std::string		strPollEn( PyUnicode_AsUTF8( pyPollEnVal ) );
-#else
-	std::string		strPollEn( "hack" );
-#endif
+	int		fPollEn = PyObject_IsTrue( pyPollEnVal );
+	std::string		strPollEn( fPollEn ? "True" : "False" );
 	return strPollEn;
 }
 
@@ -177,6 +170,7 @@ void	ClinkDevStop(
 	PyObject * pfunc = PyObject_GetAttrString( pClinkDev, "stop" );
 	if ( !pfunc )
 	{
+		printf( "ClinkDevStop: stop function not found!\n" );
 		showPyObject_Dir( pClinkDev, "pClinkDev" );
 		return;
 	}
@@ -212,6 +206,7 @@ int main (int argc, char **argv)
 	Py_Initialize();
 
 	PyObject *	pClinkDev = createClinkDev( );
+	showPyObject_Dir( pClinkDev, "pClinkDev" );
 
 #if 0
 	std::string		vers = ClinkDevGetRogueVersion( pClinkDev );
@@ -220,9 +215,11 @@ int main (int argc, char **argv)
 	printf( "Rouge Version: %s\n", ClinkDevGetRogueVersion( pClinkDev ).c_str() );
 #endif
 
+	//showPyObject_Dir( pClinkDev, "pClinkDev" );
 	printf( "Poll Enable: %s\n", ClinkDevGetPollEn( pClinkDev ).c_str() );
 
 	ClinkDevStop( pClinkDev );
+	//showPyObject_Dir( pClinkDev, "pClinkDev" );
 
 	Py_Finalize();
 	return status;
