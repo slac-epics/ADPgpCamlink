@@ -1,32 +1,28 @@
 #include <rogue/interfaces/memory/Constants.h>
 #include <rogue/interfaces/memory/Master.h>
+#include <rogue/hardware/axi/AxiMemMap.h>
 
 namespace rh	= rogue::hardware;
 namespace rim	= rogue::interfaces::memory;
 
-#ifndef NO_PYTHON
-#include <boost/python.hpp>
-namespace bp	= boost::python;
-#endif
-
 // Create a subclass of a memory Master
 // This master will initiate a read from a passed adddress and
 // increment that value at that address by a passed value
-class MyMemMaster : public rogue::interfaces::memory::Master
+class PgpMemMaster : public rogue::interfaces::memory::Master
 {
 	public:
 
 	// Create a static class creator to return our custom class
 	// wrapped with a shared pointer
-	static std::shared_ptr<MyMemMaster> create()
+	static std::shared_ptr<PgpMemMaster> create()
 	{
-		static std::shared_ptr<MyMemMaster> ret =
-		std::make_shared<MyMemMaster>();
+		static std::shared_ptr<PgpMemMaster> ret =
+		std::make_shared<PgpMemMaster>();
 		return(ret);
 	}
 
 	// Standard class creator which is called by create
-	MyMemMaster() : rogue::interfaces::memory::Master() {}
+	PgpMemMaster() : rogue::interfaces::memory::Master() {}
 
 	// Start a sequence with passed address and increment value
 	bool incAtAddress(uint64_t address, uint32_t value)
@@ -74,4 +70,4 @@ class MyMemMaster : public rogue::interfaces::memory::Master
 };
 
 // Shared pointer alias
-typedef std::shared_ptr<MyMemMaster> MyMemMasterPtr;
+typedef std::shared_ptr<PgpMemMaster> PgpMemMasterPtr;
