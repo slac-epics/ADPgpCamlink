@@ -21,13 +21,16 @@ class pgpCamlink( ClinkDev.ClinkDev ):
     def __init__( self,
             dev         = '/dev/datadev_0',# path to PCIe device
             camType     = ['Opal1000',None],
+            pollEn      = True,            # Enable automatic polling registers
             defaultFile = None,
             serverPort  = None,
             **kwargs
         ):
+        print( "pgpCamlink: ClinkDev( %s, %s, %s, %s )" % ( dev, str(camType), defaultFile, str(serverPort) ) )
         super().__init__(
             dev         = dev, 
             camType		= camType, 
+            pollEn		= pollEn, 
             defaultFile = defaultFile,
             serverPort  = serverPort,
             **kwargs
