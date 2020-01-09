@@ -67,3 +67,7 @@ USR_INCLUDES += -I$(CONDA_DIR)/include/python3.7m
 USR_CXXFLAGS += -std=c++11
 GNU_DIR       = $(CONDA_DIR)
 CMPLR_PREFIX  = x86_64-conda_cos6-linux-gnu-
+
+SHARED_LIBRARIES = YES
+STATIC_BUILD     = NO
+
