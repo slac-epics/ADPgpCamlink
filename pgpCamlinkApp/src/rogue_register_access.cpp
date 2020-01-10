@@ -12,7 +12,8 @@
 #include <rogue/interfaces/memory/Constants.h>
 
 
-int main (int argc, char **argv) {
+int main (int argc, char **argv)
+{
    uint32_t ver;
    uint32_t spad;
 
@@ -24,18 +25,18 @@ int main (int argc, char **argv) {
 
    // RSSI
    rogue::protocols::rssi::ClientPtr rssi = rogue::protocols::rssi::Client::create(udp->maxPayload());
-   udp->setSlave(rssi->transport());
-   rssi->transport()->setSlave(udp);
+   udp->addSlave(rssi->transport());
+   rssi->transport()->addSlave(udp);
 
    // Packetizer, ibCrc = false, obCrc = true
    rogue::protocols::packetizer::CoreV2Ptr pack = rogue::protocols::packetizer::CoreV2::create(false,true,true);
-   rssi->application()->setSlave(pack->transport());
-   pack->transport()->setSlave(rssi->application());
+   rssi->application()->addSlave(pack->transport());
+   pack->transport()->addSlave(rssi->application());
 
    // Create an SRP master and connect it to the packetizer
    rogue::protocols::srp::SrpV3Ptr srp = rogue::protocols::srp::SrpV3::create();
-   pack->application(0)->setSlave(srp);
-   srp->setSlave(pack->application(0));
+   pack->application(0)->addSlave(srp);
+   srp->addSlave(pack->application(0));
 
    // Create a memory master and connect it to the srp
    rogue::interfaces::memory::MasterPtr mast = rogue::interfaces::memory::Master::create();
@@ -57,6 +58,6 @@ int main (int argc, char **argv) {
    mast->reqTransaction(0x00000004,4,&spad,rogue::interfaces::memory::Read);
    mast->waitTransaction(0);
 
-   printf("Register done. Value=0x%X, Spad=0x%X, Error=0x%0X\n",ver,spad,mast->getError());
+   printf("Register done. Value=0x%X, Spad=0x%X, Error=%s\n",ver,spad,mast->getError().c_str());
 }
 

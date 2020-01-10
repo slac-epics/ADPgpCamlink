@@ -5,14 +5,16 @@ include $(TOP)/configure/CONFIG
 #=============================
 
 #LIBRARY_IOC = pgpCamlink
+LIBRARY_DEFAULT = pgpCamlink
 PROD = pgpTest
+PROD += rogueReg
 
 #DBD        += pgpCamlink.dbd
 
 #LIB_SRCS   += pgpCamlink.cpp
-#LIB_SRCS   += rogue_register_access.cpp
+rogueReg_SRCS   += rogue_register_access.cpp
 LIB_SRCS   += rogue_example_memory_master.cpp
-LIB_SRCS   += pyrogue_register_access.cpp
+#LIB_SRCS   += pyrogue_register_access.cpp
 pgpTest_SRCS   += pyrogue_register_access.cpp
 
 HOST_OPT = NO
@@ -26,6 +28,14 @@ pgpTest_LIBS += boost_thread
 pgpTest_LIBS += boost_python37
 pgpTest_LIBS += zmq
 pgpTest_LIBS += bz2
+
+rogueReg_LIBS += rogue-core
+rogueReg_LIBS += python3.7m
+rogueReg_LIBS += boost_thread
+rogueReg_LIBS += boost_python37
+rogueReg_LIBS += zmq
+rogueReg_LIBS += bz2
+
 PROD_SYS_LIBS += util
 #$(info PRODNAME=$(PRODNAME) )
 rogue_core_DIR		= $(ROGUE_LIB)
@@ -36,6 +46,9 @@ boost_python37_DIR	= $(CONDA_DIR)/lib
 boost_thread_DIR	= $(CONDA_DIR)/lib
 bz2_DIR				= $(CONDA_DIR)/lib
 zmq_DIR				= $(CONDA_DIR)/lib
+readline_DIR		= $(CONDA_DIR)/lib
+ncurses_DIR			= $(CONDA_DIR)/lib
+USR_LDFLAGS			+= -L$(CONDA_DIR)/lib
 
 #=============================
 

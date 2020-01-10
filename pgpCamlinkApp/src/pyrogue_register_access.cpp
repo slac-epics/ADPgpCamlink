@@ -1,7 +1,7 @@
 #include <string>
 #include <Python.h>
 //#include <boost/python.hpp>
-//#include "rogue/interfaces/ZmqClient.h"
+#include "rogue/interfaces/ZmqClient.h"
 
 
 static void check(PyObject* obj, const char * pContext )
@@ -89,7 +89,7 @@ PyObject *	createClinkDev( )
 										"camType",		"Opal1000", NULL,
 										"pollEn",		1,
 										"defaultFile",	"config/defaults_Opal1000.yml",
-										"serverPort",	9099 );
+										"serverPort",	9199 );
 #else
 	PyObject * argList = Py_BuildValue(	"(s[ss]isi)",
 										"/dev/datadev_0",
@@ -136,11 +136,7 @@ std::string		ClinkDevGetRogueVersion(
 	PyObject	*	pyRogueVersion = PyObject_CallObject( pfunc, NULL );
     check(pyRogueVersion, "PyObject_CallObject( pfunc, NULL )");
 
-#if 1
 	std::string		strRogueVersion( PyUnicode_AsUTF8( pyRogueVersion ) );
-#else
-	std::string		strRogueVersion( "TestHack" );
-#endif
 	return strRogueVersion;
 }
 
@@ -181,23 +177,31 @@ void	ClinkDevStop(
     check(pyResult, "PyObject_CallObject( pfunc, NULL )");
 }
 
-#if 0
 int zmqServerTest()
 {
 	printf("Creating zmq interface.\n");fflush(stdout);
 
 	rogue::interfaces::ZmqClientPtr	zmq;
-	zmq = rogue::interfaces::ZmqClient::create("localhost", 9099);
+	zmq = rogue::interfaces::ZmqClient::create("localhost", 9199);
 	printf("ZMQ Created. Setting timeout.\n");fflush(stdout);
 	zmq->setTimeout(180000);
 	printf("Waiting 5s for connection to start\n");fflush(stdout);
 	sleep(5);
 
 	std::string	rogueVersion		= zmq->getDisp( "ClinkDev.RogueVersion" );
-	printf( "Rouge Version: %s\n", rogueVersion.c_str() );
+	printf( "zmqServerTest: Rouge Version: %s\n", rogueVersion.c_str() );
+
+	std::string	scratchPad		= zmq->getDisp( "ClinkDev.Hardware.AxiPcieCore.AxiVersion.ScratchPad" );
+	printf( "zmqServerTest: scratchPad: %s\n", scratchPad.c_str() );
+
+	zmq->setDisp( "ClinkDev.Hardware.AxiPcieCore.AxiVersion.ScratchPad", "22" );
+	printf( "zmqServerTest: set scratchPad = %s\n", "22" );
+
+	scratchPad = zmq->getDisp( "ClinkDev.Hardware.AxiPcieCore.AxiVersion.ScratchPad" );
+	printf( "zmqServerTest: scratchPad: %s\n", scratchPad.c_str() );
+
 	return 0;
 }
-#endif
 
 int main (int argc, char **argv)
 {
@@ -208,15 +212,14 @@ int main (int argc, char **argv)
 	PyObject *	pClinkDev = createClinkDev( );
 	showPyObject_Dir( pClinkDev, "pClinkDev" );
 
-#if 0
 	std::string		vers = ClinkDevGetRogueVersion( pClinkDev );
 	printf( "Rouge Version: %s\n", vers.c_str() );
-#else
-	printf( "Rouge Version: %s\n", ClinkDevGetRogueVersion( pClinkDev ).c_str() );
-#endif
 
 	//showPyObject_Dir( pClinkDev, "pClinkDev" );
 	printf( "Poll Enable: %s\n", ClinkDevGetPollEn( pClinkDev ).c_str() );
+
+	// Try ZMQ server
+	zmqServerTest();
 
 	ClinkDevStop( pClinkDev );
 	//showPyObject_Dir( pClinkDev, "pClinkDev" );

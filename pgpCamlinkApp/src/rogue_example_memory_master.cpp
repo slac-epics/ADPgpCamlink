@@ -31,7 +31,7 @@ class PgpMemMaster : public rogue::interfaces::memory::Master
 		uint32_t id;
 
 		// Clear any existing errors
-		this->setError(0);
+		//this->setError(0);
 
 		// Start read transaction, size=4
 		// uint32_t reqTransaction(uint64_t address, uint32_t size, void *data, uint32_t type);
@@ -40,10 +40,10 @@ class PgpMemMaster : public rogue::interfaces::memory::Master
 		id = this->reqTransaction(address, 4, &rValue, rogue::interfaces::memory::Read);
 
 		// Wait for transaction to complete
-		this->waitTransaction(id)
+		this->waitTransaction(id);
 
 		// Check transaction result
-		if ( this->getError() != 0 )
+		if ( this->getError() != "" )
 		{
 			printf("got error\n");
 			return false;
@@ -56,10 +56,10 @@ class PgpMemMaster : public rogue::interfaces::memory::Master
 		id = this->reqTransaction(address, 4, &rValue, rogue::interfaces::memory::Write);
 
 		// Wait for transaction to complete
-		this->waitTransaction(id)
+		this->waitTransaction(id);
 
 		// Check transaction result
-		if ( this->getError() != 0 )
+		if ( this->getError() != "" )
 		{
 			printf("got error\n");
 			return false;
