@@ -9,9 +9,9 @@ import rogue
 import pgpCamlink
 
 rogue.Logging.setLevel(rogue.Logging.Warning)
-rogue.Logging.setLevel(rogue.Logging.Debug + 1)
+#rogue.Logging.setLevel(rogue.Logging.Debug + 1)
 
-pgpCam = pgpCamlink.pgpCamlink( "/dev/datadev_0", [ "Opal1000", None ], defaultFile="config/defaults_Opal1000.yml", pollEn=False, serverPort=9098 )
+pgpCam = pgpCamlink.pgpCamlink( "/dev/datadev_0", [ "Opal1000", None ], defaultFile="config/defaults_Opal1000.yml", pollEn=False, serverPort=9098, timeout=0.5 )
 print( "PollEnable: %s" % pgpCam.PollEn.value() )
 pgpCam.PollEn.set(False)
 print( f'PollEnable: {pgpCam.PollEn.value()}' )
@@ -34,7 +34,7 @@ print( f'Hardware.AxiPcieCore.AxiVersion.ScratchPad: {pgpCam.Hardware.AxiPcieCor
 
 #if	pgpCam._memMap.log_:
 #	pgpCam._memMap.log_.setLevel(logging.DEBUG)
-pgpCam._log.setLevel(logging.INFO)
+#pgpCam._log.setLevel(logging.INFO)
 
 ver = pgpCam.RogueVersion.get(read=True)
 # pgpCam.RogueVersion._parent.readBlocks(recurse=False,variable=pgpCam.RogueVersion)
@@ -53,6 +53,6 @@ print( "PollEnable: %s" % pgpCam.PollEn.value() )
 
 pgpCam.stop()
 
-del pgpCam
-import sys
-sys.exit()
+#del pgpCam
+#import sys
+#sys.exit()
