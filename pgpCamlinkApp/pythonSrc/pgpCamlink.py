@@ -24,6 +24,7 @@ class pgpCamlink( ClinkDev.ClinkDev ):
             pollEn      = True,            # Enable automatic polling registers
             defaultFile = None,
             serverPort  = None,
+            timeout     = 1.0,
             **kwargs
         ):
         print( "pgpCamlink: ClinkDev( %s, %s, %s, %s )" % ( dev, str(camType), defaultFile, str(serverPort) ) )
@@ -33,6 +34,7 @@ class pgpCamlink( ClinkDev.ClinkDev ):
             pollEn		= pollEn, 
             defaultFile = defaultFile,
             serverPort  = serverPort,
+            timeout     = timeout,
             **kwargs
         )
 
