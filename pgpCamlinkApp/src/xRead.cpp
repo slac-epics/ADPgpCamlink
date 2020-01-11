@@ -26,6 +26,10 @@ void sigHandler( int signal ) {
 
 #include "DataDriver.h"
 
+#ifndef dmaDest
+#define dmaDest(lane,vc) ((lane<<8) | vc)
+#endif
+
 using namespace std;
 
 void printUsage(char* name) {

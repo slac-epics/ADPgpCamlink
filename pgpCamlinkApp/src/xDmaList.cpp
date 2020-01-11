@@ -43,7 +43,7 @@ int main (int argc, char **argv) {
     uint64_t buff = buff_hi; 
     buff <<= 32;
     buff |= buff_lo;
-    printf("%016llx%c", buff, (i&7)==7 ? '\n':' ');
+    printf("%016lx%c", buff, (i&7)==7 ? '\n':' ');
   }
     
   close(fd);
