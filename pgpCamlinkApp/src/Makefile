@@ -76,6 +76,16 @@ kcuDmaBuffers_LIBS += boost_python37
 kcuDmaBuffers_LIBS += zmq
 kcuDmaBuffers_LIBS += bz2
 
+PROD += kcuPgpRead
+kcuPgpRead_SRCS	+= psdaq_drp_pgpread.cpp
+kcuPgpRead_LIBS	+= rogue-core
+# TODO: Try linking against rogue built w/ NO_PYTHON
+kcuPgpRead_LIBS += python3.7m
+kcuPgpRead_LIBS += boost_thread
+kcuPgpRead_LIBS += boost_python37
+kcuPgpRead_LIBS += zmq
+kcuPgpRead_LIBS += bz2
+
 #DBD        += pgpCamlink.dbd
 
 LIBRARY_DEFAULT = pgpCamlink
