@@ -94,7 +94,7 @@ void int_handler(int dummy)
 
 static void usage(const char* p)
 {
-  printf("Usage: %p -d <device> -c <channel>\n",p);
+  printf("Usage: %s -d <device> -c <channel>\n",p);
 }
 
 int main (int argc, char **argv)
@@ -103,19 +103,21 @@ int main (int argc, char **argv)
 
     channel = 0;
     std::string device;
-    while((c = getopt(argc, argv, "hc:d:")) != EOF) {
-        switch(c) {
-            case 'd':
-                device = optarg;
-                break;
-            case 'c':
-                channel = atoi(optarg);
-                break;
-            case 'h':
-			default:
-				usage(argv[0]);
-                return 1;
-        }
+    while((c = getopt(argc, argv, "hc:d:")) != EOF)
+	{
+        switch(c)
+		{
+		case 'd':
+			device = optarg;
+			break;
+		case 'c':
+			channel = atoi(optarg);
+			break;
+		case 'h':
+		default:
+			usage(argv[0]);
+			return 1;
+		}
     }
 
     terminate.store(false, std::memory_order_release);

@@ -86,6 +86,17 @@ kcuPgpRead_LIBS += boost_python37
 kcuPgpRead_LIBS += zmq
 kcuPgpRead_LIBS += bz2
 
+PROD += kcuTimetool
+kcuTimetool_SRCS	+= pgpread_timetool.cpp
+kcuTimetool_SRCS	+= AxiBatcherParser.cpp
+kcuTimetool_LIBS	+= rogue-core
+# TODO: Try linking against rogue built w/ NO_PYTHON
+kcuTimetool_LIBS += python3.7m
+kcuTimetool_LIBS += boost_thread
+kcuTimetool_LIBS += boost_python37
+kcuTimetool_LIBS += zmq
+kcuTimetool_LIBS += bz2
+
 #DBD        += pgpCamlink.dbd
 
 LIBRARY_DEFAULT = pgpCamlink
