@@ -13,6 +13,7 @@
 #include <stdlib.h>
 #include <linux/types.h>
 
+#include "AxiVersion.h"
 #include "DataDriver.h"
 
 using namespace std;
@@ -79,7 +80,7 @@ int main (int argc, char **argv) {
       perror("Error reading register");
       return -1;
     }
-    printf("[%08x] = %08x\n", addr,value);
+    printf("[%08x] = %d = %08x\n", addr, value, value );
   }
 
   return 1;
