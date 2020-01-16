@@ -1,9 +1,10 @@
-archive
-autosave
-db
-dbd
-lib
-include
+archive/
+autosave/
+bin/
+db/
+dbd/
+lib/
+include/
 O.*
 RELEASE_SITE
 *.log

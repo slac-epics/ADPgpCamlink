@@ -1,0 +1,104 @@
+ClinkDev:
+  #########################################################################################################
+  ClinkFeb[:]:
+    ###################
+    ClinkTop:
+    ###################
+      PllConfig[:]: '80MHz'
+      ###################
+      Ch[0]:
+        LinkMode: Base 
+        DataMode: 12Bit
+        FrameMode: Frame
+        TapCount: 2
+        DataEn: True
+        Blowoff: False
+        BaudRate: 57600 # units of bps
+        SerThrottle: 10000 # (10ms x 1us throttle rate) = 10000
+        SwControlValue: 0x0
+        SwControlEn: 0x0 
+        ###################
+        UartOpal1000: # OPAL 1000 UART interface
+          OR: '12'     # Output resolution, i.e. bits per pixel.  Set to 12. (value from Bruce Hill)
+          MO: '1'      # Pulse width exposure control (value from Bruce Hill)
+          VBIN: '1'    # Vertical binning, set to 1. (value from Bruce Hill)
+          VR: '1'      # Enable vertical remapping (deinterlace on camera w/ 4ms delay, value from Bruce Hill)
+          CCE[0]: '0'  # Normal Polarity CC1 trigger  (value from Bruce Hill)
+          CCE[1]: '0'  # Normal Polarity CC1 trigger  (value from Bruce Hill)
+          CCFS[0]: '0' # Set CCFS to default value of [0,0]
+          CCFS[1]: '0' # Set CCFS to default value of [0,0]
+          DPE: '1'     # Set DPE to default value of 1
+          FSM: '0'     # Set FSM to default value of 0
+          FST[0]: '0'  # Set FST to default value of [0,1]
+          FST[1]: '1'  # Set FST to default value of [0,1]     
+          GA: '100'    # Set GA to default value of 100
+          MI: '0'      # Set MI to default value of 0
+          TP: '0'      # Set TP to default value of 0
+          BL: '20'     # Set BL to default value of 20   
+    ###################
+    TrigCtrl[0]:
+      EnableTrig: True
+      InvCC: False # Active High Pulse
+      TrigMap: ChA
+      TrigPulseWidth: 32.768 # units of us
+      TrigMask: 0x1 # CC1 trigger
+    ###################
+    BoardTemp:
+      RemoteTcritSetpoint: 100 # Prevent FEB from thermal shutdown until FPGA Tj = 100 degC (max. operating temp)
+  #########################################################################################################
+  Application:
+    AppLane[:]: # Apply the configurations to 0 through 3
+      EventBuilder:
+        Timeout: 625000 # (156.25 MHz) x 4 ms = 625000
+  #########################################################################################################
+  Hardware:
+    Timing:
+      ###################
+      TimingDbgMon:
+        Loopback: 0x0
+        # UseMiniTpg: False # False for fiber network
+        UseMiniTpg: True # True for standalone testing
+      ###################
+      Triggering: # https://confluence.slac.stanford.edu/download/attachments/216713616/ConfigEvrV2CoreTriggersYaml.pdf
+        ###################
+        Ch[:]: # [:] is a wildcard for all devices
+          EnableReg: False # Disable triggers (use StartRun() command to start the triggering)
+          RateSel: 0x1028 # LCLS-I @ 120 Hz
+          # RateSel: 0x102B # LCLS-I @ 10 Hz
+          # RateSel: 0x102C # LCLS-I @ 5 Hz          
+          # RateSel: 0x0 # No triggering
+          DestSel: 0x20000
+        ###################
+        LocalTrig[:]: # [:] is a wildcard for all devices
+          EnableTrig: True
+          Polarity: Rising
+          Delay: 625000 # (156.25 MHz) x 4 ms = 625000
+          Width: 0x1 # 0x1 = one cycle pulse
+        LocalTrig[0]:
+          Source: 0x0 # CH0
+        LocalTrig[1]:
+          Source: 0x1 # CH1
+        LocalTrig[2]:
+          Source: 0x2 # CH2
+        LocalTrig[3]:
+          Source: 0x3 # CH3  
+        ###################
+        RemoteTrig[:]: # [:] is a wildcard for all devices
+          EnableTrig: True
+          Polarity: Rising
+          Delay: 0x0 # zero for low latency fiber trigger
+          Width: 0x1 # 0x1 = one cycle pulse
+        RemoteTrig[0]:
+          Source: 0x0 # CH0
+        RemoteTrig[1]:
+          Source: 0x1 # CH1
+        RemoteTrig[2]:
+          Source: 0x2 # CH2
+        RemoteTrig[3]:
+          Source: 0x3 # CH3            
+      ###################
+      TimingFrameRx:
+        ClkSel: 0x0 # 0x0 = LCLS-I timing
+        RxDown: 0x0 # Reset the latching register
+      ###################
+      
