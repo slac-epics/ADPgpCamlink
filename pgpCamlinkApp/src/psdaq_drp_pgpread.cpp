@@ -3,8 +3,8 @@
 #include <iostream>
 #include <signal.h>
 #include <cstdio>
-#include <AxiVersion.h>
 #include <AxisDriver.h>
+#include <AxiVersion.h>
 #include <DmaDriver.h>
 #include <stdlib.h>
 // #include "psdaq/service/EbDgram.hh"
@@ -153,10 +153,14 @@ int main (int argc, char **argv)
 	}
 
 	int status = StartRun( fd );
+    if ( status != 0 ) {
+        printf( "StartRun Error: %d\n", status );
+        return -1;
+	}
 
     uint32_t dmaCount, dmaSize;
     void** dmaBuffers = dmaMapDma(fd, &dmaCount, &dmaSize);
-    if (dmaBuffers == NULL ) {
+    if ( dmaBuffers == NULL ) {
         printf("Failed to map dma buffers!\n");
         return -1;
     }
@@ -175,7 +179,10 @@ int main (int argc, char **argv)
         }
 
 		uint32_t	frameCount;
-		int status = dmaReadRegister( fd, CLINKDEV_LANE0_DATACNT0,	&frameCount );
+		status = dmaReadRegister( fd, CLINKDEV_LANE0_DATACNT0,	&frameCount );
+		if ( status != 0 ) {
+			printf( "dmaReadRegister Error: %d\n", status );
+		}
 
 #if 1
         ssize_t	ret = dmaReadBulkIndex( fd, MAX_RET_CNT_C, dmaRet, dmaIndex, NULL, NULL, dmaDest );
