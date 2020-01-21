@@ -7,10 +7,13 @@
 #include <AxiVersion.h>
 #include <DmaDriver.h>
 #include <stdlib.h>
+#include <rogue/hardware/axi/AxiStreamDma.h>
+#include <rogue/protocols/batcher/SplitterV1.h>
 // #include "psdaq/service/EbDgram.hh"
 // #include "xtcdata/xtc/Dgram.hh"
 #include <unistd.h>
 #include <getopt.h>
+#include "clStreamSlave.h"
 
 #define MAX_RET_CNT_C 1000
 static int fd;
@@ -136,11 +139,26 @@ int main (int argc, char **argv)
 	}
 
     std::cout<<"Opening device: "<< device << std::endl;
+
+#if 1
+	rogue::hardware::axi::AxiStreamDmaPtr		dataChan;
+	rogue::protocols::batcher::SplitterV1Ptr	batch;
+
+	dataChan	= rogue::hardware::axi::AxiStreamDma::create( device.c_str(), 0, true);
+	batch 		= rogue::protocols::batcher::SplitterV1::create();
+    if (!dataChan ) {
+        std::cout << "Error opening "<<device << '\n';
+        return -1;
+    }
+	fd = dataChan->getFileDescriptor();
+#else
+
     fd = open(device.c_str(), O_RDWR);
     if (fd < 0) {
         std::cout<<"Error opening "<<device<<'\n';
         return -1;
     }
+#endif
 
 	AxiVersion vsn;
 	if ( axiVersionGet(fd, &vsn) >= 0 )
@@ -218,8 +236,9 @@ int main (int argc, char **argv)
                    retSize, dest, transition_id, event_header->pulseId(), event_header->evtCounter, index);
             printf("env %08x\n", event_header->env);
 #else
-            printf("Size %d b | Dest %u | index %u\n",
-                   retSize * 8, dest, index);
+			if ( b == 0 )
+            printf("Frame %2d: Size %3d b | Dest %u | index %u\n",
+                   b, retSize * 8, dest, index);
 #endif
         }
 	    if ( ret > 0 )
