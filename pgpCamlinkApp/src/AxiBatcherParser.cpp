@@ -81,7 +81,7 @@ int eventBuilderParser::parse_array()
     std::copy( raw_data.begin(),raw_data.begin() + HEADER_WIDTH,main_header.begin() );
 
     // storing frame size
-	// sptl stand for the size position in the sub frame tail
+	// spsft stand for the Size Position in the Sub Frame Tail
     frame_sizes_reverse_order.push_back( frame_to_position( raw_data.size() - spsft ));
 
     // storing frame position in raw data
@@ -209,11 +209,11 @@ int eventBuilderParser::print_frame()
 #endif
 
     printf( "___________________________\n" );
-    printf( "printing summary data\n" );
-    printf( "nsub frame size = %u\n", frame_sizes_reverse_order.size() );
+    printf( "Batcher packet version 0x%X\n", version );
+    printf( "nsub frame size = %zu\n", frame_sizes_reverse_order.size() );
     print_vector( frame_sizes_reverse_order );
     
-    printf( "sub frame positions = %u\n", frame_positions_reverse_order.size() );
+    printf( "sub frame positions = %zu\n", frame_positions_reverse_order.size() );
     print_vector2d( frame_positions_reverse_order );
 
     printf( "vector indicating if it's a sub frame. length = %d\n",int( is_sub_frame.size() ));
@@ -265,6 +265,7 @@ template <class T> int eventBuilderParser::print_vector( std::vector<T> &my_vect
 	{
         printf( "%d ",my_vector[i] );
     }
-    printf( "\n" );
+	if ( my_vector.size() > 0 )
+    	printf( "\n" );
     return 0;
 }
