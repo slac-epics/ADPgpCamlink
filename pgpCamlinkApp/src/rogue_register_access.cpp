@@ -29,7 +29,7 @@
 // QSFP[1] is the QSFP cage closest to the motherboard.  
 //
 // The FEB board should only have 1 of the 4 SFP modules inserted.
-// This should be the SFP module closes to the input power connector.
+// This should be the SFP module closest to the input power connector.
 //
 // fiber link allocation
 // supports 4 PGP frameGrabbers per PCIe card
