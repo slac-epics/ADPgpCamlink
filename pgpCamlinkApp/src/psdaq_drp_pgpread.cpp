@@ -7,8 +7,10 @@
 #include <AxiVersion.h>
 #include <DmaDriver.h>
 #include <stdlib.h>
+#include <rogue/Helpers.h>
 #include <rogue/hardware/axi/AxiStreamDma.h>
 #include <rogue/protocols/batcher/SplitterV1.h>
+#include <rogue/protocols/srp/SrpV3.h>
 // #include "psdaq/service/EbDgram.hh"
 // #include "xtcdata/xtc/Dgram.hh"
 #include <unistd.h>
@@ -141,16 +143,60 @@ int main (int argc, char **argv)
     std::cout<<"Opening device: "<< device << std::endl;
 
 #if 1
-	rogue::hardware::axi::AxiStreamDmaPtr		dataChan;
+#define	N_AXI_LANES	4
+#define	N_AXI_CHAN	4
+	rogue::hardware::axi::AxiStreamDmaPtr		dataChan[N_AXI_LANES][N_AXI_CHAN];
+	rogue::protocols::srp::SrpV3Ptr				srp[N_AXI_LANES];
+	ClStreamSlavePtr							clStreamSlave[N_AXI_LANES];
 	rogue::protocols::batcher::SplitterV1Ptr	batch;
-
-	dataChan	= rogue::hardware::axi::AxiStreamDma::create( device.c_str(), 0, true);
 	batch 		= rogue::protocols::batcher::SplitterV1::create();
-    if (!dataChan ) {
+	/**
+	 * The destination field is a sideband signal provided in the AxiStream
+	 * protocol which allows a single interface to handle multiple frames
+	 * with different purposes. The use of this field is driver specific, but
+	 * the lower 8-bits are typically passed in the tDest field of the hardware
+	 * frame and bits 8 and up are used to index the dma channel in the 
+	 * lower level hardware.
+	 */
+	uint32_t		dest		= 0;
+
+	for ( uint32_t	lane = 0; lane < N_AXI_LANES;	lane++ ) {
+		for ( uint32_t	ch = 0; ch < N_AXI_CHAN;	ch++ ) {
+			dest = (0x100 * lane) + ch;
+			dataChan[lane][ch]	= rogue::hardware::axi::AxiStreamDma::create( device.c_str(), dest, true);
+		}
+	}
+	for ( uint32_t	lane = 0; lane < N_AXI_LANES;	lane++ ) {
+		// CHAN 0: Serial Register Protocol
+		srp[lane] = rogue::protocols::srp::SrpV3::create();
+		rogueStreamConnectBiDir( dataChan[lane][0], srp[lane] );
+
+		// CHAN 1: Camera Frames
+		clStreamSlave[lane] = ClStreamSlave::create();
+		if ( lane == 0 ) {
+			dataChan[lane][1]->addSlave( batch );
+			batch->addSlave( clStreamSlave[lane] );
+		} else {
+			dataChan[lane][1]->addSlave( clStreamSlave[lane] );
+		}
+		// or rogueStreamConnect( dataChan[lane][1], clStreamSlave[lane] );
+
+		// CHAN 2: Camera Serial Rx
+		// clSerialRx[lane] = UartClinkGeneric::create();
+		// rogueStreamConnect( dataChan[lane][2], clSerialRx[lane] );
+
+		// CHAN 3: Camera Serial Tx
+		// clSerialTx[lane] = UartClinkGeneric::create();
+		// rogueStreamConnect( dataChan[lane][3], clSerialTx[lane] );
+	}
+	// Send Opal serial command
+	// clSerialTx[lane].sendString( "TestCmd" );
+
+    if (!dataChan[0][0] ) {
         std::cout << "Error opening "<<device << '\n';
         return -1;
     }
-	fd = dataChan->getFileDescriptor();
+	fd = dataChan[0][0]->getFileDescriptor();
 #else
 
     fd = open(device.c_str(), O_RDWR);
@@ -176,6 +222,15 @@ int main (int argc, char **argv)
         return -1;
 	}
 
+#if 1
+	std::shared_ptr<rogue::interfaces::stream::Frame>	pFrame;
+	usleep( 50000 );
+	//while (1) {
+	//	dataChan[0][1]->acceptFrame( pFrame );
+    //    printf("Got frame!\n" );
+	//}
+#else
+	{
     uint32_t dmaCount, dmaSize;
     void** dmaBuffers = dmaMapDma(fd, &dmaCount, &dmaSize);
     if ( dmaBuffers == NULL ) {
@@ -243,7 +298,16 @@ int main (int argc, char **argv)
         }
 	    if ( ret > 0 )
 			dmaRetIndexes(fd, ret, dmaIndex);
-	    sleep(1.0);
+	    sleep(1);
     }
-    printf("finished\n");
+    }
+#endif
+
+#if 1
+    printf("Finished\n");
+#else
+    printf("Shutting down\n");
+	status = StopRun( fd );
+#endif
+	return status;
 }
