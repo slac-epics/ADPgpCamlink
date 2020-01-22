@@ -6,6 +6,7 @@
 #include <rogue/interfaces/stream/FrameIterator.h>
 #include <rogue/interfaces/stream/FrameLock.h>
 #include <rogue/hardware/axi/AxiStreamDma.h>
+#include <rogue/protocols/batcher/CoreV1.h>
 
 class ClStreamSlave : public rogue::interfaces::stream::Slave
 //class ClStreamSlave : public rogue::hardware::axi::AxiStreamDma
@@ -24,7 +25,6 @@ public:
 
 	void acceptFrame ( std::shared_ptr<rogue::interfaces::stream::Frame> frame )
 	{
-		printf( "ClStreamSlave::acceptFrame" );
 #if 0	// Test frame ptr?
 		if ( frame->expired() )
 			return;
@@ -42,6 +42,13 @@ public:
 		// Acquire lock on frame. Will be release when lock class goes out of scope
 		rogue::interfaces::stream::FrameLockPtr lock = frame->lock();
 
+		// Process frame via CoreV1 protocol
+		rogue::protocols::batcher::CoreV1		core;
+		core.processFrame(frame);
+		printf( "ClStreamSlave::acceptFrame: core count=%u, seq=%u, hdrSize=%u, tailSize=%u\n",
+				core.count(), core.sequence(), core.headerSize(), core.tailSize() );
+
+		printf( "ClStreamSlave::acceptFrame" );
 		// Here we get an iterator to the frame data
 		rogue::interfaces::stream::FrameIterator it;
 		it = frame->begin();
