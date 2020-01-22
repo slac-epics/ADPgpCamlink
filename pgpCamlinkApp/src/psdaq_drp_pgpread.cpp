@@ -162,7 +162,7 @@ int main (int argc, char **argv)
 
 	for ( uint32_t	lane = 0; lane < N_AXI_LANES;	lane++ ) {
 		for ( uint32_t	ch = 0; ch < N_AXI_CHAN;	ch++ ) {
-			dest = (0x100 * lane) + ch;
+			dest = (0x100 * lane) + ch;	// Derived from python code
 			dataChan[lane][ch]	= rogue::hardware::axi::AxiStreamDma::create( device.c_str(), dest, true);
 		}
 	}
@@ -173,12 +173,14 @@ int main (int argc, char **argv)
 
 		// CHAN 1: Camera Frames
 		clStreamSlave[lane] = ClStreamSlave::create();
+#define	INTERPOSE_BATCHER
+#ifdef	INTERPOSE_BATCHER
 		if ( lane == 0 ) {
 			dataChan[lane][1]->addSlave( batch );
 			batch->addSlave( clStreamSlave[lane] );
-		} else {
+		} else
+#endif
 			dataChan[lane][1]->addSlave( clStreamSlave[lane] );
-		}
 		// or rogueStreamConnect( dataChan[lane][1], clStreamSlave[lane] );
 
 		// CHAN 2: Camera Serial Rx
