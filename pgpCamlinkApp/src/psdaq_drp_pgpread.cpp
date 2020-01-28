@@ -198,6 +198,8 @@ int main (int argc, char **argv)
         std::cout << "Error opening "<<device << '\n';
         return -1;
     }
+#endif
+#if 0
 	fd = dataChan[0][0]->getFileDescriptor();
 #else
 
