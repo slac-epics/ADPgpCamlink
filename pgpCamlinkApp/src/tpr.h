@@ -12,7 +12,8 @@ typedef uint32_t __u32;
  * These are the various messages that are passed from the tpr to tprProcess.
  */
 
-typedef struct tprHeader {
+typedef struct tprHeader
+{
     uint16_t chmask;
     uint8_t  tag;
 #define TAG_DROP      0x80
@@ -27,7 +28,8 @@ typedef struct tprHeader {
 #define DMAOWN_DROP   0x40
 } __attribute__((packed)) tprHeader;
 
-typedef struct tprEvent {
+typedef struct tprEvent
+{
     struct tprHeader header;
     uint32_t         length;
     uint64_t         pulseID;
@@ -68,7 +70,8 @@ typedef struct tprEvent {
     uint32_t         seq[9];                  // 56, last reserved for lcls1!
 } __attribute__((packed)) tprEvent;
 
-typedef struct tprBSAControl {
+typedef struct tprBSAControl
+{
     struct tprHeader header;
     uint32_t         nanosecs;
     uint32_t         seconds;
@@ -77,7 +80,8 @@ typedef struct tprBSAControl {
     uint64_t         major;                  // Both == invalid alarm OK!
 } __attribute__((packed)) tprBSAControl;
 
-typedef struct tprBSAEvent {
+typedef struct tprBSAEvent
+{
     struct tprHeader header;
     uint64_t         PID;
     uint64_t         active;
