@@ -7,6 +7,7 @@
 #include <rogue/interfaces/stream/FrameLock.h>
 #include <rogue/hardware/axi/AxiStreamDma.h>
 #include <rogue/protocols/batcher/CoreV1.h>
+#include <rogue/protocols/batcher/Data.h>
 
 class ClStreamSlave : public rogue::interfaces::stream::Slave
 //class ClStreamSlave : public rogue::hardware::axi::AxiStreamDma
@@ -42,22 +43,16 @@ public:
 		// Acquire lock on frame. Will be release when lock class goes out of scope
 		rogue::interfaces::stream::FrameLockPtr lock = frame->lock();
 
-		// Process frame via CoreV1 protocol
-		rogue::protocols::batcher::CoreV1		core;
-		core.processFrame(frame);
-		printf( "ClStreamSlave::acceptFrame: core count=%u, seq=%u, hdrSize=%u, tailSize=%u\n",
-				core.count(), core.sequence(), core.headerSize(), core.tailSize() );
-
 		printf( "ClStreamSlave::acceptFrame" );
 		// Here we get an iterator to the frame data
 		rogue::interfaces::stream::FrameIterator it;
 		it = frame->begin();
 
 		// Print the values in the first 10 locations
-		printf( " %u bytes:", frame->getSize() );
-		for ( uint32_t x=0; x < 16; x++)
+		printf( " SuperFrameSize=%u bytes:", frame->getSize() );
+		for ( uint32_t x=0; x < 20; x++)
 		{
-#if 1
+#if 0
 			uint16_t	pixelData;
 			fromFrame( it, 2, &pixelData );
 			printf( " 0x%04x", pixelData );
@@ -66,11 +61,26 @@ public:
 			it++;
 #endif
 		}
-		printf( "\n" );
+		printf( " ...\n" );
 
 		// Use std::copy to copy data to a data buffer
 		// Here we copy the entire frame payload to the data buffer
 //		std::copy(frame->begin(), frame->end(), data);
+
+		// Process frame via CoreV1 protocol
+		rogue::protocols::batcher::CoreV1		core;
+		core.processFrame(frame);
+		printf( "ClStreamSlave::acceptFrame: core count=%u, seq=%u, hdrSize=%u, tailSize=%u\n",
+				core.count(), core.sequence(), core.headerSize(), core.tailSize() );
+		for ( uint32_t sf = 0; sf < core.count(); sf++ )
+		{
+			rogue::protocols::batcher::DataPtr	data;
+			data = core.record(sf);
+			// FUSER_BIT_1 = StartOfFrame
+			// LUSER_BIT_0 = FrameError
+			printf( "ClStreamSlave::acceptFrame SubFrame %d: dest=%u, size=%u, fUser=0x%02x, lUser=0x%02x\n",
+					sf, data->dest(), data->size(), data->fUser(), data->lUser() );
+		}
 	}
 };
 
