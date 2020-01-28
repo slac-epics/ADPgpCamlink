@@ -15,7 +15,7 @@
 // #include "xtcdata/xtc/Dgram.hh"
 #include <unistd.h>
 #include <getopt.h>
-#include "clStreamSlave.h"
+#include "ClStreamSlave.h"
 
 #define MAX_RET_CNT_C 1000
 static int fd;
