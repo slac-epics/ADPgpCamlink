@@ -8,6 +8,7 @@
 #include <DmaDriver.h>
 #include <stdlib.h>
 #include <rogue/Helpers.h>
+#include <rogue/hardware/axi/AxiMemMap.h>
 #include <rogue/hardware/axi/AxiStreamDma.h>
 #include <rogue/protocols/batcher/SplitterV1.h>
 #include <rogue/protocols/srp/SrpV3.h>
@@ -15,6 +16,7 @@
 // #include "xtcdata/xtc/Dgram.hh"
 #include <unistd.h>
 #include <getopt.h>
+#include "ClMemoryMaster.h"
 #include "ClStreamSlave.h"
 
 #define MAX_RET_CNT_C 1000
@@ -147,6 +149,9 @@ int main (int argc, char **argv)
 #define	N_AXI_CHAN	4
 	rogue::hardware::axi::AxiStreamDmaPtr		dataChan[N_AXI_LANES][N_AXI_CHAN];
 	rogue::protocols::srp::SrpV3Ptr				srp[N_AXI_LANES];
+	rogue::hardware::axi::AxiMemMapPtr 			memMap[N_AXI_LANES];
+	ClMemoryMasterPtr				 			clMemMaster[N_AXI_LANES];
+	ClMemoryMasterPtr				 			febMemMaster[N_AXI_LANES];
 	ClStreamSlavePtr							clStreamSlave[N_AXI_LANES];
 	rogue::protocols::batcher::SplitterV1Ptr	batch;
 	batch 		= rogue::protocols::batcher::SplitterV1::create();
@@ -169,11 +174,26 @@ int main (int argc, char **argv)
 	for ( uint32_t	lane = 0; lane < N_AXI_LANES;	lane++ ) {
 		// CHAN 0: Serial Register Protocol
 		srp[lane] = rogue::protocols::srp::SrpV3::create();
-		rogueStreamConnectBiDir( dataChan[lane][0], srp[lane] );
+		clMemMaster[lane] = ClMemoryMaster::create( );
+		febMemMaster[lane] = ClMemoryMaster::create( );
+		memMap[lane] = rogue::hardware::axi::AxiMemMap::create( device.c_str() );
+#if 1
+		clMemMaster[lane]->setSlave( srp[lane] );
+		febMemMaster[lane]->setSlave( memMap[lane] );
+#else
+		rogueBusConnect( clMemMaster[lane], srp[lane] );
+		rogueBusConnect( febMemMaster[lane], memMap[lane] );
+#endif
+		// clMemMaster[lane]->reqTransaction(0x00000000,4,&ver,rogue::interfaces::memory::Read);
+		// clMemMaster[lane]->reqTransaction(0x00000004,4,&spad,rogue::interfaces::memory::Read);
+		// memMap[lane]->doTransaction( pNextTran )
+		// doTransaction() is src of diag msgs: "Transaction id=0x231, addr 0x20004, Size=4, ..."
+		// clMemMaster[lane]->waitTransaction(0);
+		// printf("Register done. Value=0x%X, Spad=0x%X, Error=%s\n",ver,spad,mast->getError().c_str());
 
 		// CHAN 1: Camera Frames
 		clStreamSlave[lane] = ClStreamSlave::create();
-#define	INTERPOSE_BATCHER
+#undef	INTERPOSE_BATCHER
 #ifdef	INTERPOSE_BATCHER
 		if ( lane == 0 ) {
 			dataChan[lane][1]->addSlave( batch );
