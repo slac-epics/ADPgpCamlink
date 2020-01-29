@@ -66,6 +66,14 @@ int ResetCounters( int fd )
 #define CLINKDEV_TRIG2_ENABLEREG	0x930200
 #define CLINKDEV_TRIG3_ENABLEREG	0x930300
 
+#define CLINKDEV_FEB0_CL0_LINKRUNNING		0x100120		// ClinkDev.Hardware.PgpMon[0].RxRemLinkReady
+#define CLINKDEV_FEB0_CL1_LINKRUNNING		0x100220		// ClinkDev.Hardware.PgpMon[0].RxRemLinkReady
+
+#define CLINKDEV_LANE0_RXREMLINKREADY		0x800020		// ClinkDev.Hardware.PgpMon[0].RxRemLinkReady
+#define CLINKDEV_FEB0_PGP0_RXREMLINKREADY	0x400020		// ClinkDev.ClinkFeb[0].PgpMon[0].RxRemLinkReady
+#define CLINKDEV_FEB0_PGP1_RXREMLINKREADY	0x406020		// ClinkDev.ClinkFeb[0].PgpMon[1].RxRemLinkReady
+
+
 int StartRun( int fd )
 {
 	int		status;

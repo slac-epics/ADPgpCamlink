@@ -1,6 +1,11 @@
 #ifndef	CL_STREAM_SLAVE_H
 #define	CL_STREAM_SLAVE_H
 
+#ifndef	__STDC_FORMAT_MACROS
+#define	__STDC_FORMAT_MACROS
+#endif /* __STDC_FORMAT_MACROS */
+#include <inttypes.h>
+#include <epicsTime.h>
 #include <rogue/interfaces/stream/Slave.h>
 #include <rogue/interfaces/stream/Frame.h>
 #include <rogue/interfaces/stream/FrameIterator.h>
@@ -50,6 +55,7 @@ public:
 
 		// Print the values in the first 10 locations
 		printf( " SuperFrameSize=%u bytes:", frame->getSize() );
+#if 0
 		for ( uint32_t x=0; x < 20; x++)
 		{
 #if 0
@@ -61,6 +67,7 @@ public:
 			it++;
 #endif
 		}
+#endif
 		printf( " ...\n" );
 
 		// Use std::copy to copy data to a data buffer
@@ -80,6 +87,48 @@ public:
 			// LUSER_BIT_0 = FrameError
 			printf( "ClStreamSlave::acceptFrame SubFrame %d: dest=%u, size=%u, fUser=0x%02x, lUser=0x%02x\n",
 					sf, data->dest(), data->size(), data->fUser(), data->lUser() );
+			if ( data->dest() == 0 )
+			{	// TDEST 0 is Timing Event
+				it = data->begin();
+				epicsTimeStamp		ts;
+				fromFrame( it, 4, &ts.nsec );
+				fromFrame( it, 4, &ts.secPastEpoch );
+				char        acBuff[40];
+				epicsTimeToStrftime( acBuff, 40, "%H:%M:%S.%04f", &ts );
+				printf( "ts %s, pulseId 0x%X\n", acBuff, ts.nsec & 0x1FFFF );
+				if ( 0 )
+				{
+					printf( "Invalid timing frame:" );
+					for ( uint32_t x=0; x < 24; x++)
+					{
+						printf( " 0x%02x", *it );
+						it++;
+					}
+					printf( "\n" );
+				}
+			}
+			else if ( data->dest() == 1 && 0 )
+			{	// TDEST 1 is framegrabber image data
+				//printf( "ClStreamSlave::acceptFrame SubFrame %d: ", sf );
+				//it = data->begin();
+				it = data->end();
+				for ( uint32_t x=0; x < 1030; x++)
+				{
+#if 1
+					if ( (x % 16) == 0 )
+						printf( "\n" );
+					uint16_t	pixelData;
+					it -= 2;
+					fromFrame( it, 2, &pixelData );
+					printf( " 0x%04x", pixelData );
+					it -= 2;
+#else
+					printf( " 0x%02x", *it );
+					it++;
+#endif
+				}
+				printf( "\n" );
+			}
 		}
 	}
 };
