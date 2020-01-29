@@ -50,23 +50,40 @@ ifdef T_A
   -include $(AREA_DETECTOR)/configure/CONFIG_SITE.$(EPICS_HOST_ARCH).$(T_A)
 endif
 
-CONDA_DIR=/reg/neh/home/bhill/miniconda3/envs/rogue-build-noepics
-BOOST_DIR=$(CONDA_DIR)
-PGP_DRIVER_DIR=/reg/neh/home/bhill/git-wa-neh/slaclab/aes-stream-drivers-git
-ROGUE_DIR=/reg/neh/home/bhill/git-wa-neh/slaclab/rogue-git
+#ROGUE_DIR=/reg/neh/home/bhill/git-wa-neh/slaclab/rogue-git
+ROGUE_DIR=/reg/neh/home/bhill/git-wa-neh/slaclab/rogue-no-python-git
 
+PGP_DRIVER_DIR=/reg/neh/home/bhill/git-wa-neh/slaclab/aes-stream-drivers-git
 PGP_DRIVER_INCLUDE	= $(PGP_DRIVER_DIR)/include
+
 ROGUE_INCLUDE		= $(ROGUE_DIR)/include
 ROGUE_LIB			= $(ROGUE_DIR)/lib
 
-USR_INCLUDES += -I$(BOOST_DIR)/include
+USR_CXXFLAGS += -std=c++11
 USR_INCLUDES += -I$(PGP_DRIVER_INCLUDE)
 USR_INCLUDES += -I$(ROGUE_INCLUDE)
-USR_INCLUDES += -I$(CONDA_DIR)/include/python3.7m
 
-USR_CXXFLAGS += -std=c++11
-GNU_DIR       = $(CONDA_DIR)
-CMPLR_PREFIX  = x86_64-conda_cos6-linux-gnu-
+#CONDA_DIR=/reg/neh/home/bhill/miniconda3/envs/rogue-build-noepics
+ifdef CONDA_DIR
+	GNU_DIR       = $(CONDA_DIR)
+	CMPLR_PREFIX  = x86_64-conda_cos6-linux-gnu-
+	USR_INCLUDES += -I$(CONDA_DIR)/include/python3.7m
+
+	BOOST_DIR=$(CONDA_DIR)
+	USR_INCLUDES += -I$(BOOST_DIR)/include
+
+	python3.7m_DIR		= $(CONDA_DIR)/lib
+	boost_python37_DIR	= $(CONDA_DIR)/lib
+	boost_thread_DIR	= $(CONDA_DIR)/lib
+	bz2_DIR				= $(CONDA_DIR)/lib
+	zmq_DIR				= $(CONDA_DIR)/lib
+	readline_DIR		= $(CONDA_DIR)/lib
+	ncurses_DIR			= $(CONDA_DIR)/lib
+	USR_LDFLAGS			+= -L$(CONDA_DIR)/lib
+else
+	bz2_DIR				= $(PSPKG_ROOT)/release/bzip2/1.0.6/$(T_A)/lib
+	zmq_DIR				= $(PSPKG_ROOT)/release/zeromq/4.1.5/$(T_A)/lib
+endif
 
 SHARED_LIBRARIES = YES
 STATIC_BUILD     = NO
