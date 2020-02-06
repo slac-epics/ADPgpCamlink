@@ -89,6 +89,18 @@ public:
 					sf, data->dest(), data->size(), data->fUser(), data->lUser() );
 			if ( data->dest() == 0 )
 			{	// TDEST 0 is Timing Event
+				// Offset 0:  4 byte nsec of timestamp
+				// Offset 4:  4 byte sec  of timestamp
+				// Offset 8:  4 byte edefAvgDoneMask
+				// Offset 12: 4 byte edefAvgMinorMask
+				// Offset 16: 4 byte edefAvgMajorMask
+				// Offset 20: 4 byte edefInitMask
+				// Offset 24: 4 byte Modifier1
+				// Offset 28: 4 byte Modifier2
+				// Offset 32: 4 byte Modifier3
+				// Offset 36: 4 byte Modifier4
+				// Offset 40: 4 byte Modifier5
+				// Offset 44: 4 byte Modifier6
 				it = data->begin();
 				epicsTimeStamp		ts;
 				fromFrame( it, 4, &ts.nsec );

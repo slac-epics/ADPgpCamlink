@@ -10,6 +10,7 @@
 #include <rogue/Helpers.h>
 #include <rogue/hardware/axi/AxiMemMap.h>
 #include <rogue/hardware/axi/AxiStreamDma.h>
+#include <rogue/interfaces/memory/Constants.h>
 #include <rogue/protocols/batcher/SplitterV1.h>
 #include <rogue/protocols/srp/SrpV3.h>
 // #include "psdaq/service/EbDgram.hh"
@@ -27,6 +28,11 @@ unsigned dmaDest(unsigned lane, unsigned vc)
 {
     return (lane<<8) | vc;
 }
+
+#define CLINKDEV_AXIVERSION_SCRATCHPAD	0x20004
+#define CLINKDEV_AXIVERSION_UPTIMESEC	0x20008
+#define CLINKDEV_AXIVERSION_FPGARELOAD	0x20104
+
 
 #define CLINKDEV_LANE0_DATACNT0		0xC00000
 #define CLINKDEV_LANE0_DATACNT1		0xC00004
@@ -66,6 +72,9 @@ int ResetCounters( int fd )
 #define CLINKDEV_TRIG2_ENABLEREG	0x930200
 #define CLINKDEV_TRIG3_ENABLEREG	0x930300
 
+#define CLINKDEV_FEB0_AXIVERSION_SCRATCHPAD	0x00004			// ClinkDev.ClinkFeb[0].AxiVersion.ScratchPad
+#define CLINKDEV_FEB0_AXIVERSION_UPTIMESEC	0x00008			// ClinkDev.ClinkFeb[0].AxiVersion.UpTimeCnt
+#define CLINKDEV_FEB0_AXIVERSION_FPGARELOAD	0x00104			// ClinkDev.ClinkFeb[0].AxiVersion.FpgaReload
 #define CLINKDEV_FEB0_CL0_LINKRUNNING		0x100120		// ClinkDev.Hardware.PgpMon[0].RxRemLinkReady
 #define CLINKDEV_FEB0_CL1_LINKRUNNING		0x100220		// ClinkDev.Hardware.PgpMon[0].RxRemLinkReady
 
@@ -115,6 +124,8 @@ static void usage(const char* p)
 int main (int argc, char **argv)
 {
     int c, channel;
+	uint32_t	scratch	= 0x1234;
+	uint32_t	upTime;
 
     channel = 0;
     std::string device;
@@ -172,8 +183,9 @@ int main (int argc, char **argv)
 	 * lower level hardware.
 	 */
 	uint32_t		dest		= 0;
+	uint32_t		lane		= 0;
 
-	for ( uint32_t	lane = 0; lane < N_AXI_LANES;	lane++ ) {
+	for ( lane = 0; lane < N_AXI_LANES;	lane++ ) {
 		for ( uint32_t	ch = 0; ch < N_AXI_CHAN;	ch++ ) {
 			dest = (0x100 * lane) + ch;	// Derived from python code
 			dataChan[lane][ch]	= rogue::hardware::axi::AxiStreamDma::create( device.c_str(), dest, true);
@@ -185,19 +197,32 @@ int main (int argc, char **argv)
 		clMemMaster[lane] = ClMemoryMaster::create( );
 		febMemMaster[lane] = ClMemoryMaster::create( );
 		memMap[lane] = rogue::hardware::axi::AxiMemMap::create( device.c_str() );
-#if 1
+
 		clMemMaster[lane]->setSlave( srp[lane] );
 		febMemMaster[lane]->setSlave( memMap[lane] );
-#else
-		rogueBusConnect( clMemMaster[lane], srp[lane] );
-		rogueBusConnect( febMemMaster[lane], memMap[lane] );
-#endif
-		// clMemMaster[lane]->reqTransaction(0x00000000,4,&ver,rogue::interfaces::memory::Read);
+
+		clMemMaster[lane]->clearError();
+		clMemMaster[lane]->reqTransaction( CLINKDEV_AXIVERSION_UPTIMESEC,  4, &upTime,	rogue::interfaces::memory::Read );
+		clMemMaster[lane]->reqTransaction( CLINKDEV_AXIVERSION_SCRATCHPAD, 4, &scratch,	rogue::interfaces::memory::Write );
+		// clMemMaster[lane]->doTransaction( pNextTran )
+		// doTransaction() is src of diag msgs: "Transaction id=0x231, addr 0x20004, Size=4, ..."
+		// clMemMaster[lane]->waitTransaction(0);
 		// clMemMaster[lane]->reqTransaction(0x00000004,4,&spad,rogue::interfaces::memory::Read);
 		// memMap[lane]->doTransaction( pNextTran )
 		// doTransaction() is src of diag msgs: "Transaction id=0x231, addr 0x20004, Size=4, ..."
-		// clMemMaster[lane]->waitTransaction(0);
-		// printf("Register done. Value=0x%X, Spad=0x%X, Error=%s\n",ver,spad,mast->getError().c_str());
+		clMemMaster[lane]->waitTransaction(0);
+		printf( "clMemMaster[%d]  transaction done. scratch=0x%X, upTime=%d sec, Error=%s\n", lane, scratch, upTime, clMemMaster[lane]->getError().c_str() );
+
+		clMemMaster[lane]->clearError();
+		clMemMaster[lane]->reqTransaction( CLINKDEV_AXIVERSION_SCRATCHPAD, 4, &scratch,	rogue::interfaces::memory::Read );
+		clMemMaster[lane]->waitTransaction(0);
+		printf( "clMemMaster[%d]  transaction done. scratch=0x%X, upTime=%d sec, Error=%s\n", lane, scratch, upTime, clMemMaster[lane]->getError().c_str() );
+
+		febMemMaster[lane]->clearError();
+		febMemMaster[lane]->reqTransaction( CLINKDEV_FEB0_AXIVERSION_SCRATCHPAD, 4,	&scratch,	rogue::interfaces::memory::Read );
+		febMemMaster[lane]->reqTransaction( CLINKDEV_FEB0_AXIVERSION_UPTIMESEC,  4,	&upTime,	rogue::interfaces::memory::Read );
+		febMemMaster[lane]->waitTransaction(0);
+		printf( "febMemMaster[%d] transaction done. scratch=0x%X, upTime=%d sec, Error=%s\n", lane, scratch, upTime, febMemMaster[lane]->getError().c_str() );
 
 		// CHAN 1: Camera Frames
 		clStreamSlave[lane] = ClStreamSlave::create();
@@ -248,6 +273,18 @@ int main (int argc, char **argv)
 		printf("buildString     : %s\n", vsn.buildString); 
 	}
 
+	scratch = 0x4321;
+	sleep(2);
+	lane = 0;
+	clMemMaster[lane]->clearError();
+	clMemMaster[0]->reqTransaction( CLINKDEV_AXIVERSION_SCRATCHPAD, 4, &scratch,	rogue::interfaces::memory::Write );
+	clMemMaster[0]->waitTransaction(0);
+	clMemMaster[0]->reqTransaction( CLINKDEV_AXIVERSION_UPTIMESEC,  4, &upTime,		rogue::interfaces::memory::Read );
+	clMemMaster[0]->reqTransaction( CLINKDEV_AXIVERSION_SCRATCHPAD, 4, &scratch,	rogue::interfaces::memory::Read );
+	clMemMaster[0]->waitTransaction(0);
+	printf( "clMemMaster[%d]  transaction done. scratch=0x%X, upTime=%d sec, Error=%s\n", lane, scratch, upTime, clMemMaster[lane]->getError().c_str() );
+	fflush(NULL);
+	sleep(1);
 	int status = StartRun( fd );
     if ( status != 0 ) {
         printf( "StartRun Error: %d\n", status );
@@ -256,7 +293,7 @@ int main (int argc, char **argv)
 
 #if 1
 	std::shared_ptr<rogue::interfaces::stream::Frame>	pFrame;
-	usleep( 50000 );
+	usleep( 40000 );
 	//while (1) {
 	//	dataChan[0][1]->acceptFrame( pFrame );
     //    printf("Got frame!\n" );
@@ -335,7 +372,7 @@ int main (int argc, char **argv)
     }
 #endif
 
-#if 1
+#if 0
     printf("Finished\n");
 #else
     printf("Shutting down\n");
