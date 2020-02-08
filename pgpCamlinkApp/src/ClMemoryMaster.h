@@ -83,6 +83,42 @@ public:
 		byteCount_ += frameSize_;
 #endif
 	}
+
+	int incrAddress( uint64_t	address )
+	{
+		uint32_t	scratch = 0xdead;
+		uint32_t	id;
+		this->clearError();
+		id = this->reqTransaction( address, 4, &scratch, rogue::interfaces::memory::Read );
+		this->waitTransaction( id );
+		if ( this->getError().size() != 0 )
+		{
+			printf( "\nClMemMaster::incrAddress addr 0x%8lX: =0x%X, Read Error=%s\n", address, scratch, this->getError().c_str() );
+			return -1;
+		}
+
+		scratch++;
+		this->clearError();
+		id = this->reqTransaction( address, 4, &scratch, rogue::interfaces::memory::Write );
+		this->waitTransaction( id );
+		if ( this->getError().size() != 0 )
+		{
+			printf( "\nClMemMaster::incrAddress addr 0x%8lX: =0x%X, Write Error=%s\n", address, scratch, this->getError().c_str() );
+			return -1;
+		}
+
+		this->clearError();
+		id = this->reqTransaction( address, 4, &scratch, rogue::interfaces::memory::Read );
+		this->waitTransaction( id );
+		if ( this->getError().size() != 0 )
+		{
+			printf( "\nClMemMaster::incrAddress addr 0x%8lX: =0x%X, Read Error=%s\n", address, scratch, this->getError().c_str() );
+			return -1;
+		}
+		printf( "\nClMemMaster::incrAddress addr 0x%8lX: =0x%X\n", address, scratch );
+		return 0;
+	}
+
 };
 
 // Shared pointer alias
