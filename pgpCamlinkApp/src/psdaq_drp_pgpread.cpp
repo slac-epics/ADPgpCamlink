@@ -11,10 +11,8 @@
 #include <rogue/hardware/axi/AxiMemMap.h>
 #include <rogue/hardware/axi/AxiStreamDma.h>
 #include <rogue/interfaces/memory/Constants.h>
-#include <rogue/interfaces/memory/Master.h>
-#include <rogue/interfaces/memory/Slave.h>
-#include <rogue/interfaces/stream/Master.h>
 #include <rogue/interfaces/stream/Slave.h>
+#include <rogue/interfaces/stream/Master.h>
 #include <rogue/protocols/batcher/SplitterV1.h>
 #include <rogue/protocols/srp/SrpV3.h>
 // #include "psdaq/service/EbDgram.hh"
@@ -133,7 +131,6 @@ int main (int argc, char **argv)
     int c, channel;
 	uint32_t	scratch	= 0x1234;
 	uint32_t	upTime;
-	uint32_t	id;
 
     channel = 0;
     std::string device;
@@ -175,9 +172,11 @@ int main (int argc, char **argv)
 #define	N_AXI_LANES	4
 #define	N_AXI_CHAN	4
 	rogue::hardware::axi::AxiStreamDmaPtr		dataChan[N_AXI_LANES][N_AXI_CHAN];
-	rogue::hardware::axi::AxiMemMapPtr 			memMap[N_AXI_LANES];
 	rogue::protocols::srp::SrpV3Ptr				srp[N_AXI_LANES];
 	rogue::protocols::srp::SrpV3Ptr				srpFeb[N_AXI_LANES];
+#if 1
+	rogue::hardware::axi::AxiMemMapPtr 			memMap[N_AXI_LANES];
+#endif
 	ClMemoryMasterPtr				 			clMemMaster[N_AXI_LANES];
 	ClMemoryMasterPtr				 			febMemMaster[N_AXI_LANES];
 	ClStreamSlavePtr							clStreamSlave[N_AXI_LANES];
@@ -202,41 +201,98 @@ int main (int argc, char **argv)
 			dataChan[lane][ch]	= rogue::hardware::axi::AxiStreamDma::create( device.c_str(), dest, true);
 		}
 	}
-	for ( lane = 0; lane < N_AXI_LANES;	lane++ )
+	for ( uint32_t	lane = 0; lane < N_AXI_LANES;	lane++ )
 	{
 		// CHAN 0: Serial Register Protocol
-		srp[lane] = rogue::protocols::srp::SrpV3::create();
-		clMemMaster[lane] = ClMemoryMaster::create( );
+		srp[lane]	 = rogue::protocols::srp::SrpV3::create();
 		srpFeb[lane] = rogue::protocols::srp::SrpV3::create();
+		clMemMaster[lane]  = ClMemoryMaster::create( );
 		febMemMaster[lane] = ClMemoryMaster::create( );
 		memMap[lane] = rogue::hardware::axi::AxiMemMap::create( device.c_str() );
 
 		// Connect ClinkDev KCU1500 Register Access
 #if 1
 		clMemMaster[lane]->setSlave( srp[lane] );
-#if 1
-		srp[lane]->addSlave( dataChan[lane][0] );
-		dataChan[lane][0]->addSlave( srp[lane] );
-#endif
-		//dataChan[lane][0]->addSlave( memMap[lane] );
-		//srp[lane]->addSlave( memMap[lane] );
-		//*clMemMaster[lane] >> memMap[lane];
-		//memMap[lane]->addSlave( srp[lane] );
+		//clMemMaster[lane]->setSlave( memMap[lane] );
 		//srp[lane]->addSlave( clMemMaster[lane] );
 		//clMemMaster[lane]->addSlave( srp[lane] );
 #else
-		clMemMaster[lane]->setSlave( memMap[lane] );
-		//clMemMaster[lane]->setSlave( srp[lane] );
-		//srp[lane]->addSlave( memMap[lane] );
-		//memMap[lane]->addSlave( srp[lane] );
+		clMemMaster[lane]->setSlave( srp[lane] );
+		srp[lane]->addSlave( memMap[lane] );
+		memMap[lane]->addSlave( srp[lane] );
 #endif
 
 		// Connect FEB Register Access
-#if 0
+#if 1
+		febMemMaster[lane]->setSlave( memMap[lane] );
+#else
 		dataChan[lane][0]->addSlave( srpFeb[lane] );
 		srpFeb[lane]->addSlave( dataChan[lane][0] );
-#endif
 		febMemMaster[lane]->setSlave( srpFeb[lane] );
+#endif
+
+		if ( lane != 0 )
+			continue;
+
+		// Read ClinkDev upTime and scratch register
+		upTime = 0xdead;
+		scratch = 0xdead;
+		clMemMaster[lane]->clearError();
+		clMemMaster[lane]->reqTransaction( CLINKDEV_AXIVERSION_SCRATCHPAD, 4, &scratch,	rogue::interfaces::memory::Read );
+		clMemMaster[lane]->reqTransaction( CLINKDEV_AXIVERSION_UPTIMESEC,  4, &upTime,	rogue::interfaces::memory::Read );
+		clMemMaster[lane]->waitTransaction(0);
+		printf( "\nclMemMaster[%d]  transaction done. upTime=0x%X sec, scratch=0x%X, Error=%s\n", lane, upTime, scratch, clMemMaster[lane]->getError().c_str() );
+
+		// Write ClinkDev scratch register
+		scratch = 0x1234 + lane;
+		upTime = 0xdead;
+		clMemMaster[lane]->clearError();
+		clMemMaster[lane]->reqTransaction( CLINKDEV_AXIVERSION_UPTIMESEC,  4, &upTime,	rogue::interfaces::memory::Read );
+		clMemMaster[lane]->reqTransaction( CLINKDEV_AXIVERSION_SCRATCHPAD, 4, &scratch,	rogue::interfaces::memory::Write );
+		clMemMaster[lane]->waitTransaction(0);
+		printf( "clMemMaster[%d]  transaction done. upTime=0x%X sec, wrote scratch 0x%X, Error=%s\n", lane, upTime, scratch, clMemMaster[lane]->getError().c_str() );
+
+		// Read ClinkDev upTime and scratch register
+		scratch = 0xdead;
+		upTime = 0xdead;
+		clMemMaster[lane]->clearError();
+		clMemMaster[lane]->reqTransaction( CLINKDEV_AXIVERSION_SCRATCHPAD, 4, &scratch,	rogue::interfaces::memory::Read );
+		clMemMaster[lane]->waitTransaction(0);
+		clMemMaster[lane]->reqTransaction( CLINKDEV_AXIVERSION_UPTIMESEC,  4, &upTime,	rogue::interfaces::memory::Read );
+		clMemMaster[lane]->waitTransaction(0);
+		printf( "clMemMaster[%d]  transaction done. upTime=0x%X sec, scratch=0x%X, Error=%s\n", lane, upTime, scratch, clMemMaster[lane]->getError().c_str() );
+
+		clMemMaster[lane]->incrAddress( CLINKDEV_AXIVERSION_SCRATCHPAD );
+		clMemMaster[lane]->incrAddress( CLINKDEV_AXIVERSION_SCRATCHPAD );
+		clMemMaster[lane]->incrAddress( CLINKDEV_AXIVERSION_SCRATCHPAD );
+
+		if ( 1 ) {
+		// Read FEB upTime and scratch register
+		scratch = 0xdead;
+		upTime = 0xdead;
+		febMemMaster[lane]->clearError();
+		febMemMaster[lane]->reqTransaction( CLINKDEV_FEB0_AXIVERSION_UPTIMESEC,  4,	&upTime,	rogue::interfaces::memory::Read );
+		febMemMaster[lane]->waitTransaction(0);
+		febMemMaster[lane]->reqTransaction( CLINKDEV_FEB0_AXIVERSION_SCRATCHPAD, 4,	&scratch,	rogue::interfaces::memory::Read );
+		febMemMaster[lane]->waitTransaction(0);
+		printf( "\nfebMemMaster[%d] transaction done. upTime=0x%X sec, scratch=0x%X, Error=%s\n", lane, upTime, scratch, febMemMaster[lane]->getError().c_str() );
+
+		// Write FEB scratch register
+		scratch = 0x4320 + lane;
+		febMemMaster[lane]->clearError();
+		febMemMaster[lane]->reqTransaction( CLINKDEV_FEB0_AXIVERSION_SCRATCHPAD, 4,	&scratch,	rogue::interfaces::memory::Write );
+		febMemMaster[lane]->waitTransaction(0);
+		printf( "febMemMaster[%d] transaction done. upTime=0x%X sec, wrote scratch 0x%X, Error=%s\n", lane, upTime, scratch, febMemMaster[lane]->getError().c_str() );
+
+		// Read FEB scratch register
+		scratch = 0xdead;
+		upTime = 0xdead;
+		febMemMaster[lane]->clearError();
+		febMemMaster[lane]->reqTransaction( CLINKDEV_FEB0_AXIVERSION_SCRATCHPAD, 4,	&scratch,	rogue::interfaces::memory::Read );
+		febMemMaster[lane]->reqTransaction( CLINKDEV_FEB0_AXIVERSION_UPTIMESEC,  4,	&upTime,	rogue::interfaces::memory::Read );
+		febMemMaster[lane]->waitTransaction(0);
+		printf( "febMemMaster[%d] transaction done. upTime=0x%X sec, scratch 0x%X, Error=%s\n", lane, upTime, scratch, febMemMaster[lane]->getError().c_str() );
+		}
 
 		// CHAN 1: Camera Frames
 		clStreamSlave[lane] = ClStreamSlave::create();
@@ -252,78 +308,6 @@ int main (int argc, char **argv)
 		//clSerialRx[lane] = UartClinkGeneric::create();
 		clSerialRx[lane] = ClSerialSlave::create();
 		dataChan[lane][3]->addSlave( clSerialRx[lane] );
-
-		if ( lane != 0 )
-			continue;
-
-		// Read ClinkDev upTime and scratch register
-		upTime = 0xdead;
-		scratch = 0xdead;
-		clMemMaster[lane]->clearError();
-		id = clMemMaster[lane]->reqTransaction( CLINKDEV_AXIVERSION_SCRATCHPAD, 4, &scratch,	rogue::interfaces::memory::Read );
-		clMemMaster[lane]->waitTransaction(id);
-		id = clMemMaster[lane]->reqTransaction( CLINKDEV_AXIVERSION_UPTIMESEC,  4, &upTime,	rogue::interfaces::memory::Read );
-		clMemMaster[lane]->waitTransaction(0);
-		printf( "\nclMemMaster[%d]  transaction done. upTime=0x%X sec, scratch=0x%X, Error=%s\n", lane, upTime, scratch, clMemMaster[lane]->getError().c_str() );
-		clMemMaster[lane]->incrAddress( CLINKDEV_AXIVERSION_SCRATCHPAD );
-		clMemMaster[lane]->incrAddress( CLINKDEV_AXIVERSION_SCRATCHPAD );
-
-		// Write ClinkDev scratch register
-		scratch = 0x1234 + lane;
-		clMemMaster[lane]->clearError();
-		id = clMemMaster[lane]->reqTransaction( CLINKDEV_AXIVERSION_SCRATCHPAD, 4, &scratch,	rogue::interfaces::memory::Write );
-		clMemMaster[lane]->waitTransaction(0);
-		printf( "clMemMaster[%d]  transaction done. upTime=0x%X sec, wrote scratch 0x%X, Error=%s\n", lane, upTime, scratch, clMemMaster[lane]->getError().c_str() );
-
-		// Read ClinkDev upTime and scratch register
-		scratch = 0xdead;
-		upTime = 0xdead;
-		clMemMaster[lane]->clearError();
-		id = clMemMaster[lane]->reqTransaction( CLINKDEV_AXIVERSION_SCRATCHPAD, 4, &scratch,	rogue::interfaces::memory::Read );
-		clMemMaster[lane]->waitTransaction(0);
-		id = clMemMaster[lane]->reqTransaction( CLINKDEV_AXIVERSION_UPTIMESEC,  4, &upTime,	rogue::interfaces::memory::Read );
-		clMemMaster[lane]->waitTransaction(0);
-		printf( "clMemMaster[%d]  transaction done. upTime=0x%X sec, scratch=0x%X, Error=%s\n", lane, upTime, scratch, clMemMaster[lane]->getError().c_str() );
-
-		// Read FEB upTime and scratch register
-		scratch = 0xdead;
-		upTime = 0xdead;
-		febMemMaster[lane]->clearError();
-		id = febMemMaster[lane]->reqTransaction( CLINKDEV_FEB0_AXIVERSION_UPTIMESEC,  4,	&upTime,	rogue::interfaces::memory::Read );
-		febMemMaster[lane]->waitTransaction(0);
-		id = febMemMaster[lane]->reqTransaction( CLINKDEV_FEB0_AXIVERSION_SCRATCHPAD, 4,	&scratch,	rogue::interfaces::memory::Read );
-		febMemMaster[lane]->waitTransaction(0);
-		printf( "\nfebMemMaster[%d] transaction done. upTime=0x%X sec, scratch=0x%X, Error=%s\n", lane, upTime, scratch, febMemMaster[lane]->getError().c_str() );
-
-		// Write FEB scratch register
-		scratch = 0x4320 + lane;
-		febMemMaster[lane]->clearError();
-		id = febMemMaster[lane]->reqTransaction( CLINKDEV_FEB0_AXIVERSION_SCRATCHPAD, 4,	&scratch,	rogue::interfaces::memory::Write );
-		febMemMaster[lane]->waitTransaction(0);
-		printf( "febMemMaster[%d]  transaction done. upTime=0x%X sec, wrote scratch 0x%X, Error=%s\n", lane, upTime, scratch, febMemMaster[lane]->getError().c_str() );
-
-		// Read FEB scratch register
-		scratch = 0xdead;
-		febMemMaster[lane]->clearError();
-		id = febMemMaster[lane]->reqTransaction( CLINKDEV_FEB0_AXIVERSION_SCRATCHPAD, 4,	&scratch,	rogue::interfaces::memory::Read );
-		febMemMaster[lane]->waitTransaction(0);
-		printf( "febMemMaster[%d]  transaction done. upTime=0x%X sec, scratch 0x%X, Error=%s\n", lane, upTime, scratch, febMemMaster[lane]->getError().c_str() );
-
-		// Write FEB scratch register again
-		scratch = 0x1230 + lane;
-		febMemMaster[lane]->clearError();
-		id = febMemMaster[lane]->reqTransaction( CLINKDEV_FEB0_AXIVERSION_SCRATCHPAD, 4,	&scratch,	rogue::interfaces::memory::Write );
-		febMemMaster[lane]->waitTransaction(0);
-		printf( "febMemMaster[%d]  transaction done. upTime=0x%X sec, wrote scratch 0x%X, Error=%s\n", lane, upTime, scratch, febMemMaster[lane]->getError().c_str() );
-
-		// Read FEB scratch register
-		scratch = 0xdead;
-		febMemMaster[lane]->clearError();
-		id = febMemMaster[lane]->reqTransaction( CLINKDEV_FEB0_AXIVERSION_SCRATCHPAD, 4,	&scratch,	rogue::interfaces::memory::Read );
-		febMemMaster[lane]->waitTransaction(id);
-		printf( "febMemMaster[%d]  transaction done. upTime=0x%X sec, scratch 0x%X, Error=%s\n", lane, upTime, scratch, febMemMaster[lane]->getError().c_str() );
-		febMemMaster[lane]->incrAddress( CLINKDEV_FEB0_AXIVERSION_SCRATCHPAD );
-		febMemMaster[lane]->incrAddress( CLINKDEV_FEB0_AXIVERSION_SCRATCHPAD );
 	}
 	// Send Opal serial command
 	//clSerialTx[0]->sendBytes( "@SN?\r", 5 );
@@ -359,27 +343,23 @@ int main (int argc, char **argv)
 	sleep(2);
 	lane = 0;
 	clMemMaster[lane]->clearError();
-	id = clMemMaster[0]->reqTransaction( CLINKDEV_AXIVERSION_SCRATCHPAD, 4, &scratch,	rogue::interfaces::memory::Write );
+	clMemMaster[0]->reqTransaction( CLINKDEV_AXIVERSION_SCRATCHPAD, 4, &scratch,	rogue::interfaces::memory::Write );
 	clMemMaster[0]->waitTransaction(0);
 	printf( "\nclMemMaster[%d]  transaction done. upTime=0x%X sec, wrote scratch 0x%X, Error=%s\n", lane, upTime, scratch, clMemMaster[lane]->getError().c_str() );
 
 	upTime = 0xdead;
 	scratch = 0xdead;
-	id = clMemMaster[0]->reqTransaction( CLINKDEV_AXIVERSION_UPTIMESEC,  4, &upTime,		rogue::interfaces::memory::Read );
+	clMemMaster[0]->reqTransaction( CLINKDEV_AXIVERSION_UPTIMESEC,  4, &upTime,		rogue::interfaces::memory::Read );
+	clMemMaster[0]->reqTransaction( CLINKDEV_AXIVERSION_SCRATCHPAD, 4, &scratch,	rogue::interfaces::memory::Read );
 	clMemMaster[0]->waitTransaction(0);
-	id = clMemMaster[0]->reqTransaction( CLINKDEV_AXIVERSION_SCRATCHPAD, 4, &scratch,	rogue::interfaces::memory::Read );
-	clMemMaster[0]->waitTransaction(0);
-	printf( "clMemMaster[%d]  transaction done. upTime=%d sec, scratch=0x%X, Error=%s\n", lane, upTime, scratch, clMemMaster[lane]->getError().c_str() );
+	printf( "clMemMaster[%d]  transaction done. upTime=0x%X sec, scratch=0x%X, Error=%s\n", lane, upTime, scratch, clMemMaster[lane]->getError().c_str() );
 	fflush(NULL);
 
 	sleep(1);
 	int status = StartRun( fd );
     if ( status != 0 ) {
-        printf( "\nStartRun Error: %d\n", status );
+        printf( "StartRun Error: %d\n", status );
         return -1;
-	}
-	else {
-        printf( "\nStartRun ...\n" );
 	}
 
 #if 1
