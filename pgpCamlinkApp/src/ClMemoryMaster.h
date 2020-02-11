@@ -84,16 +84,19 @@ public:
 #endif
 	}
 
-	int incrAddress( uint64_t	address )
+	int incrAddress( uint64_t	address, std::string label = "" )
 	{
 		uint32_t	scratch = 0xdead;
 		uint32_t	id;
+		if ( label.size() == 0 )
+			label = "ClMemoryMaster::incrAddress";
+		scratch = 0xdead;
 		this->clearError();
 		id = this->reqTransaction( address, 4, &scratch, rogue::interfaces::memory::Read );
 		this->waitTransaction( id );
 		if ( this->getError().size() != 0 )
 		{
-			printf( "\nClMemMaster::incrAddress addr 0x%8lX: =0x%X, Read Error=%s\n", address, scratch, this->getError().c_str() );
+			printf( "%s addr 0x%lX: =0x%X, Read Error=%s\n", label.c_str(), address, scratch, this->getError().c_str() );
 			return -1;
 		}
 
@@ -103,19 +106,20 @@ public:
 		this->waitTransaction( id );
 		if ( this->getError().size() != 0 )
 		{
-			printf( "\nClMemMaster::incrAddress addr 0x%8lX: =0x%X, Write Error=%s\n", address, scratch, this->getError().c_str() );
+			printf( "%s addr 0x%lX =0x%X, Write Error=%s\n", label.c_str(), address, scratch, this->getError().c_str() );
 			return -1;
 		}
 
+		scratch = 0xdead;
 		this->clearError();
 		id = this->reqTransaction( address, 4, &scratch, rogue::interfaces::memory::Read );
 		this->waitTransaction( id );
 		if ( this->getError().size() != 0 )
 		{
-			printf( "\nClMemMaster::incrAddress addr 0x%8lX: =0x%X, Read Error=%s\n", address, scratch, this->getError().c_str() );
+			printf( "%s addr 0x%lX =0x%X, Read Error=%s\n", label.c_str(), address, scratch, this->getError().c_str() );
 			return -1;
 		}
-		printf( "\nClMemMaster::incrAddress addr 0x%8lX: =0x%X\n", address, scratch );
+		printf( "%s addr 0x%lX =0x%X\n", label.c_str(), address, scratch );
 		return 0;
 	}
 

@@ -121,22 +121,55 @@ void int_handler(int dummy)
     // dmaUnMapDma();
 }
 
+int ClSerialMaster::sendBytes( const char * buffer, size_t nBytes )
+{
+	uint32_t	lValue;
+	if ( strlen( buffer ) <= nBytes )
+		printf( "ClSerialMaster::sendBytes: %s\n", buffer );
+	std::shared_ptr<rogue::interfaces::stream::Frame> frame;
+	frame = reqFrame ( nBytes * 4, true );
+	if ( ! frame )
+	{
+		printf( "ClSerialMaster::sendBytes: reqFrame %zd bytes failed!\n", nBytes * 4 );
+		return -1;
+	}
+	rogue::interfaces::stream::FrameIterator it;
+	it = frame->begin();
+	for ( size_t i = 0; i < nBytes; i++ )
+	{
+		lValue = buffer[i];
+		toFrame( it, 4, &lValue );
+	}
+	try
+	{
+		sendFrame( frame );
+	}
+	catch ( rogue::GeneralError &e )
+	{
+		printf( "ClSerialMaster::sendBytes: Error %s!\n", e.what() );
+		return -1;
+	}
+
+	return 0;
+}
+
 static void usage(const char* p)
 {
-  printf("Usage: %s -d <device> -c <channel>\n",p);
+	printf("Usage: %s -d <device> -c <channel>\n",p);
 }
 
 int main (int argc, char **argv)
 {
-    int c, channel;
+	int c, channel;
+	uint32_t	dataCnt;
 	uint32_t	scratch	= 0x1234;
 	uint32_t	upTime;
 
-    channel = 0;
-    std::string device;
-    while((c = getopt(argc, argv, "hc:d:")) != EOF)
+	channel = 0;
+	std::string device;
+	while((c = getopt(argc, argv, "hc:d:")) != EOF)
 	{
-        switch(c)
+		switch(c)
 		{
 		case 'd':
 			device = optarg;
@@ -149,16 +182,16 @@ int main (int argc, char **argv)
 			usage(argv[0]);
 			return 1;
 		}
-    }
+	}
 
-    terminate.store(false, std::memory_order_release);
-    signal(SIGINT, int_handler);
+	terminate.store(false, std::memory_order_release);
+	signal(SIGINT, int_handler);
 
-    uint8_t mask[DMA_MASK_SIZE];
-    dmaInitMaskBytes(mask);
-    for (unsigned i=0; i<4; i++) {
-        dmaAddMaskBytes((uint8_t*)mask, dmaDest(i, channel));
-    }
+	uint8_t mask[DMA_MASK_SIZE];
+	dmaInitMaskBytes(mask);
+	for (unsigned i=0; i<4; i++) {
+		dmaAddMaskBytes((uint8_t*)mask, dmaDest(i, channel));
+	}
 
 	if ( device.size() == 0 ) {
 		std::cerr << "device not specified" << std::endl;
@@ -166,13 +199,13 @@ int main (int argc, char **argv)
 		return 1;
 	}
 
-    std::cout<<"Opening device: "<< device << std::endl;
+	std::cout<<"Opening device: "<< device << std::endl;
 
 #if 1
 #define	N_AXI_LANES	4
 #define	N_AXI_CHAN	4
 	rogue::hardware::axi::AxiStreamDmaPtr		dataChan[N_AXI_LANES][N_AXI_CHAN];
-	rogue::protocols::srp::SrpV3Ptr				srp[N_AXI_LANES];
+	//rogue::protocols::srp::SrpV3Ptr				srp[N_AXI_LANES];
 	rogue::protocols::srp::SrpV3Ptr				srpFeb[N_AXI_LANES];
 #if 1
 	rogue::hardware::axi::AxiMemMapPtr 			memMap[N_AXI_LANES];
@@ -203,33 +236,33 @@ int main (int argc, char **argv)
 	}
 	for ( uint32_t	lane = 0; lane < N_AXI_LANES;	lane++ )
 	{
-		// CHAN 0: Serial Register Protocol
-		srp[lane]	 = rogue::protocols::srp::SrpV3::create();
-		srpFeb[lane] = rogue::protocols::srp::SrpV3::create();
-		clMemMaster[lane]  = ClMemoryMaster::create( );
-		febMemMaster[lane] = ClMemoryMaster::create( );
+		// Connect CHAN 0 ClinkDev KCU1500 Register Access
 		memMap[lane] = rogue::hardware::axi::AxiMemMap::create( device.c_str() );
+		clMemMaster[lane]  = ClMemoryMaster::create( );
+		clMemMaster[lane]->setSlave( memMap[lane] );
 
-		// Connect ClinkDev KCU1500 Register Access
-#if 1
-		clMemMaster[lane]->setSlave( srp[lane] );
-		//clMemMaster[lane]->setSlave( memMap[lane] );
-		//srp[lane]->addSlave( clMemMaster[lane] );
-		//clMemMaster[lane]->addSlave( srp[lane] );
-#else
-		clMemMaster[lane]->setSlave( srp[lane] );
-		srp[lane]->addSlave( memMap[lane] );
-		memMap[lane]->addSlave( srp[lane] );
-#endif
-
-		// Connect FEB Register Access
-#if 1
-		febMemMaster[lane]->setSlave( memMap[lane] );
-#else
+		// Connect CHAN 0 FEB Register Access
+		srpFeb[lane] = rogue::protocols::srp::SrpV3::create();
+		febMemMaster[lane] = ClMemoryMaster::create( );
 		dataChan[lane][0]->addSlave( srpFeb[lane] );
 		srpFeb[lane]->addSlave( dataChan[lane][0] );
+#undef	MAKE_FEB_REG_RW_WORK
+#ifdef MAKE_FEB_REG_RW_WORK
 		febMemMaster[lane]->setSlave( srpFeb[lane] );
 #endif
+
+		// CHAN 1: Camera Frames
+		clStreamSlave[lane] = ClStreamSlave::create();
+		dataChan[lane][1]->addSlave( clStreamSlave[lane] );
+		// or rogueStreamConnect( dataChan[lane][1], clStreamSlave[lane] );
+
+		// CHAN 2: Camera Serial Tx
+		clSerialTx[lane] = ClSerialMaster::create();
+		clSerialTx[lane]->addSlave( dataChan[lane][2] );
+
+		// CHAN 3: Camera Serial Rx
+		clSerialRx[lane] = ClSerialSlave::create();
+		dataChan[lane][3]->addSlave( clSerialRx[lane] );
 
 		if ( lane != 0 )
 			continue;
@@ -237,11 +270,13 @@ int main (int argc, char **argv)
 		// Read ClinkDev upTime and scratch register
 		upTime = 0xdead;
 		scratch = 0xdead;
+		dataCnt = 0xdead;
 		clMemMaster[lane]->clearError();
-		clMemMaster[lane]->reqTransaction( CLINKDEV_AXIVERSION_SCRATCHPAD, 4, &scratch,	rogue::interfaces::memory::Read );
-		clMemMaster[lane]->reqTransaction( CLINKDEV_AXIVERSION_UPTIMESEC,  4, &upTime,	rogue::interfaces::memory::Read );
+		clMemMaster[lane]->reqTransaction( CLINKDEV_AXIVERSION_SCRATCHPAD,	4, &scratch,	rogue::interfaces::memory::Read );
+		clMemMaster[lane]->reqTransaction( CLINKDEV_AXIVERSION_UPTIMESEC,	4, &upTime,		rogue::interfaces::memory::Read );
+		clMemMaster[lane]->reqTransaction( CLINKDEV_LANE0_DATACNT0,  		4, &dataCnt,	rogue::interfaces::memory::Read );
 		clMemMaster[lane]->waitTransaction(0);
-		printf( "\nclMemMaster[%d]  transaction done. upTime=0x%X sec, scratch=0x%X, Error=%s\n", lane, upTime, scratch, clMemMaster[lane]->getError().c_str() );
+		printf( "\nclMemMaster[%d]  transaction done. upTime=0x%X sec, scratch=0x%X, dataCnt=0x%X, Error=%s\n", lane, upTime, scratch, dataCnt, clMemMaster[lane]->getError().c_str() );
 
 		// Write ClinkDev scratch register
 		scratch = 0x1234 + lane;
@@ -262,9 +297,9 @@ int main (int argc, char **argv)
 		clMemMaster[lane]->waitTransaction(0);
 		printf( "clMemMaster[%d]  transaction done. upTime=0x%X sec, scratch=0x%X, Error=%s\n", lane, upTime, scratch, clMemMaster[lane]->getError().c_str() );
 
-		clMemMaster[lane]->incrAddress( CLINKDEV_AXIVERSION_SCRATCHPAD );
-		clMemMaster[lane]->incrAddress( CLINKDEV_AXIVERSION_SCRATCHPAD );
-		clMemMaster[lane]->incrAddress( CLINKDEV_AXIVERSION_SCRATCHPAD );
+		clMemMaster[lane]->incrAddress( CLINKDEV_AXIVERSION_SCRATCHPAD, "clMemMaster::incrMaster" );
+		clMemMaster[lane]->incrAddress( CLINKDEV_AXIVERSION_SCRATCHPAD, "clMemMaster::incrMaster" );
+		clMemMaster[lane]->incrAddress( CLINKDEV_AXIVERSION_SCRATCHPAD, "clMemMaster::incrMaster" );
 
 		if ( 1 ) {
 		// Read FEB upTime and scratch register
@@ -292,46 +327,36 @@ int main (int argc, char **argv)
 		febMemMaster[lane]->reqTransaction( CLINKDEV_FEB0_AXIVERSION_UPTIMESEC,  4,	&upTime,	rogue::interfaces::memory::Read );
 		febMemMaster[lane]->waitTransaction(0);
 		printf( "febMemMaster[%d] transaction done. upTime=0x%X sec, scratch 0x%X, Error=%s\n", lane, upTime, scratch, febMemMaster[lane]->getError().c_str() );
+		
+		febMemMaster[lane]->incrAddress( CLINKDEV_FEB0_AXIVERSION_SCRATCHPAD, "febMemMaster::incrAddress" );
+		febMemMaster[lane]->incrAddress( CLINKDEV_FEB0_AXIVERSION_SCRATCHPAD, "febMemMaster::incrAddress" );
+		febMemMaster[lane]->incrAddress( CLINKDEV_FEB0_AXIVERSION_SCRATCHPAD, "febMemMaster::incrAddress" );
 		}
-
-		// CHAN 1: Camera Frames
-		clStreamSlave[lane] = ClStreamSlave::create();
-		dataChan[lane][1]->addSlave( clStreamSlave[lane] );
-		// or rogueStreamConnect( dataChan[lane][1], clStreamSlave[lane] );
-
-		// CHAN 2: Camera Serial Tx
-		// clSerialTx[lane] = UartClinkGeneric::create();
-		clSerialTx[lane] = ClSerialMaster::create();
-		clSerialTx[lane]->addSlave( dataChan[lane][2] );
-
-		// CHAN 3: Camera Serial Rx
-		//clSerialRx[lane] = UartClinkGeneric::create();
-		clSerialRx[lane] = ClSerialSlave::create();
-		dataChan[lane][3]->addSlave( clSerialRx[lane] );
 	}
 	// Send Opal serial command
-	//clSerialTx[0]->sendBytes( "@SN?\r", 5 );
+	clSerialTx[0]->sendBytes( "@SN?\r", 5 );
 	//clSerialTx[0]->sendString( "@ID?\r" );
 
-    if (!dataChan[0][0] ) {
-        std::cout << "Error opening "<<device << '\n';
-        return -1;
-    }
+	if (!dataChan[0][0] ) {
+		std::cout << "Error opening "<<device << '\n';
+		return -1;
+	}
 #endif
 #if 0
 	fd = dataChan[0][0]->getFileDescriptor();
 #else
 
-    fd = open(device.c_str(), O_RDWR);
-    if (fd < 0) {
-        std::cout<<"Error opening "<<device<<'\n';
-        return -1;
-    }
+	fd = open(device.c_str(), O_RDWR);
+	if (fd < 0) {
+		std::cout<<"Error opening "<<device<<'\n';
+		return -1;
+	}
 #endif
 
 	AxiVersion vsn;
 	if ( axiVersionGet(fd, &vsn) >= 0 )
 	{
+		printf("\n");
 		printf("-- Core Axi Version --\n");
 		printf("firmwareVersion : %x\n", vsn.firmwareVersion);
 		printf("upTimeCount     : %u\n", vsn.upTimeCount);
@@ -339,10 +364,13 @@ int main (int argc, char **argv)
 		printf("buildString     : %s\n", vsn.buildString); 
 	}
 
-	scratch = 0x4321;
+	printf( "sleeping 2 sec ...\n" );
 	sleep(2);
 	lane = 0;
+	upTime = 0xdead;
+	scratch = 0x4321;
 	clMemMaster[lane]->clearError();
+	clMemMaster[0]->reqTransaction( CLINKDEV_AXIVERSION_UPTIMESEC,  4, &upTime,		rogue::interfaces::memory::Read );
 	clMemMaster[0]->reqTransaction( CLINKDEV_AXIVERSION_SCRATCHPAD, 4, &scratch,	rogue::interfaces::memory::Write );
 	clMemMaster[0]->waitTransaction(0);
 	printf( "\nclMemMaster[%d]  transaction done. upTime=0x%X sec, wrote scratch 0x%X, Error=%s\n", lane, upTime, scratch, clMemMaster[lane]->getError().c_str() );
@@ -357,9 +385,11 @@ int main (int argc, char **argv)
 
 	sleep(1);
 	int status = StartRun( fd );
-    if ( status != 0 ) {
-        printf( "StartRun Error: %d\n", status );
-        return -1;
+	if ( status != 0 ) {
+		printf( "\nStartRun Error: %d\n", status );
+		return -1;
+	} else {
+		printf( "\nStartRun ...\n" );
 	}
 
 #if 1
@@ -367,29 +397,29 @@ int main (int argc, char **argv)
 	usleep( 40000 );
 	//while (1) {
 	//	dataChan[0][1]->acceptFrame( pFrame );
-    //    printf("Got frame!\n" );
+	//    printf("Got frame!\n" );
 	//}
 #else
 	{
-    uint32_t dmaCount, dmaSize;
-    void** dmaBuffers = dmaMapDma(fd, &dmaCount, &dmaSize);
-    if ( dmaBuffers == NULL ) {
-        printf("Failed to map dma buffers!\n");
-        return -1;
-    }
+	uint32_t dmaCount, dmaSize;
+	void** dmaBuffers = dmaMapDma(fd, &dmaCount, &dmaSize);
+	if ( dmaBuffers == NULL ) {
+		printf("Failed to map dma buffers!\n");
+		return -1;
+	}
 
-    printf( "dmaCount %u, dmaSize %u, DMA channel %d\n", dmaCount, dmaSize, channel );
-    dmaSetMaskBytes(fd, mask);
+	printf( "dmaCount %u, dmaSize %u, DMA channel %d\n", dmaCount, dmaSize, channel );
+	dmaSetMaskBytes(fd, mask);
 
-    uint32_t	dmaDest[	MAX_RET_CNT_C ];
-    uint32_t	dmaIndex[	MAX_RET_CNT_C ];
-    int32_t		dmaRet[		MAX_RET_CNT_C ];
-    while (1) {
-        if (terminate.load(std::memory_order_acquire) == true) {
-            close(fd);
-            printf("closed\n");
-            break;
-        }
+	uint32_t	dmaDest[	MAX_RET_CNT_C ];
+	uint32_t	dmaIndex[	MAX_RET_CNT_C ];
+	int32_t		dmaRet[		MAX_RET_CNT_C ];
+	while (1) {
+		if (terminate.load(std::memory_order_acquire) == true) {
+			close(fd);
+			printf("closed\n");
+			break;
+		}
 
 		uint32_t	frameCount;
 		status = dmaReadRegister( fd, CLINKDEV_LANE0_DATACNT0,	&frameCount );
@@ -398,7 +428,7 @@ int main (int argc, char **argv)
 		}
 
 #if 1
-        ssize_t	ret = dmaReadBulkIndex( fd, MAX_RET_CNT_C, dmaRet, dmaIndex, NULL, NULL, dmaDest );
+		ssize_t	ret = dmaReadBulkIndex( fd, MAX_RET_CNT_C, dmaRet, dmaIndex, NULL, NULL, dmaDest );
 #else
 		size_t ret;
 		{
@@ -418,35 +448,35 @@ int main (int argc, char **argv)
 		}
 #endif
 		printf( "frameCount %u: Read %zu frames.\n", frameCount, ret );
-        for (uint32_t b=0; b < ret; b++)
+		for (uint32_t b=0; b < ret; b++)
 		{
-            uint32_t	dest	= dmaDest[b] >> 8;
-            uint32_t	index	= dmaIndex[b];
-            int32_t		retSize	= dmaRet[b];
+			uint32_t	dest	= dmaDest[b] >> 8;
+			uint32_t	index	= dmaIndex[b];
+			int32_t		retSize	= dmaRet[b];
 #if 0
-            const Pds::TimingHeader* event_header = reinterpret_cast<Pds::TimingHeader*>(dmaBuffers[index]);
-            XtcData::TransitionId::Value transition_id = event_header->service();
+			const Pds::TimingHeader* event_header = reinterpret_cast<Pds::TimingHeader*>(dmaBuffers[index]);
+			XtcData::TransitionId::Value transition_id = event_header->service();
 
-            printf("Size %u B | Dest %u | Transition id %d | pulse id %lu | event counter %u | index %u\n",
-                   retSize, dest, transition_id, event_header->pulseId(), event_header->evtCounter, index);
-            printf("env %08x\n", event_header->env);
+			printf("Size %u B | Dest %u | Transition id %d | pulse id %lu | event counter %u | index %u\n",
+				   retSize, dest, transition_id, event_header->pulseId(), event_header->evtCounter, index);
+			printf("env %08x\n", event_header->env);
 #else
 			if ( b == 0 )
-            printf("Frame %2d: Size %3d b | Dest %u | index %u\n",
-                   b, retSize * 8, dest, index);
+			printf("Frame %2d: Size %3d b | Dest %u | index %u\n",
+				   b, retSize * 8, dest, index);
 #endif
-        }
-	    if ( ret > 0 )
+		}
+		if ( ret > 0 )
 			dmaRetIndexes(fd, ret, dmaIndex);
-	    sleep(1);
-    }
-    }
+		sleep(1);
+	}
+	}
 #endif
 
 #if 0
-    printf("Finished\n");
+	printf("Finished\n");
 #else
-    printf("Shutting down\n");
+	printf("Shutting down\n");
 	status = StopRun( fd );
 #endif
 	return status;

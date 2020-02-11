@@ -6,6 +6,7 @@
 #endif /* __STDC_FORMAT_MACROS */
 #include <inttypes.h>
 #include <epicsTime.h>
+#include <rogue/GeneralError.h>
 #include <rogue/interfaces/stream/Master.h>
 #include <rogue/interfaces/stream/Frame.h>
 #include <rogue/interfaces/stream/FrameIterator.h>
@@ -28,21 +29,7 @@ public:
 
 	ClSerialMaster() : rogue::interfaces::stream::Master() { }
 
-	int sendBytes( const char * buffer, size_t nBytes )
-	{
-		uint32_t	lValue;
-		std::shared_ptr<rogue::interfaces::stream::Frame> frame;
-		frame = reqFrame ( nBytes, true );
-		rogue::interfaces::stream::FrameIterator it;
-		it = frame->begin();
-		for ( size_t i = 0; i < nBytes; i++ )
-		{
-			lValue = buffer[i];
-			toFrame( it, 4, &lValue );
-		}
-		sendFrame( frame );
-		return 0;
-	}
+	int sendBytes( const char * buffer, size_t nBytes );
 
 	int sendString( const char * toSend )
 	{
