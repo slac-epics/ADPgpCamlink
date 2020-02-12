@@ -23,6 +23,7 @@
 #include "ClStreamSlave.h"
 #include "ClSerialMaster.h"
 #include "ClSerialSlave.h"
+#include "FebMemoryMaster.h"
 
 
 #define MAX_RET_CNT_C 1000
@@ -214,7 +215,7 @@ int main (int argc, char **argv)
 	rogue::hardware::axi::AxiMemMapPtr 			memMap[N_AXI_LANES];
 #endif
 	ClMemoryMasterPtr				 			clMemMaster[N_AXI_LANES];
-	ClMemoryMasterPtr				 			febMemMaster[N_AXI_LANES];
+	FebMemoryMasterPtr				 			febMemMaster[N_AXI_LANES];
 	ClStreamSlavePtr							clStreamSlave[N_AXI_LANES];
 	ClSerialSlavePtr							clSerialRx[N_AXI_LANES];
 	ClSerialMasterPtr							clSerialTx[N_AXI_LANES];
@@ -246,7 +247,7 @@ int main (int argc, char **argv)
 
 		// Connect CHAN 0 FEB Register Access
 		srpFeb[lane] = rogue::protocols::srp::SrpV3::create();
-		febMemMaster[lane] = ClMemoryMaster::create( );
+		febMemMaster[lane] = FebMemoryMaster::create( );
 		dataChan[lane][0]->addSlave( srpFeb[lane] );
 		srpFeb[lane]->addSlave( dataChan[lane][0] );
 #undef	MAKE_FEB_REG_RW_WORK
