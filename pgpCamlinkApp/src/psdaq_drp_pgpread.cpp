@@ -134,12 +134,15 @@ int ClSerialMaster::sendBytes( const char * buffer, size_t nBytes )
 		return -1;
 	}
 	rogue::interfaces::stream::FrameIterator it;
+	frame->setPayload( nBytes * 4 );
 	it = frame->begin();
 	for ( size_t i = 0; i < nBytes; i++ )
 	{
 		lValue = buffer[i];
 		toFrame( it, 4, &lValue );
 	}
+	printf( "ClSerialMaster::sendBytes: Frame size %u, payload %u, avail %u\n",
+			frame->getSize(), frame->getPayload(), frame->getAvailable() );
 	try
 	{
 		sendFrame( frame );
