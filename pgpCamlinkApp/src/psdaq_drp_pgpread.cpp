@@ -35,10 +35,11 @@ unsigned dmaDest(unsigned lane, unsigned vc)
     return (lane<<8) | vc;
 }
 
-#define CLINKDEV_AXIVERSION_SCRATCHPAD	0x20004
-#define CLINKDEV_AXIVERSION_UPTIMESEC	0x20008
-#define CLINKDEV_AXIVERSION_FPGARELOAD	0x20104
-
+#define CLINKDEV_AXIVERSION_FPGAVERSION	0x20000			// ClinkDev.Hardware.AxiPcieCore.AxiVersion.FpgaVersion
+#define CLINKDEV_AXIVERSION_SCRATCHPAD	0x20004			// ClinkDev.Hardware.AxiPcieCore.AxiVersion.ScratchPad
+#define CLINKDEV_AXIVERSION_UPTIMESEC	0x20008			// ClinkDev.Hardware.AxiPcieCore.AxiVersion.UpTimeCnt
+#define CLINKDEV_AXIVERSION_FPGARELOAD	0x20104			// ClinkDev.Hardware.AxiPcieCore.AxiVersion.FpgaReload
+#define CLINKDEV_AXIVERSION_BUILDSTAMP	0x20800			// ClinkDev.Hardware.AxiPcieCore.AxiVersion.BuildStamp
 
 #define CLINKDEV_LANE0_DATACNT0		0xC00000
 #define CLINKDEV_LANE0_DATACNT1		0xC00004
@@ -78,9 +79,13 @@ int ResetCounters( int fd )
 #define CLINKDEV_TRIG2_ENABLEREG	0x930200
 #define CLINKDEV_TRIG3_ENABLEREG	0x930300
 
+#define CLINKDEV_FEB0_AXIVERSION_FPGAVERSION 0x0000			// ClinkDev.ClinkFeb[0].AxiVersion.FpgaVersion
 #define CLINKDEV_FEB0_AXIVERSION_SCRATCHPAD	0x00004			// ClinkDev.ClinkFeb[0].AxiVersion.ScratchPad
 #define CLINKDEV_FEB0_AXIVERSION_UPTIMESEC	0x00008			// ClinkDev.ClinkFeb[0].AxiVersion.UpTimeCnt
 #define CLINKDEV_FEB0_AXIVERSION_FPGARELOAD	0x00104			// ClinkDev.ClinkFeb[0].AxiVersion.FpgaReload
+#define CLINKDEV_FEB0_AXIVERSION_DEVICEID	0x00500			// ClinkDev.ClinkFeb[0].AxiVersion.DeviceId
+#define CLINKDEV_FEB0_AXIVERSION_BUILDSTAMP	0x00800			// ClinkDev.ClinkFeb[0].AxiVersion.BuildStamp
+
 #define CLINKDEV_FEB0_CL0_LINKRUNNING		0x100120		// ClinkDev.Hardware.PgpMon[0].RxRemLinkReady
 #define CLINKDEV_FEB0_CL1_LINKRUNNING		0x100220		// ClinkDev.Hardware.PgpMon[0].RxRemLinkReady
 
@@ -238,6 +243,7 @@ int main (int argc, char **argv)
 			dataChan[lane][ch]	= rogue::hardware::axi::AxiStreamDma::create( device.c_str(), dest, true);
 		}
 	}
+	// NOTE: Initializing lanes 1, 2, and 3 breaks lane 0 serial!
 	for ( uint32_t	lane = 0; lane < 1;	lane++ )
 	{
 		// Connect CHAN 0 ClinkDev KCU1500 Register Access
@@ -250,10 +256,7 @@ int main (int argc, char **argv)
 		febMemMaster[lane] = FebMemoryMaster::create( );
 		dataChan[lane][0]->addSlave( srpFeb[lane] );
 		srpFeb[lane]->addSlave( dataChan[lane][0] );
-#define	MAKE_FEB_REG_RW_WORK
-#ifdef MAKE_FEB_REG_RW_WORK
 		febMemMaster[lane]->setSlave( srpFeb[lane] );
-#endif
 
 		// CHAN 1: Camera Frames
 		clStreamSlave[lane] = ClStreamSlave::create();
@@ -262,11 +265,10 @@ int main (int argc, char **argv)
 
 		// CHAN 2: Camera Serial Tx
 		clSerialTx[lane] = ClSerialMaster::create();
-		clSerialRx[lane] = ClSerialSlave::create();
 		clSerialTx[lane]->addSlave( dataChan[lane][2] );
-		//clSerialTx[lane]->addSlave( clSerialRx[lane] );
 
 		// CHAN 3: Camera Serial Rx
+		clSerialRx[lane] = ClSerialSlave::create();
 		dataChan[lane][2]->addSlave( clSerialRx[lane] );
 
 		if ( lane != 0 )
@@ -338,14 +340,15 @@ int main (int argc, char **argv)
 		febMemMaster[lane]->incrAddress( CLINKDEV_FEB0_AXIVERSION_SCRATCHPAD, "febMemMaster::incrAddress" );
 		}
 	}
-	// Send Opal serial command
-	clSerialTx[0]->sendBytes( "@SN?\r", 5 );
+	// Send Opal serial commands
+	clSerialTx[0]->sendBytes( "@TP1\r", 5 );	// Test Pattern On
+	clSerialTx[0]->sendBytes( "@SN?\r", 5 );	// Get Serial Number
 	printf( "sleeping 2 sec ...\n" );
 	sleep(2);
-	clSerialTx[0]->sendBytes( "@SN?\r\n", 6 );
-	printf( "sleeping 2 sec ...\n" );
-	sleep(2);
-	//clSerialTx[0]->sendString( "@ID?\r" );
+	//clSerialTx[0]->sendBytes( "@SN?\r\n", 6 );
+	//printf( "sleeping 2 sec ...\n" );
+	//sleep(2);
+	clSerialTx[0]->sendString( "@ID?\r" );		// Get model ID string
 
 	if (!dataChan[0][0] ) {
 		std::cout << "Error opening "<<device << '\n';
@@ -372,6 +375,23 @@ int main (int argc, char **argv)
 		printf("upTimeCount     : %u\n", vsn.upTimeCount);
 		printf("deviceId        : %x\n", vsn.deviceId);
 		printf("buildString     : %s\n", vsn.buildString); 
+	}
+	if ( febMemMaster[0] )
+	{
+		char		buildStamp[257];
+		uint32_t	febFpgaVersion	= 0xdead;
+		uint32_t	febDeviceId		= 0xdead;
+		febMemMaster[0]->reqTransaction( CLINKDEV_FEB0_AXIVERSION_DEVICEID, 4, &febDeviceId, rogue::interfaces::memory::Read );
+		febMemMaster[0]->reqTransaction( CLINKDEV_FEB0_AXIVERSION_FPGAVERSION, 4, &febFpgaVersion, rogue::interfaces::memory::Read );
+		febMemMaster[0]->reqTransaction( CLINKDEV_FEB0_AXIVERSION_BUILDSTAMP, 256, &buildStamp, rogue::interfaces::memory::Read );
+		febMemMaster[0]->waitTransaction(0);
+		buildStamp[256] = 0;
+		printf("\n");
+		printf("-- Feb[0] Axi Version --\n");
+		printf("firmwareVersion : %x\n", febFpgaVersion);
+		printf("upTimeCount     : %u\n", upTime);
+		printf("deviceId        : %x\n", febDeviceId);
+		printf("buildString     : %s\n", buildStamp); 
 	}
 
 	printf( "sleeping 2 sec ...\n" );
