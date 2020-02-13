@@ -15,10 +15,11 @@
 #include <rogue/protocols/batcher/CoreV1.h>
 #include <rogue/protocols/batcher/Data.h>
 
-#define		CL_SERIAL_MSG_MAX	256
-
 class ClSerialSlave : public rogue::interfaces::stream::Slave
 {
+private:
+	std::string		replyBuffer;
+
 public:
 
 	// Create a static class creator to return our custom class
@@ -33,7 +34,6 @@ public:
 
 	void acceptFrame ( std::shared_ptr<rogue::interfaces::stream::Frame> frame )
 	{
-		//char		acBuffer[CL_SERIAL_MSG_MAX];
 		if ( !frame ) {
 			printf( ": No frame!\n" );
 			return;
@@ -47,7 +47,7 @@ public:
 		it = frame->begin();
 
 		// Print the values in the first 10 locations
-		printf( "ClSerialSlave::acceptFrame: SuperFrameSize=%u bytes:", frame->getPayload() );
+		if ( 0 ) printf( "ClSerialSlave::acceptFrame: SuperFrameSize=%u bytes:", frame->getPayload() );
 #if 1
 		for ( uint32_t x=0; x*4 < frame->getPayload() && x < 20; x++)
 		{
@@ -56,22 +56,24 @@ public:
 			char		cData = uartData;
 			if ( isprint(cData) )
 			{
-				printf( " %c (0x%X)", cData, cData );
+				//printf( " %c (0x%X)", cData, cData );
+				replyBuffer += cData;
 			}
 			else
 			{
 				switch( cData )
 				{
-				default:	printf( " ? (0x%X)", cData );	break;
-				case 0x06:	printf( " ACK (0x%X)", cData );	break;
-				case 0x25:	printf( " NAK (0x%X)", cData );	break;
-				case '\n':	printf( " NL (0x%X)", cData );	break;
-				case '\r':	printf( " CR (0x%X)", cData );	break;
+				//default:	printf( " ? (0x%X)", cData );	break;
+				default:	replyBuffer += cData;			break;
+				case 0x06:	printf( " ACK (0x%X)\n", cData );	replyBuffer.clear(); break;
+				case 0x25:	printf( " NAK (0x%X)\n", cData );	replyBuffer.clear(); break;
+				case '\n':	printf( " NL (0x%X)\n", cData );	break;
+				case '\r':	printf( "recvString: %s\n", replyBuffer.c_str() );	break;
 				}
 			}
 		}
 #endif
-		printf( " ...\n" );
+		//printf( " ...\n" );
 
 		// Use std::copy to copy data to a data buffer
 		// Here we copy the entire frame payload to the data buffer
