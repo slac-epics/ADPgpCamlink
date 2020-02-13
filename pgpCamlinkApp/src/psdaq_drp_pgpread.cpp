@@ -126,7 +126,7 @@ int ClSerialMaster::sendBytes( const char * buffer, size_t nBytes )
 {
 	uint32_t	lValue;
 	if ( strlen( buffer ) <= nBytes )
-		printf( "ClSerialMaster::sendBytes: %s\n", buffer );
+		printf( "            ClSerialMaster::sendBytes: '%s' %zu bytes.\n", buffer, nBytes );
 	std::shared_ptr<rogue::interfaces::stream::Frame> frame;
 	frame = reqFrame ( nBytes * 4, true );
 	if ( ! frame )
@@ -339,9 +339,6 @@ int main (int argc, char **argv)
 		}
 	}
 	// Send Opal serial command
-	clSerialTx[0]->sendBytes( "@SN?\n", 5 );
-	printf( "sleeping 2 sec ...\n" );
-	sleep(2);
 	clSerialTx[0]->sendBytes( "@SN?\r", 5 );
 	printf( "sleeping 2 sec ...\n" );
 	sleep(2);

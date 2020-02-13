@@ -31,10 +31,6 @@ public:
 
 	void acceptFrame ( std::shared_ptr<rogue::interfaces::stream::Frame> frame )
 	{
-#if 0	// Test frame ptr?
-		if ( frame->expired() )
-			return;
-#else
 		if ( !frame ) {
 			printf( ": No frame!\n" );
 			return;
@@ -43,18 +39,17 @@ public:
 		// terminate called after throwing an instance of 'std::bad_weak_ptr'
 		//   what():  bad_weak_ptr
 		//   Aborted (core dumped)
-#endif
 
 		// Acquire lock on frame. Will be release when lock class goes out of scope
 		rogue::interfaces::stream::FrameLockPtr lock = frame->lock();
 
-		printf( "ClStreamSlave::acceptFrame" );
 		// Here we get an iterator to the frame data
 		rogue::interfaces::stream::FrameIterator it;
 		it = frame->begin();
 
+		printf( "\n" );
 		// Print the values in the first 10 locations
-		printf( " SuperFrameSize=%u bytes:", frame->getSize() );
+		printf( "ClStreamSlave::acceptFrame: SuperFrameSize=%u bytes:", frame->getPayload() );
 #if 0
 		for ( uint32_t x=0; x < 20; x++)
 		{
