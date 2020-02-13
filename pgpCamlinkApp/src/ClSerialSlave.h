@@ -55,11 +55,12 @@ public:
 		// Print the values in the first 10 locations
 		printf( " SuperFrameSize=%u bytes:", frame->getSize() );
 #if 1
-		for ( uint32_t x=0; x < frame->getSize() && x < 20; x++)
+		for ( uint32_t x=0; x*4 < frame->getPayload() && x < 20; x++)
 		{
 			uint32_t	uartData;
 			fromFrame( it, 4, &uartData );
-			printf( " 0x%08x", uartData );
+			char		cData = uartData;
+			printf( " %c (0x%X)", cData, cData );
 		}
 #endif
 		printf( " ...\n" );
@@ -67,36 +68,6 @@ public:
 		// Use std::copy to copy data to a data buffer
 		// Here we copy the entire frame payload to the data buffer
 //		std::copy(frame->begin(), frame->end(), data);
-
-#if 1
-		// Process frame via CoreV1 protocol
-		rogue::protocols::batcher::CoreV1		core;
-		core.processFrame(frame);
-		printf( "ClSerialSlave::acceptFrame: core count=%u, seq=%u, hdrSize=%u, tailSize=%u\n",
-				core.count(), core.sequence(), core.headerSize(), core.tailSize() );
-		for ( uint32_t sf = 0; sf < core.count(); sf++ )
-		{
-			rogue::protocols::batcher::DataPtr	data;
-			data = core.record(sf);
-			// FUSER_BIT_1 = StartOfFrame
-			// LUSER_BIT_0 = FrameError
-			printf( "ClSerialSlave::acceptFrame SubFrame %d: dest=%u, size=%u, fUser=0x%02x, lUser=0x%02x\n",
-					sf, data->dest(), data->size(), data->fUser(), data->lUser() );
-			if ( data->dest() == 0 )
-			{	// TDEST 0 is ?
-				it = data->begin();
-				if ( 0 )
-				{
-					for ( uint32_t x=0; x < 24; x++)
-					{
-						printf( " 0x%02x", *it );
-						it++;
-					}
-					printf( "\n" );
-				}
-			}
-		}
-#endif
 	}
 };
 

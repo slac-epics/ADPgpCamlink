@@ -238,7 +238,7 @@ int main (int argc, char **argv)
 			dataChan[lane][ch]	= rogue::hardware::axi::AxiStreamDma::create( device.c_str(), dest, true);
 		}
 	}
-	for ( uint32_t	lane = 0; lane < N_AXI_LANES;	lane++ )
+	for ( uint32_t	lane = 0; lane < 1;	lane++ )
 	{
 		// Connect CHAN 0 ClinkDev KCU1500 Register Access
 		memMap[lane] = rogue::hardware::axi::AxiMemMap::create( device.c_str() );
@@ -250,7 +250,7 @@ int main (int argc, char **argv)
 		febMemMaster[lane] = FebMemoryMaster::create( );
 		dataChan[lane][0]->addSlave( srpFeb[lane] );
 		srpFeb[lane]->addSlave( dataChan[lane][0] );
-#undef	MAKE_FEB_REG_RW_WORK
+#define	MAKE_FEB_REG_RW_WORK
 #ifdef MAKE_FEB_REG_RW_WORK
 		febMemMaster[lane]->setSlave( srpFeb[lane] );
 #endif
@@ -262,11 +262,12 @@ int main (int argc, char **argv)
 
 		// CHAN 2: Camera Serial Tx
 		clSerialTx[lane] = ClSerialMaster::create();
+		clSerialRx[lane] = ClSerialSlave::create();
 		clSerialTx[lane]->addSlave( dataChan[lane][2] );
+		//clSerialTx[lane]->addSlave( clSerialRx[lane] );
 
 		// CHAN 3: Camera Serial Rx
-		clSerialRx[lane] = ClSerialSlave::create();
-		dataChan[lane][3]->addSlave( clSerialRx[lane] );
+		dataChan[lane][2]->addSlave( clSerialRx[lane] );
 
 		if ( lane != 0 )
 			continue;
@@ -338,7 +339,15 @@ int main (int argc, char **argv)
 		}
 	}
 	// Send Opal serial command
+	clSerialTx[0]->sendBytes( "@SN?\n", 5 );
+	printf( "sleeping 2 sec ...\n" );
+	sleep(2);
 	clSerialTx[0]->sendBytes( "@SN?\r", 5 );
+	printf( "sleeping 2 sec ...\n" );
+	sleep(2);
+	clSerialTx[0]->sendBytes( "@SN?\r\n", 6 );
+	printf( "sleeping 2 sec ...\n" );
+	sleep(2);
 	//clSerialTx[0]->sendString( "@ID?\r" );
 
 	if (!dataChan[0][0] ) {
