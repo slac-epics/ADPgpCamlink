@@ -1,11 +1,13 @@
-/* pgpEdt.cpp
+/* pgpCamlink.cpp
  *
- * This is a driver for the SLAC CameraLink frame grabber
+ * This is a driver for the SLAC PGP CameraLink frame grabber
  *
  * Author:  Dehong Zhang
  *          SLAC National Accelerator Laboratory
  *
  * Created: Sept 20, 2016
+ *
+ * Modified to work via rogue:	Bruce Hill, Mar 2020
  */
 
 #include <algorithm>
@@ -53,61 +55,16 @@
 #define TrgDelay_Addr   0x220
 #define TrgWidth_Addr   0x240
 //#include "PgpCardG3_CLinkWrap.h"
-#include "PgpDriver.h"
+//#include "PgpDriver.h"
+//#include "pgpEdtSerial.h"
 
-#include "pgpEdtSerial.h"
-
-static const char *driverName = "pgpEdt";
-
-typedef enum
-{
-    pgpEdtPack_24,
-    pgpEdtPack_16
-} pgpEdtPack_t;
-
-typedef enum
-{
-    pgpEdtVOut_TD,
-    pgpEdtVOut_TnB
-} pgpEdtVOut_t;
-
-typedef enum
-{
-    pgpEdtExpo_Full,
-    pgpEdtExpo_ROI
-} pgpEdtExpo_t;
-
-typedef enum
-{
-    pgpEdtTrig_Free,
-    pgpEdtTrig_EVR
-} pgpEdtTrig_t;
-
-/* Bit map of CSR */
-typedef union
-{
-    epicsUInt32 All;
-    struct
-    {
-        unsigned int TxReset     : 1; // MGT Tx reset
-        unsigned int RxReset     : 1; // MGT Rx reset
-        unsigned int CntReset    : 1; // counter reset
-        unsigned int Pack16      : 1; // pack 16 or 24
-        unsigned int TrgCC       : 2; // CC line to trigger
-        unsigned int TrgPolarity : 1; // trigger polarity
-        unsigned int Enable      : 1; // enable
-        unsigned int NA          :21; // not used
-        unsigned int CamLock     : 1; // camera clock locked or not
-        unsigned int ExtLink     : 1; // fiber to RCX
-        unsigned int EvrLink     : 1; // fiber from EVG
-    } Bits;
-} csr_word;
+static const char *driverName = "pgpCamlink";
 
 
 
-class pgpEdt : public ADDriver {
+class pgpCamlink : public ADDriver {
 public:
-    pgpEdt( const char *portName, int board, int chan,
+    pgpCamlink( const char *portName, int board, int chan,
             int maxSizeX, int maxSizeY, int numBits, NDDataType_t dataType,
             int maxBuffers, size_t maxMemory, int priority, int stackSize );
 
@@ -160,12 +117,14 @@ private:
     /* These are the methods that are new to this class */
     long ser_send_recv   ( asynUser *pasynUser, const char *cmds, char *reply,
                                                                    int pass=0 );
+#if 0
     long set_register    ( asynUser *pasynUser, epicsUInt32 rAddr,
                                                 epicsUInt32 rVal,  int pass=0 );
     long set_csr         ( asynUser *pasynUser, int acq,           int pass=0 );
 
     long update_nrow_ncol( asynUser *pasynUser,                    int pass=0 );
     long update_ntrn_ncyc( asynUser *pasynUser,                    int pass=0 );
+#endif
     long init_camera     ();
 
     /* Our data */
@@ -213,14 +172,15 @@ private:
 #define NUM_CLCAM_PARAMS ((int)(&LAST_CLCAM_PARAM - &FIRST_CLCAM_PARAM + 1))
 
 
-long pgpEdt::ser_send_recv( asynUser *pasynUser, const char *cmds,
+long pgpCamlink::ser_send_recv( asynUser *pasynUser, const char *cmds,
                                                  char *reply,      int pass )
 {
+    long         status = 1;
+#if 0
+	{
     int          ssusVal, ti = 0, eosSize=0;
     char         sertfg[4], aval, eos[3], cmdsWithEos[90];
     epicsUInt32  rAddr;
-
-    long         status = 1;
 
     if ( pass < 2 )
     {
@@ -328,260 +288,22 @@ long pgpEdt::ser_send_recv( asynUser *pasynUser, const char *cmds,
         pdev0 = -1;
     }
 
+	}
+#endif
     return( status );
 }
 
-long pgpEdt::set_register( asynUser *pasynUser, epicsUInt32 rAddr,
-                                                epicsUInt32 rVal,  int pass )
+
+long pgpCamlink::init_camera()
 {
-    int ti = 0;
+    long         status = 0;
 
-    if ( pass < 2 )
-    {
-        while ( 1 )
-        {
-            pdev0 = open( dev0, O_RDWR );
-            if ( pdev0 != -1 ) break;
-
-            if ( ti < 150 )
-            {
-                usleep( 200000 );
-                ti++;
-            }
-            else
-                break;
-        }
-    }
-
-    if ( pdev0 == -1 ) return( -1 );
-
-    // pgpcard_setReg( pdev0, rAddr, rVal );
-
-    if ( (pass == 0) || (pass > 2) )
-    {
-        close( pdev0 );
-
-        pdev0 = -1;
-    }
-
-    return( 0 );
-}
-
-long pgpEdt::set_csr( asynUser *pasynUser, int acq, int pass )
-{
-    int       packVal, ccVal, tpolVal, ti = 0;
-    csr_word  csr;
-
-    if ( pass < 2 )
-    {
-        while ( 1 )
-        {
-            pdev0 = open( dev0, O_RDWR );
-            if ( pdev0 != -1 ) break;
-
-            if ( ti < 150 )
-            {
-                usleep( 200000 );
-                ti++;
-            }
-            else
-                break;
-        }
-    }
-
-    if ( pdev0 == -1 ) return( -1 );
-
-    getIntegerParam( polarity, &tpolVal );
-    getIntegerParam( cc,       &ccVal   );
-    getIntegerParam( pack,     &packVal );
-
-    csr.All              = 0;
-
-    csr.Bits.Enable      = acq;
-    csr.Bits.TrgPolarity = tpolVal;
-    csr.Bits.TrgCC       = ccVal;
-    csr.Bits.Pack16      = packVal;
-
-    // pgpcard_setReg( pdev0, GrbCSR_Addr+4*channel, csr.All );
-
-    if ( (pass == 0) || (pass > 2) )
-    {
-        close( pdev0 );
-
-        pdev0 = -1;
-    }
-
-    return( 0 );
-}
-
-long pgpEdt::update_nrow_ncol( asynUser *pasynUser, int pass )
-{
-    int    expoVal, mrowVal, mcolVal, nrowVal, ncolVal;
-
-    char   cmdFullStr[80], cmdROIStr[80], croi[80], cmds[80], respStr[80];
-
-    char  *fmt, *aptr, *argp[8], *fidx1, *fidx2;
-    short  argc, aval, clen;
-
-    getIntegerParam( exposure, &expoVal );
-
-    if ( expoVal == pgpEdtExpo_Full )                              // full frame
-    {
-        getIntegerParam( fullRow,     &nrowVal   );
-        getIntegerParam( fullCol,     &ncolVal   );
-
-        getStringParam ( cmdFull, 80, cmdFullStr );
-
-        ser_send_recv( pasynUser, cmdFullStr, respStr, pass );
-    }
-    else                                                // HW region of interest
-    {
-        getIntegerParam( ADMinY,      &mrowVal   );
-        getIntegerParam( ADMinX,      &mcolVal   );
-        getIntegerParam( ADSizeY,     &nrowVal   );
-        getIntegerParam( ADSizeX,     &ncolVal   );
-
-        getStringParam ( cmdROI,  80, cmdROIStr  );
-
-        if ( index(cmdROIStr, '%') == 0 )                       // no formatting
-            ser_send_recv( pasynUser, cmdROIStr,  respStr, pass );
-        else
-        {
-            strcpy( croi, cmdROIStr );
-            fmt  = strtok( croi, ", " );
-
-            argc = 0;
-            while ( (aptr = strtok(0, ", ")) != 0 ) argp[argc++] = aptr;
-
-            argc = 0;
-            clen = 0;
-            while ( 1 )
-            {
-                if      ( strcmp(argp[argc], "MinY" ) == 0 ) aval = mrowVal;
-                else if ( strcmp(argp[argc], "MinX" ) == 0 ) aval = mcolVal;
-                else if ( strcmp(argp[argc], "SizeY") == 0 ) aval = nrowVal;
-                else if ( strcmp(argp[argc], "SizeX") == 0 ) aval = ncolVal;
-
-                fidx1 = index( fmt,     '%' );
-                fidx2 = index( fidx1+1, '%' );
-                if ( fidx2 != 0 )
-                {
-                    *fidx2 = 0;
-                    clen  += sprintf( cmds+clen, fmt, aval );
-
-                    *fidx2 = '%';
-                    fmt    = fidx2;
-                }
-                else
-                {
-                    clen  += sprintf( cmds+clen, fmt, aval );
-                    break;
-                }
-
-                argc++;
-            }
-
-//          printf( "HW ROI Cmds: %s\n", cmds );
-            ser_send_recv( pasynUser, cmds,       respStr, pass );
-        }
-    }
-
-    setIntegerParam( NDArraySizeY, nrowVal );
-    setIntegerParam( NDArraySizeX, ncolVal );
-
-    return( 0 );
-}
-
-long pgpEdt::update_ntrn_ncyc( asynUser *pasynUser, int pass )
-{
-    epicsUInt32  rAddr;
-    int          nbitVal, packVal, voutVal;
-    int          skiprVal, skipcVal, nrowVal, ncolVal, ntrnVal, ncycVal;
-
-    getIntegerParam( nbit,         &nbitVal  );
-    getIntegerParam( pack,         &packVal  );
-    getIntegerParam( vOut,         &voutVal  );
-
-    getIntegerParam( skipRow,      &skiprVal );
-    getIntegerParam( skipCol,      &skipcVal );
-    getIntegerParam( NDArraySizeY, &nrowVal  );
-    getIntegerParam( NDArraySizeX, &ncolVal  );
-
-    nrowVal += skiprVal;
-    ncolVal += skipcVal;
-
-    if ( voutVal == pgpEdtVOut_TD )                      // readout line by line
-    {
-        ntrnVal = nrowVal;
-
-        if      ( nbitVal > 12 )                       // one pixel per CL cycle
-        {
-            if ( packVal == pgpEdtPack_16 )           // one pixel per GTP cycle
-                ncycVal = ncolVal;
-            else                                 // one pixel per 1.5 GTP cycles
-                ncycVal = ncolVal * 1.5;
-        }
-        else if ( nbitVal >  8 )                      // two pixels per CL cycle
-        {
-            if ( packVal == pgpEdtPack_16 )
-                ncycVal = ncolVal;
-            else                                // two pixels per 1.5 GTP cycles
-                ncycVal = ncolVal * 1.5 / 2;
-        }
-        else                                          // two pixels per CL cycle
-        {
-            if ( packVal == pgpEdtPack_16 )          // two pixels per GTP cycle
-                ncycVal = ncolVal       / 2;
-            else {}                                               // unnecessary
-        }
-    }
-    else                           // readout from top & bottom in the same time
-    {
-        ntrnVal = nrowVal / 2;
-
-        if      ( nbitVal > 12 )                       // one pixel per CL cycle
-        {
-            if ( packVal == pgpEdtPack_16 )           // one pixel per GTP cycle
-                ncycVal = ncolVal * 2;
-            else                                 // one pixel per 1.5 GTP cycles
-                ncycVal = ncolVal * 3;
-        }
-        else if ( nbitVal >  8 )                      // two pixels per CL cycle
-        {
-            if ( packVal == pgpEdtPack_16 ) {}                  // cannot happen
-            else                                // two pixels per 1.5 GTP cycles
-                ncycVal = ncolVal * 1.5;
-        }
-        else                                          // two pixels per CL cycle
-        {
-            if ( packVal == pgpEdtPack_16 )          // two pixels per GTP cycle
-                ncycVal = ncolVal;
-            else {}                                               // unnecessary
-        }
-    }
-
-    rAddr = NumTrains_Addr + 4*channel;
-    set_register( pasynUser, rAddr, ntrnVal, pass );
-
-    rAddr = NumCycles_Addr + 4*channel;
-    set_register( pasynUser, rAddr, ncycVal, pass );
-
-    setIntegerParam( numTrains, ntrnVal );
-    setIntegerParam( numCycles, ncycVal );
-
-    return( 0 );
-}
-
-long pgpEdt::init_camera()
-{
+#if 0
+	{
     epicsUInt32  rAddr;
     int          baudVal, nbitVal, psklVal, codeVal, tdlyVal, twisVal;
     int          trigVal, acqVal;
-
     char         cmdInitStr[80], cmdEVRStr[80], cmdFreeStr[80], respStr[80];
-
-    long         status = 0;
-
     getIntegerParam( baud,              &baudVal   );
     getIntegerParam( nbit,              &nbitVal   );
 
@@ -604,8 +326,8 @@ long pgpEdt::init_camera()
 
     ser_send_recv   ( pasynUserSelf, cmdInitStr, respStr, 2 ); // send init cmds
 
-    update_nrow_ncol( pasynUserSelf,                      2 );
-    update_ntrn_ncyc( pasynUserSelf,                      2 );
+    //update_nrow_ncol( pasynUserSelf,                      2 );
+    //update_ntrn_ncyc( pasynUserSelf,                      2 );
 
     status = callParamCallbacks();
 
@@ -630,7 +352,8 @@ long pgpEdt::init_camera()
         ser_send_recv(pasynUserSelf, cmdFreeStr, respStr, 2 );
 
     set_csr         ( pasynUserSelf, acqVal,              3 );
-
+	}
+#endif
     return( 0 );
 }
 
@@ -640,7 +363,7 @@ long pgpEdt::init_camera()
  * calls any registered callbacks.  For some parameters it performs actions.
  * \param[in] pasynUser pasynUser structure that encodes the reason and address
  * \param[in] value     Value to write */
-asynStatus pgpEdt::writeInt32( asynUser *pasynUser, epicsInt32 value )
+asynStatus pgpCamlink::writeInt32( asynUser *pasynUser, epicsInt32 value )
 {
     int          param = pasynUser->reason;
     int          acqVal, expoVal;
@@ -676,6 +399,8 @@ asynStatus pgpEdt::writeInt32( asynUser *pasynUser, epicsInt32 value )
     if ( ! interruptAccept ) return( status );// no action before initialization
 
     /* Action */
+#if 0
+	{
     if      ( param == ADAcquire      )
         set_csr     ( pasynUser,        value );
     else if ( param == baud           )
@@ -701,8 +426,8 @@ asynStatus pgpEdt::writeInt32( asynUser *pasynUser, epicsInt32 value )
 
         if ( expoVal == pgpEdtExpo_Full )
         {
-            update_nrow_ncol( pasynUser );
-            update_ntrn_ncyc( pasynUser );
+            //update_nrow_ncol( pasynUser );
+            //update_ntrn_ncyc( pasynUser );
         }
     }
     else if ( (param == ADMinX ) || (param == ADMinY ) ||
@@ -770,6 +495,8 @@ asynStatus pgpEdt::writeInt32( asynUser *pasynUser, epicsInt32 value )
         getIntegerParam( ADAcquire, &acqVal );
         set_csr( pasynUser, acqVal );
     }
+	}
+#endif
 
     callParamCallbacks();    /* Do callbacks so higher layers see any changes */
 
@@ -793,7 +520,7 @@ asynStatus pgpEdt::writeInt32( asynUser *pasynUser, epicsInt32 value )
  * \param[in ] value     Address of the string to write
  * \param[in ] nChars    Number of characters to write
  * \param[out] nActual   Number of characters actually written */
-asynStatus pgpEdt::writeOctet( asynUser *pasynUser, const char *value, 
+asynStatus pgpCamlink::writeOctet( asynUser *pasynUser, const char *value, 
                                size_t nChars, size_t *nActual )
 {
     int        param  = pasynUser->reason;
@@ -837,9 +564,9 @@ asynStatus pgpEdt::writeOctet( asynUser *pasynUser, const char *value,
   * Prints details about the driver if details>0.  Then calls ADDriver::report()
   * \param[in] fp File pointer passed by caller where the output is written to
   * \param[in] details If >0 then driver details are printed */
-void pgpEdt::report( FILE *fp, int details )
+void pgpCamlink::report( FILE *fp, int details )
 {
-    fprintf( fp, "SLAC PgpEdt Frame Grabber %s\n", portName );
+    fprintf( fp, "SLAC pgpCamlink Frame Grabber %s\n", portName );
     if ( details > 0 )
     {
         int nx, ny, dataType;
@@ -856,13 +583,13 @@ void pgpEdt::report( FILE *fp, int details )
 
 static void acqTaskC( void *drvPvt )
 {
-    pgpEdt *pPvt = (pgpEdt *)drvPvt;
+    pgpCamlink *pPvt = (pgpCamlink *)drvPvt;
 
     pPvt->acqTask();
 }
 
 /* This thread acquires images, unpacks, and sends them to higher layers */
-void pgpEdt::acqTask()
+void pgpCamlink::acqTask()
 {
     struct pollfd   pfd[1];
 
@@ -872,13 +599,14 @@ void pgpEdt::acqTask()
 
     size_t          dims[2];
     int             nBit, pack16, vout;
-    int             maxNrow, maxNcol, sRow, sCol, nRow, nCol, tCol;
-    uint            maxSize, cstaVal, lane, eofe, fifoErr, lengthErr;
+    int             maxNrow, maxNcol, sRow, sCol, nRow;
+	int				nCol, tCol;
+    uint            maxSize, cstaVal;
     epicsTimeStamp  timeNow;
 
     NDArray        *pNDArray = NULL;
 
-    int             ret;
+    int             ret	= 0;
 
     pfd[0].fd     = pdev;
     pfd[0].events = POLLIN;
@@ -918,6 +646,9 @@ void pgpEdt::acqTask()
             continue;
         }
 
+		// uint			lengthErr;
+		// uint			fifoErr;
+		// uint			lane, eofe;
         // ret = pgpcard_recv( pdev, (void *)rbuf, maxSize, &lane,
         //                     &eofe, &fifoErr, &lengthErr );
 
@@ -937,14 +668,13 @@ void pgpEdt::acqTask()
         getIntegerParam( NDArraySizeY, &nRow   );
         getIntegerParam( NDArraySizeX, &nCol   );
 
-	// Protection against weird issue where
-	// Row or Col are set to 0...
-	if (nRow <= 0)
-	    nRow = 1;
+		// Protection against weird issue where
+		// Row or Col are set to 0...
+		if (nRow <= 0)
+			nRow = 1;
 
         if (nCol <= 0)
             nCol = 1;
-         
 
         tCol = sCol + nCol;
         rdat = (epicsUInt32 *)rbuf;
@@ -990,109 +720,6 @@ void pgpEdt::acqTask()
         irow = 0;
         idat = (epicsUInt16 *)pNDArray->pData;
 
-        if      ( (nBit == 24) && (pack16 == pgpEdtPack_24) ) {}
-        else if ( (nBit >  12) && (pack16 == pgpEdtPack_16) ) {}
-        else if ( (nBit <= 12) && (pack16 == pgpEdtPack_16) )
-        {
-            ir = 4 + sRow * tCol / 2;
-
-            while ( irow < nRow )
-            {
-                icr = irow * nCol + icol - sCol ;
-
-                if ( icol   >= sCol ) *(idat+icr  ) =  *(rdat+ir)       & 0xFFF;
-                if ( icol+1 >= sCol ) *(idat+icr+1) = (*(rdat+ir) >>16) & 0xFFF;
-
-                if ( icol < tCol-2 ) icol += 2;
-                else
-                {
-                    irow += 1;
-                    icol  = 0;
-                }
-
-                ir += 1;
-            }
-        }
-        else if ( (nBit == 12) && (pack16 == pgpEdtPack_24) &&
-                                  (vout   == pgpEdtVOut_TD)    )
-        {
-            ir = 4 + sRow * tCol * 3 / 8;
-
-            while ( irow < nRow )
-            {
-                icr = irow * nCol + icol - sCol ;
-
-                if ( icol   >= sCol )
-                *(idat+icr  ) =   *(rdat+ir)       & 0xFFF;
-                if ( icol+1 >= sCol )
-                *(idat+icr+1) = ((*(rdat+ir) >> 4) & 0xF00) + ((*(rdat+ir) >> 16) & 0xFF);
-
-                if ( icol+2 >= sCol )
-                *(idat+icr+2) = ((*(rdat+ir+1) & 0xF) << 8) +  (*(rdat+ir) >> 24);
-                if ( icol+3 >= sCol )
-                *(idat+icr+3) = ((*(rdat+ir+1) <<  4) & 0xF00) + ((*(rdat+ir+1) >>  8) & 0xFF);
-
-                if ( icol+4 >= sCol )
-                *(idat+icr+4) =  (*(rdat+ir+1) >> 16) & 0xFFF;
-                if ( icol+5 >= sCol )
-                *(idat+icr+5) =  (*(rdat+ir+2) & 0xFF)         + ((*(rdat+ir+1) >> 28) << 8);
-
-                if ( icol+6 >= sCol )
-                *(idat+icr+6) =  (*(rdat+ir+2) >>  8) & 0xFFF;
-                if ( icol+7 >= sCol )
-                *(idat+icr+7) = ((*(rdat+ir+2) >> 24) & 0xFF) + ((*(rdat+ir+2) >> 12) & 0xF00);
-
-                if ( icol < tCol-8 ) icol += 8;
-                else
-                {
-                    irow += 1;
-                    icol  = 0;
-                }
-
-                ir += 3;
-            }
-        }
-        else if ( (nBit == 12) && (pack16 == pgpEdtPack_24 ) &&
-                                  (vout   == pgpEdtVOut_TnB)    )
-        {
-            ir = 4 + sRow * tCol * 3 / 4;
-
-            while ( irow < nRow/2 )                     // while ( ir < 393220 )
-            {
-                icr = irow          * nCol + icol - sCol;
-                jcr = (nRow-1-irow) * nCol + icol - sCol;
-
-                if ( icol   >= sCol ) {
-                *(idat+icr  ) =   *(rdat+ir)       & 0xFFF;
-                *(idat+jcr  ) = ((*(rdat+ir) >> 4) & 0xF00) + ((*(rdat+ir) >> 16) & 0xFF);
-                }
-
-                if ( icol+1 >= sCol ) {
-                *(idat+icr+1) = ((*(rdat+ir+1) & 0xF) << 8) +  (*(rdat+ir) >> 24);
-                *(idat+jcr+1) = ((*(rdat+ir+1) <<  4) & 0xF00) + ((*(rdat+ir+1) >>  8) & 0xFF);
-                }
-
-                if ( icol+2 >= sCol ) {
-                *(idat+icr+2) =  (*(rdat+ir+1) >> 16) & 0xFFF;
-                *(idat+jcr+2) =  (*(rdat+ir+2) & 0xFF) +         ((*(rdat+ir+1) >> 28) << 8);
-                }
-
-                if ( icol+3 >= sCol ) {
-                *(idat+icr+3) =  (*(rdat+ir+2) >>  8) & 0xFFF;
-                *(idat+jcr+3) = ((*(rdat+ir+2) >> 24) & 0xFF) + ((*(rdat+ir+2) >> 12) & 0xF00);
-                }
-
-                if ( icol < tCol-4 ) icol += 4;
-                else
-                {
-                    irow += 1;
-                    icol  = 0;
-                }
-
-                ir += 3;
-            }
-        }
-
         /* Get attributes that have been defined for this driver */
         getAttributes( pNDArray->pAttributeList );
 
@@ -1131,7 +758,7 @@ void pgpEdt::acqTask()
 }
 
 
-/* Constructor for pgpEdt; It passes most parameters to ADDriver::ADDriver,
+/* Constructor for pgpCamlink; It passes most parameters to ADDriver::ADDriver,
  * then creates a thread to communicate with the frame grabber channel.
  * \param[in] portName The name of the asyn port driver to be created.
  * \param[in] board Index of the board (0 - ).
@@ -1152,7 +779,7 @@ void pgpEdt::acqTask()
  *            if ASYN_CANBLOCK is set in asynFlags.
  * \param[in] stackSize The stack size for the asyn port driver thread
  *            if ASYN_CANBLOCK is set in asynFlags. */
-pgpEdt::pgpEdt( const char *portName, int board, int chan,
+pgpCamlink::pgpCamlink( const char *portName, int board, int chan,
                 int maxSizeX, int maxSizeY, int numBits, NDDataType_t dataType,
                 int maxBuffers, size_t maxMemory, int priority, int stackSize )
     : ADDriver(portName, 1, NUM_CLCAM_PARAMS, maxBuffers, maxMemory,
@@ -1162,13 +789,13 @@ pgpEdt::pgpEdt( const char *portName, int board, int chan,
       pRaw(NULL), channel(chan)
 
 {
-    char  devi[80];
+    //char  devi[80];
     int   status = asynSuccess;
 
     sprintf( dev0, "/dev/datadev_%d"  , board          );
-    sprintf( devi, "/dev/datadev_%d%d", board, channel );
+//    sprintf( devi, "/dev/datadev_%d%d", board, channel );
 
-    pdev = open( devi, O_RDWR );
+    pdev = open( dev0, O_RDWR );
 
     createParam( baudString,       asynParamInt32,  &baud      );
     createParam( ssusString,       asynParamInt32,  &ssus      );
@@ -1203,7 +830,7 @@ pgpEdt::pgpEdt( const char *portName, int board, int chan,
     createParam( reIniString,      asynParamInt32,  &reIni     );
 
     /* Set the fundamental parameters */
-    status  = setStringParam ( ADManufacturer,  "SLAC PgpEdt, to be updated" );
+    status  = setStringParam ( ADManufacturer,  "SLAC PgpCamlink, to be updated" );
     status |= setStringParam ( ADModel,         "Test Model, to be updated"  );
     status |= setIntegerParam( nbit,            numBits        );
     status |= setIntegerParam( NDDataType,      dataType       );
@@ -1212,7 +839,7 @@ pgpEdt::pgpEdt( const char *portName, int board, int chan,
 
     if ( status )
     {
-        printf( "%s:%s, pgpEdt: unable to set parameters, quit !!!\n",
+        printf( "%s:%s, pgpCamlink: unable to set parameters, quit !!!\n",
                 driverName, portName );
         return;
     }
@@ -1225,7 +852,7 @@ pgpEdt::pgpEdt( const char *portName, int board, int chan,
                                 this) == NULL);
     if ( status )
     {
-        printf( "%s:%s, pgpEdt: failed to create the acq thread, quit !!!\n",
+        printf( "%s:%s, pgpCamlink: failed to create the acq thread, quit !!!\n",
                 driverName, portName );
         return;
     }
@@ -1233,7 +860,7 @@ pgpEdt::pgpEdt( const char *portName, int board, int chan,
 
 
 /* Configuration command, called directly or from iocsh */
-extern "C" int pgpEdtConfig( const char *portName, int board, int channel,
+extern "C" int pgpCamlinkConfig( const char *portName, int board, int channel,
                              int maxSizeX, int maxSizeY,   int numBits,
                              int dataType, int maxBuffers, int maxMemory,
                              int priority, int stackSize )
@@ -1242,56 +869,56 @@ extern "C" int pgpEdtConfig( const char *portName, int board, int channel,
 
     sprintf( serPort, "%s.SER", portName );
 
-    new pgpEdt      ( portName, board, channel, maxSizeX, maxSizeY, numBits,
+    new pgpCamlink      ( portName, board, channel, maxSizeX, maxSizeY, numBits,
                       (NDDataType_t)dataType,
                       (maxBuffers < 0) ? 0 : maxBuffers,
                       (maxMemory  < 0) ? 0 : maxMemory, priority, stackSize );
 
-    new pgpEdtSerial( serPort,  board, channel, ASYN_CANBLOCK, 1, 0, 0 );
+//	new pgpCamlinkSerial( serPort,  board, channel, ASYN_CANBLOCK, 1, 0, 0 );
 
     return( asynSuccess );
 }
 
 /* Code for iocsh registration */
-static const iocshArg pgpEdtConfigArg0 = { "Port name",  iocshArgString };
-static const iocshArg pgpEdtConfigArg1 = { "Board no",   iocshArgInt    };
-static const iocshArg pgpEdtConfigArg2 = { "Channel no", iocshArgInt    };
-static const iocshArg pgpEdtConfigArg3 = { "Max X size", iocshArgInt    };
-static const iocshArg pgpEdtConfigArg4 = { "Max Y size", iocshArgInt    };
-static const iocshArg pgpEdtConfigArg5 = { "No of bits", iocshArgInt    };
-static const iocshArg pgpEdtConfigArg6 = { "Data type",  iocshArgInt    };
-static const iocshArg pgpEdtConfigArg7 = { "maxBuffers", iocshArgInt    };
-static const iocshArg pgpEdtConfigArg8 = { "maxMemory",  iocshArgInt    };
-static const iocshArg pgpEdtConfigArg9 = { "priority",   iocshArgInt    };
-static const iocshArg pgpEdtConfigArgA = { "stackSize",  iocshArgInt    };
+static const iocshArg pgpCamlinkConfigArg0 = { "Port name",  iocshArgString };
+static const iocshArg pgpCamlinkConfigArg1 = { "Board no",   iocshArgInt    };
+static const iocshArg pgpCamlinkConfigArg2 = { "Channel no", iocshArgInt    };
+static const iocshArg pgpCamlinkConfigArg3 = { "Max X size", iocshArgInt    };
+static const iocshArg pgpCamlinkConfigArg4 = { "Max Y size", iocshArgInt    };
+static const iocshArg pgpCamlinkConfigArg5 = { "No of bits", iocshArgInt    };
+static const iocshArg pgpCamlinkConfigArg6 = { "Data type",  iocshArgInt    };
+static const iocshArg pgpCamlinkConfigArg7 = { "maxBuffers", iocshArgInt    };
+static const iocshArg pgpCamlinkConfigArg8 = { "maxMemory",  iocshArgInt    };
+static const iocshArg pgpCamlinkConfigArg9 = { "priority",   iocshArgInt    };
+static const iocshArg pgpCamlinkConfigArgA = { "stackSize",  iocshArgInt    };
 
-static const iocshArg * const pgpEdtConfigArgs[] = { &pgpEdtConfigArg0,
-                                                     &pgpEdtConfigArg1,
-                                                     &pgpEdtConfigArg2,
-                                                     &pgpEdtConfigArg3,
-                                                     &pgpEdtConfigArg4,
-                                                     &pgpEdtConfigArg5,
-                                                     &pgpEdtConfigArg6,
-                                                     &pgpEdtConfigArg7,
-                                                     &pgpEdtConfigArg8,
-                                                     &pgpEdtConfigArg9,
-                                                     &pgpEdtConfigArgA };
+static const iocshArg * const pgpCamlinkConfigArgs[] = { &pgpCamlinkConfigArg0,
+                                                     &pgpCamlinkConfigArg1,
+                                                     &pgpCamlinkConfigArg2,
+                                                     &pgpCamlinkConfigArg3,
+                                                     &pgpCamlinkConfigArg4,
+                                                     &pgpCamlinkConfigArg5,
+                                                     &pgpCamlinkConfigArg6,
+                                                     &pgpCamlinkConfigArg7,
+                                                     &pgpCamlinkConfigArg8,
+                                                     &pgpCamlinkConfigArg9,
+                                                     &pgpCamlinkConfigArgA };
 
-static const iocshFuncDef configPgpEdt = { "pgpEdtConfig", 11, pgpEdtConfigArgs };
+static const iocshFuncDef configPgpCamlink = { "pgpCamlinkConfig", 11, pgpCamlinkConfigArgs };
 
-static void configPgpEdtCallFunc( const iocshArgBuf *args )
+static void configPgpCamlinkCallFunc( const iocshArgBuf *args )
 {
-    pgpEdtConfig( args[0].sval, args[1].ival, args[ 2].ival, args[3].ival,
+    pgpCamlinkConfig( args[0].sval, args[1].ival, args[ 2].ival, args[3].ival,
                   args[4].ival, args[5].ival, args[ 6].ival, args[7].ival,
                   args[8].ival, args[9].ival, args[10].ival               );
 }
 
-static void pgpEdtRegister( void )
+static void pgpCamlinkRegister( void )
 {
-    iocshRegister( &configPgpEdt, configPgpEdtCallFunc );
+    iocshRegister( &configPgpCamlink, configPgpCamlinkCallFunc );
 }
 
 extern "C" {
-epicsExportRegistrar( pgpEdtRegister );
+epicsExportRegistrar( pgpCamlinkRegister );
 }
 

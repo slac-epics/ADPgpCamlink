@@ -72,14 +72,20 @@ kcuTimetool_LIBS += bz2
 #DBD        += pgpCamlink.dbd
 
 LIBRARY_DEFAULT = pgpCamlink
-#LIB_SRCS   += pgpCamlink.cpp
+LIB_SRCS   		+= pgpCamlink.cpp
 LIB_SRCS		+= rogue_example_memory_master.cpp
+
+#PROD += pgpCamlink
+#pgpCamlink_SRCS	+= pgpCamlink.cpp
+#pgpCamlink_LIBS += $(EPICS_BASE_HOST_LIBS)
+#pgpCamlink_LIBS	+= rogue-core
+#pgpCamlink_LIBS += zmq
+#pgpCamlink_LIBS += bz2
 
 HOST_OPT = NO
 USR_CPPFLAGS += -O0 -DUSE_TYPED_RSET -DUSE_TYPED_DSET -DUSE_TYPED_DRVET -DNO_PYTHON
 
 #include $(ADCORE)/ADApp/commonLibraryMakefile
-
 
 PROD_SYS_LIBS += util pthread rt
 #$(info PRODNAME=$(PRODNAME) )
