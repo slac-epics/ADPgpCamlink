@@ -1,12 +1,18 @@
 #include <atomic>
-#include <string>
-#include <iostream>
-#include <signal.h>
 #include <cstdio>
+#include <iostream>
+#include <string>
+
+#include <getopt.h>
+#include <signal.h>
+#include <stdlib.h>
+#include <unistd.h>
+
 #include <AxisDriver.h>
 #include <AxiVersion.h>
 #include <DmaDriver.h>
-#include <stdlib.h>
+
+#include <rogue/Version.h>
 #include <rogue/Helpers.h>
 #include <rogue/hardware/axi/AxiMemMap.h>
 #include <rogue/hardware/axi/AxiStreamDma.h>
@@ -15,10 +21,7 @@
 #include <rogue/interfaces/stream/Master.h>
 #include <rogue/protocols/batcher/SplitterV1.h>
 #include <rogue/protocols/srp/SrpV3.h>
-// #include "psdaq/service/EbDgram.hh"
-// #include "xtcdata/xtc/Dgram.hh"
-#include <unistd.h>
-#include <getopt.h>
+
 #include "ClMemoryMaster.h"
 #include "ClStreamSlave.h"
 #include "ClSerialMaster.h"
@@ -378,6 +381,8 @@ int main (int argc, char **argv)
 	}
 #endif
 
+	printf("\n");
+	printf("-- Rogue Version: %s\n", rogue::Version::current().c_str());
 	AxiVersion vsn;
 	if ( axiVersionGet(fd, &vsn) >= 0 )
 	{
