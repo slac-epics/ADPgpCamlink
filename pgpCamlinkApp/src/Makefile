@@ -7,6 +7,7 @@ include $(TOP)/configure/CONFIG
 LIBRARY_IOC = pgpCamlink
 LIB_SRCS   		+= pgpCamlink.cpp
 #LIB_SRCS		+= rogue_example_memory_master.cpp
+LIB_SRCS		+= ClSerialMaster.cpp
 LIB_SRCS		+= pgpClSerialDev.cpp
 LIB_SRCS		+= asynPgpClSerial.cpp
 LIB_LIBS		+= asyn
@@ -18,6 +19,15 @@ kcuPgpRead_LIBS += $(EPICS_BASE_HOST_LIBS)
 kcuPgpRead_LIBS	+= rogue-core
 kcuPgpRead_LIBS += zmq
 kcuPgpRead_LIBS += bz2
+
+PROD += pgpClSerialTool
+pgpClSerialTool_SRCS	+= pgpClSerialTool.cpp
+#pgpClSerialTool_LIBS	+= $(EPICS_BASE_HOST_LIBS)
+pgpClSerialTool_LIBS	+= pgpCamlink
+pgpClSerialTool_LIBS	+= asyn
+pgpClSerialTool_LIBS	+= rogue-core
+pgpClSerialTool_LIBS	+= zmq
+pgpClSerialTool_LIBS	+= bz2
 
 HOST_OPT = NO
 USR_CPPFLAGS += -O0 -DUSE_TYPED_RSET -DUSE_TYPED_DSET -DUSE_TYPED_DRVET -DNO_PYTHON

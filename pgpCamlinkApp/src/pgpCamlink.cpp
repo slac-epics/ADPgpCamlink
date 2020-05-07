@@ -11,20 +11,46 @@
  */
 
 #include <algorithm>
-#include <unistd.h>
+#include <atomic>
+#include <cstdio>
 #include <iostream>
 #include <iomanip>
+#include <string>
 
-#include <fcntl.h>
-
-#include <stddef.h>
-#include <stdlib.h>
+#include <signal.h>
 #include <stdarg.h>
-#include <math.h>
+#include <stddef.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <errno.h>
 #include <string.h>
+#include <unistd.h>
+#include <fcntl.h>
+#include <math.h>
 #include <poll.h>
+
+#include <asynDriver.h>
+#include <asynPortDriver.h>
+
+// aes-stream-drivers headers 
+#include <AxisDriver.h>
+#include <AxiVersion.h>
+#include <DmaDriver.h>
+
+#include <rogue/Helpers.h>
+#include <rogue/hardware/axi/AxiMemMap.h>
+#include <rogue/hardware/axi/AxiStreamDma.h>
+#include <rogue/interfaces/memory/Constants.h>
+#include <rogue/interfaces/stream/Slave.h>
+#include <rogue/interfaces/stream/Master.h>
+#include <rogue/protocols/batcher/SplitterV1.h>
+#include <rogue/protocols/srp/SrpV3.h>
+
+#include "ClMemoryMaster.h"
+#include "ClStreamSlave.h"
+#include "ClSerialMaster.h"
+#include "ClSerialSlave.h"
+#include "FebMemoryMaster.h"
 
 #include "dbAccess.h"
 
@@ -58,11 +84,21 @@
 //#include "PgpDriver.h"
 //#include "pgpEdtSerial.h"
 
+std::atomic<bool> terminate;
+
+unsigned dmaDest(unsigned lane, unsigned vc)
+{
+    return (lane<<8) | vc;
+}
+
 static const char *driverName = "pgpCamlink";
 
+#define	N_AXI_LANES	4
+#define	N_AXI_CHAN	4
 
 
-class pgpCamlink : public ADDriver {
+class pgpCamlink : public ADDriver
+{
 public:
     pgpCamlink( const char *portName, int board, int chan,
             int maxSizeX, int maxSizeY, int numBits, NDDataType_t dataType,
@@ -117,9 +153,9 @@ private:
     /* These are the methods that are new to this class */
     long ser_send_recv   ( asynUser *pasynUser, const char *cmds, char *reply,
                                                                    int pass=0 );
-#if 0
-    long set_register    ( asynUser *pasynUser, epicsUInt32 rAddr,
+    long set_register    ( asynUser *pasynUser, const char * szRegName,
                                                 epicsUInt32 rVal,  int pass=0 );
+#if 0
     long set_csr         ( asynUser *pasynUser, int acq,           int pass=0 );
 
     long update_nrow_ncol( asynUser *pasynUser,                    int pass=0 );
@@ -130,13 +166,22 @@ private:
     /* Our data */
     NDArray *pRaw;
 
-    char     dev0[80];
-    int      pdev0;
+    char     m_devName[80];
+    int      m_pDev;
     int      pdev;
 
     int      channel;                                          // channel number
+
+	rogue::hardware::axi::AxiStreamDmaPtr		dataChan[N_AXI_LANES][N_AXI_CHAN];
+	rogue::protocols::srp::SrpV3Ptr				srpFeb[N_AXI_LANES];
+	rogue::hardware::axi::AxiMemMapPtr 			memMap[N_AXI_LANES];
+	ClMemoryMasterPtr				 			clMemMaster[N_AXI_LANES];
+	FebMemoryMasterPtr				 			febMemMaster[N_AXI_LANES];
+	ClStreamSlavePtr							clStreamSlave[N_AXI_LANES];
+	rogue::protocols::batcher::SplitterV1Ptr	batch;
 };
 
+#if 0
 #define baudString       "baud"
 #define ssusString       "ssus"
 #define nbitString       "nbit"
@@ -168,12 +213,16 @@ private:
 #define exposureString   "exposure"
 #define tstPtnString     "tstPtn"
 #define reIniString      "reIni"
+#endif
 
 #define NUM_CLCAM_PARAMS ((int)(&LAST_CLCAM_PARAM - &FIRST_CLCAM_PARAM + 1))
 
 
-long pgpCamlink::ser_send_recv( asynUser *pasynUser, const char *cmds,
-                                                 char *reply,      int pass )
+long	pgpCamlink::ser_send_recv(
+	asynUser	*	pasynUser,
+	const char	*	cmds,
+	char		*	reply,
+	int				pass )
 {
     long         status = 1;
 #if 0
@@ -181,16 +230,13 @@ long pgpCamlink::ser_send_recv( asynUser *pasynUser, const char *cmds,
     int          ssusVal, ti = 0, eosSize=0;
     char         sertfg[4], aval, eos[3], cmdsWithEos[90];
     epicsUInt32  rAddr;
-
     if ( pass < 2 )
     {
         if ( (pass == 0) && (strlen(cmds) == 0) ) return( 0 );
-
         while ( 1 )
         {
-            pdev0 = open( dev0, O_RDWR );
-            if ( pdev0 != -1 ) break;
-
+            m_pDev = open( m_devName, O_RDWR );
+            if ( m_pDev != -1 ) break;
             if ( ti < 150 )
             {
                 usleep( 200000 );
@@ -203,24 +249,18 @@ long pgpCamlink::ser_send_recv( asynUser *pasynUser, const char *cmds,
     getInputEosOctet(pasynUser, eos, 3, &eosSize);
     strcpy(cmdsWithEos, cmds);
     strncat(cmdsWithEos, eos, eosSize);
-
-    if ( pdev0 == -1 ) return( -1 );
-
+    if ( m_pDev == -1 ) return( -1 );
     // Check at 'cmds' as 'cmdsWithEos' now has more chars.
     if ( strlen(cmds) == 0 ) goto finished;
-
     getIntegerParam( ssus, &ssusVal );
-
     rAddr = 0x1A0 + 4*channel;
-
     for ( size_t ci=0; ci<=strlen(cmdsWithEos); ci++ )
     {
         if ( (ci < strlen(cmdsWithEos)) && (*(cmdsWithEos + ci) != 0x5F) )
             aval = *(cmdsWithEos + ci);
         else
             aval = 0x0D;
-
-        // status = pgpcard_setReg( pdev0, rAddr, aval );
+        // status = pgpcard_setReg( m_pDev, rAddr, aval );
         if ( status != 0 )
         {
             asynPrint( pasynUser, ASYN_TRACE_ERROR,
@@ -228,22 +268,18 @@ long pgpCamlink::ser_send_recv( asynUser *pasynUser, const char *cmds,
                        driverName, portName, cmdsWithEos );
             break;
         }
-
         if ( (ci < strlen(cmdsWithEos)) && (*(cmdsWithEos + ci) == 0x5F) ) usleep( ssusVal );
     }
 
     if ( status == 0 )
     {
         usleep( 100000 );
-
         rAddr = 0x1C0 + 4*channel;
-
         ti    = 0;
         size_t	ci    = 0;
         while ( ti < 200 )
         {
-            // status = pgpcard_readReg( pdev0, rAddr, (epicsUInt32 *)sertfg );
-
+            // status = pgpcard_readReg( m_pDev, rAddr, (epicsUInt32 *)sertfg );
             if ( sertfg[0] != (char) 0xff )
             {
                 if      ( sertfg[0] == 0x06 )
@@ -283,9 +319,9 @@ long pgpCamlink::ser_send_recv( asynUser *pasynUser, const char *cmds,
     finished:
     if ( (pass == 0) || (pass > 2) )
     {
-        close( pdev0 );
+        close( m_pDev );
 
-        pdev0 = -1;
+        m_pDev = -1;
     }
 
 	}
@@ -293,11 +329,139 @@ long pgpCamlink::ser_send_recv( asynUser *pasynUser, const char *cmds,
     return( status );
 }
 
+long	pgpCamlink::set_register(
+	asynUser	*	pasynUser,
+	const char	*	szRegName,
+    epicsUInt32		rVal, 
+	int				pass )
+{
+	return 0;
+}
+
+void int_handler(int dummy)
+{
+    terminate.store(true, std::memory_order_release);
+    // dmaUnMapDma();
+}
 
 long pgpCamlink::init_camera()
 {
     long         status = 0;
 
+	terminate.store(false, std::memory_order_release);
+	signal(SIGINT, int_handler);
+
+	uint8_t mask[DMA_MASK_SIZE];
+	dmaInitMaskBytes(mask);
+	for (unsigned i=0; i<4; i++) {
+		dmaAddMaskBytes((uint8_t*)mask, dmaDest(i, channel));
+	}
+
+#if 1
+	{
+	if ( strlen(m_devName) == 0 ) {
+		std::cerr << "device not specified" << std::endl;
+		return 1;
+	}
+
+	std::cout << "Opening device: " <<  std::string(m_devName) << std::endl;
+
+#if 1
+	rogue::hardware::axi::AxiStreamDmaPtr		dataChan[N_AXI_LANES][N_AXI_CHAN];
+	//rogue::protocols::srp::SrpV3Ptr				srp[N_AXI_LANES];
+	rogue::protocols::srp::SrpV3Ptr				srpFeb[N_AXI_LANES];
+#if 1
+	rogue::hardware::axi::AxiMemMapPtr 			memMap[N_AXI_LANES];
+#endif
+	ClMemoryMasterPtr				 			clMemMaster[N_AXI_LANES];
+	FebMemoryMasterPtr				 			febMemMaster[N_AXI_LANES];
+	ClStreamSlavePtr							clStreamSlave[N_AXI_LANES];
+	ClSerialSlavePtr							clSerialRx[N_AXI_LANES];
+	ClSerialMasterPtr							clSerialTx[N_AXI_LANES];
+	rogue::protocols::batcher::SplitterV1Ptr	batch;
+	batch 		= rogue::protocols::batcher::SplitterV1::create();
+	/**
+	 * The destination field is a sideband signal provided in the AxiStream
+	 * protocol which allows a single interface to handle multiple frames
+	 * with different purposes. The use of this field is driver specific, but
+	 * the lower 8-bits are typically passed in the tDest field of the hardware
+	 * frame and bits 8 and up are used to index the dma channel in the 
+	 * lower level hardware.
+	 */
+	uint32_t		dest		= 0;
+	uint32_t		lane		= 0;
+
+	for ( lane = 0; lane < N_AXI_LANES;	lane++ ) {
+		for ( uint32_t	ch = 0; ch < N_AXI_CHAN;	ch++ ) {
+			dest = (0x100 * lane) + ch;	// Derived from python code
+			dataChan[lane][ch]	= rogue::hardware::axi::AxiStreamDma::create( m_devName, dest, true);
+		}
+	}
+	// NOTE: Initializing lanes 1, 2, and 3 breaks lane 0 serial!
+	for ( uint32_t	lane = 0; lane < 1;	lane++ )
+	{
+		// Connect CHAN 0 ClinkDev KCU1500 Register Access
+		memMap[lane] = rogue::hardware::axi::AxiMemMap::create( m_devName );
+		clMemMaster[lane]  = ClMemoryMaster::create( );
+		clMemMaster[lane]->setSlave( memMap[lane] );
+
+		// Connect CHAN 0 FEB Register Access
+		srpFeb[lane] = rogue::protocols::srp::SrpV3::create();
+		febMemMaster[lane] = FebMemoryMaster::create( );
+		dataChan[lane][0]->addSlave( srpFeb[lane] );
+		srpFeb[lane]->addSlave( dataChan[lane][0] );
+		febMemMaster[lane]->setSlave( srpFeb[lane] );
+
+		// CHAN 1: Camera Frames
+		clStreamSlave[lane] = ClStreamSlave::create();
+		dataChan[lane][1]->addSlave( clStreamSlave[lane] );
+		// or rogueStreamConnect( dataChan[lane][1], clStreamSlave[lane] );
+
+		// CHAN 2: Camera Serial Tx
+		clSerialTx[lane] = ClSerialMaster::create();
+		clSerialTx[lane]->addSlave( dataChan[lane][2] );
+
+		// CHAN 3: Camera Serial Rx
+		clSerialRx[lane] = ClSerialSlave::create();
+		dataChan[lane][2]->addSlave( clSerialRx[lane] );
+
+		if ( lane != 0 )
+			continue;
+	}
+
+	// Send Opal serial commands
+	clSerialTx[0]->sendBytes( "@TP1\r", 5 );	// Test Pattern On
+	clSerialTx[0]->sendBytes( "@SN?\r", 5 );	// Get Serial Number
+	printf( "sleeping 2 sec ...\n" );
+	sleep(2);
+	//clSerialTx[0]->sendBytes( "@SN?\r\n", 6 );
+	//printf( "sleeping 2 sec ...\n" );
+	//sleep(2);
+	clSerialTx[0]->sendString( "@ID?\r" );		// Get model ID string
+
+	if (!dataChan[0][0] ) {
+		std::cout << "Error opening "<< std::string(m_devName) << '\n';
+		return -1;
+	}
+#endif
+	int	fd = open( m_devName, O_RDWR);
+	if (fd < 0) {
+		std::cout<<"Error opening "<< std::string(m_devName) <<'\n';
+		return -1;
+	}
+
+	AxiVersion vsn;
+	if ( axiVersionGet(fd, &vsn) >= 0 )
+	{
+		printf("\n");
+		printf("-- Core Axi Version --\n");
+		printf("firmwareVersion : %x\n", vsn.firmwareVersion);
+		printf("upTimeCount     : %u\n", vsn.upTimeCount);
+		printf("deviceId        : %x\n", vsn.deviceId);
+		printf("buildString     : %s\n", vsn.buildString); 
+	}
+	}
+#endif
 #if 0
 	{
     epicsUInt32  rAddr;
@@ -354,22 +518,70 @@ long pgpCamlink::init_camera()
     set_csr         ( pasynUserSelf, acqVal,              3 );
 	}
 #endif
-    return( 0 );
+    return( status );
 }
 
+int ResetCounters( int fd )
+{
+	int		status	= 0;
+
+	// Not sure if these are needed
+	//status = dmaWriteRegister( fd, CLINKDEV_FRAMECOUNT,	0 );
+	//status = dmaWriteRegister( fd, CLINKDEV_ERRORCOUNT,	0 );
+	//status = dmaWriteRegister( fd, CLINKDEV_BYTECOUNT,	0 );
+
+	// This clears ClinkDev.Hardware.PgpMon[0].CountReset
+	//status = dmaWriteRegister( fd, CLINKDEV_LANE0_COUNTRESET,	0 );
+	// This resets ClinkDev.Application.AppLane[0].EventBuilder.DataCnt[0]
+	//status = dmaWriteRegister( fd, CLINKDEV_LANE0_EVENTBUILDER_CNTRST,	0 );
+
+	return status;
+}
+
+#define CLINKDEV_TRIG0_ENABLEREG	0x930000
+int StartRun( int fd )
+{
+	int		status	= 0;
+	status = ResetCounters( fd );
+
+	// Enable EVR trigger
+	// status = dmaWriteRegister( fd, CLINKDEV_TRIG0_ENABLEREG, 1 );
+
+	// Set run state - No need, it's a pyrogue local variable
+	// status = dmaWriteRegister( fd, CLINK_RUNSTATE, 1 );
+
+	return status;
+}
+
+int StopRun( int fd )
+{
+	int		status	= 0;
+
+	// Disable EVR trigger
+	// status = dmaWriteRegister( fd, CLINKDEV_TRIG0_ENABLEREG, 0 );
+
+	// Set run state - No need, it's a pyrogue local variable
+	// status = dmaWriteRegister( fd, CLINK_RUNSTATE, 0 );
+
+	return status;
+}
+
+
 
-/* Called when asyn clients call pasynInt32->write().
+/** Called when asyn clients call pasynInt32->write().
  * For all parameters it sets the value in the parameter library and
  * calls any registered callbacks.  For some parameters it performs actions.
  * \param[in] pasynUser pasynUser structure that encodes the reason and address
- * \param[in] value     Value to write */
+ * \param[in] value     Value to write
+ **/
 asynStatus pgpCamlink::writeInt32( asynUser *pasynUser, epicsInt32 value )
 {
     int          param = pasynUser->reason;
-    int          acqVal, expoVal;
-    char         cmdTrigStr[80], cmdTPtnStr[80], cmdStr[80], respStr[80];
+    int          acqVal;
+    //int          expoVal;
+    //char         cmdTrigStr[80], cmdTPtnStr[80], cmdStr[80], respStr[80];
 
-    epicsUInt32  rAddr;
+    //epicsUInt32  rAddr;
 
     asynStatus   status = asynSuccess;
 
@@ -396,35 +608,33 @@ asynStatus pgpCamlink::writeInt32( asynUser *pasynUser, epicsInt32 value )
 
     callParamCallbacks();
  
-    if ( ! interruptAccept ) return( status );// no action before initialization
+    if ( ! interruptAccept )
+		return( status );	// no action before initialization
 
     /* Action */
-#if 0
+#if 1
 	{
     if      ( param == ADAcquire      )
-        set_csr     ( pasynUser,        value );
+        set_register( pasynUser, "ClinkDev.Hardware.Timing.Triggering.Ch[0].EnableReg", value );
     else if ( param == baud           )
     {
-        rAddr = SerBaud_Addr   + 4*channel;
-        set_register( pasynUser, rAddr, value );
+        set_register( pasynUser, "ClinkDev.ClinkFeb[0].ClinkTop.Ch[0].BaudRate", value );
     }
     else if ( param == nbit           )                // this should not happen
     {
-        rAddr = NumBits_Addr   + 4*channel;
-        set_register( pasynUser, rAddr, value );
-
-        update_ntrn_ncyc( pasynUser );
+        //set_register( pasynUser, "?", value );
+        //update_ntrn_ncyc( pasynUser );
     }
     else if ( (param == pack   ) || (param == vOut   ) ||
               (param == skipRow) || (param == skipCol)    )
     {
-        update_ntrn_ncyc( pasynUser );
+        //update_ntrn_ncyc( pasynUser );
     }
     else if ( (param == fullRow) || (param == fullCol) )           // full frame
     {
-        getIntegerParam( exposure, &expoVal );
+        //getIntegerParam( exposure, &expoVal );
 
-        if ( expoVal == pgpEdtExpo_Full )
+        //if ( expoVal == pgpEdtExpo_Full )
         {
             //update_nrow_ncol( pasynUser );
             //update_ntrn_ncyc( pasynUser );
@@ -433,29 +643,30 @@ asynStatus pgpCamlink::writeInt32( asynUser *pasynUser, epicsInt32 value )
     else if ( (param == ADMinX ) || (param == ADMinY ) ||
               (param == ADSizeX) || (param == ADSizeY)    )            // HW ROI
     {
-        getIntegerParam( exposure, &expoVal );
+        //getIntegerParam( exposure, &expoVal );
 
-        if ( expoVal == pgpEdtExpo_ROI  )
+        //if ( expoVal == pgpEdtExpo_ROI  )
         {
-            update_nrow_ncol( pasynUser );
-            update_ntrn_ncyc( pasynUser );
+            //update_nrow_ncol( pasynUser );
+            //update_ntrn_ncyc( pasynUser );
         }
     }
     else if ( param == exposure      )                   // change exposure mode
     {
-        update_nrow_ncol( pasynUser );
-        update_ntrn_ncyc( pasynUser );
+        // update_nrow_ncol( pasynUser );
+        // update_ntrn_ncyc( pasynUser );
     }
     else if ( param == prescale      )
     {
-        rAddr = PreScale_Addr  + 4*channel;
-        set_register( pasynUser, rAddr, value );
+        // rAddr = PreScale_Addr  + 4*channel;
+        // set_register( pasynUser, rAddr, value );
     }
     else if ( param == code          )
     {
-        rAddr = TrgCode_Addr   + 4*channel;
-        set_register( pasynUser, rAddr, value );
+        // rAddr = TrgCode_Addr   + 4*channel;
+        // set_register( pasynUser, rAddr, value );
     }
+#if 0
     else if ( param == delay         )
     {
         rAddr = TrgDelay_Addr  + 4*channel;
@@ -485,6 +696,7 @@ asynStatus pgpCamlink::writeInt32( asynUser *pasynUser, epicsInt32 value )
     else if ( (param == NDDataType) || (param == NDColorMode) )
     {
     }
+#endif
     else if ( param < FIRST_CLCAM_PARAM )          /* belongs to a base class */
     {
         status = ADDriver::writeInt32( pasynUser, value );
@@ -492,8 +704,8 @@ asynStatus pgpCamlink::writeInt32( asynUser *pasynUser, epicsInt32 value )
 
     if ( (param == pack) || (param == cc) || (param == polarity) )
     {
-        getIntegerParam( ADAcquire, &acqVal );
-        set_csr( pasynUser, acqVal );
+        //getIntegerParam( ADAcquire, &acqVal );
+        //set_csr( pasynUser, acqVal );
     }
 	}
 #endif
@@ -591,25 +803,17 @@ static void acqTaskC( void *drvPvt )
 /* This thread acquires images, unpacks, and sends them to higher layers */
 void pgpCamlink::acqTask()
 {
-    struct pollfd   pfd[1];
-
-    const char     *rbuf;
-    epicsUInt32    *rdat, ir, icr, jcr;
-    epicsUInt16    *idat, icol, irow;
-
-    size_t          dims[2];
-    int             nBit, pack16, vout;
-    int             maxNrow, maxNcol, sRow, sCol, nRow;
-	int				nCol, tCol;
-    uint            maxSize, cstaVal;
     epicsTimeStamp  timeNow;
+
+    int             nBit, pack16, vout;
+    int             maxNrow, maxNcol, sRow, sCol;
+	int				nRow;
+	int				nCol;
+    //uint            maxSize, cstaVal;
 
     NDArray        *pNDArray = NULL;
 
     int             ret	= 0;
-
-    pfd[0].fd     = pdev;
-    pfd[0].events = POLLIN;
 
     while ( ! interruptAccept ) epicsThreadSleep( 1 );
 
@@ -621,12 +825,12 @@ void pgpCamlink::acqTask()
     getIntegerParam( ADMaxSizeY, &maxNrow );
     getIntegerParam( ADMaxSizeX, &maxNcol );
 
-    maxSize = maxNrow * maxNcol * 2 + 16;
-    rbuf    = (char *)calloc( maxSize, sizeof(char) );
+    //maxSize = maxNrow * maxNcol * 2 + 16;
+    //rbuf    = (char *)calloc( maxSize, sizeof(char) );
 
     while ( 1 )
     {
-        if ( poll( pfd, 1, 2000 ) == 0 )    // no frame for 2 seconds, check CSR
+        if ( 0 ) // poll( pfd, 1, 2000 ) == 0 )    // no frame for 2 seconds, check CSR
         {
             asynPrint( pasynUserSelf, ASYN_TRACE_FLOW,
                        "%s:%s, acqTask: no image, check CSTA\n",
@@ -634,12 +838,9 @@ void pgpCamlink::acqTask()
 
             // pgpcard_readReg( pdev, GrbCSR_Addr+4*channel, &cstaVal );
 
-            cstaVal = ((cstaVal >> 28) & 15) << 27 + (cstaVal & 255);
-
-            setIntegerParam( csta,      cstaVal );
+            //cstaVal = 0;
+            //setIntegerParam( csta,      cstaVal );
             setIntegerParam( frameRate, 0       );
-
-//          printf( "No frame, post CSTA\n" );
 
             callParamCallbacks();
 
@@ -676,13 +877,11 @@ void pgpCamlink::acqTask()
         if (nCol <= 0)
             nCol = 1;
 
-        tCol = sCol + nCol;
-        rdat = (epicsUInt32 *)rbuf;
-
         lock();
 
         if ( pNDArray ) pNDArray->release();            // free previous NDArray
 
+    	size_t          dims[2];
         dims[0]  = nCol;
         dims[1]  = nRow;
         pNDArray = pNDArrayPool->alloc( 2, dims, NDInt16, 0, NULL );
@@ -701,9 +900,9 @@ void pgpCamlink::acqTask()
 
         epicsTimeGetCurrent( &timeNow );
 
-        pNDArray->uniqueId             = *(rdat + 1);
-        pNDArray->epicsTS.secPastEpoch = *(rdat + 2);
-        pNDArray->epicsTS.nsec         = *(rdat + 3);
+        pNDArray->uniqueId             = 0;
+        pNDArray->epicsTS.secPastEpoch = 0;
+        pNDArray->epicsTS.nsec         = 0;
         pNDArray->timeStamp            = timeNow.secPastEpoch+timeNow.nsec/1.e9;
 
         pNDArray->ndims                = 2;
@@ -716,10 +915,6 @@ void pgpCamlink::acqTask()
         pNDArray->dims[1].offset       = 0;
         pNDArray->dims[1].binning      = 1;
 
-        icol = 0;
-        irow = 0;
-        idat = (epicsUInt16 *)pNDArray->pData;
-
         /* Get attributes that have been defined for this driver */
         getAttributes( pNDArray->pAttributeList );
 
@@ -729,8 +924,6 @@ void pgpCamlink::acqTask()
 
         unlock();
 
-//      printf( "New image:  %d,  %d  %d,  %04x %04x %04x %04x %04x %04x\n", *(rdat+1), *(rdat+2), *(rdat+3), *(rdat+4), *(rdat+5), *(rdat+6), *(rdat+7), *(rdat+8), *(rdat+9) );
-
         asynPrint( pasynUserSelf, ASYN_TRACE_FLOW,
                    "%s:%s, acqTask: calling imageData callbacks\n",
                    driverName, portName );
@@ -738,14 +931,7 @@ void pgpCamlink::acqTask()
         doCallbacksGenericPointer( pNDArray, NDArrayData, 0 );
 
         setIntegerParam( NDArraySize,    nRow * nCol * sizeof(epicsInt16) );
-        setIntegerParam( NDArrayCounter, *(rdat + 1)                      );
-
-        setIntegerParam( trg2frame,       (*rdat)        & 0x7FFFF        );
-        setIntegerParam( frameRate,      ((*rdat) >> 19) &   0x3FF        );
-
-        setIntegerParam( csta,           0x78000000                       );
-
-//      channel          = ((*rdat) >> 29) &       7;
+        setIntegerParam( NDArrayCounter, 3                       );
 
         callParamCallbacks();
 
@@ -782,52 +968,51 @@ void pgpCamlink::acqTask()
 pgpCamlink::pgpCamlink( const char *portName, int board, int chan,
                 int maxSizeX, int maxSizeY, int numBits, NDDataType_t dataType,
                 int maxBuffers, size_t maxMemory, int priority, int stackSize )
-    : ADDriver(portName, 1, NUM_CLCAM_PARAMS, maxBuffers, maxMemory,
-               0, 0,        /* No interfaces beyond those set in ADDriver.cpp */
-               ASYN_CANBLOCK, 1,    /* ASYN_CANBLOCK=0, ASYN_MULTIDEVICE=0, autoConnect=1 */
-               priority, stackSize),
-      pRaw(NULL), channel(chan)
-
+    :	ADDriver(	portName, 1, NUM_CLCAM_PARAMS, maxBuffers, maxMemory,
+					0, 0,        /* No interfaces beyond those set in ADDriver.cpp */
+					ASYN_CANBLOCK, 1,    /* ASYN_CANBLOCK=0, ASYN_MULTIDEVICE=0, autoConnect=1 */
+					priority, stackSize),
+		pRaw(NULL),
+		channel(chan),
+		dataChan(),
+		srpFeb(),
+		memMap(),
+		clMemMaster(),
+		febMemMaster(),
+		clStreamSlave(),
+		batch()
 {
     //char  devi[80];
     int   status = asynSuccess;
 
-    sprintf( dev0, "/dev/datadev_%d"  , board          );
+    sprintf( m_devName, "/dev/datadev_%d"  , board          );
 //    sprintf( devi, "/dev/datadev_%d%d", board, channel );
 
-    pdev = open( dev0, O_RDWR );
+    pdev = open( m_devName, O_RDWR );
 
-    createParam( baudString,       asynParamInt32,  &baud      );
-    createParam( ssusString,       asynParamInt32,  &ssus      );
-    createParam( nbitString,       asynParamInt32,  &nbit      );
-    createParam( packString,       asynParamInt32,  &pack      );
-    createParam( vOutString,       asynParamInt32,  &vOut      );
-    createParam( skipRowString,    asynParamInt32,  &skipRow   );
-    createParam( skipColString,    asynParamInt32,  &skipCol   );
-    createParam( fullRowString,    asynParamInt32,  &fullRow   );
-    createParam( fullColString,    asynParamInt32,  &fullCol   );
-    createParam( numTrainsString,  asynParamInt32,  &numTrains );
-    createParam( numCyclesString,  asynParamInt32,  &numCycles );
-    createParam( ccString,         asynParamInt32,  &cc        );
-    createParam( polarityString,   asynParamInt32,  &polarity  );
-    createParam( prescaleString,   asynParamInt32,  &prescale  );
-    createParam( codeString,       asynParamInt32,  &code      );
-    createParam( delayString,      asynParamInt32,  &delay     );
-    createParam( widthString,      asynParamInt32,  &width     );
-    createParam( trg2frameString,  asynParamInt32,  &trg2frame );
-    createParam( frameRateString,  asynParamInt32,  &frameRate );
-    createParam( cstaString,       asynParamInt32,  &csta      );
-    createParam( cmdInitString,    asynParamOctet,  &cmdInit   );
-    createParam( cmdFullString,    asynParamOctet,  &cmdFull   );
-    createParam( cmdROIString,     asynParamOctet,  &cmdROI    );
-    createParam( cmdEVRString,     asynParamOctet,  &cmdEVR    );
-    createParam( cmdFreeString,    asynParamOctet,  &cmdFree   );
-    createParam( cmdTPtnString,    asynParamOctet,  &cmdTPtn   );
-    createParam( cmdAnyString,     asynParamOctet,  &cmdAny    );
-    createParam( respString,       asynParamOctet,  &resp      );
-    createParam( exposureString,   asynParamInt32,  &exposure  );
-    createParam( tstPtnString,     asynParamInt32,  &tstPtn    );
-    createParam( reIniString,      asynParamInt32,  &reIni     );
+	if ( 1 )
+	{
+		size_t	lane	= 0;	// channel?
+
+		// Connect CHAN 0 ClinkDev KCU1500 Register Access
+		memMap[lane] = rogue::hardware::axi::AxiMemMap::create( m_devName );
+		clMemMaster[lane]  = ClMemoryMaster::create( );
+		clMemMaster[lane]->setSlave( memMap[lane] );
+
+		// Connect CHAN 0 FEB Register Access
+		srpFeb[lane] = rogue::protocols::srp::SrpV3::create();
+		febMemMaster[lane] = FebMemoryMaster::create( );
+		dataChan[lane][0]->addSlave( srpFeb[lane] );
+		srpFeb[lane]->addSlave( dataChan[lane][0] );
+		febMemMaster[lane]->setSlave( srpFeb[lane] );
+
+		// CHAN 1: Camera Frames
+		clStreamSlave[lane] = ClStreamSlave::create();
+		dataChan[lane][1]->addSlave( clStreamSlave[lane] );
+		// or rogueStreamConnect( dataChan[lane][1], clStreamSlave[lane] );
+	}
+
+    // createParam( baudString,       asynParamInt32,  &baud      );
 
     /* Set the fundamental parameters */
     status  = setStringParam ( ADManufacturer,  "SLAC PgpCamlink, to be updated" );
