@@ -1,9 +1,40 @@
 
 
+#include <atomic>
 #include <iostream>
+#include <signal.h>
 #include <getopt.h>
 #include "pgpClSerialDev.h"
 
+
+std::atomic<bool> terminateMemoryOrder;
+
+void int_handler(int dummy)
+{
+    terminateMemoryOrder.store(true, std::memory_order_release);
+    // dmaUnMapDma();
+}
+
+std::string	MapEscapeChars( const std::string & in )
+{
+	std::string		mapped;
+	std::string::size_type last = 0;
+	std::string::size_type pos = 0;
+	while ( (pos = in.find("\\", last)) != std::string::npos )
+	{
+		mapped.append( in, last, pos - last );
+		switch ( in[pos + 1] )
+		{
+			default:	mapped += in[pos + 1]; break;
+			case 'r':	mapped += '\r'; break;
+			case 'n':	mapped += '\n'; break;
+			case '\\':	mapped += '\\'; break;
+		}
+		last = pos + 2;
+	}
+	mapped.append( in, last, pos );
+	return mapped;
+}
 
 long
 SendMsgLoop(
@@ -12,19 +43,23 @@ SendMsgLoop(
 	int					verbose	)
 {
 	const size_t	S_SENDBUFFER_MAX	= 256;
-	char		sendBuffer[S_SENDBUFFER_MAX];
-	char		recvBuffer[S_SENDBUFFER_MAX];
+	char		inBuffer[S_SENDBUFFER_MAX];
+	std::string		sendBuffer;
 
-	pgpDev.sendBytes( "@TP1\r", 5 );	// Test Pattern On
+	std::cout << "Sending test msg: @SN?\r" << std::endl;
+	pgpDev.sendBytes( "@SN?\r", 5 );	// Test Pattern On
 
+	std::cout << "Hit Ctrl-C to exit ...\r" << std::endl;
     while( 1 )
 	{
 		std::cout << "Send? ";
-		std::cin.getline( &sendBuffer[0], S_SENDBUFFER_MAX );
+		std::cin.getline( &inBuffer[0], S_SENDBUFFER_MAX );
 
-		pgpDev.sendBytes( sendBuffer, strnlen( sendBuffer, S_SENDBUFFER_MAX ) );
+		sendBuffer = MapEscapeChars( std::string(inBuffer) );
+		pgpDev.sendBytes( sendBuffer.c_str(), sendBuffer.size() );
 
 #if 0
+		char		recvBuffer[S_SENDBUFFER_MAX];
 		// TODO: pgpDev.clSerialRx currently implements ClSerialSlave::acceptFrame() and just prints response.
 		getBytes( recvBuffer, S_SENDBUFFER_MAX, timeout );
         std::cout << "Recv: " << recvBuffer << std::endl;
@@ -157,6 +192,9 @@ main( int argc, char **argv )
         argv++;
     }
 #endif
+
+	terminateMemoryOrder.store(false, std::memory_order_release);
+	signal(SIGINT, int_handler);
 
     if ((timeout == 0))
     	timeout = 60000;

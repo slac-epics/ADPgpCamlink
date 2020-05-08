@@ -29,8 +29,10 @@ public:
 
 	ClSerialMaster() : rogue::interfaces::stream::Master() { }
 
+	/// sendBytes function can handle binary data containing zeroes.
 	int sendBytes( const char * buffer, size_t nBytes );
 
+	/// sendString function treats zero as the end of the string.
 	int sendString( const char * toSend )
 	{
 		return sendBytes( toSend, strlen(toSend) );

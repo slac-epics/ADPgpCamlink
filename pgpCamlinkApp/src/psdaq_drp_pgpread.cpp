@@ -130,6 +130,7 @@ void int_handler(int dummy)
     // dmaUnMapDma();
 }
 
+#if 1
 int ClSerialMaster::sendBytes( const char * buffer, size_t nBytes )
 {
 	uint32_t	lValue;
@@ -176,6 +177,7 @@ int ClSerialMaster::sendBytes( const char * buffer, size_t nBytes )
 
 	return 0;
 }
+#endif
 
 static void usage(const char* p)
 {

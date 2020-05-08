@@ -14,6 +14,7 @@
 //
 
 #include <stdio.h>
+#include <DmaDriver.h>
 
 #include "pgpClSerialDev.h"
 
@@ -39,6 +40,14 @@ pgpClSerialDev::pgpClSerialDev(
 	char	acDevName[60];
 	sprintf( acDevName, "/dev/datadev_%u", board );
 	m_devName = acDevName;
+
+#if 1
+	uint8_t mask[DMA_MASK_SIZE];
+	dmaInitMaskBytes(mask);
+	for (unsigned lane=0; lane<4; lane++) {
+		dmaAddMaskBytes((uint8_t*)mask, (lane<<8 | channel));
+	}
+#endif
 
 	if ( 1 )
 	{

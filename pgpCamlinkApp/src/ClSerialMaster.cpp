@@ -6,7 +6,7 @@ int ClSerialMaster::sendBytes( const char * buffer, size_t nBytes )
 {
 	uint32_t	lValue;
 	if ( strlen( buffer ) <= nBytes )
-		printf( "            ClSerialMaster::sendBytes: '%s' %zu bytes.\n", buffer, nBytes );
+		printf( "ClSerialMaster::sendBytes: %zu bytes.\n'%s'\n", nBytes, buffer );
 	std::shared_ptr<rogue::interfaces::stream::Frame> frame;
 	frame = reqFrame ( nBytes * 4, true );
 	if ( ! frame )
@@ -15,18 +15,21 @@ int ClSerialMaster::sendBytes( const char * buffer, size_t nBytes )
 		return -1;
 	}
 	rogue::interfaces::stream::FrameIterator it;
-#if 0
+#if 1
 	// Test incorrect setPayload size.  Should throw exception
+	//frame->setPayload( nBytes );
+	frame->setPayload( nBytes * 4 );
 	it = frame->begin();
-	frame->setPayload( nBytes );
 	for ( size_t i = 0; i < nBytes; i++ )
 	{
-		printf( "ClSerialMaster::sendBytes: Frame size %u, payload %u, remBuffer %u, avail %u\n",
-				frame->getSize(), frame->getPayload(), it.remBuffer(), frame->getAvailable() );
+#if 1
+		printf( "ClSerialMaster::sendBytes: Byte 0x%02X, Frame size %u, payload %u, remBuffer %u, avail %u\n",
+				buffer[i], frame->getSize(), frame->getPayload(), it.remBuffer(), frame->getAvailable() );
+#endif
 		lValue = buffer[i];
 		toFrame( it, 4, &lValue );
 	}
-#endif
+#else
 	frame->setPayload( nBytes * 4 );
 	it = frame->begin();
 	for ( size_t i = 0; i < nBytes; i++ )
@@ -34,6 +37,7 @@ int ClSerialMaster::sendBytes( const char * buffer, size_t nBytes )
 		lValue = buffer[i];
 		toFrame( it, 4, &lValue );
 	}
+#endif
 	printf( "ClSerialMaster::sendBytes: Frame size %u, payload %u, avail %u\n",
 			frame->getSize(), frame->getPayload(), frame->getAvailable() );
 	try
