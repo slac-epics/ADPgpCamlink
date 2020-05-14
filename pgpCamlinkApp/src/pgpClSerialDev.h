@@ -19,8 +19,10 @@
 #define	pgpClSerialDev_H
 
 #include <string>
+#include <string.h>
 #include <epicsMutex.h>
 #include <rogue/hardware/axi/AxiMemMap.h>
+#include <rogue/hardware/axi/AxiStreamDma.h>
 
 #include "ClSerialMaster.h"
 #include "ClSerialSlave.h"
@@ -40,7 +42,19 @@ public:		//	Public member functions
 	/// Destructor
 	virtual ~pgpClSerialDev();
 
-	int sendBytes( const char * buffer, size_t nBytes );
+	int sendBytes( const unsigned char * buffer, size_t nBytes );
+
+	/// sendString function treats zero as the end of the string.
+	int sendString( const char * toSend )
+	{
+		const unsigned char * buffer	= (const unsigned char *) toSend;
+		return sendBytes( buffer, strlen(toSend) );
+	}
+
+	int sendString( const std::string	& toSend )
+	{
+		return sendBytes( (const unsigned char *) toSend.c_str(), toSend.size() );
+	}
 
 	//	Private member variables
 	bool				m_fConnected;

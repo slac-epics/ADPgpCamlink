@@ -14,7 +14,9 @@
 //
 
 #include <stdio.h>
+#include <iostream>
 #include <DmaDriver.h>
+#include <AxiVersion.h>
 
 #include "pgpClSerialDev.h"
 
@@ -66,6 +68,21 @@ pgpClSerialDev::pgpClSerialDev(
 		clSerialRx[lane] = ClSerialSlave::create();
 		dataChan[lane][2]->addSlave( clSerialRx[lane] );
 	}
+
+	int fd = open(m_devName.c_str(), O_RDWR);
+	if (fd < 0) {
+		std::cout << "Error opening " << m_devName << std::endl;
+	}
+	else {
+		AxiVersion vsn;
+		if ( axiVersionGet(fd, &vsn) >= 0 )
+		{
+			printf("\n");
+			printf("-- Core Axi Version --\n");
+			printf("firmwareVersion : %x\n", vsn.firmwareVersion);
+			printf("buildString     : %s\n", vsn.buildString); 
+		}
+	}
 }
 
 /// virtual Destructor
@@ -73,7 +90,7 @@ pgpClSerialDev::~pgpClSerialDev()
 {
 }
 
-int pgpClSerialDev::sendBytes( const char * buffer, size_t nBytes )
+int pgpClSerialDev::sendBytes( const unsigned char * buffer, size_t nBytes )
 {
 	return clSerialTx[0]->sendBytes( buffer, nBytes );
 }

@@ -430,11 +430,11 @@ long pgpCamlink::init_camera()
 	}
 
 	// Send Opal serial commands
-	clSerialTx[0]->sendBytes( "@TP1\r", 5 );	// Test Pattern On
-	clSerialTx[0]->sendBytes( "@SN?\r", 5 );	// Get Serial Number
+	clSerialTx[0]->sendString( "@TP1\r" );	// Test Pattern On
+	clSerialTx[0]->sendString( "@SN?\r" );	// Get Serial Number
 	printf( "sleeping 2 sec ...\n" );
 	sleep(2);
-	//clSerialTx[0]->sendBytes( "@SN?\r\n", 6 );
+	//clSerialTx[0]->sendString( "@SN?\r\n" );
 	//printf( "sleeping 2 sec ...\n" );
 	//sleep(2);
 	clSerialTx[0]->sendString( "@ID?\r" );		// Get model ID string

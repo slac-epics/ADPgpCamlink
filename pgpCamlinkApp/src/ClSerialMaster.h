@@ -4,16 +4,17 @@
 #ifndef	__STDC_FORMAT_MACROS
 #define	__STDC_FORMAT_MACROS
 #endif /* __STDC_FORMAT_MACROS */
+#include <string.h>
 #include <inttypes.h>
 #include <epicsTime.h>
-#include <rogue/GeneralError.h>
+//#include <rogue/GeneralError.h>
 #include <rogue/interfaces/stream/Master.h>
-#include <rogue/interfaces/stream/Frame.h>
-#include <rogue/interfaces/stream/FrameIterator.h>
-#include <rogue/interfaces/stream/FrameLock.h>
-#include <rogue/hardware/axi/AxiStreamDma.h>
-#include <rogue/protocols/batcher/CoreV1.h>
-#include <rogue/protocols/batcher/Data.h>
+//#include <rogue/interfaces/stream/Frame.h>
+//#include <rogue/interfaces/stream/FrameIterator.h>
+//#include <rogue/interfaces/stream/FrameLock.h>
+//#include <rogue/hardware/axi/AxiStreamDma.h>
+//#include <rogue/protocols/batcher/CoreV1.h>
+//#include <rogue/protocols/batcher/Data.h>
 
 class ClSerialMaster : public rogue::interfaces::stream::Master
 {
@@ -30,17 +31,18 @@ public:
 	ClSerialMaster() : rogue::interfaces::stream::Master() { }
 
 	/// sendBytes function can handle binary data containing zeroes.
-	int sendBytes( const char * buffer, size_t nBytes );
+	int sendBytes( const unsigned char * buffer, size_t nBytes );
 
 	/// sendString function treats zero as the end of the string.
 	int sendString( const char * toSend )
 	{
-		return sendBytes( toSend, strlen(toSend) );
+		const unsigned char * buffer	= (const unsigned char *) toSend;
+		return sendBytes( buffer, strlen(toSend) );
 	}
 
 	int sendString( const std::string	& toSend )
 	{
-		return sendBytes( toSend.c_str(), toSend.size() );
+		return sendBytes( (const unsigned char *) toSend.c_str(), toSend.size() );
 	}
 
 	// stream::Master provides a reqFrame implementation that gets an empty

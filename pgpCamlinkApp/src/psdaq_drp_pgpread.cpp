@@ -14,6 +14,7 @@
 
 #include <rogue/Version.h>
 #include <rogue/Helpers.h>
+#include <rogue/GeneralError.h>
 #include <rogue/hardware/axi/AxiMemMap.h>
 #include <rogue/hardware/axi/AxiStreamDma.h>
 #include <rogue/interfaces/memory/Constants.h>
@@ -131,11 +132,11 @@ void int_handler(int dummy)
 }
 
 #if 1
-int ClSerialMaster::sendBytes( const char * buffer, size_t nBytes )
+int ClSerialMaster::sendBytes( const unsigned char * buffer, size_t nBytes )
 {
 	uint32_t	lValue;
-	if ( strlen( buffer ) <= nBytes )
-		printf( "            ClSerialMaster::sendBytes: '%s' %zu bytes.\n", buffer, nBytes );
+	if ( strlen( (const char *) buffer ) <= nBytes )
+		printf( "ClSerialMaster::sendBytes: %zu bytes.\n'%s'\n", nBytes, buffer );
 	std::shared_ptr<rogue::interfaces::stream::Frame> frame;
 	frame = reqFrame ( nBytes * 4, true );
 	if ( ! frame )
@@ -260,6 +261,7 @@ int main (int argc, char **argv)
 			dataChan[lane][ch]	= rogue::hardware::axi::AxiStreamDma::create( device.c_str(), dest, true);
 		}
 	}
+
 	// NOTE: Initializing lanes 1, 2, and 3 breaks lane 0 serial!
 	for ( uint32_t	lane = 0; lane < 1;	lane++ )
 	{
@@ -287,10 +289,50 @@ int main (int argc, char **argv)
 		// CHAN 3: Camera Serial Rx
 		clSerialRx[lane] = ClSerialSlave::create();
 		dataChan[lane][2]->addSlave( clSerialRx[lane] );
+	}
 
-		if ( lane != 0 )
-			continue;
+	printf("\n");
+	printf("-- Rogue Version: %s\n", rogue::Version::current().c_str());
 
+#if 0
+	fd = dataChan[0][0]->getFileDescriptor();
+#else
+	fd = open(device.c_str(), O_RDWR);
+	if (fd < 0) {
+		std::cout<<"Error opening "<<device<<'\n';
+		return -1;
+	}
+#endif
+	AxiVersion vsn;
+	if ( axiVersionGet(fd, &vsn) >= 0 )
+	{
+		printf("\n");
+		printf("-- Core Axi Version --\n");
+		printf("firmwareVersion : %x\n", vsn.firmwareVersion);
+		printf("upTimeCount     : %u\n", vsn.upTimeCount);
+		printf("deviceId        : %x\n", vsn.deviceId);
+		printf("buildString     : %s\n", vsn.buildString); 
+	}
+	if ( febMemMaster[0] )
+	{
+		char		buildStamp[257];
+		uint32_t	febFpgaVersion	= 0xdead;
+		uint32_t	febDeviceId		= 0xdead;
+		febMemMaster[0]->reqTransaction( CLINKDEV_FEB0_AXIVERSION_DEVICEID, 4, &febDeviceId, rogue::interfaces::memory::Read );
+		febMemMaster[0]->reqTransaction( CLINKDEV_FEB0_AXIVERSION_FPGAVERSION, 4, &febFpgaVersion, rogue::interfaces::memory::Read );
+		febMemMaster[0]->reqTransaction( CLINKDEV_FEB0_AXIVERSION_BUILDSTAMP, 256, &buildStamp, rogue::interfaces::memory::Read );
+		febMemMaster[0]->waitTransaction(0);
+		buildStamp[256] = 0;
+		printf("\n");
+		printf("-- Feb[0] Axi Version --\n");
+		printf("firmwareVersion : %x\n", febFpgaVersion);
+		printf("upTimeCount     : %u\n", upTime);
+		printf("deviceId        : %x\n", febDeviceId);
+		printf("buildString     : %s\n", buildStamp); 
+	}
+
+	for ( uint32_t	lane = 0; lane < 1;	lane++ )
+	{
 		// Read ClinkDev upTime and scratch register
 		upTime = 0xdead;
 		scratch = 0xdead;
@@ -358,11 +400,11 @@ int main (int argc, char **argv)
 		}
 	}
 	// Send Opal serial commands
-	clSerialTx[0]->sendBytes( "@TP1\r", 5 );	// Test Pattern On
-	clSerialTx[0]->sendBytes( "@SN?\r", 5 );	// Get Serial Number
+	clSerialTx[0]->sendString( "@TP1\r" );	// Test Pattern On
+	clSerialTx[0]->sendString( "@SN?\r" );	// Get Serial Number
 	printf( "sleeping 2 sec ...\n" );
 	sleep(2);
-	//clSerialTx[0]->sendBytes( "@SN?\r\n", 6 );
+	//clSerialTx[0]->sendString( "@SN?\r\n" );
 	//printf( "sleeping 2 sec ...\n" );
 	//sleep(2);
 	clSerialTx[0]->sendString( "@ID?\r" );		// Get model ID string
@@ -372,46 +414,6 @@ int main (int argc, char **argv)
 		return -1;
 	}
 #endif
-#if 0
-	fd = dataChan[0][0]->getFileDescriptor();
-#else
-
-	fd = open(device.c_str(), O_RDWR);
-	if (fd < 0) {
-		std::cout<<"Error opening "<<device<<'\n';
-		return -1;
-	}
-#endif
-
-	printf("\n");
-	printf("-- Rogue Version: %s\n", rogue::Version::current().c_str());
-	AxiVersion vsn;
-	if ( axiVersionGet(fd, &vsn) >= 0 )
-	{
-		printf("\n");
-		printf("-- Core Axi Version --\n");
-		printf("firmwareVersion : %x\n", vsn.firmwareVersion);
-		printf("upTimeCount     : %u\n", vsn.upTimeCount);
-		printf("deviceId        : %x\n", vsn.deviceId);
-		printf("buildString     : %s\n", vsn.buildString); 
-	}
-	if ( febMemMaster[0] )
-	{
-		char		buildStamp[257];
-		uint32_t	febFpgaVersion	= 0xdead;
-		uint32_t	febDeviceId		= 0xdead;
-		febMemMaster[0]->reqTransaction( CLINKDEV_FEB0_AXIVERSION_DEVICEID, 4, &febDeviceId, rogue::interfaces::memory::Read );
-		febMemMaster[0]->reqTransaction( CLINKDEV_FEB0_AXIVERSION_FPGAVERSION, 4, &febFpgaVersion, rogue::interfaces::memory::Read );
-		febMemMaster[0]->reqTransaction( CLINKDEV_FEB0_AXIVERSION_BUILDSTAMP, 256, &buildStamp, rogue::interfaces::memory::Read );
-		febMemMaster[0]->waitTransaction(0);
-		buildStamp[256] = 0;
-		printf("\n");
-		printf("-- Feb[0] Axi Version --\n");
-		printf("firmwareVersion : %x\n", febFpgaVersion);
-		printf("upTimeCount     : %u\n", upTime);
-		printf("deviceId        : %x\n", febDeviceId);
-		printf("buildString     : %s\n", buildStamp); 
-	}
 
 	printf( "sleeping 2 sec ...\n" );
 	sleep(2);

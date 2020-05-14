@@ -4,6 +4,7 @@
 #include <iostream>
 #include <signal.h>
 #include <getopt.h>
+#include <rogue/Version.h>
 #include "pgpClSerialDev.h"
 
 
@@ -47,7 +48,7 @@ SendMsgLoop(
 	std::string		sendBuffer;
 
 	std::cout << "Sending test msg: @SN?\r" << std::endl;
-	pgpDev.sendBytes( "@SN?\r", 5 );	// Test Pattern On
+	pgpDev.sendString( "@SN?\r" );	// Test Pattern On
 
 	std::cout << "Hit Ctrl-C to exit ...\r" << std::endl;
     while( 1 )
@@ -56,7 +57,7 @@ SendMsgLoop(
 		std::cin.getline( &inBuffer[0], S_SENDBUFFER_MAX );
 
 		sendBuffer = MapEscapeChars( std::string(inBuffer) );
-		pgpDev.sendBytes( sendBuffer.c_str(), sendBuffer.size() );
+		pgpDev.sendString( sendBuffer );
 
 #if 0
 		char		recvBuffer[S_SENDBUFFER_MAX];
@@ -198,6 +199,8 @@ main( int argc, char **argv )
 
     if ((timeout == 0))
     	timeout = 60000;
+
+	printf("-- Rogue Version: %s\n", rogue::Version::current().c_str());
 
 	pgpClSerialDev	pgpDev( board, channel );
 

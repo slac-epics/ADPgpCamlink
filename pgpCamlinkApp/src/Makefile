@@ -13,6 +13,8 @@ LIB_SRCS		+= pgpClSerialDev.cpp
 LIB_SRCS		+= asynPgpClSerial.cpp
 LIB_LIBS		+= asyn
 LIB_LIBS		+= $(EPICS_BASE_IOC_LIBS)
+pgpCamlink_LIBS		+= asyn
+pgpCamlink_LIBS		+= $(EPICS_BASE_IOC_LIBS)
 
 PROD += kcuPgpRead
 kcuPgpRead_SRCS	+= psdaq_drp_pgpread.cpp
