@@ -1,4 +1,5 @@
 #include <exception>
+#include <chrono>
 #include <iostream>
 #include "ClSerialSlave.h"
 #include <rogue/interfaces/stream/Frame.h>
@@ -13,6 +14,8 @@ ClSerialSlave::ClSerialSlave()
 		m_replyBuffer(	),
 		m_nBytesInBuffer( 0 ),
 		m_nBytesReq( 0 ),
+		m_replyReady( ),
+		m_replyLock( ),
 		m_bufferLock( )
 {
 	printf( "Creating ClSerialSlave\n" );
@@ -25,7 +28,24 @@ ClSerialSlave::~ClSerialSlave()
 
 int ClSerialSlave::readBytes( unsigned char * buffer, double timeout, size_t nBytesMax )
 {
-	return 0;
+	printf( "ClSerialSlave::readBytes: %zu bytes, timeout %.3f sec\n", nBytesMax, timeout );
+	std::chrono::milliseconds	timeoutDur( (int) (timeout * 1000) );
+	std::unique_lock<std::mutex>	lockIt(m_replyLock);
+
+	m_nBytesReq	= nBytesMax;
+	while ( m_replyBuffer.size() < m_nBytesReq )
+	{
+		std::cv_status	 cvStatus = m_replyReady.wait_for( lockIt, timeoutDur );
+		if ( cvStatus == std::cv_status::timeout )
+		{
+			printf( "ClSerialSlave::readBytes: timeout waiting for %zu bytes.\n", m_nBytesReq );
+			break;
+		}
+	}
+
+	int	nBytesRead = readFromBuffer( buffer, nBytesMax );
+	m_nBytesReq	= 0;
+	return nBytesRead;
 }
 
 int ClSerialSlave::readFromBuffer( unsigned char * buffer, size_t nBytesMax )
@@ -33,6 +53,7 @@ int ClSerialSlave::readFromBuffer( unsigned char * buffer, size_t nBytesMax )
 	if ( !buffer )
 		return -1;
 	unsigned char *	next	= buffer;
+	printf( "ClSerialSlave::readFromBuffer: %zu of %zu bytes\n", m_replyBuffer.size(), nBytesMax );
 	try
 	{
 		std::lock_guard<std::mutex> lockBuffer( m_bufferLock );
@@ -48,13 +69,17 @@ int ClSerialSlave::readFromBuffer( unsigned char * buffer, size_t nBytesMax )
 	{
 		std::cerr << "ClSerialSlave::readFromBuffer caught exception: " << e.what() << std::endl;
 	}
-	return (int) ( next - buffer );
+	int		nBytesRead = next - buffer;
+	printf( "ClSerialSlave::readFromBuffer: Read %u bytes\n", nBytesRead );
+	return nBytesRead;
 }
 
 void ClSerialSlave::addToBuffer( unsigned char c )
 {
 	std::lock_guard<std::mutex> lockBuffer( m_bufferLock );
 	m_replyBuffer.push( c );
+	if ( m_nBytesReq != 0 && m_replyBuffer.size() >= m_nBytesReq )
+		m_replyReady.notify_one();
 }
 
 
@@ -80,23 +105,28 @@ void ClSerialSlave::acceptFrame ( std::shared_ptr<rogue::interfaces::stream::Fra
 		fromFrame( it, 4, &uartData );
 		unsigned char	cData = uartData;
 		addToBuffer( cData );
-		if ( 1 )
+		if ( 0 )
 		{
 			if ( isprint(cData) )
 			{
-				//printf( " %c (0x%X)", cData, cData );
+				//printf( " %c (0x%02X)", cData, cData );
 				m_diagBuffer += cData;
 			}
 			else
 			{
 				switch( cData )
 				{
-				//default:	printf( " ? (0x%X)", cData );	break;
+				//default:	printf( " ? (0x%02X)", cData );	break;
 				default:	m_diagBuffer += cData;			break;
-				case 0x06:	printf( " ACK (0x%X)\n", cData );	m_diagBuffer.clear(); break;
-				case 0x25:	printf( " NAK (0x%X)\n", cData );	m_diagBuffer.clear(); break;
-				case '\n':	printf( " NL (0x%X)\n", cData );	break;
-				case '\r':	printf( "recvString: %s\n", m_diagBuffer.c_str() );	break;
+				case 0x06:	printf( "<ACK>(0x%02X)\n", cData );	m_diagBuffer.clear(); break;
+				case 0x25:	printf( "<NAK>(0x%02X)\n", cData );	m_diagBuffer.clear(); break;
+				case '\n':
+					printf( "<NL> (0x%02X)\n", cData );
+					break;
+				case '\r':
+					printf( "<CR> (0x%02X)\n", cData );
+					printf( "rcvdString: %s\n", m_diagBuffer.c_str() );
+					break;
 				}
 			}
 		}

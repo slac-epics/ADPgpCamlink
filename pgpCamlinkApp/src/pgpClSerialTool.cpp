@@ -1,20 +1,22 @@
 
 
-#include <atomic>
+//#include <atomic>
+#include <getopt.h>
 #include <iostream>
 #include <signal.h>
-#include <getopt.h>
+#include <unistd.h>
 #include <rogue/Version.h>
+#include <rogue/GeneralError.h>
 #include "pgpClSerialDev.h"
 
 
-std::atomic<bool> terminateMemoryOrder;
+//std::atomic<bool> terminateMemoryOrder;
 
-void int_handler(int dummy)
-{
-    terminateMemoryOrder.store(true, std::memory_order_release);
+//void int_handler(int dummy)
+//{
+    //terminateMemoryOrder.store(true, std::memory_order_release);
     // dmaUnMapDma();
-}
+//}
 
 std::string	MapEscapeChars( const std::string & in )
 {
@@ -40,31 +42,54 @@ std::string	MapEscapeChars( const std::string & in )
 long
 SendMsgLoop(
 	pgpClSerialDev	&	pgpDev,
-	int					timeout,
+	double				timeout,
 	int					verbose	)
 {
 	const size_t	S_SENDBUFFER_MAX	= 256;
-	char		inBuffer[S_SENDBUFFER_MAX];
+	char			inBuffer[S_SENDBUFFER_MAX];
+	unsigned char	recvBuffer[S_SENDBUFFER_MAX];
 	std::string		sendBuffer;
 
+	std::cout << "Hit Ctrl-C to exit ...\r" << std::endl;
 	std::cout << "Sending test msg: @SN?\r" << std::endl;
 	pgpDev.sendString( "@SN?\r" );	// Test Pattern On
 
-	std::cout << "Hit Ctrl-C to exit ...\r" << std::endl;
     while( 1 )
 	{
+		sleep(1);
+		int nRead = pgpDev.readBytes( recvBuffer, timeout, S_SENDBUFFER_MAX );
+		if ( nRead <= 0 )
+			std::cerr << "No response!" << std::endl;
+        else
+		{
+			std::cout << "Rcvd: " << std::endl;
+			unsigned char	cData;
+			for ( size_t i=0; i < (size_t) nRead; ++i )
+			{
+				cData = recvBuffer[i];
+				switch( cData )
+				{
+				default:
+					if ( isprint(cData ) )
+						putchar( cData );
+					else
+						printf( "<\?\?\?>(0x%02X)\n", cData );	break;
+					break;
+				case 0x06:	printf( "<ACK>(0x%02X)\n", cData );	break;
+				case 0x25:	printf( "<NAK>(0x%02X)\n", cData );	break;
+				case '\n':	printf( "<NL>(0x%02X)\n", cData );	break;
+				case '\r':	printf( "<CR>(0x%02X)\n", cData );	break;
+				}
+			}
+		}
+
 		std::cout << "Send? ";
 		std::cin.getline( &inBuffer[0], S_SENDBUFFER_MAX );
 
 		sendBuffer = MapEscapeChars( std::string(inBuffer) );
+		if ( sendBuffer.size() == 0 )
+			break;
 		pgpDev.sendString( sendBuffer );
-
-#if 0
-		char		recvBuffer[S_SENDBUFFER_MAX];
-		// TODO: pgpDev.clSerialRx currently implements ClSerialSlave::acceptFrame() and just prints response.
-		getBytes( recvBuffer, S_SENDBUFFER_MAX, timeout );
-        std::cout << "Recv: " << recvBuffer << std::endl;
-#endif
     };
 
     // close();
@@ -90,16 +115,18 @@ main( int argc, char **argv )
     long    status;        /* return status from command */
     int     board = 0;
     int     verbose = 0;
-    int     timeout = 0;
+    double  timeout = 0.0;
     int     channel = 0;
 
-#if 1
 	char c;
 	std::string device;
-	while((c = getopt(argc, argv, "hc:d:")) != EOF)
+	while((c = getopt(argc, argv, "hvc:d:t:")) != EOF)
 	{
 		switch(c)
 		{
+		case 'v':
+			verbose = 1;
+			break;
 		case 'd':
 			device = optarg;
 			break;
@@ -109,6 +136,9 @@ main( int argc, char **argv )
 		case 'c':
 			channel = atoi(optarg);
 			break;
+		case 't':
+			timeout = atof(optarg);
+			break;
 		case 'h':
 		default:
 			usage(argv[0]);
@@ -116,96 +146,31 @@ main( int argc, char **argv )
 		}
 	}
 
-#else
-    --argc;
-    ++argv;
-    while ((argc > 0) && ((argv[0][0] == '-') || (argv[0][0] == '/')))
-    {
-        switch (argv[0][1])
-        {
-            case 'b':        /* device board number */
-                ++argv;
-                --argc;
-                if (argc < 1) 
-                {
-                    usage("Error: option 'b' requires a numeric argument\n");
-                    exit(1);
-                }
-                if ((argv[0][0] >= '0') && (argv[0][0] <= '9'))
-                {
-                    board = atoi(argv[0]);
-                }
-                else 
-                {
-                    usage("Error: option 'u' requires a numeric argument\n");
-                    exit(1);
-                }
-                break;
+//	terminateMemoryOrder.store(false, std::memory_order_release);
+//	signal(SIGINT, int_handler);
 
-            case 't':
-                ++argv;
-                --argc;
-                if (argc < 1) {
-                usage("Error: option 't' requires argument\n");
-                exit(1);
-                }
-                if ((argv[0][0] >= '0') && (argv[0][0] <= '9'))
-                timeout = atoi(argv[0]);
-                break;
-
-            case 'v':
-                verbose = 1;
-                break;
-
-            case '-':
-                if (strcmp(argv[0], "--help") == 0) {
-                usage("");
-                exit(0);
-                } else {
-                fprintf(stderr, "unknown option: %s\n", argv[0]);
-                usage("");
-                exit(1);
-                }
-                break;
-
-            case 'h':
-                usage("");
-                exit(0);
-                break;
-
-            case 'c':
-                ++argv;
-                --argc;
-                if (argc < 1)
-                {
-                usage("Error - channel # expected\n");
-                exit(-1);
-                }
-                channel = atoi(argv[0]);
-                break;
-
-            default:
-                usage("unknown flag\n");
-                exit(1);
-                break;
-        }
-        argc--;
-        argv++;
-    }
-#endif
-
-	terminateMemoryOrder.store(false, std::memory_order_release);
-	signal(SIGINT, int_handler);
-
-    if ((timeout == 0))
-    	timeout = 60000;
+    if ((timeout == 0.0))
+    	timeout = 0.5;
 
 	printf("-- Rogue Version: %s\n", rogue::Version::current().c_str());
 
 	pgpClSerialDev	pgpDev( board, channel );
+	try
+	{
+		pgpDev.connect();
 
-    status = SendMsgLoop( pgpDev, timeout, verbose );
-	//pgpDev.close();
+		status = SendMsgLoop( pgpDev, timeout, verbose );
+	}
+	catch ( rogue::GeneralError & e )
+	{
+		std::cerr << "pgpClSerialTool caught rogue exception:" << std::endl;
+		std::cerr << e.what() << std::endl;
+	}
+	catch ( std::exception & e )
+	{
+		std::cerr << "pgpClSerialTool caught exception: " << e.what() << std::endl;
+	}
+	pgpDev.disconnect();
 
     exit(status);
 }

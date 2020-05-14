@@ -36,11 +36,16 @@ class pgpClSerialDev
 public:		//	Public member functions
 
 	///	Constructor
-	pgpClSerialDev(	int						board,
-					int						channel	);
+	pgpClSerialDev(	unsigned int				board,
+					unsigned int				channel	);
 
 	/// Destructor
 	virtual ~pgpClSerialDev();
+
+	void connect( );
+	void disconnect( );
+
+	int readBytes( unsigned char * buffer, double timeout, size_t nBytes );
 
 	int sendBytes( const unsigned char * buffer, size_t nBytes );
 
@@ -57,6 +62,8 @@ public:		//	Public member functions
 	}
 
 	//	Private member variables
+	unsigned int		m_board;
+	unsigned int		m_lane;
 	bool				m_fConnected;
 	std::string			m_devName;
 	epicsMutexId		m_DevLock;

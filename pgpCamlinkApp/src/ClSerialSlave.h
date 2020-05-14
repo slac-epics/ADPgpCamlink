@@ -50,7 +50,8 @@ private:
 	std::queue<unsigned char>	m_replyBuffer;
 	size_t						m_nBytesInBuffer;
 	size_t						m_nBytesReq;
-	std::condition_variable		m_ready;
+	std::condition_variable		m_replyReady;
+	std::mutex					m_replyLock;
 	std::mutex					m_bufferLock;
 
 };
