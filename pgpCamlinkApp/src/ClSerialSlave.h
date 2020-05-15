@@ -39,6 +39,16 @@ public:
 	/// acceptFrame is called by rogue for each new serial byte
 	void acceptFrame ( std::shared_ptr<rogue::interfaces::stream::Frame> frame );
 
+	/// Get the number of available received bytes in input buffer
+	size_t	getNumAvailBytes( ) const
+	{
+		// std::lock_guard<std::mutex> lockBuffer( m_bufferLock );
+		return m_replyBuffer.size();
+	}
+
+	/// flush input buffer
+	void flush( );
+
 	//static const 	size_t	S_REPLY_BUFFER	= 256;
 
 private:

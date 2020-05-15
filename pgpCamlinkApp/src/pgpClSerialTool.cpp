@@ -56,7 +56,7 @@ SendMsgLoop(
 
     while( 1 )
 	{
-		sleep(1);
+		//sleep(1);
 		int nRead = pgpDev.readBytes( recvBuffer, timeout, S_SENDBUFFER_MAX );
 		if ( nRead <= 0 )
 			std::cerr << "No response!" << std::endl;
@@ -75,10 +75,18 @@ SendMsgLoop(
 					else
 						printf( "<\?\?\?>(0x%02X)\n", cData );	break;
 					break;
+				case 0x00:	printf( "<NUL>(0x%02X)\n", cData );	break;
+				case 0x02:	printf( "<STX>(0x%02X)\n", cData );	break;
+				case 0x03:	printf( "<ETX>(0x%02X)\n", cData );	break;
+				case 0x04:	printf( "<EOT>(0x%02X)\n", cData );	break;
 				case 0x06:	printf( "<ACK>(0x%02X)\n", cData );	break;
-				case 0x25:	printf( "<NAK>(0x%02X)\n", cData );	break;
-				case '\n':	printf( "<NL>(0x%02X)\n", cData );	break;
-				case '\r':	printf( "<CR>(0x%02X)\n", cData );	break;
+				case 0x08:	printf( "<BS>(0x%02X)\n",  cData );	break;
+				case 0x09:	printf( "<HT>(0x%02X)\n",  cData );	break;
+				case 0x15:	printf( "<NAK>(0x%02X)\n", cData );	break;
+				case 0x1B:	printf( "<ESC>(0x%02X)\n", cData );	break;
+				case '\n':	printf( "<NL>(0x%02X)\n",  cData );	break;
+				case '\r':	printf( "<CR>(0x%02X)\n",  cData );	break;
+				case 0x7F:	printf( "<DEL>(0x%02X)\n", cData );	break;
 				}
 			}
 		}

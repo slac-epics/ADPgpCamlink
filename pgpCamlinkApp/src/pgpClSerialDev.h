@@ -61,6 +61,18 @@ public:		//	Public member functions
 		return sendBytes( (const unsigned char *) toSend.c_str(), toSend.size() );
 	}
 
+	void flush( )
+	{
+		clSerialRx[0]->flush();
+	}
+
+	size_t	getNumAvailBytes( ) const
+	{
+		//return m_ReplyBuffer.size();
+		return clSerialRx[0]->getNumAvailBytes();
+	}
+
+private:
 	//	Private member variables
 	unsigned int		m_board;
 	unsigned int		m_lane;

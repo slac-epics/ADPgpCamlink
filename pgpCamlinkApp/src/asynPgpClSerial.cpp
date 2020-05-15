@@ -34,7 +34,7 @@ static const char * driverName = "asynPgpClSerial";
 asynPgpClSerial::asynPgpClSerial(
 	const char			*	portName,
 	int						board,
-	int						channel,
+	int						lane,
 	int						priority,		// 0 = default 50, high is 90
 	int						autoConnect,	// 0 = no auto-connect
 	int						maxBuffers,		// 0 = unlimited
@@ -58,7 +58,7 @@ asynPgpClSerial::asynPgpClSerial(
 	m_fConnected(			false		),
 	m_fInputFlushNeeded(	true		),
 	m_serialLock(						),
-	m_SerDev(			board, channel	)
+	m_SerDev(			board, lane		)
 {
 	const char		*	functionName	= "asynPgpClSerial::asynPgpClSerial";
 	//	asynStatus			status;
@@ -79,25 +79,6 @@ asynPgpClSerial::asynPgpClSerial(
 		printf("portName missing or empty.\n");
 	}
 
-#if 0
-	if ( 1 )
-	{
-		uint_t		lane	= 0;
-		uint32_t	dest	= 0;
-		for ( uint32_t	ch = 0; ch < N_AXI_CHAN;	ch++ ) {
-			dest = (0x100 * lane) + ch;	// Derived from python code
-			dataChan[lane][ch]	= rogue::hardware::axi::AxiStreamDma::create( m_devName, dest, true);
-		}
-
-		// CHAN 2: Camera Serial Tx
-		clSerialTx[lane] = ClSerialMaster::create();
-		clSerialTx[lane]->addSlave( dataChan[lane][2] );
-
-		// CHAN 3: Camera Serial Rx
-		clSerialRx[lane] = ClSerialSlave::create();
-		dataChan[lane][2]->addSlave( clSerialRx[lane] );
-	}
-#endif
 }
 
 /// virtual Destructor
@@ -203,7 +184,7 @@ asynStatus	asynPgpClSerial::readOctet(
 		return asynError;
 	}
 
-	char			*	pReadBuffer	= pBuffer;
+	unsigned char	*	pReadBuffer	= (unsigned char *) pBuffer;
 	size_t				sReadBuffer	= nBytesReadMax;
 
 	int		nRead	= 0;
@@ -215,29 +196,14 @@ asynStatus	asynPgpClSerial::readOctet(
 					functionName, this->portName, nBytesReadMax, sReadBuffer, pasynUser->timeout );
 		/*
 		 * Follow streamdevice usage on timeout: <= 0 is don't wait, > 0 specifies delay in sec
-		 * In pdv_serial_wait, 0 = wait for the default time (1 sec?).
 		 */
 		if ( m_fConnected )
 		{
-            int nMsTimeout = 200; // Default and max timeout
-			if ( pasynUser->timeout > 0 )
-				nMsTimeout	= static_cast<int>( pasynUser->timeout * 1000 );
-#if 1
-			nAvailToRead = 0;
-#else
-			nAvailToRead = pdv_serial_wait( m_pDev, nMsTimeout, sReadBuffer );
-#endif
+			nAvailToRead = m_SerDev.getNumAvailBytes();
 		}
-		if( nAvailToRead > 0 )
+		if( 1 || nAvailToRead > 0 )
 		{
-			int		nToRead	= nAvailToRead;
-			if( nToRead > static_cast<int>(sReadBuffer) )
-			{
-				if ( DEBUG_PGPCL_SER >= 3 )
-					printf( "%s: %s Clipping nAvailToRead %d to sReadBuffer %zu\n",
-							functionName, this->portName, nAvailToRead, sReadBuffer );
-				nToRead = static_cast<int>(sReadBuffer);
-			}
+			int		nToRead = static_cast<int>(sReadBuffer);
 			asynPrint(	pasynUser, ASYN_TRACE_FLOW,
 						"%s: %s nToRead %d\n", functionName, this->portName, nToRead );
 
@@ -245,11 +211,7 @@ asynStatus	asynPgpClSerial::readOctet(
 			if ( DEBUG_PGPCL_SER >= 3 )
 				printf( "%s: %s Have serial lock, reading %d ...\n", functionName, this->portName, nToRead );
 			if ( m_fConnected )
-#if 0
-				nRead = pdv_serial_read( m_pPdvDev, pReadBuffer, nToRead );
-#else
-				nRead = 0;
-#endif
+				nRead = m_SerDev.readBytes( pReadBuffer, pasynUser->timeout, nToRead );
 			else
 				nRead = -1;
 			epicsMutexUnlock(m_serialLock);
@@ -395,38 +357,29 @@ asynStatus	asynPgpClSerial::writeOctet(
 	if ( m_fInputFlushNeeded )
 	{
 		// Flush the read buffer
-		char		flushBuf[1000];
-		int			nAvailToRead = 0;
+		unsigned char	flushBuf[1000];
+		int				nAvailToRead = 0;
 		epicsMutexLock( m_serialLock );
 		if ( m_fConnected )
 		{
-#if 0
-			nAvailToRead = pdv_serial_wait( m_pPdvDev, 500, 1000 );
-			if ( nAvailToRead > 0 )
-				nAvailToRead = pdv_serial_read( m_pPdvDev, flushBuf, nAvailToRead );
-#else
-			nAvailToRead = 0;
-#endif
+			nAvailToRead = m_SerDev.getNumAvailBytes();
+			if( nAvailToRead > 0 )
+				nAvailToRead = m_SerDev.readBytes( flushBuf, pasynUser->timeout, nAvailToRead );
 		}
 		epicsMutexUnlock( m_serialLock );
 		printf( "%s: Flushed %d bytes\n", functionName, nAvailToRead );
 		m_fInputFlushNeeded = false;
 	}
 
-	const char		*	pSendBuffer	= pBuffer;
-	size_t				sSendBuffer	= maxChars;
-	uint16_t			requestId	= 0xFFFF;
+	const unsigned char	*	pSendBuffer	= (unsigned char *) pBuffer;
+	size_t					sSendBuffer	= maxChars;
+	uint16_t				requestId	= 0xFFFF;
 
 	// Note: 
 	// This driver is designed to be used from DTYP "stream" PV's.
-	// The streamdevice asynDriver owns the PlgCl serial channel
-	// and manages any bytes read from that channel, using it's
+	// The streamdevice asynDriver owns the pgpClSerialDev lane
+	// and manages any bytes read from that lane, using it's
 	// own layer of mutex protection.
-	//
-	// Calling PlgCl functions from outside this driver is dangerous
-	// and also wrong as it requires finding another way besides
-	// streamdevice to handle protocol differences between
-	// the many camera models we may need to support.
 	//int		status	= -1;
 	epicsMutexLock( m_serialLock );
 	if ( requestId != 0xFFFF )
@@ -435,15 +388,11 @@ asynStatus	asynPgpClSerial::writeOctet(
 			printf( "REQUESTID %-5hu: Sending  %zu bytes\n", requestId, sSendBuffer );
 	}
 	if ( m_fConnected )
-#if 0
-		status = pdv_serial_write( m_pPdvDev, pSendBuffer, sSendBuffer );
-#endif
+		*pnWritten = m_SerDev.sendBytes( pSendBuffer, sSendBuffer );
 	epicsMutexUnlock( m_serialLock );
 
-	if ( status == 0 )
+	if ( *pnWritten > 0 )
 	{
-		*pnWritten = sSendBuffer;
-
 		if ( isAscii( pBuffer, strlen(pBuffer) ) )
 		{
 			asynPrint(	pasynUser,	ASYN_TRACE_FLOW,
@@ -459,7 +408,7 @@ asynStatus	asynPgpClSerial::writeOctet(
 						functionName, *pnWritten, this->portName );
 		}
 	}
-	else if ( status != 0 )
+	else
 	{
 		epicsSnprintf(	pasynUser->errorMessage, pasynUser->errorMessageSize,
 						"%s: %s write error: %s\n",
@@ -525,10 +474,10 @@ asynStatus	asynPgpClSerial::getOutputEosOctet(
 
 void asynPgpClSerial::report( FILE * fp, int details )
 {
-    fprintf(	fp, "PgpCl camera serial port %s: %s\n",
+    fprintf(	fp, "pgpCl camera serial port %s: %s\n",
 				this->portName, m_fConnected ? "Connected" : "Disconnected" );
 #if 0
-    fprintf(	fp, "PgpCl camera serial port %s: camera model %s\n",
+    fprintf(	fp, "pgpCl camera serial port %s: camera model %s\n",
 				this->portName, get_camera_model( ) );
 #endif
 

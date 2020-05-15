@@ -79,7 +79,6 @@ void pgpClSerialDev::connect( )
 		AxiVersion vsn;
 		if ( axiVersionGet(fd, &vsn) >= 0 )
 		{
-			printf("\n");
 			printf("-- Core Axi Version --\n");
 			printf("firmwareVersion : %x\n", vsn.firmwareVersion);
 			printf("buildString     : %s\n", vsn.buildString); 
