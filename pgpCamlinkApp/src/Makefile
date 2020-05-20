@@ -5,7 +5,8 @@ include $(TOP)/configure/CONFIG
 #=============================
 
 LIBRARY_IOC = pgpCamlink
-LIB_SRCS   		+= pgpCamlink.cpp
+DBD += pgpCamlinkSupport.dbd
+LIB_SRCS   		+= pgpCamlink2.cpp
 #LIB_SRCS		+= rogue_example_memory_master.cpp
 LIB_SRCS		+= ClSerialMaster.cpp
 LIB_SRCS		+= ClSerialSlave.cpp

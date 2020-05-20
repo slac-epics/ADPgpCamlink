@@ -12,8 +12,10 @@ include $(TOP)/configure/CONFIG
 # databases, templates, substitutions like this
 
 # db templates
-#DB += foo.template
-#DB += bar.db
+DB += pgpCamlinkBase.template
+DB += putMonitor.template
+DB += rbvMonitor.template
+DB += serialMonitor.template
 
 # Install archive files
 #ARCHIVE += foo.tpl-arch
