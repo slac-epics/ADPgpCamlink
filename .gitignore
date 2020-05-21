@@ -8,4 +8,5 @@ include/
 O.*
 RELEASE_SITE
 *.log
+*.out
 __pycache__
