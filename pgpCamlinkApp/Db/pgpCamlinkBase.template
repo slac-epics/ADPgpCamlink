@@ -1,0 +1,689 @@
+#
+# Base record set common to all EDT PDV based cameras
+#
+# Required macros:
+#	P				- Prefix
+#	R				- Region, common camera PV prefix is $(P)$(R)
+#	PORT			- Asyn port name
+# Optional macros
+#	TIMEOUT			- Defaults to 1 sec
+#	CAM_MODE		- Base, Medium, or Full. Defaults to Base
+#
+# These are needed only if you want to use Edt PV's to set
+# and monitor event code trigger timing.
+#	CAM_EC			- PV to set camera trigger event code
+#	CAM_EC_RBV		- PV to get camera trigger event code
+#	CAM_RATE_RBV	- PV to get camera trigger event code rep rate in Hz
+#	EVR_DLY_SCALE	- Scale factor for cam delay to evr delay, default 1000000000 for ns
+#	EVR_DLY_EGU		- EGU for   camera event delay values, defaults to ns
+#
+# These macros are typically not needed
+# For the Orca and other rolling shutter cameras whose shutter ramp time is
+# longer than the few ms advance notice before the beam arrives
+# you can specify an event code which will be used to filter camera images
+# acquired at 120hz regardless of beam rate
+#	BEAM_EC			- PV to set beam event code used to filter image acquisition
+#	BEAM_EC_RBV		- PV to get beam event code used to filter image acquisition
+#	BEAM_RATE_RBV	- PV to get beam event code rep rate in Hz
+#
+
+# Disable these records from ADBase.template as they are readback only based
+# on the current configuration and can only be changed by changing the config file
+record( mbbo, "$(P)$(R)DataType"			) { field( DISA, "1" ) }
+record( mbbo, "$(P)$(R)ColorMode"			) { field( DISA, "1" ) }
+
+# Disable AcquirePeriod from ADBase.template as the EDT framegrabber
+# and most EDT cameras don't support it
+# Camera models which support AcquirePeriod should set DISA back to 0
+record( ao, "$(P)$(R)AcquirePeriod"			) { field( DISA, "1" ) }
+record( ai, "$(P)$(R)AcquirePeriod_RBV"		) { field( DISA, "1" ) }
+
+# Set severity for ADStateInitializing to MINOR to highlight when camera is reconfiguring
+record( mbbi, "$(P)$(R)DetectorState_RBV"	) { field( EISV, "MINOR" ) }
+
+# This record should be overridden in $MODEL.db, replacing "UknownModel" with
+# the chosen camera model.
+# PINI is NO here so PV status is UDF, but should be set to YES in $MODEL.db
+record( stringin, "$(P)$(R)CamModel" )
+{
+	field( VAL,  "UnknownModel" )
+	field( PINI, "NO" )
+}
+record( stringin, "$(P)$(R)CamModelScreen" )
+{
+	field( VAL,  "edtPdvScreens/UnknownModel.edl" )
+	field( PINI, "NO" )
+}
+# Provide alias to old EdtModel* PV's for a while to ease transition to CamModel*
+alias( "$(P)$(R)CamModel",		 "$(P)$(R)EdtModel" )
+alias( "$(P)$(R)CamModelScreen", "$(P)$(R)EdtModelScreen" )
+
+# This EdtReConfigCount PV # gets incremented each time the driver reconfigures
+# the camera.  The FNLK record, EdtReConfigSeq, should be implemented by each
+# camera model.db file to trigger processing of serial commands
+# to read camera settings and status.
+# Note: Serial commands for AcquireTime, TriggerMode, etc that get updated
+# in response to user changes to settings typically do not need to get
+# re-read in response to a reconfigure.
+record( longout, $(P)$(R)EdtReConfigCount )
+{
+	field( DTYP, "asynInt32" )
+	field( OUT,  "@asyn($(PORT),$(ADDR=0),$(TIMEOUT=1))EDT_RECFG_CNT" )
+	field( SCAN, "I/O Intr" )
+	field( FLNK, "$(P)$(R)EdtReConfigSeq" )
+}
+record( seq, $(P)$(R)EdtReConfigSeq )
+{
+}
+
+#
+# Propagate the gain through the EDT layer
+record( ao, "$(P)$(R)Gain" )
+{
+	field( FLNK, "$(P)$(R)EdtGain" )
+}
+record( ao, "$(P)$(R)EdtGain" )
+{
+	field( DTYP, "asynFloat64" )
+	field( OMSL, "closed_loop" )
+	field( DOL,  "$(P)$(R)Gain NPP MS" )
+	field( OUT,  "@asyn($(PORT),$(ADDR=0),$(TIMEOUT=1))EDT_GAIN" )
+#	field( TPRO, "2" )
+}
+record( ao, "$(P)$(R)EdtGain_RBV" )
+{
+	field( DTYP, "asynFloat64" )
+	field( OUT,  "@asyn($(PORT),$(ADDR=0),$(TIMEOUT=1))EDT_GAIN" )
+#	field( TPRO, "2" )
+}
+
+record( ao, "$(P)$(R)AcquireTime" )
+{
+#	field( TPRO, "2" )
+	field( FLNK, "$(P)$(R)EdtAcquireTime" )
+}
+
+# EdtAcquireTime (Exposure Time)
+# This record updates the EDT asyn serial driver
+record( ao, "$(P)$(R)EdtAcquireTime" )
+{
+#	field( TPRO, 2 )
+	field( DTYP, "asynFloat64" )
+	field( OMSL, "closed_loop" )
+	field( PREC, "4" )
+	field( DOL,  "$(P)$(R)AcquireTime NPP MS" )
+	field( OUT,  "@asyn($(PORT),$(ADDR=0),$(TIMEOUT=1))EDT_ACQUIRE_TIME" )
+	info( archiveFields,  "VAL" )
+}
+# EdtAcquireTime_RBV (Exposure Time)
+# This record updates the EDT asyn serial driver
+# which maps it to ADCore's ADAcquireTime parameter
+record( ao, "$(P)$(R)EdtAcquireTime_RBV" )
+{
+	field( DTYP, "asynFloat64" )
+	field( OUT,  "@asyn($(PORT),$(ADDR=0),$(TIMEOUT=1))EDT_ACQUIRE_TIME" )
+	field( EGU,  "sec" )
+	field( PREC, "4" )
+#	field( TPRO, "2" )
+}
+
+# Update ADCore AcquireTime_RBV from EdtAcquireTime_RBV
+# This overrides the default precision for the
+# ADCore AcquireTime readback
+record( ai, "$(P)$(R)AcquireTime_RBV" )
+{
+	field( PREC, "5" )
+
+	field( DTYP, "Soft Channel" )
+	field( INP,  "$(P)$(R)EdtAcquireTime_RBV CP MS" )
+	field( SCAN, "Passive" )
+#	field( TPRO, "2" )
+}
+
+#
+# Handle framegrabber hardware ROI Min and Size for X and Y dimensions
+#
+# Note: EdtMinX is a longin record instead of longout, while
+# EdtMinX_RBV is longout.  This is the opposite pattern of most
+# ADCore record names, as these are used to communicate ROI settings between
+# ADCore, EDT framegrabber API, and the camera specific ROI PV's.
+# Same logic applies to the other HW ROI related PV's
+record( longin, "$(P)$(R)EdtMinX" )
+{
+	field( DTYP, "asynInt32" )
+	field( INP,  "@asyn($(PORT),$(ADDR=0),$(TIMEOUT=1))EDT_MIN_X" )
+	field( SCAN, "I/O Intr" )
+	info( autosaveFields, "" )
+}
+record( longout, "$(P)$(R)EdtMinX_RBV" )
+{
+	field( DTYP, "asynInt32" )
+	field( OMSL, "closed_loop" )
+	field( DOL,  "$(P)$(R)EdtMinX CPP MS" )
+	field( OUT,  "@asyn($(PORT),$(ADDR=0),$(TIMEOUT=1))EDT_MIN_X" )
+}
+record( longin, "$(P)$(R)EdtBinX" )
+{
+	field( DTYP, "asynInt32" )
+	field( INP,  "@asyn($(PORT),$(ADDR=0),$(TIMEOUT=1))EDT_BIN_X" )
+	field( SCAN, "I/O Intr" )
+	info( autosaveFields, "" )
+}
+record( longout, "$(P)$(R)EdtBinX_RBV" )
+{
+	field( DTYP, "asynInt32" )
+	field( OMSL, "closed_loop" )
+	field( DOL,  "$(P)$(R)EdtBinX CPP MS" )
+	field( OUT,  "@asyn($(PORT),$(ADDR=0),$(TIMEOUT=1))EDT_BIN_X" )
+}
+record( longin, "$(P)$(R)EdtSizeX" )
+{
+	field( DTYP, "asynInt32" )
+	field( INP,  "@asyn($(PORT),$(ADDR=0),$(TIMEOUT=1))EDT_SIZE_X" )
+	field( SCAN, "I/O Intr" )
+	info( autosaveFields, "" )
+}
+record( longout, "$(P)$(R)EdtSizeX_RBV" )
+{
+	field( DTYP, "asynInt32" )
+	field( OMSL, "closed_loop" )
+	field( DOL,  "$(P)$(R)EdtSizeX CPP MS" )
+	field( OUT,  "@asyn($(PORT),$(ADDR=0),$(TIMEOUT=1))EDT_SIZE_X" )
+	info( autosaveFields, "" )
+}
+record( longin, "$(P)$(R)EdtMinY" )
+{
+	field( DTYP, "asynInt32" )
+	field( INP,  "@asyn($(PORT),$(ADDR=0),$(TIMEOUT=1))EDT_MIN_Y" )
+	field( SCAN, "I/O Intr" )
+	info( autosaveFields, "" )
+}
+record( longout, "$(P)$(R)EdtMinY_RBV" )
+{
+	field( DTYP, "asynInt32" )
+	field( OMSL, "closed_loop" )
+	field( DOL,  "$(P)$(R)EdtMinY CPP MS" )
+	field( OUT,  "@asyn($(PORT),$(ADDR=0),$(TIMEOUT=1))EDT_MIN_Y" )
+	info( autosaveFields, "" )
+}
+record( longin, "$(P)$(R)EdtBinY" )
+{
+	field( DTYP, "asynInt32" )
+	field( INP,  "@asyn($(PORT),$(ADDR=0),$(TIMEOUT=1))EDT_BIN_Y" )
+	field( SCAN, "I/O Intr" )
+	info( autosaveFields, "" )
+}
+record( longout, "$(P)$(R)EdtBinY_RBV" )
+{
+	field( DTYP, "asynInt32" )
+	field( OMSL, "closed_loop" )
+	field( DOL,  "$(P)$(R)EdtBinY CPP MS" )
+	field( OUT,  "@asyn($(PORT),$(ADDR=0),$(TIMEOUT=1))EDT_BIN_Y" )
+	info( autosaveFields, "" )
+}
+record( longin, "$(P)$(R)EdtSizeY" )
+{
+	field( DTYP, "asynInt32" )
+	field( INP,  "@asyn($(PORT),$(ADDR=0),$(TIMEOUT=1))EDT_SIZE_Y" )
+	field( SCAN, "I/O Intr" )
+	info( autosaveFields, "" )
+}
+record( longout, "$(P)$(R)EdtSizeY_RBV" )
+{
+	field( DTYP, "asynInt32" )
+	field( OMSL, "closed_loop" )
+	field( DOL,  "$(P)$(R)EdtSizeY CPP MS" )
+	field( OUT,  "@asyn($(PORT),$(ADDR=0),$(TIMEOUT=1))EDT_SIZE_Y" )
+	info( autosaveFields, "" )
+}
+
+# Used to configure whether camera has HW ROI or not
+# Most EDT cameras do not so HW ROI happens in the framegrabber
+# by reading out less than the full image.  This does not
+# increase frame rates as the entire image is still being sent
+# over the camlink connection.
+# TODO: Some cameras such as Pulnix have 2 or 3 preconfigured
+# ROI readout modes that could be used but would probably require
+# some custom driver coding.
+record( longout, "$(P)$(R)EdtHwHROI_RBV" )
+{
+	field( OMSL, "closed_loop" )
+	field( VAL,  "0" )
+	field( DTYP, "asynInt32" )
+	field( OUT,  "@asyn($(PORT),$(ADDR=0),$(TIMEOUT=1))EDT_HW_VROI" )
+	field( PINI, "YES" )
+	info( archiveFields,  "VAL" )
+}
+
+# Used to configure whether camera has HW ROI or not
+# Most EDT cameras do not
+record( longout, "$(P)$(R)EdtHwVROI_RBV" )
+{
+	field( OMSL, "closed_loop" )
+	field( VAL,  "0" )
+	field( DTYP, "asynInt32" )
+	field( OUT,  "@asyn($(PORT),$(ADDR=0),$(TIMEOUT=1))EDT_HW_VROI" )
+	field( PINI, "YES" )
+	info( archiveFields,  "VAL" )
+}
+
+record( longin, "$(P)$(R)HTaps_RBV" )
+{
+	field( DTYP,  "asynInt32" )
+	field( INP,   "@asyn($(PORT),$(ADDR=0),$(TIMEOUT=1))EDT_HTAPS" )
+	field( SCAN, "I/O Intr" )
+	info( archiveFields,  "VAL" )
+}
+
+record( longin, "$(P)$(R)VTaps_RBV" )
+{
+	field( DTYP, "asynInt32" )
+	field( INP,  "@asyn($(PORT),$(ADDR=0),$(TIMEOUT=1))EDT_VTAPS" )
+	field( SCAN, "I/O Intr" )
+	info( archiveFields, "VAL" )
+}
+
+record( mbbi, "$(P)$(R)EdtMode_RBV" )
+{
+	field( DTYP, "asynInt32" )
+	field( INP,  "@asyn($(PORT),$(ADDR=0),$(TIMEOUT=1))EDT_MODE" )
+	field( ZRST, "Base" )
+	field( ZRVL, "0" )
+	field( ONST, "Medium" )
+	field( ONVL, "1" )
+	field( TWST, "Full" )
+	field( TWVL, "2" )
+	field( SCAN, "I/O Intr" )
+	info( archiveFields,  "VAL" )
+}
+
+record( stringin, "$(P)$(R)EdtClass" )
+{
+	field( DTYP, "asynOctetRead" )
+	field( INP,  "@asyn($(PORT),$(ADDR=0),$(TIMEOUT=1))EDT_CLASS" )
+	field( SCAN, "I/O Intr" )
+	info( archiveFields,  "VAL" )
+}
+
+record( stringin, "$(P)$(R)EdtDrvVersion" )
+{
+	field( DTYP, "asynOctetRead" )
+	field( INP,  "@asyn($(PORT),$(ADDR=0),$(TIMEOUT=1))EDT_DRV_VERSION" )
+	field( SCAN, "I/O Intr" )
+	info( archiveFields,  "VAL" )
+}
+
+record( stringin, "$(P)$(R)EdtLibVersion" )
+{
+	field( DTYP, "asynOctetRead" )
+	field( INP,  "@asyn($(PORT),$(ADDR=0),$(TIMEOUT=1))EDT_LIB_VERSION" )
+	field( SCAN, "I/O Intr" )
+	info( archiveFields,  "VAL" )
+}
+
+record( stringin, "$(P)$(R)EdtInfo" )
+{
+	field( DTYP, "asynOctetRead" )
+	field( INP,  "@asyn($(PORT),$(ADDR=0),$(TIMEOUT=1))EDT_INFO" )
+	field( SCAN, "I/O Intr" )
+	info( archiveFields,  "VAL" )
+}
+
+record( mbbi, "$(P)$(R)EdtOverrun" )
+{
+	field( DTYP, "asynInt32" )
+	field( INP,  "@asyn($(PORT),$(ADDR=0),$(TIMEOUT=1))EDT_OVERRUN" )
+	field( ZRST, "OK"		) field( ZRVL, "0" ) field( ZRSV, "NO_ALARM" )
+	field( ONST, "Overrun"	) field( ONVL, "1" ) field( ONSV, "MAJOR" )
+	field( SCAN, "I/O Intr" )
+	info( autosaveFields,  "DESC ONSV ZRSV" )
+	info( archiveFields,  "DESC ONSV VAL ZRSV" )
+}
+
+record( longout, "$(P)$(R)EdtDebugLevel" )
+{
+	field( DTYP, "asynInt32" )
+	field( OUT,  "@asyn($(PORT),$(ADDR=0),$(TIMEOUT=1))EDT_DEBUG" )
+	field( PINI, "YES" )
+	field( DOL,	"0" )
+	field( FLNK, "$(P)$(R)EdtDebugLevel_RBV" )
+	info( autosaveFields, "HHSV HIGH HIHI HSV LLSV LOLO LOW LSV EGU DESC HOPR LOPR VAL" )
+	info( archiveFields,  "VAL" )
+}
+
+record( longin, "$(P)$(R)EdtDebugLevel_RBV" )
+{
+	field( DTYP, "asynInt32" )
+	field( INP,  "@asyn($(PORT),$(ADDR=0),$(TIMEOUT=1))EDT_DEBUG" )
+	field( SCAN, "I/O Intr" )
+	info( autosaveFields, "HHSV HIGH HIHI HSV LLSV LOLO LOW LSV EGU DESC HOPR LOPR" )
+	info( archiveFields,  "VAL" )
+}
+
+record( longout, "$(P)$(R)EdtDebugMsgLevel" )
+{
+	field( DTYP, "asynInt32" )
+	field( OUT,  "@asyn($(PORT),$(ADDR=0),$(TIMEOUT=1))EDT_DEBUG_MSG" )
+	field( PINI, "YES" )
+	field( DOL,	"0" )
+	field( FLNK, "$(P)$(R)EdtDebugMsgLevel_RBV" )
+	info( autosaveFields, "VAL" )
+	info( archiveFields,  "VAL" )
+}
+
+record( longin, "$(P)$(R)EdtDebugMsgLevel_RBV" )
+{
+	field( DTYP, "asynInt32" )
+	field( INP,  "@asyn($(PORT),$(ADDR=0),$(TIMEOUT=1))EDT_DEBUG_MSG" )
+	field( SCAN, "I/O Intr" )
+	info( autosaveFields, "HHSV HIGH HIHI HSV LLSV LOLO LOW LSV EGU DESC HOPR LOPR" )
+	info( archiveFields,  "VAL" )
+}
+
+record( longout, "$(P)$(R)EdtHSkip" )
+{
+	field( DTYP, "asynInt32" )
+	field( OUT,  "@asyn($(PORT),$(ADDR=0),$(TIMEOUT=1))EDT_HSKIP" )
+	info( archiveFields,  "VAL" )
+}
+
+record( longout, "$(P)$(R)EdtHSize" )
+{
+	field( DTYP, "asynInt32" )
+	field( OUT,  "@asyn($(PORT),$(ADDR=0),$(TIMEOUT=1))EDT_HSIZE" )
+	info( archiveFields,  "VAL" )
+}
+
+record( longout, "$(P)$(R)EdtVSkip" )
+{
+	field( DTYP, "asynInt32" )
+	field( OUT,  "@asyn($(PORT),$(ADDR=0),$(TIMEOUT=1))EDT_VSKIP" )
+	info( archiveFields,  "VAL" )
+}
+
+record( longout, "$(P)$(R)EdtVSize" )
+{
+	field( DTYP, "asynInt32" )
+	field( OUT,  "@asyn($(PORT),$(ADDR=0),$(TIMEOUT=1))EDT_VSIZE" )
+	info( archiveFields,  "VAL" )
+}
+
+record( mbbo, "$(P)$(R)EdtTrigLevel" )
+{
+	field( DTYP, "asynInt32" )
+	field( OUT,  "@asyn($(PORT),$(ADDR=0),$(TIMEOUT=1))EDT_TRIG_LEVEL" )
+	field( PINI, "YES" )
+	field( ZRST, "Edge" )
+	field( ZRVL, "0" )
+	field( ONST, "Level" )
+	field( ONVL, "1" )
+	field( TWST, "Sync" )
+	field( TWVL, "2" )
+	info( autosaveFields, "VAL" )
+	info( archiveFields,  "VAL" )
+}
+
+#record( mbbi, "$(P)$(R)EdtTrigLevel_RBV" )
+#{
+#	field( DTYP, "asynInt32" )
+#	field( INP,  "@asyn($(PORT),$(ADDR=0),$(TIMEOUT=1))EDT_TRIG_LEVEL" )
+#	field( PINI, "YES" )
+#	field( ZRST, "Edge" )
+#	field( ZRVL, "0" )
+#	field( ONST, "Level" )
+#	field( ONVL, "1" )
+#	field( TWST, "Sync" )
+#	field( TWVL, "2" )
+#	field( SCAN, "I/O Intr" )
+#	info( archiveFields,  "VAL" )
+#}
+
+# Replace ADBase TriggerMode fields w/ EDT specific options
+record( mbbo, "$(P)$(R)TriggerMode" )
+{
+#	field( TPRO, 2 )
+	field( ZRVL, "0" )	field( ZRST, "FreeRun" )
+	field( ONVL, "1" )	field( ONST, "External" )
+	field( TWVL, "2" )	field( TWST, "Pulse" )
+}
+# Replace ADBase TriggerMode_RBV fields w/ EDT options
+record( mbbi, "$(P)$(R)TriggerMode_RBV" )
+{
+#	field( TPRO, 2 )
+	field( ZRVL, "0" )	field( ZRST, "FreeRun" )
+	field( ONVL, "1" )	field( ONST, "External" )
+	field( TWVL, "2" )	field( TWST, "Pulse" )
+}
+# EdtTriggerMode should not be FLNK'd from TriggerMode, as it shouldn't
+# get processed till we've shutdown acquisition.
+# Note also it needs to be an input record so it processes via I/O Scan
+# once camera is reconfigured.
+record( mbbi, "$(P)$(R)EdtTriggerMode" )
+{
+#	field( TPRO, 2 )
+	field( DTYP, "asynInt32" )
+	field( INP,  "@asyn($(PORT),$(ADDR=0),$(TIMEOUT=1))EDT_TRIGGER_MODE" )
+	field( ZRVL, "0" )	field( ZRST, "FreeRun" )
+	field( ONVL, "1" )	field( ONST, "External" )
+	field( TWVL, "2" )	field( TWST, "Pulse" )
+	field( SCAN, "I/O Intr" )
+	info( archiveFields,  "DESC" )
+}
+record( mbbo, "$(P)$(R)EdtTriggerMode_RBV" )
+{
+#	field( TPRO, 2 )
+	field( DTYP, "asynInt32" )
+	field( OUT,  "@asyn($(PORT),$(ADDR=0),$(TIMEOUT=1))EDT_TRIGGER_MODE" )
+	field( ZRVL, "0" )	field( ZRST, "FreeRun" )
+	field( ONVL, "1" )	field( ONST, "External" )
+	field( TWVL, "2" )	field( TWST, "Pulse" )
+#	field( FLNK, "$(P)$(R)TriggerMode_RBV" )
+	info( archiveFields,  "DESC" )
+}
+
+# TODO: Add Pulse Width based AcquireTime support here
+
+#
+# The following PV's are needed only if you want to use Edt PV's to set
+# and monitor event code trigger timing, in which case be sure to set
+# the required macros listed at the top of this file
+#
+
+record( longout, "$(P)$(R)EdtDelayScale" )
+{
+	field( DOL,  "$(EVR_DLY_SCALE=1000000000)" )
+	field( EGU,  "$(EVR_DLY_EGU=ns)" )
+	field( PINI, "YES" )
+	info( autosaveFields, "HHSV HIGH HIHI HSV LLSV LOLO LOW LSV EGU DESC HOPR LOPR VAL" )
+	info( archiveFields,  "HHSV HIGH HIHI HSV LLSV LOLO LOW LSV EGU DESC HOPR LOPR VAL" )
+}
+
+# These records are also in ioc/common/edtCam/VERSION/edtApp/Db/timeStampEventCode.db
+record( longout, "$(P)$(R)CamEventCode" )
+{
+	field( VAL,  "40" )
+	field( OUT,  "$(CAM_EC=Unused) CPP NMS" )
+	field( PINI, "YES" )
+	info( autosaveFields, "HHSV HIGH HIHI HSV LLSV LOLO LOW LSV EGU DESC HOPR LOPR VAL" )
+	info( archiveFields,  "HHSV HIGH HIHI HSV LLSV LOLO LOW LSV EGU DESC HOPR LOPR VAL" )
+}
+record( longin, "$(P)$(R)CamEventCode_RBV" )
+{
+	field( INP,  "$(CAM_EC_RBV=Unused) CPP MS" )
+	info( autosaveFields, "HHSV HIGH HIHI HSV LLSV LOLO LOW LSV EGU DESC" )
+	info( archiveFields,  "HHSV HIGH HIHI HSV LLSV LOLO LOW LSV EGU DESC VAL" )
+}
+
+record( ai, "$(P)$(R)CamRepRate_RBV" )
+{
+	field( INP, "$(CAM_RATE_RBV=Unused) CPP MS" )
+	field( EGU,  "Hz" )
+	field( PREC, "1" )
+	field( FLNK, "$(P)$(R)CamRepDur" )
+	info( autosaveFields, "HHSV HIGH HIHI HSV LLSV LOLO LOW LSV EGU DESC PREC" )
+	info( archiveFields,  "HHSV HIGH HIHI HSV LLSV LOLO LOW LSV EGU DESC PREC VAL" )
+}
+record( calc, "$(P)$(R)CamRepDur" )
+{
+	field( INPA, "$(P)$(R)CamRepRate_RBV CPP MS" )
+	field( CALC, "A==0?10:(1/A)" )
+	field( EGU,  "sec" )
+	field( PREC, "3" )
+	info( autosaveFields, "HHSV HIGH HIHI HSV LLSV LOLO LOW LSV EGU DESC PREC" )
+	info( archiveFields,  "HHSV HIGH HIHI HSV LLSV LOLO LOW LSV EGU DESC PREC VAL" )
+}
+
+#
+# For rolling shutter MODEL.db, set these fields as appropriate
+#	field( PINI, "YES" )
+#record( longout, "$(P)$(R)BeamEventCode" ) {
+#	field( OUT,  "$(BEAM_EC=$(P)$(R)CamEventCode) CPP NMS" ) }
+#record( longin, "$(P)$(R)BeamEventCode_RBV" ) {
+#	field( INP,  "$(BEAM_EC_RBV=$(P)$(R)CamEventCode_RBV) CPP MS" ) }
+#record( ai, "$(P)$(R)BeamRepRate_RBV" ) {
+#	field( INP,  "$(BEAM_RATE_RBV=$(P)$(R)CamRepRate_RBV) CPP MS" ) }
+#	info( autosaveFields, "HHSV HIGH HIHI HSV LLSV LOLO LOW LSV EGU DESC HOPR LOPR VAL" )
+#
+# By default this beam event code is disabled, not autosaved and
+# PINI is NO so it can be safely ignored and not visible on the user GUI
+# Similarly, the RBV values default to following their camera trigger equivalents
+#
+record( longout, "$(P)$(R)BeamEventCode" )
+{
+	field( VAL,  "140" )
+	field( PINI, "NO" )
+	field( OUT,  "$(P)$(R)CamEventCode CPP NMS" )
+	field( DISA, "1" )
+	info( autosaveFields, "HHSV HIGH HIHI HSV LLSV LOLO LOW LSV EGU DESC HOPR LOPR" )
+	info( archiveFields,  "HHSV HIGH HIHI HSV LLSV LOLO LOW LSV EGU DESC HOPR LOPR VAL" )
+}
+record( longin, "$(P)$(R)BeamEventCode_RBV" )
+{
+	field( INP,  "$(P)$(R)CamEventCode_RBV CPP MS" )
+	info( autosaveFields, "HHSV HIGH HIHI HSV LLSV LOLO LOW LSV EGU DESC HOPR LOPR" )
+	info( archiveFields,  "HHSV HIGH HIHI HSV LLSV LOLO LOW LSV EGU DESC HOPR LOPR VAL" )
+}
+record( ai, "$(P)$(R)BeamRepRate_RBV" )
+{
+	field( INP,  "$(P)$(R)CamRepRate_RBV CPP MS" )
+	field( EGU,  "Hz" )
+	field( PREC, "1" )
+	field( FLNK, "$(P)$(R)BeamRepDur" )
+	info( autosaveFields, "HHSV HIGH HIHI HSV LLSV LOLO LOW LSV EGU DESC PREC" )
+	info( archiveFields,  "HHSV HIGH HIHI HSV LLSV LOLO LOW LSV EGU DESC PREC VAL" )
+}
+record( calc, "$(P)$(R)BeamRepDur" )
+{
+	field( INPA, "$(P)$(R)BeamRepRate_RBV CPP MS" )
+	field( CALC, "A==0?10:(1/A)" )
+	field( EGU,  "sec" )
+	field( PREC, "3" )
+	info( autosaveFields, "HHSV HIGH HIHI HSV LLSV LOLO LOW LSV EGU DESC PREC" )
+	info( archiveFields,  "HHSV HIGH HIHI HSV LLSV LOLO LOW LSV EGU DESC PREC VAL" )
+}
+
+
+record( ao, "$(P)$(R)XmitRate" )
+{
+    field( DOL,  "40.0e6" )
+    field( EGU,  "Bytes/Sec" )
+    field( PREC, "3" )
+    field( PINI, "YES" )
+    info( autosaveFields, "VAL" )
+}
+
+record( ao, "$(P)$(R)CamProcDelay" )
+{
+    field( DOL,  "1.0e-6" )
+    field( EGU,  "Sec" )
+    field( PREC, "3" ) 
+    field( PINI, "YES" )
+    info( autosaveFields, "VAL" )
+}
+
+record( calc, "$(P)$(R)CamlinkXmitTime" )
+{
+    field( INPA, "$(P)$(R)ArraySize_RBV CP MS" )
+    field( INPB, "$(P)$(R)XmitRate CPP MS" )
+    field( INPC, "$(P)$(R)HTaps_RBV CPP MS" )
+    field( INPD, "$(P)$(R)VTaps_RBV CPP MS" )
+    field( CALC, "(A/B/C/D)" )
+    field( EGU,  "Sec" )
+    field( PREC, "5" ) 
+	field( FLNK, "$(P)$(R)XmitDelay" )
+}
+
+record( calc, "$(P)$(R)XmitDelay" )
+{
+    field( INPA, "$(P)$(R)CamlinkXmitTime NPP MS" )
+    field( INPB, "$(P)$(R)CamProcDelay CPP MS" )
+    field( CALC, "A+B" )
+    field( EGU,  "Sec" )
+    field( PREC, "5" ) 
+}
+
+record( ao, "$(P)$(R)DriverProcDelay" )
+{
+    field( DOL,  "0.0007" )
+    field( EGU,  "Sec" )
+    field( PREC, "3" ) 
+    field( PINI, "YES" )
+    info( autosaveFields, "VAL" )
+}
+
+#
+# TrigToTS_Calc: Calculates expected delay from trigger to timeStamp update 
+# Inputs: All units in seconds
+#	A	- Camera acquire time (exposure length)
+#	B	- Camera image transmission time
+#	C	- Estimated driver processing delay before requesting timestamp
+record( calc, "$(P)$(R)TrigToTS_Calc" )
+{
+    field( INPA, "$(P)$(R)AcquireTime_RBV CP MS" )
+    field( INPB, "$(P)$(R)XmitDelay CP MS" )
+    field( INPC, "$(P)$(R)DriverProcDelay CP MS" )
+    field( CALC, "A+B+C" )
+    field( EGU,  "sec" )
+    field( PREC, "5" ) 
+}
+
+# Disable or Enable the serial communication with the Device
+record( bo, "$(P)$(R)SerialDisable" )
+{
+	field( DTYP, "asynInt32" )
+	field( OUT,  "@asyn($(PORT),$(ADDR=0),$(TIMEOUT=1))SERIAL_DISABLE" )
+    field( SCAN, "I/O Intr" )
+    field( DOL, 1  )
+    field( PINI, "YES" )
+    field( ZNAM, "Enabled" )
+    field( ONAM, "Disabled"  )
+	info( archiveFields,  "VAL" )
+    info( autosaveFields, "VAL" )
+}
+
+# Holds the total number of images acquired
+record( longout, "$(P)$(R)SyncTotalCnt" )
+{
+	field( DTYP, "asynInt32" )
+	field( OUT,  "@asyn($(PORT),$(ADDR=0),$(TIMEOUT=1))SYNC_TOTAL" )
+    field( SCAN, "I/O Intr" )
+	info( archiveFields,  "VAL" )
+}
+
+# Holds the total number of images discarded by Bad Timestamp
+record( longout, "$(P)$(R)SyncBadTSCnt" )
+{
+	field( DTYP, "asynInt32" )
+	field( OUT,  "@asyn($(PORT),$(ADDR=0),$(TIMEOUT=1))SYNC_BAD_TS" )
+    field( SCAN, "I/O Intr" )
+	info( archiveFields,  "VAL" )
+}
+
+# Holds the total number of images discarded by Bad Sync 
+record( longout, "$(P)$(R)SyncBadSyncCnt" )
+{
+	field( DTYP, "asynInt32" )
+	field( OUT,  "@asyn($(PORT),$(ADDR=0),$(TIMEOUT=1))SYNC_BAD_SYNC" )
+    field( SCAN, "I/O Intr" )
+	info( archiveFields,  "VAL" )
+}

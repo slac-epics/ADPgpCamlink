@@ -1,0 +1,13 @@
+# A simple MODEL substitutions file which preserves macro defaults
+# but expands any inluded rbvMonitor.template or other templates.
+file opal1000m_12.template
+{
+	{
+		P				= "\$(P)",
+		R				= "\$(R)",
+		PORT			= "\$(PORT)",
+		PWIDTH			= "\$(PWIDTH=TRIG:PULSE:WIDTH)",
+		PW_SCALE		= "\$(PW_SCALE=1e9)",
+		SerialDisable	= "\$(SerialDisable)"
+	}
+}

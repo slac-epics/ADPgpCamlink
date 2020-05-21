@@ -1,0 +1,75 @@
+#
+# Opal Family Serial Protocol
+#
+# Messages start w/ STX and end w/ ETX
+# STX is the @ character, 0x40
+# ETX is the CR character, 0x0D
+#
+# Successful replies start w/ an ACK, hex 0x06, followed by reply content, if any
+# Unsuccesful commands reply w/ a NAK, the % character, 0x25
+#
+InTerminator	= CR;
+OutTerminator	= CR;
+PeekSize		= 0;
+ReplyTimeout	= 800;
+ReadTimeout		= 100;
+WriteTimeout	= 500;
+ExtraInput		= Ignore;
+
+GetQStr
+{
+    out "@\$1?";    in  ACK "@\"%#s";
+    @init { out "@\$1?";    in  ACK "@\"%#s"; }
+}
+
+GetInt
+{
+    out "@\$1?";    in  ACK "@%d";
+    @init { out "@\$1?";    in  ACK "@%d"; }
+}
+
+GetTempC
+{
+    out "@TM?";    in  ACK "@%d;%*d";
+    @init {
+	out "@TM?";    in  ACK "@%d;%*d";
+	}
+}
+
+GetTempF
+{
+    out "@TM?";    in  ACK "@%*d;%d";
+    @init {
+	out "@TM?";    in  ACK "@%*d;%d";
+	}
+}
+
+GetSerial
+{
+    out "@SN?";    in  ACK "@\"%d";
+    @init { out "@SN?";    in  ACK "@\"%d"; }
+}
+
+GetStr
+{
+    out "@\$1?";    in  ACK "@%#s";
+    @init { out "@\$1?";    in  ACK "@%#s"; }
+}
+
+SetInt
+{
+    InTerminator	= ACK;
+    out "@\$1%d";   in  "";
+}
+
+SetIntNoInit
+{
+    InTerminator	= ACK;
+    out "@\$1%d";   in  "";
+}
+
+SetStr
+{
+    InTerminator	= ACK;
+    out "@\$1%s";   in  "";
+}
