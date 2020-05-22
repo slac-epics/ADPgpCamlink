@@ -8,6 +8,5 @@ file up900.template
 		PORT			= "\$(PORT)",
 		PWIDTH			= "\$(PWIDTH=TRIG:PULSE:WIDTH)",
 		PW_SCALE		= "\$(PW_SCALE=1e9)",
-		SerialDisable	= "\$(SerialDisable)"
 	}
 }

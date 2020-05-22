@@ -607,20 +607,6 @@ record( calc, "$(P)$(R)TrigToTS_Calc" )
     field( PREC, "5" ) 
 }
 
-# Disable or Enable the serial communication with the Device
-record( bo, "$(P)$(R)SerialDisable" )
-{
-	field( DTYP, "asynInt32" )
-	field( OUT,  "@asyn($(PORT),$(ADDR=0),$(TIMEOUT=1))SERIAL_DISABLE" )
-    field( SCAN, "I/O Intr" )
-    field( DOL, 1  )
-    field( PINI, "YES" )
-    field( ZNAM, "Enabled" )
-    field( ONAM, "Disabled"  )
-	info( archiveFields,  "VAL" )
-    info( autosaveFields, "VAL" )
-}
-
 # Holds the total number of images acquired
 record( longout, "$(P)$(R)SyncTotalCnt" )
 {

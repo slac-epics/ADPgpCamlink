@@ -79,7 +79,6 @@ record( longout, "$(P)$(R)OpalBlackLevel" )
     field( DRVL, 0    )
 	info( autosaveFields, "DESC VAL" )
     field( FLNK, "$(P)$(R)OpalBlackLevel_RBV" )
-    field( SDIS, "$(SerialDisable)")
 }
 
 # Read black level
@@ -88,7 +87,6 @@ record( longin, "$(P)$(R)OpalBlackLevel_RBV" )
     field( DESC, "Black Level" )
     field( DTYP, "stream" )
     field( INP,	 "@opal1000m_12.proto GetInt(BL) $(PORT).SER" )
-    field( SDIS, "$(SerialDisable)")
 #	field( PINI, "YES" )
 }
 
@@ -97,7 +95,6 @@ record( stringin, "$(P)$(R)OpalBuiltInTest_RBV" )
     field( DESC, "Internal Status" )
     field( DTYP, "stream" )
     field( INP,	 "@opal1000m_12.proto GetStr(BIT) $(PORT).SER" )
-    field( SDIS, "$(SerialDisable)")
 }
 
 # Read camera and firmware version numbers
@@ -111,7 +108,6 @@ record( stringin, "$(P)$(R)OpalBuildState_RBV" )
     field( DESC, "Build State" )
     field( DTYP, "stream" )
     field( INP,	 "@opal1000m_12.proto GetQStr(BS) $(PORT).SER" )
-    field( SDIS, "$(SerialDisable)")
 }
 
 # Set Camera Control Exposure source
@@ -137,7 +133,6 @@ record( mbbo, "$(P)$(R)OpalCCE" )
 # Disabled to avoid accidental use
 	field( DISV, "0" )
 	info( autosaveFields, "DESC" )
-    field( SDIS, "$(SerialDisable)")
 }
 
 # Read Camera Control Exposure source
@@ -159,7 +154,6 @@ record( mbbi, "$(P)$(R)OpalCCE_RBV" )
     field( THST, "CC4"	)
     field( FRST, "I/O"	)
 	field( PINI, "YES"  )
-    field( SDIS, "$(SerialDisable)")
 }
 
 # Used to specific camera control frame setting
@@ -185,7 +179,6 @@ record( mbbo, "$(P)$(R)OpalCCFS" )
 # Disabled to avoid accidental use
 	field( DISV, "0" )
 	info( autosaveFields, "DESC VAL" )
-    field( SDIS, "$(SerialDisable)")
 }
 
 record( mbbi, "$(P)$(R)OpalCCFS_RBV" )
@@ -206,7 +199,6 @@ record( mbbi, "$(P)$(R)OpalCCFS_RBV" )
     field( FRST, "I/O"	)
     field( FVST, "Soft"	)
 	field( PINI, "YES"  )
-    field( SDIS, "$(SerialDisable)")
 }
 
 record( bo, "$(P)$(R)OpalDefPixelCorr" )
@@ -219,7 +211,6 @@ record( bo, "$(P)$(R)OpalDefPixelCorr" )
     field( FLNK, "$(P)$(R)OpalDefPixelCorr_RBV" )
 	field( PINI, "YES" )
 	info( autosaveFields, "DESC VAL" )
-    field( SDIS, "$(SerialDisable)")
 }
 
 record( bi, "$(P)$(R)OpalDefPixelCorr_RBV" )
@@ -230,7 +221,6 @@ record( bi, "$(P)$(R)OpalDefPixelCorr_RBV" )
     field( ZNAM, "Disabled" )
     field( ONAM, "Enabled"  )
 	field( PINI, "YES" )
-    field( SDIS, "$(SerialDisable)")
 }
 
 record( mbbo, "$(P)$(R)OpalDefPixelTest" )
@@ -249,7 +239,6 @@ record( mbbo, "$(P)$(R)OpalDefPixelTest" )
     field( FLNK, "$(P)$(R)OpalDefPixelTest_RBV" )
 	field( PINI, "YES" )
 	info( autosaveFields, "DESC VAL" )
-    field( SDIS, "$(SerialDisable)")
 }
 
 record( mbbi, "$(P)$(R)OpalDefPixelTest_RBV" )
@@ -266,7 +255,6 @@ record( mbbi, "$(P)$(R)OpalDefPixelTest_RBV" )
     field( TWST, "DP Black" )
     field( THST, "DP W/B"   )
 	field( PINI, "YES" )
-    field( SDIS, "$(SerialDisable)")
 }
 
 record( mbbi, "$(P)$(R)OpalLastError_RBV" )
@@ -291,7 +279,6 @@ record( mbbi, "$(P)$(R)OpalLastError_RBV" )
     field( FTVL, 122 ) field( FTST, "Not enough LUT entries"   )
     field( FFVL, 123 ) field( FFST, "Too many LUT entries"   )
 	field( PINI, "YES" )
-    field( SDIS, "$(SerialDisable)")
 }
 
 # Returns x;y, where total time is y+(x*65536) hours
@@ -301,7 +288,6 @@ record( stringin, "$(P)$(R)OpalElapsedTime_RBV" )
     field( DTYP, "stream" )
 	field( SCAN, "10 second" )
     field( INP,	 "@opal1000m_12.proto GetStr(ET) $(PORT).SER" )
-    field( SDIS, "$(SerialDisable)")
 }
 
 # TODO: Enable/Disable based on TriggerMode, and add calc records to convert from ADCore AcquirePeriod
@@ -338,7 +324,6 @@ record( longout, "$(P)$(R)OpalAcquirePeriod" )
     field( EGU,  "e-5sec"  )
 #	field( TPRO, 2 )
 	info( autosaveFields, "DESC VAL" )
-    field( SDIS, "$(SerialDisable)")
 }
 
 
@@ -352,7 +337,6 @@ record( longin, "$(P)$(R)OpalAcquirePeriod_RBV" )
     field( INP,	 "@opal1000m_12.proto GetInt(FP) $(PORT).SER" )
     field( EGU,  "e-5sec"  )
 	field( FLNK, "$(P)$(R)OpalCalcAcquirePeriod_RBV"	)
-    field( SDIS, "$(SerialDisable)")
 }
 
 record( calcout, "$(P)$(R)OpalCalcAcquirePeriod_RBV" )
@@ -378,7 +362,6 @@ record( bo, "$(P)$(R)OpalSetFSE" )
     field( ZNAM, "Disable" )
     field( ONAM, "Enable"  )
 	info( autosaveFields, "DESC VAL" )
-    field( SDIS, "$(SerialDisable)")
 }
 
 record( bi, "$(P)$(R)OpalFSE" )
@@ -388,7 +371,6 @@ record( bi, "$(P)$(R)OpalFSE" )
     field( INP,	 "@opal1000m_12.proto GetInt(FSE) $(PORT).SER" )
     field( ZNAM, "Disable" )
     field( ONAM, "Enable"  )
-    field( SDIS, "$(SerialDisable)")
 }
 
 #	FSP		Set flash strobe polarity
@@ -401,7 +383,6 @@ record( bo, "$(P)$(R)OpalSetFSP" )
     field( ZNAM, "Normal"   )
     field( ONAM, "Invert" )
 	info( autosaveFields, "DESC VAL" )
-    field( SDIS, "$(SerialDisable)")
 }
 
 record( bi, "$(P)$(R)OpalFSP" )
@@ -411,7 +392,6 @@ record( bi, "$(P)$(R)OpalFSP" )
     field( INP,	 "@opal1000m_12.proto GetInt(FSP) $(PORT).SER" )
     field( ZNAM, "Normal"   )
     field( ONAM, "Invert" )
-    field( SDIS, "$(SerialDisable)")
 }
 
 #	FSM		Set flash strobe mode
@@ -424,7 +404,6 @@ record( bo, "$(P)$(R)OpalSetFSM" )
     field( ZNAM, "Automatic"  )
     field( ONAM, "Programmed" )
 	info( autosaveFields, "DESC VAL" )
-    field( SDIS, "$(SerialDisable)")
 }
 
 record( bi, "$(P)$(R)OpalFSM" )
@@ -434,7 +413,6 @@ record( bi, "$(P)$(R)OpalFSM" )
     field( INP,	 "@opal1000m_12.proto GetInt(FSM) $(PORT).SER" )
     field( ZNAM, "Automatic"  )
     field( ONAM, "Programmed" )
-    field( SDIS, "$(SerialDisable)")
 }
 
 #	FSM		Set flash strobe timing mode
@@ -445,7 +423,6 @@ record( longout, "$(P)$(R)OpalSetFST" )
     field( OUT,	 "@opal1000m_12.proto SetInt(FST) $(PORT).SER" )
     field( FLNK, "$(P)$(R)OpalFST" )
 	info( autosaveFields, "DESC VAL" )
-    field( SDIS, "$(SerialDisable)")
 }
 
 record( longin, "$(P)$(R)OpalFST" )
@@ -453,7 +430,6 @@ record( longin, "$(P)$(R)OpalFST" )
     field( DESC, "Flash Strobe Timing" )
     field( DTYP, "stream" )
     field( INP,	 "@opal1000m_12.proto GetInt(FST) $(PORT).SER" )
-    field( SDIS, "$(SerialDisable)")
 }
 
 # Disabled as not supported by Opal1000
@@ -543,7 +519,6 @@ record( longout, "$(P)$(R)OpalGain" )
     field( FLNK, "$(P)$(R)OpalGain_RBV" )
 	info( autosaveFields, "DESC VAL" )
 	info( archiveFields,  "DESC VAL" )
-    field( SDIS,   "$(SerialDisable)" ) 
 }
 
 # TODO: Need to convert the Opal 1000 gain from
@@ -559,7 +534,6 @@ record( longin, "$(P)$(R)OpalGain_RBV" )
     field( FLNK, "$(P)$(R)OpalCalcGain_RBV" )
 	info( autosaveFields, "DESC" )
 	info( archiveFields,  "DESC VAL" )
-    field( SDIS, "$(SerialDisable)")
 }
 
 record( calcout, "$(P)$(R)OpalCalcGain_RBV" )
@@ -590,7 +564,6 @@ record( stringin, "$(P)$(R)OpalInfo_RBV" )
     field( DESC, "ID String" )
     field( DTYP, "stream" )
     field( INP,	 "@opal1000m_12.proto GetQStr(ID) $(PORT).SER" )
-    field( SDIS, "$(SerialDisable)")
 }
 
 record( ao, "$(P)$(R)EdtAcquireTime" )
@@ -679,7 +652,6 @@ record( longout, "$(P)$(R)OpalAcquireTime" )
     field( EGU,  "e-5sec"  )
     field( FLNK, "$(P)$(R)OpalGetAcquireTimeFanout" )
 	info( autosaveFields, "DESC" )
-    field( SDIS, "$(SerialDisable)")
 }
 
 record( fanout, "$(P)$(R)OpalGetAcquireTimeFanout" )
@@ -707,7 +679,6 @@ record( longin, "$(P)$(R)OpalAcquireTime_RBV" )
 	field( FLNK, "$(P)$(R)OpalCalcAcquireTime_RBV" )
 	info( autosaveFields, "DESC HHSV HIGH HIHI HSV LLSV LOLO LOW LSV" )
 	info( archiveFields,  "DESC HHSV HIGH HIHI HSV LLSV LOLO LOW LSV VAL" )
-    field( SDIS, "$(SerialDisable)")
 }
 record( calcout, "$(P)$(R)OpalCalcAcquireTime_RBV" )
 {
@@ -753,7 +724,6 @@ record( mbbo, "$(P)$(R)OpalTriggerMode" )
     field( FRVL, 4 ) field( FRST, "Double Delayed" )
     field( FVVL, 5 ) field( FVST, "External"   )
 	field( FLNK, "$(P)$(R)OpalTriggerMode_RBV" )
-    field( SDIS, "$(SerialDisable)")
 }
 
 # Read the trigger mode
@@ -771,7 +741,6 @@ record( mbbi, "$(P)$(R)OpalTriggerMode_RBV" )
     field( FVVL, 5 ) field( FVST, "External"   )
 	field( PINI, "YES" )
 	field( FLNK, "$(P)$(R)OpalCalcEdtTriggerMode" )
-    field( SDIS, "$(SerialDisable)")
 }
 record( calc, "$(P)$(R)OpalCalcEdtTriggerMode" )
 {
@@ -800,7 +769,6 @@ record( bo, "$(P)$(R)OpalSetOLUTE" )
 # Disabled to avoid accidental use
 	field( DISV, "0" )
 #	info( autosaveFields, "DESC VAL" )
-    field( SDIS, "$(SerialDisable)")
 }
 
 record( bi, "$(P)$(R)OpalOLUTE" )
@@ -810,7 +778,6 @@ record( bi, "$(P)$(R)OpalOLUTE" )
     field( INP,	 "@opal1000m_12.proto GetInt(OLUTE) $(PORT).SER" )
     field( ZNAM, "Disable" )
     field( ONAM, "Enable"  )
-    field( SDIS, "$(SerialDisable)")
 }
 
 record( longout, "$(P)$(R)OpalBitsPerPixel" )
@@ -825,7 +792,6 @@ record( longout, "$(P)$(R)OpalBitsPerPixel" )
     field( DRVL,  8 )
 # Disabled to avoid accidental use
 	field( DISV, "0" )
-    field( SDIS, "$(SerialDisable)")
 }
 
 record( longin, "$(P)$(R)OpalBitsPerPixel_RBV" )
@@ -834,7 +800,6 @@ record( longin, "$(P)$(R)OpalBitsPerPixel_RBV" )
     field( DTYP, "stream" )
     field( INP,	 "@opal1000m_12.proto GetInt(OR) $(PORT).SER" )
 	field( PINI, "YES" )
-    field( SDIS, "$(SerialDisable)")
 }
 
 # Overlay replaces first 8 pixels w/ frame counter and integration time
@@ -848,7 +813,6 @@ record( bo, "$(P)$(R)OpalInfoOverlay" )
     field( ONAM, "Enable"  )
 # Disabled to avoid accidental use
 	field( DISV, "0" )
-    field( SDIS, "$(SerialDisable)")
 }
 
 record( bi, "$(P)$(R)OpalInfoOverlay_RBV" )
@@ -859,7 +823,6 @@ record( bi, "$(P)$(R)OpalInfoOverlay_RBV" )
     field( ZNAM, "Disabled" )
     field( ONAM, "Enabled"  )
 	field( PINI, "YES" )
-    field( SDIS, "$(SerialDisable)")
 }
 
 # Save configuration
@@ -875,7 +838,6 @@ record( longout, "$(P)$(R)OpalSaveConf" )
     field( DRVL, 1 )
 # Disabled to avoid accidental use
 	field( DISV, "0" )
-    field( SDIS, "$(SerialDisable)")
 }
 
 record( longin, "$(P)$(R)OpalSerialNumber_RBV" )
@@ -884,7 +846,6 @@ record( longin, "$(P)$(R)OpalSerialNumber_RBV" )
     field( DTYP, "stream" )
     field( INP,	 "@opal1000m_12.proto GetSerial $(PORT).SER" )
 	field( PINI, "YES" )
-    field( SDIS, "$(SerialDisable)")
 }
 
 # Temperature C
@@ -898,14 +859,12 @@ record( longin, "$(P)$(R)OpalTemperature_RBV" )
 	field( HIGH, "50" )		field( HSV,  "MINOR" )
 	field( SCAN, "10 second" )
 	field( FLNK, "$(P)$(R)OpalTemperatureF_RBV" )
-    field( SDIS, "$(SerialDisable)")
 }
 
 record( calc, "$(P)$(R)OpalTemperatureF_RBV" )
 {
 	field( INPA, "$(P)$(R)OpalTemperature_RBV NPP MS" )
 	field( CALC, "(9*A/5)+32" )
-    field( SDIS, "$(SerialDisable)")
 }
 
 record( bo, "$(P)$(R)OpalTestPattern" )
@@ -916,7 +875,6 @@ record( bo, "$(P)$(R)OpalTestPattern" )
     field( FLNK, "$(P)$(R)OpalTestPattern_RBV" )
     field( ZNAM, "OFF" )
     field( ONAM, "ON"  )
-    field( SDIS, "$(SerialDisable)")
 }
 
 record( bi, "$(P)$(R)OpalTestPattern_RBV" )
@@ -926,7 +884,6 @@ record( bi, "$(P)$(R)OpalTestPattern_RBV" )
     field( INP,	 "@opal1000m_12.proto GetInt(TP) $(PORT).SER" )
     field( ZNAM, "OFF" )
     field( ONAM, "ON"  )
-    field( SDIS, "$(SerialDisable)")
 }
 
 record( stringin, "$(P)$(R)OpalFirmwareTimestamp_RBV" )
@@ -934,7 +891,6 @@ record( stringin, "$(P)$(R)OpalFirmwareTimestamp_RBV" )
     field( DESC, "Firmware Release Time Stamp" )
     field( DTYP, "stream" )
     field( INP,	 "@opal1000m_12.proto GetQStr(UFDT) $(PORT).SER" )
-    field( SDIS, "$(SerialDisable)")
 }
 
 # Horizontal Binning is not installed on most Opal1000 cameras
@@ -980,7 +936,6 @@ record( longout, "$(P)$(R)OpalBinY" )
     field( DRVH, 3 )
     field( LOPR, 0 )
     field( DRVL, 0 )
-    field( SDIS, "$(SerialDisable)")
 }
 
 # TODO: Use calc record to compute EdtBinX_RBY from VBIN reply
@@ -993,7 +948,6 @@ record( longin, "$(P)$(R)OpalBinY_RBV" )
     field( DESC, "Vertical Binning" )
     field( DTYP, "stream" )
     field( INP,	 "@opal1000m_12.proto GetInt(VBIN) $(PORT).SER" )
-    field( SDIS, "$(SerialDisable)")
 }
 
 # Vertical remapping is enabled by the EDT config file and should not be changed.
@@ -1015,7 +969,6 @@ record( bi, "$(P)$(R)OpalVR" )
     field( INP,	 "@opal1000m_12.proto GetInt(VR) $(PORT).SER" )
     field( ZNAM, "No Remapping" )
     field( ONAM, "Remapping"    )
-    field( SDIS, "$(SerialDisable)")
 }
 
 # Recall configuration
@@ -1033,7 +986,6 @@ record( longout, "$(P)$(R)OpalReadNVRamConfig" )
     field( DRVL, 0 )
 # Disabled to avoid accidental use
 	field( DISV, "0" )
-    field( SDIS, "$(SerialDisable)")
 }
 
 # Read last selected configuration number
@@ -1042,7 +994,6 @@ record( longin, "$(P)$(R)OpalNVRamConfig_RBV" )
     field( DESC, "Power-up Configuration" )
     field( DTYP, "stream" )
     field( INP,	 "@opal1000m_12.proto GetInt(LC) $(PORT).SER" )
-    field( SDIS, "$(SerialDisable)")
 }
 
 record( mbbo, "$(P)$(R)OpalOutputMirror" )
@@ -1059,7 +1010,6 @@ record( mbbo, "$(P)$(R)OpalOutputMirror" )
     field( ONST, "Horizontal"	)
     field( TWST, "Vertical"		)
     field( THST, "Horz&Vert"	)
-    field( SDIS, "$(SerialDisable)")
 }
 
 record( mbbi, "$(P)$(R)OpalOutputMirror_RBV" )
@@ -1076,7 +1026,6 @@ record( mbbi, "$(P)$(R)OpalOutputMirror_RBV" )
     field( TWST, "Vertical"		)
     field( THST, "Horz&Vert"	)
 	field( PINI, "YES" )
-    field( SDIS, "$(SerialDisable)")
 }
 
 record( stringin, "$(P)$(R)OpalModelID_RBV" )
@@ -1084,7 +1033,6 @@ record( stringin, "$(P)$(R)OpalModelID_RBV" )
     field( DESC, "Model ID" )
     field( DTYP, "stream" )
     field( INP,	 "@opal1000m_12.proto GetQStr(MID) $(PORT).SER" )
-    field( SDIS, "$(SerialDisable)")
 }
 
 # Opal processing w/ Vertical Remapping enabled is
