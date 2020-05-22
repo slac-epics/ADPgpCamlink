@@ -43,7 +43,6 @@
 #include <rogue/interfaces/memory/Constants.h>
 #include <rogue/interfaces/stream/Slave.h>
 #include <rogue/interfaces/stream/Master.h>
-#include <rogue/protocols/batcher/SplitterV1.h>
 #include <rogue/protocols/srp/SrpV3.h>
 
 #include "ClMemoryMaster.h"
@@ -178,7 +177,6 @@ private:
 	ClMemoryMasterPtr				 			clMemMaster[N_AXI_LANES];
 	FebMemoryMasterPtr				 			febMemMaster[N_AXI_LANES];
 	ClStreamSlavePtr							clStreamSlave[N_AXI_LANES];
-	rogue::protocols::batcher::SplitterV1Ptr	batch;
 };
 
 #if 0
@@ -378,8 +376,6 @@ long pgpCamlink::init_camera()
 	ClStreamSlavePtr							clStreamSlave[N_AXI_LANES];
 	ClSerialSlavePtr							clSerialRx[N_AXI_LANES];
 	ClSerialMasterPtr							clSerialTx[N_AXI_LANES];
-	rogue::protocols::batcher::SplitterV1Ptr	batch;
-	batch 		= rogue::protocols::batcher::SplitterV1::create();
 	/**
 	 * The destination field is a sideband signal provided in the AxiStream
 	 * protocol which allows a single interface to handle multiple frames
@@ -979,8 +975,7 @@ pgpCamlink::pgpCamlink( const char *portName, int board, int chan,
 		memMap(),
 		clMemMaster(),
 		febMemMaster(),
-		clStreamSlave(),
-		batch()
+		clStreamSlave()
 {
     //char  devi[80];
     int   status = asynSuccess;

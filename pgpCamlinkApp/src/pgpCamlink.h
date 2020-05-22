@@ -22,14 +22,12 @@
 #include <epicsThread.h>
 #include <dbScan.h>
 #include "ADDriver.h"
-//#include "pgpClDev.h"
+#include "pgpClDev.h"
 
 #ifdef	USE_DIAG_TIMER
 #include "HiResTime.h"
 #include "ContextTimerMax.h"
 #endif	//	USE_DIAG_TIMER
-
-class pgpClDev;
 
 class pgpImage
 {
@@ -45,7 +43,7 @@ public:		//	Public member functions
 	///	Constructor
 	pgpCamlink(	const char			*	cameraName,
 				int						unit,
-				int						channel,
+				int						lane,
 				const char			*	modelName,
 				const char			*	clMode,
 				int						maxBuffers	= 0,	// 0 = unlimited
@@ -329,7 +327,7 @@ public:		//	Public member functions
 
 public:		//	Public class functions
 
-	static int				CreateCamera(	const char *	cameraName, int unit, int channel,
+	static int				CreateCamera(	const char *	cameraName, int unit, int lane,
 											const char *	modelName,	const char * clMode );
 
 	static pgpCamlink	*	CameraFindByName( const std::string & name );
@@ -343,7 +341,7 @@ public:		//	Public class functions
 
 	static	int				ShowAllCameras( int level );
 
-	static bool				IsCameraChannelUsed( unsigned int unit,  unsigned int channel );
+	static bool				IsCameraLaneUsed( unsigned int unit,  unsigned int lane );
 
 private:	//	Private member functions
 	//	Internal version of reconfigure
@@ -371,10 +369,10 @@ protected:	//	Protected member variables
 	bool			m_fReopen;			// True when we need to reread the configuration file
 
 private:	//	Private member variables
-	pgpClDev	* 	m_pDev;			// Ptr to digital video device
+	pgpClDevPtr 	m_pDev;			// shared_ptr to pgpClDev device
 
 	unsigned int	m_unit;			// index of Pgpcamlink card
-	unsigned int	m_channel;		// channel on  Pgpcamlink card
+	unsigned int	m_lane;			// lane on  Pgpcamlink card
 
 	epicsTimeStamp	m_priorTimeStamp;	// Last timestamp for this event number
 
@@ -534,13 +532,13 @@ extern unsigned long	imageCaptureCount;
 extern "C" int	pgpCamlinkConfig(
 	const char	*	cameraName,
 	int				unit,
-	int				channel,
+	int				lane,
 	const char	*	modelName,
 	const char	*	clMode		);
 extern "C" int	pgpCamlinkConfigFull(
 	const char	*	cameraName,
 	int				unit,
-	int				channel,
+	int				lane,
 	const char	*	modelName,
 	const char	*	clMode,
 	int				maxBuffers,		// 0 = unlimited
