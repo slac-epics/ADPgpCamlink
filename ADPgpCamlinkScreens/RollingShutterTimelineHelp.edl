@@ -1,0 +1,377 @@
+4 0 1
+beginScreenProperties
+major 4
+minor 0
+release 1
+x 344
+y 1524
+w 440
+h 732
+font "helvetica-medium-r-8.0"
+ctlFont "helvetica-medium-r-8.0"
+btnFont "helvetica-medium-r-8.0"
+fgColor index 14
+bgColor index 3
+textColor index 14
+ctlFgColor1 index 15
+ctlFgColor2 index 25
+ctlBgColor1 index 12
+ctlBgColor2 index 5
+topShadowColor index 1
+botShadowColor index 11
+title "Rolling Shutter Timeline Help"
+showGrid
+snapToGrid
+gridSize 4
+endScreenProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 16
+y 12
+w 408
+h 300
+lineColor index 6
+fill
+fillColor index 6
+lineWidth 0
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 24
+y 12
+w 400
+h 300
+font "helvetica-medium-r-12.0"
+fgColor index 14
+bgColor index 6
+useDisplayBg
+value {
+  "Cameras utilizing a rolling shutter, such as the Hamamatsu"
+  "Orca Flash 4.0, require particular care in configuring the"
+  "timing and exposure in order to capture pulses at 120Hz."
+  ""
+  "Rolling Shutter cameras keep noise low by eliminating on-chip"
+  "charge storage, which requires that each pixel line be readout"
+  "immediately once the exposure time has elapsed."
+  "Thus, each pixel line begins it's exposure time with an offset"
+  "relative to the prior pixel line that is just long enough to"
+  "readout one pixel line."
+  ""
+  "Readout is symmetrical, with exposure beginning with the two middle"
+  "rows of pixels, proceeding line by line in both directions simultaneously."
+  " "
+  "The associated timing diagram shows the resulting trapezoidal shaped"
+  "exposure window for the top half of the sensor."
+  "The inverted trapezoidal exposure window for the bottom half"
+  "is not shown.  Compare the text below with the numbered labels"
+  "on the diagram to follow the timing flow."
+}
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 36
+y 324
+w 344
+h 60
+font "helvetica-medium-r-12.0"
+fgColor index 14
+bgColor index 6
+value {
+  "Camera triggered at 120hz, for example event code 40."
+  "Delay set to approx 4.5ms so camera's full exposure"
+  "window overlaps the next available beam time."
+}
+lineWidth 0
+endObjectProperties
+
+# (Exit Button)
+object activeExitButtonClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 384
+y 324
+w 40
+h 24
+fgColor index 14
+bgColor index 3
+topShadowColor index 1
+botShadowColor index 11
+label "EXIT"
+font "helvetica-medium-r-12.0"
+3d
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 16
+y 324
+w 20
+h 60
+font "helvetica-medium-r-14.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 6
+value {
+  "1"
+}
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 16
+y 392
+w 20
+h 44
+font "helvetica-medium-r-14.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 6
+value {
+  "2"
+}
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 16
+y 444
+w 20
+h 68
+font "helvetica-medium-r-14.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 6
+value {
+  "3"
+}
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 16
+y 520
+w 20
+h 68
+font "helvetica-medium-r-14.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 6
+value {
+  "4"
+}
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 16
+y 596
+w 20
+h 52
+font "helvetica-medium-r-14.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 6
+value {
+  "5"
+}
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 16
+y 656
+w 20
+h 20
+font "helvetica-medium-r-14.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 6
+value {
+  "6"
+}
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 16
+y 684
+w 20
+h 36
+font "helvetica-medium-r-14.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 6
+value {
+  "7"
+}
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 36
+y 392
+w 344
+h 44
+font "helvetica-medium-r-12.0"
+fgColor index 14
+bgColor index 6
+value {
+  "Trigger delay complete, camera begins"
+  "exposing first line on either side of center."
+}
+lineWidth 0
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 36
+y 444
+w 344
+h 68
+font "helvetica-medium-r-12.0"
+fgColor index 14
+bgColor index 6
+value {
+  "Last line begins exposure.  The minumum"
+  "expsure time is calculated from the number"
+  "of scan lines above the midpoint times"
+  "the rolling shutter's delay per scan line."
+}
+lineWidth 0
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 36
+y 520
+w 344
+h 68
+font "helvetica-medium-r-12.0"
+fgColor index 14
+bgColor index 6
+value {
+  "To capture the image on each line, the beam pulse"
+  "must arrive during this interval beween"
+  "when the last line begins exposure and the"
+  "first line ends it's exposure window."
+}
+lineWidth 0
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 36
+y 596
+w 344
+h 52
+font "helvetica-medium-r-12.0"
+fgColor index 14
+bgColor index 6
+value {
+  "End of exposure for first line.  "
+  "Readout  begins for first line."
+  "Readout time matches the minimum exposure time."
+}
+lineWidth 0
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 36
+y 656
+w 344
+h 20
+font "helvetica-medium-r-12.0"
+fgColor index 14
+bgColor index 6
+value {
+  "Camera readout completed."
+}
+lineWidth 0
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 36
+y 684
+w 344
+h 36
+font "helvetica-medium-r-12.0"
+fgColor index 14
+bgColor index 6
+value {
+  "Camera readout must be completed before the"
+  "camera can handle a new trigger."
+}
+lineWidth 0
+endObjectProperties
+
