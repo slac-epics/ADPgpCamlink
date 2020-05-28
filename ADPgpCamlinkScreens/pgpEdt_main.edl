@@ -1,0 +1,848 @@
+4 0 1
+beginScreenProperties
+major 4
+minor 0
+release 1
+x 900
+y 500
+w 736
+h 565
+font "helvetica-medium-r-18.0"
+ctlFont "helvetica-medium-r-18.0"
+btnFont "helvetica-medium-r-18.0"
+fgColor index 14
+bgColor index 5
+textColor index 14
+ctlFgColor1 index 14
+ctlFgColor2 index 0
+ctlBgColor1 index 0
+ctlBgColor2 index 14
+topShadowColor index 0
+botShadowColor index 14
+title "CameraLink: $(CAMERA)"
+showGrid
+snapToGrid
+gridSize 4
+endScreenProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 0
+y 0
+w 736
+h 40
+lineColor index 56
+fill
+fillColor index 56
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 4
+y 2
+w 200
+h 20
+font "helvetica-bold-r-12.0"
+fgColor index 14
+bgColor index 56
+value {
+  "$(CAMERA)"
+}
+endObjectProperties
+
+# (Text Update)
+object TextupdateClass
+beginObjectProperties
+major 10
+minor 0
+release 0
+x 4
+y 20
+w 200
+h 20
+controlPv "$(IOC):TOD"
+precision 1
+fgColor index 14
+fgAlarm
+bgColor index 56
+font "helvetica-medium-r-12.0"
+fontAlign "left"
+endObjectProperties
+
+# (Choice Button)
+object activeChoiceButtonClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 240
+y 8
+w 120
+h 24
+fgColor index 25
+bgColor index 4
+selectColor index 30
+inconsistentColor index 14
+topShadowColor index 1
+botShadowColor index 11
+controlPv "$(CAMERA):Acquire"
+font "helvetica-bold-r-12.0"
+orientation "horizontal"
+endObjectProperties
+
+# (Button)
+object activeButtonClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 380
+y 8
+w 120
+h 24
+fgColor index 25
+onColor index 30
+offColor index 4
+inconsistentColor index 14
+topShadowColor index 0
+botShadowColor index 14
+controlPv "$(CAMERA):IMAGE1:EnableCallbacks"
+onLabel "Plugin Enabled"
+offLabel "Plugin Disabled"
+labelType "literal"
+3d
+font "helvetica-bold-r-12.0"
+objType "controls"
+endObjectProperties
+
+# (Related Display)
+object relatedDisplayClass
+beginObjectProperties
+major 4
+minor 2
+release 0
+x 520
+y 8
+w 120
+h 24
+fgColor index 25
+bgColor index 4
+topShadowColor index 1
+botShadowColor index 11
+font "helvetica-bold-r-12.0"
+buttonLabel "Expert Control"
+numPvs 4
+numDsps 1
+displayFileName {
+  0 "pgpEdt_expert.edl"
+}
+menuLabel {
+  0 "Expert Control"
+}
+symbols {
+  0 "CAMERA=$(CAMERA),MODEL=$(MODEL),IOC=$(IOC)"
+}
+endObjectProperties
+
+# (Exit Button)
+object activeExitButtonClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 668
+y 8
+w 56
+h 24
+fgColor index 25
+bgColor index 4
+topShadowColor index 1
+botShadowColor index 11
+label "Exit"
+font "helvetica-bold-r-12.0"
+3d
+endObjectProperties
+
+# (Hoff Video)
+object TwoDProfileMonitorClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 4
+y 48
+w 512
+h 512
+dataPvStr "$(CAMERA):IMAGE1:ArrayData"
+widthPvStr "$(CAMERA):ArraySizeX_RBV"
+heightPvStr "$(CAMERA):ArraySizeY_RBV"
+dataWidth 512
+pvBasedDataSize 1
+nBitsPerPixel 12
+endObjectProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 524
+y 56
+w 204
+h 100
+lineColor index 3
+fill
+fillColor index 3
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 524
+y 48
+w 50
+h 20
+font "helvetica-bold-r-12.0"
+fgColor index 14
+bgColor index 3
+value {
+  " Status"
+}
+endObjectProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 536
+y 70
+w 4
+h 18
+lineColor index 35
+fill
+fillColor index 35
+lineWidth 0
+visPv "CALC\\\{(A>>30)&1\}($(CAMERA):StatusWord)"
+visMin "0"
+visMax "1"
+endObjectProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 536
+y 70
+w 4
+h 18
+lineColor index 15
+fill
+fillColor index 15
+lineWidth 0
+visPv "CALC\\\{(A>>30)&1\}($(CAMERA):StatusWord)"
+visMin "1"
+visMax "2"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 546
+y 68
+w 85
+h 24
+font "helvetica-medium-r-12.0"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "EVR Fiber"
+}
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 625
+y 68
+w 85
+h 24
+font "helvetica-medium-r-12.0"
+fontAlign "right"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "Camera Fiber"
+}
+endObjectProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 716
+y 70
+w 4
+h 18
+lineColor index 35
+fill
+fillColor index 35
+lineWidth 0
+visPv "CALC\\\{(A>>28)&1\}($(CAMERA):StatusWord)"
+visMin "0"
+visMax "1"
+endObjectProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 716
+y 70
+w 4
+h 18
+lineColor index 15
+fill
+fillColor index 15
+lineWidth 0
+visPv "CALC\\\{(A>>28)&1\}($(CAMERA):StatusWord)"
+visMin "1"
+visMax "2"
+endObjectProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 536
+y 98
+w 4
+h 18
+lineColor index 35
+fill
+fillColor index 35
+lineWidth 0
+visPv "CALC\\\{(A>>29)&1\}($(CAMERA):StatusWord)"
+visMin "0"
+visMax "1"
+endObjectProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 536
+y 98
+w 4
+h 18
+lineColor index 15
+fill
+fillColor index 15
+lineWidth 0
+visPv "CALC\\\{(A>>29)&1\}($(CAMERA):StatusWord)"
+visMin "1"
+visMax "2"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 546
+y 96
+w 85
+h 24
+font "helvetica-medium-r-12.0"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "Event 140"
+}
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 625
+y 96
+w 85
+h 24
+font "helvetica-medium-r-12.0"
+fontAlign "right"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "Camera Lock"
+}
+endObjectProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 716
+y 98
+w 4
+h 18
+lineColor index 35
+fill
+fillColor index 35
+lineWidth 0
+visPv "CALC\\\{(A>>27)&1\}($(CAMERA):StatusWord)"
+visMin "0"
+visMax "1"
+endObjectProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 716
+y 98
+w 4
+h 18
+lineColor index 15
+fill
+fillColor index 15
+lineWidth 0
+visPv "CALC\\\{(A>>27)&1\}($(CAMERA):StatusWord)"
+visMin "1"
+visMax "2"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 536
+y 124
+w 85
+h 24
+font "helvetica-medium-r-12.0"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "Frame Rate"
+}
+endObjectProperties
+
+# (Text Update)
+object TextupdateClass
+beginObjectProperties
+major 10
+minor 0
+release 0
+x 626
+y 124
+w 95
+h 24
+controlPv "$(CAMERA):FrameRate"
+precision 1
+fgColor index 16
+fgAlarm
+bgColor index 12
+fill
+font "courier-medium-r-12.0"
+fontAlign "center"
+lineWidth 1
+lineAlarm
+endObjectProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 524
+y 172
+w 204
+h 128
+lineColor index 3
+fill
+fillColor index 3
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 524
+y 164
+w 78
+h 24
+font "helvetica-bold-r-12.0"
+fgColor index 14
+bgColor index 3
+value {
+  " Parameters"
+}
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 536
+y 184
+w 85
+h 24
+font "helvetica-medium-r-12.0"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "Pixel Size"
+}
+endObjectProperties
+
+# (Text Update)
+object TextupdateClass
+beginObjectProperties
+major 10
+minor 0
+release 0
+x 626
+y 184
+w 95
+h 24
+controlPv "$(CAMERA):PixelSize"
+displayMode "decimal"
+precision 1
+fgColor index 16
+bgColor index 12
+fill
+font "courier-medium-r-12.0"
+fontAlign "center"
+lineWidth 1
+lineAlarm
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 536
+y 212
+w 85
+h 24
+font "helvetica-medium-r-12.0"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "No. of Bits"
+}
+endObjectProperties
+
+# (Text Update)
+object TextupdateClass
+beginObjectProperties
+major 10
+minor 0
+release 0
+x 626
+y 212
+w 95
+h 24
+controlPv "$(CAMERA):BitsPerPixel_RBV"
+fgColor index 16
+bgColor index 12
+fill
+font "courier-medium-r-12.0"
+fontAlign "center"
+lineWidth 1
+lineAlarm
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 536
+y 240
+w 85
+h 24
+font "helvetica-medium-r-12.0"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "No. of Rows"
+}
+endObjectProperties
+
+# (Text Update)
+object TextupdateClass
+beginObjectProperties
+major 10
+minor 0
+release 0
+x 626
+y 240
+w 95
+h 24
+controlPv "$(CAMERA):ArraySizeY_RBV"
+fgColor index 16
+bgColor index 12
+fill
+font "courier-medium-r-12.0"
+fontAlign "center"
+lineWidth 1
+lineAlarm
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 536
+y 268
+w 85
+h 24
+font "helvetica-medium-r-12.0"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "No. of Columns"
+}
+endObjectProperties
+
+# (Text Update)
+object TextupdateClass
+beginObjectProperties
+major 10
+minor 0
+release 0
+x 626
+y 268
+w 95
+h 24
+controlPv "$(CAMERA):ArraySizeX_RBV"
+fgColor index 16
+bgColor index 12
+fill
+font "courier-medium-r-12.0"
+fontAlign "center"
+lineWidth 1
+lineAlarm
+endObjectProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 524
+y 316
+w 204
+h 72
+lineColor index 3
+fill
+fillColor index 3
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 524
+y 308
+w 50
+h 24
+font "helvetica-bold-r-12.0"
+fgColor index 14
+bgColor index 3
+value {
+  " Modes"
+}
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 536
+y 328
+w 85
+h 24
+font "helvetica-medium-r-12.0"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "Trigger"
+}
+endObjectProperties
+
+# (Menu Button)
+object activeMenuButtonClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 626
+y 328
+w 95
+h 24
+fgColor index 25
+bgColor index 4
+inconsistentColor index 14
+topShadowColor index 1
+botShadowColor index 11
+controlPv "$(CAMERA):TriggerMode"
+font "courier-bold-r-12.0"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 536
+y 356
+w 85
+h 24
+font "helvetica-medium-r-12.0"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "Exposure"
+}
+endObjectProperties
+
+# (Menu Button)
+object activeMenuButtonClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 626
+y 356
+w 95
+h 24
+fgColor index 25
+bgColor index 4
+inconsistentColor index 14
+topShadowColor index 1
+botShadowColor index 11
+controlPv "$(CAMERA):ExposureMode"
+font "courier-bold-r-12.0"
+endObjectProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 524
+y 396
+w 204
+h 44
+lineColor index 3
+fill
+fillColor index 3
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 524
+y 408
+w 85
+h 24
+font "helvetica-bold-r-12.0"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  " Test Pattern"
+}
+endObjectProperties
+
+# (Menu Button)
+object activeMenuButtonClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 626
+y 408
+w 95
+h 24
+fgColor index 25
+bgColor index 4
+inconsistentColor index 14
+topShadowColor index 1
+botShadowColor index 11
+controlPv "$(CAMERA):TestPattern"
+font "courier-bold-r-12.0"
+endObjectProperties
+
