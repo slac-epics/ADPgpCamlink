@@ -16,6 +16,9 @@
 #include <stdio.h>
 #include <iostream>
 
+// rogue headers
+#include "rogue/Version.h"
+
 // aes-stream-drivers headers 
 #include <AxisDriver.h>
 #include <AxiVersion.h>
@@ -155,6 +158,7 @@ pgpClDev::pgpClDev(
 	}
 #endif
 
+	m_LibVersion = rogue::Version::current();
 	// See if we can connect to the device
 	int m_fd = open(m_devName.c_str(), O_RDWR);
 	if (m_fd < 0) {
@@ -170,7 +174,11 @@ pgpClDev::pgpClDev(
 			printf("buildString     : %s\n", vsn.buildString); 
 			//printf("upTimeCount     : %u\n", vsn.upTimeCount);
 			//printf("deviceId        : %x\n", vsn.deviceId);
-			//printf("buildString     : %s\n", vsn.buildString); 
+			//printf("buildString     : %s\n", vsn.buildString);
+
+			// TODO: Need a better mapping of these version strings to EPICS PVs
+			m_DrvVersion = vsn.firmwareVersion;
+			//m_LibVersion = vsn.buildString;
 		}
 	}
 

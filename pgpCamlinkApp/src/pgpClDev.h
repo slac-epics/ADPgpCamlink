@@ -53,6 +53,7 @@ public:		//	Public member functions
 	// Create a static class creator to return our custom class wrapped with a shared pointer
 	static std::shared_ptr<pgpClDev> create( unsigned int board, unsigned int lane ) {
 		static std::shared_ptr<pgpClDev> ret = std::make_shared<pgpClDev>( board, lane );
+
 		return(ret);
 	}
 
@@ -69,6 +70,18 @@ public:		//	Public member functions
 	void showVariable( const char * pszVarPath, bool verbose );
 	void showVariableList( bool verbose );
 
+	///	Get Driver Version
+	const std::string	&	GetDrvVersion( ) const
+	{
+		return m_DrvVersion;
+	}
+
+	///	Get Library Version
+	const std::string	&	GetLibVersion( ) const
+	{
+		return m_LibVersion;
+	}
+
 private:
 	//	Private member variables
 	unsigned int		m_fd;
@@ -76,6 +89,8 @@ private:
 	unsigned int		m_lane;
 	bool				m_fConnected;
 	std::string			m_devName;
+	std::string			m_DrvVersion;	// Driver Version
+	std::string			m_LibVersion;	// Library Version
 	epicsMutexId		m_devLock;
 
 	// TODO: We only use one of each of these.

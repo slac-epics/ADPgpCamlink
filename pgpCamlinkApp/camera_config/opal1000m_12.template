@@ -53,7 +53,7 @@ record( stringin, "$(P)$(R)CamModel" )
 
 record( stringin, "$(P)$(R)CamModelScreen" )
 {
-	field( VAL,  "edtPdvScreens/opal1000m_12.edl" )
+	field( VAL,  "ADPgpCamlinkScreens/opal1000m_12.edl" )
 	field( PINI, "YES" )
 }
 

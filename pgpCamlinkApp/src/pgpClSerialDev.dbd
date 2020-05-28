@@ -1,0 +1,10 @@
+#device( ai,		INST_IO,	devAiEdtPdv,	"EdtPdv" )
+#device( bo,		INST_IO,	devBoEdtPdv,	"EdtPdv" )
+#device( longin,	INST_IO,	devLiEdtPdv,	"EdtPdv" )
+#device( longout,	INST_IO,	devLoEdtPdv,	"EdtPdv" )
+#device( stringin,	INST_IO,	devSiEdtPdv,	"EdtPdv" )
+#device( waveform,	INST_IO,	devWfEdtPdv,	"EdtPdv" )
+
+registrar(	pgpClSerialConfigRegister		)
+variable(	DEBUG_PGPCL_SER,	int	)
+

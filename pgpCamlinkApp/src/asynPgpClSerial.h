@@ -33,15 +33,31 @@
 #define	N_AXI_LANES	4
 #define	N_AXI_CHAN	4
 
+class asynPgpClSerial;
+typedef std::shared_ptr<asynPgpClSerial> asynPgpClSerialPtr;
+
 ///	asynPgpClSerial class
 class asynPgpClSerial : public asynPortDriver
 {
 public:		//	Public member functions
+	// Create a static class creator to return our custom class wrapped with a shared pointer
+	static std::shared_ptr<asynPgpClSerial> create( const char * portName, unsigned int unit, unsigned int lane ) {
+		static std::shared_ptr<asynPgpClSerial> ret;
+		ret = std::make_shared<asynPgpClSerial>( portName, unit, lane,
+								0,		// 0 = default 50, high is 90
+								0,		// 0 = no auto-connect
+								0,		// 0 = unlimited
+								0,		// 0 = unlimited
+								0 );	// 0 = default 1MB
+		asynPgpClSerial::ClSerialAdd( ret );
+		return(ret);
+	}
+
 
 	///	Constructor
 	asynPgpClSerial(	const char			*	portName,
-						int						board,
-						int						channel,
+						int						unit,
+						int						lane,
 						int						priority	= 0,	// 0 = default 50, high is 90
 						int						autoConnect	= 0,	// 0 = no auto-connect
 						int						maxBuffers	= 0,	// 0 = unlimited
@@ -78,13 +94,13 @@ public:	// Public class functions
 	/// Registered with epicsAtExit() for clean disconnect
 	static void ExitHook( void * pThis );
 
-	static asynPgpClSerial	*	ClSerialFindByName( const std::string & name );
+	static asynPgpClSerialPtr	ClSerialFindByName( const std::string & name );
 
 	static bool					IsClSerialLaneUsed( unsigned int unit,  unsigned int lane );
 
 private:    //  Private class functions
-	static  void				ClSerialAdd(      asynPgpClSerial * pClSerial );
-	static  void            	ClSerialRemove(   asynPgpClSerial * pClSerial );
+	static  void				ClSerialAdd(      asynPgpClSerialPtr pClSerial );
+	static  void            	ClSerialRemove(   asynPgpClSerialPtr pClSerial );
 
 private:	//	Private member variables
 	asynUser		*	m_pasynUserStream;
@@ -101,13 +117,12 @@ private:	//	Private member variables
 	unsigned int		m_GenCpResponseCount;
 	unsigned int		m_GenCpResponseSize;
 	char				m_GenCpResponsePending[PGPCL_GENCP_RESPONSE_MAX];
-	std::string			m_devName;
 	pgpClSerialDev		m_SerDev;
 	unsigned int		m_unit;
 	unsigned int		m_lane;
 
 private:    //  Private class variables
-    static  std::map<std::string, asynPgpClSerial *> ms_ClSerialMap;
+    static  std::map<std::string, asynPgpClSerialPtr> ms_ClSerialMap;
 
 };
 

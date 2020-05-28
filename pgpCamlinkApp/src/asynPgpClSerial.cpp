@@ -32,7 +32,7 @@ int	DEBUG_PGPCL_SER	= 2;
 using namespace	std;
 
 /// ClSerial map - Stores ptr to all asynPgpClSerial instances indexed by name
-map<string, asynPgpClSerial *>   asynPgpClSerial::ms_ClSerialMap;
+map<string, asynPgpClSerialPtr>   asynPgpClSerial::ms_ClSerialMap;
 
 static const char * driverName = "asynPgpClSerial";
 
@@ -85,7 +85,7 @@ asynPgpClSerial::asynPgpClSerial(
 		printf("portName missing or empty.\n");
 	}
 
-	asynPgpClSerial::ClSerialAdd( this );
+	//asynPgpClSerial::ClSerialAdd( std::enable_shared_from_this<asynPgpClSerial>::shared_from_this() );
 }
 
 /// virtual Destructor
@@ -513,10 +513,10 @@ void asynPgpClSerial::report( FILE * fp, int details )
 
 bool asynPgpClSerial::IsClSerialLaneUsed( unsigned int unit,  unsigned int lane )
 {
-	map<string, asynPgpClSerial *>::iterator	it;
+	map<string, asynPgpClSerialPtr>::iterator	it;
 	for ( it = ms_ClSerialMap.begin(); it != ms_ClSerialMap.end(); ++it )
 	{
-		asynPgpClSerial		*	pClSerial	= it->second;
+		asynPgpClSerialPtr	pClSerial	= it->second;
         if ( unit == pClSerial->m_unit && lane == pClSerial->m_lane )
 			return true;
     }
@@ -525,25 +525,25 @@ bool asynPgpClSerial::IsClSerialLaneUsed( unsigned int unit,  unsigned int lane 
 }
 
 
-asynPgpClSerial	*	asynPgpClSerial::ClSerialFindByName( const string & name )
+asynPgpClSerialPtr	asynPgpClSerial::ClSerialFindByName( const string & name )
 {
-	map<string, asynPgpClSerial *>::iterator	it	= ms_ClSerialMap.find( name );
+	map<string, asynPgpClSerialPtr>::iterator	it	= ms_ClSerialMap.find( name );
 	if ( it == ms_ClSerialMap.end() )
 		return NULL;
 	return it->second;
 }
 
-void asynPgpClSerial::ClSerialAdd(		asynPgpClSerial * pClSerial )
+void asynPgpClSerial::ClSerialAdd(		asynPgpClSerialPtr pClSerial )
 {
-	assert( ClSerialFindByName( pClSerial->m_devName ) == NULL );
+	assert( ClSerialFindByName( pClSerial->m_SerDev.getName() ) == NULL );
 	if ( DEBUG_PGPCL_SER )
-		std::cout << "ClSerialAdd: " << pClSerial->m_devName << std::endl;
-	ms_ClSerialMap[ pClSerial->m_devName ]	= pClSerial;
+		std::cout << "ClSerialAdd: " << pClSerial->m_SerDev.getName() << std::endl;
+	ms_ClSerialMap[ pClSerial->m_SerDev.getName() ]	= pClSerial;
 }
 
-void asynPgpClSerial::ClSerialRemove(	asynPgpClSerial * pClSerial )
+void asynPgpClSerial::ClSerialRemove(	asynPgpClSerialPtr pClSerial )
 {
-	ms_ClSerialMap.erase( pClSerial->m_devName );
+	ms_ClSerialMap.erase( pClSerial->m_SerDev.getName() );
 }
 
 extern "C" int
@@ -570,14 +570,7 @@ pgpClSerialConfig(
         return  -1;
     }
 #if 1
-	asynPgpClSerial		*	pClSerial;
-	pClSerial = new asynPgpClSerial( portName, unit, lane,
-								0	// 0 = default 50, high is 90
-								,0	// 0 = no auto-connect
-								,0	// 0 = unlimited
-								,0	// 0 = unlimited
-								,0	// 0 = default 1MB
-	);
+	asynPgpClSerialPtr	pClSerial = asynPgpClSerial::create( portName, unit, lane );
 #else
     if ( asynPgpClSerial::CreateClSerial( portName, unit, lane, modelName, clMode ) != 0 )
     {

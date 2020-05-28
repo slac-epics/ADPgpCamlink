@@ -125,13 +125,25 @@ public:		//	Public member functions
 	///	Get Driver Version
 	const std::string	&	GetDrvVersion( ) const
 	{
+#if 0
+		if ( ! m_pDev )
+			return std::string( "Unknown Driver Version" );
+		return m_pDev->GetDrvVersion();
+#else
 		return m_DrvVersion;
+#endif
 	}
 
 	///	Get Library Version
 	const std::string	&	GetLibVersion( ) const
 	{
+#if 0
+		if ( ! m_pDev )
+			return std::string( "Unknown Lib Version" );
+		return m_pDev->GetLibVersion();
+#else
 		return m_LibVersion;
+#endif
 	}
 
 	bool	IsAcquiring()
@@ -488,36 +500,34 @@ private:	//	Private class variables
 
 #endif /* __cplusplus */
 
-#define CamlinkClassString		"CAMLINK_CLASS"
-#define CamlinkDrvVersionString	"CAMLINK_DRV_VERSION"
-#define CamlinkHSkipString		"CAMLINK_HSKIP"
-#define CamlinkHSizeString		"CAMLINK_HSIZE"
-#define CamlinkHTapsString		"CAMLINK_HTAPS"
-#define CamlinkHwHRoiString		"CAMLINK_HW_HROI"
-#define CamlinkHwVRoiString		"CAMLINK_HW_VROI"
-#define CamlinkModeString		"CAMLINK_MODE"
-#define CamlinkReCfgCntString	"CAMLINK_RECFG_CNT"
-#define CamlinkVSkipString		"CAMLINK_VSKIP"
-#define CamlinkVSizeString		"CAMLINK_VSIZE"
-#define CamlinkVTapsString		"CAMLINK_VTAPS"
-#define CamlinkInfoString		"CAMLINK_INFO"
-#define CamlinkLibVersionString	"CAMLINK_LIB_VERSION"
-#define CamlinkTrigLevelString	"CAMLINK_TRIG_LEVEL"
+#define CamlinkClassString		"CLCAM_CLASS"
+#define CamlinkDrvVersionString	"CLCAM_DRV_VERSION"
+#define CamlinkHSkipString		"CLCAM_HSKIP"
+#define CamlinkHSizeString		"CLCAM_HSIZE"
+#define CamlinkHTapsString		"CLCAM_HTAPS"
+#define CamlinkHwHRoiString		"CLCAM_HW_HROI"
+#define CamlinkHwVRoiString		"CLCAM_HW_VROI"
+#define CamlinkModeString		"CLCAM_MODE"
+#define CamlinkReCfgCntString	"CLCAM_RECFG_CNT"
+#define CamlinkVSkipString		"CLCAM_VSKIP"
+#define CamlinkVSizeString		"CLCAM_VSIZE"
+#define CamlinkVTapsString		"CLCAM_VTAPS"
+#define CamlinkInfoString		"CLCAM_INFO"
+#define CamlinkLibVersionString	"CLCAM_LIB_VERSION"
+#define CamlinkTrigLevelString	"CLCAM_TRIG_LEVEL"
 
 // This group provides a way to have serial readbacks get reflected in
 // their ADBase class equivalents, for example
 // SerAcquireTime	=>	ADAcquireTime 
-#define CamlinkSerAcquireTimeString	"CAMLINK_ACQUIRE_TIME"
-#define CamlinkSerBinXString		"CAMLINK_BIN_X"
-#define CamlinkSerBinYString		"CAMLINK_BIN_Y"
-#define CamlinkSerGainString		"CAMLINK_GAIN"
-#define CamlinkSerMinXString		"CAMLINK_MIN_X"
-#define CamlinkSerMinYString		"CAMLINK_MIN_Y"
-#define CamlinkSerSizeXString		"CAMLINK_SIZE_X"
-#define CamlinkSerSizeYString		"CAMLINK_SIZE_Y"
-#define CamlinkSerTriggerModeString	"CAMLINK_TRIGGER_MODE"
-
-#define CamlinkSerDisableString     "SERIAL_DISABLE"
+#define CamlinkSerAcquireTimeString	"CLCAM_ACQUIRE_TIME"
+#define CamlinkSerBinXString		"CLCAM_BIN_X"
+#define CamlinkSerBinYString		"CLCAM_BIN_Y"
+#define CamlinkSerGainString		"CLCAM_GAIN"
+#define CamlinkSerMinXString		"CLCAM_MIN_X"
+#define CamlinkSerMinYString		"CLCAM_MIN_Y"
+#define CamlinkSerSizeXString		"CLCAM_SIZE_X"
+#define CamlinkSerSizeYString		"CLCAM_SIZE_Y"
+#define CamlinkSerTriggerModeString	"CLCAM_TRIGGER_MODE"
 
 #define CamlinkSyncTotalCntString   "SYNC_TOTAL"
 #define CamlinkSyncBadTSCntString   "SYNC_BAD_TS"

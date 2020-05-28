@@ -45,6 +45,11 @@ public:		//	Public member functions
 	void connect( );
 	void disconnect( );
 
+	const std::string	&	getName( ) const
+	{
+		return m_devName;
+	}
+
 	int readBytes( unsigned char * buffer, double timeout, size_t nBytes );
 
 	int sendBytes( const unsigned char * buffer, size_t nBytes );

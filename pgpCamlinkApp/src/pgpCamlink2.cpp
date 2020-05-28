@@ -715,6 +715,8 @@ int pgpCamlink::_Reconfigure( )
 		printf( "%s: %s in thread %s ...\n", functionName, m_CameraName.c_str(), epicsThreadGetNameSelf() );
 	}
 
+#if 0
+	{
 	// Fetch the camera manufacturer and model and write them to ADBase parameters
     //m_CameraClass	= pdv_get_camera_class(	m_pDev );
     //m_CameraModel	= pdv_get_camera_model(	m_pDev );
@@ -725,23 +727,26 @@ int pgpCamlink::_Reconfigure( )
 	setStringParam( ADManufacturer, m_CameraClass.c_str()	);
     setStringParam( CamlinkClass,	m_CameraClass.c_str()	);
     setStringParam( CamlinkInfo,	m_CameraInfo.c_str()	);
-	
+
 	// Fetch the pgpCamlink driver and library versions and make sure they match
-    char		buf[MAX_STRING_SIZE];
+    //char		buf[MAX_STRING_SIZE];
     //edt_get_driver_version(	m_pDev, buf, MAX_STRING_SIZE );
-	m_DrvVersion = buf;
+	m_DrvVersion = m_pDev->GetDrvVersion();
+#if 0
 	size_t end_of_vers = m_DrvVersion.find( " " );
 	if ( end_of_vers != string::npos )
 	{
 		// The driver version has a date on the end that we don't care about
 		m_DrvVersion.erase( m_DrvVersion.find( " " ) );
 	}
+#endif
 	setStringParam( CamlinkDrvVersion, m_DrvVersion.c_str()	);
 
     //edt_get_library_version( m_pDev, buf, MAX_STRING_SIZE );
-	m_LibVersion = buf;
+	m_LibVersion = m_pDev->GetLibVersion();
 	setStringParam( CamlinkLibVersion, m_LibVersion.c_str()	);
 
+#if 0
 	if ( m_DrvVersion.find(m_LibVersion) == string::npos )
 	{
 		printf( 
@@ -753,8 +758,11 @@ int pgpCamlink::_Reconfigure( )
 					driverName, functionName, m_DrvVersion.c_str(), m_LibVersion.c_str() );
         return -1;
     }
+#endif
 	printf( "pgpCamlink Driver  version: %s\n", m_DrvVersion.c_str() ); 
 	printf( "pgpCamlink Library version: %s\n", m_LibVersion.c_str() );
+	}
+#endif
 
 	// Fetch the full image geometry parameters and write them to ADBase parameters
     //m_ClMaxWidth	= pdv_get_width(	m_pDev );
@@ -901,6 +909,53 @@ int pgpCamlink::_Reopen( )
 					driverName,		functionName, m_unit, m_lane );
         return -1;
     }
+
+	{
+	// Fetch the camera manufacturer and model and write them to ADBase parameters
+    //m_CameraClass	= pdv_get_camera_class(	m_pDev );
+    //m_CameraModel	= pdv_get_camera_model(	m_pDev );
+    //m_CameraInfo	= pdv_get_camera_info(	m_pDev );
+
+	// Update asyn parameters
+	setStringParam( ADModel,		m_CameraModel.c_str()	);
+	setStringParam( ADManufacturer, m_CameraClass.c_str()	);
+    setStringParam( CamlinkClass,	m_CameraClass.c_str()	);
+    setStringParam( CamlinkInfo,	m_CameraInfo.c_str()	);
+
+	// Fetch the pgpCamlink driver and library versions and make sure they match
+    //char		buf[MAX_STRING_SIZE];
+    //edt_get_driver_version(	m_pDev, buf, MAX_STRING_SIZE );
+	m_DrvVersion = m_pDev->GetDrvVersion();
+#if 0
+	size_t end_of_vers = m_DrvVersion.find( " " );
+	if ( end_of_vers != string::npos )
+	{
+		// The driver version has a date on the end that we don't care about
+		m_DrvVersion.erase( m_DrvVersion.find( " " ) );
+	}
+#endif
+	setStringParam( CamlinkDrvVersion, m_DrvVersion.c_str()	);
+
+    //edt_get_library_version( m_pDev, buf, MAX_STRING_SIZE );
+	m_LibVersion = m_pDev->GetLibVersion();
+	setStringParam( CamlinkLibVersion, m_LibVersion.c_str()	);
+
+#if 0
+	if ( m_DrvVersion.find(m_LibVersion) == string::npos )
+	{
+		printf( 
+					"%s %s: ERROR, pgpCamlink driver version %s does not match lib version %s!\n",
+					driverName, functionName, m_DrvVersion.c_str(), m_LibVersion.c_str() );
+        asynPrint(	this->pasynUserSelf,	ASYN_TRACE_ERROR, 
+					"asynPrint "
+					"%s %s: ERROR, pgpCamlink driver version %s does not match lib version %s!\n",
+					driverName, functionName, m_DrvVersion.c_str(), m_LibVersion.c_str() );
+        return -1;
+    }
+#endif
+	printf( "pgpCamlink Driver  version: %s\n", m_DrvVersion.c_str() ); 
+	printf( "pgpCamlink Library version: %s\n", m_LibVersion.c_str() );
+	}
 
     char    fpga_name[128];
     printf( "Unit %d, Chan %d, Mode: %s\n",
