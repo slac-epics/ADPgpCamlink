@@ -29,12 +29,12 @@ pgpClSerialDev::pgpClSerialDev(
 :	m_board(	board		),
 	m_lane(		lane		),
 	m_devName(				),
-	m_DevLock(				)
+	m_devLock(				)
 {
 //	const char		*	functionName	= "pgpClSerialDev::pgpClSerialDev";
 
 	// Create mutexes
-    m_DevLock	= epicsMutexMustCreate();
+    m_devLock	= epicsMutexMustCreate();
 
 	/*
 	 * Check arguments

@@ -25,6 +25,7 @@
 
 // rogue headers 
 #include <rogue/Helpers.h>
+#include <rogue/LibraryBase.h>
 #include <rogue/hardware/axi/AxiMemMap.h>
 #include <rogue/hardware/axi/AxiStreamDma.h>
 #include <rogue/interfaces/memory/Constants.h>
@@ -39,6 +40,11 @@
 
 #define	N_AXI_LANES	4
 #define	N_AXI_CHAN	4
+
+#define PGPCL_DATACHAN_FEB_REG_ACCESS	0
+#define PGPCL_DATACHAN_FEB_FRAME_ACCESS	1
+class pgpClAddrMap;
+typedef std::shared_ptr<pgpClAddrMap> pgpClAddrMapPtr;
 
 ///	pgpClDev class
 class pgpClDev
@@ -60,8 +66,12 @@ public:		//	Public member functions
 	void connect( );
 	void disconnect( );
 
+	void showVariable( const char * pszVarPath, bool verbose );
+	void showVariableList( bool verbose );
+
 private:
 	//	Private member variables
+	unsigned int		m_fd;
 	unsigned int		m_board;
 	unsigned int		m_lane;
 	bool				m_fConnected;
@@ -77,10 +87,14 @@ private:
 	//rogue::hardware::axi::AxiStreamDmaPtr		dataChan[N_AXI_LANES][N_AXI_CHAN];
 	rogue::hardware::axi::AxiMemMapPtr 			m_pAxiMemMap;
 	rogue::hardware::axi::AxiStreamDmaPtr		m_pDataChan[N_AXI_CHAN];
+	rogue::hardware::axi::AxiStreamDmaPtr		m_pFebRegChan;
+	rogue::hardware::axi::AxiStreamDmaPtr		m_pFebFrameChan;
 	ClMemoryMasterPtr				 			m_pClMemMaster;
 	ClStreamSlavePtr							m_pClStreamSlave;
 	FebMemoryMasterPtr				 			m_pFebMemMaster;
 	rogue::protocols::srp::SrpV3Ptr				m_pSrpFeb;
+	//rogue::LibraryBasePtr						m_pRogueLib;
+	pgpClAddrMapPtr								m_pRogueLib;
 };
 
 // Shared pointer alias

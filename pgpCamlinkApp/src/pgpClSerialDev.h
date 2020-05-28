@@ -78,7 +78,7 @@ private:
 	unsigned int		m_lane;
 	bool				m_fConnected;
 	std::string			m_devName;
-	epicsMutexId		m_DevLock;
+	epicsMutexId		m_devLock;
 
 	// TODO: We only use one of each of these.
 	// lane is always 0 for first camera and 1 for 2nd.
