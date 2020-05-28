@@ -74,7 +74,19 @@ public:		//	Public member functions
 
     void	report(	FILE	*	fp,	int	details	);
 
-	//	Private member variables
+public:	// Public class functions
+	/// Registered with epicsAtExit() for clean disconnect
+	static void ExitHook( void * pThis );
+
+	static asynPgpClSerial	*	ClSerialFindByName( const std::string & name );
+
+	static bool					IsClSerialLaneUsed( unsigned int unit,  unsigned int lane );
+
+private:    //  Private class functions
+	static  void				ClSerialAdd(      asynPgpClSerial * pClSerial );
+	static  void            	ClSerialRemove(   asynPgpClSerial * pClSerial );
+
+private:	//	Private member variables
 	asynUser		*	m_pasynUserStream;
 	char			*	m_inputEosOctet;
 	int					m_inputEosLenOctet;
@@ -91,6 +103,12 @@ public:		//	Public member functions
 	char				m_GenCpResponsePending[PGPCL_GENCP_RESPONSE_MAX];
 	std::string			m_devName;
 	pgpClSerialDev		m_SerDev;
+	unsigned int		m_unit;
+	unsigned int		m_lane;
+
+private:    //  Private class variables
+    static  std::map<std::string, asynPgpClSerial *> ms_ClSerialMap;
+
 };
 
 #endif	//	asynPgpClSerial_H

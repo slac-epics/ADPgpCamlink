@@ -13,9 +13,12 @@
 //	Asyn device support using rogue PgpCamlink serial interface via CamLink
 //
 
+#include "iostream"
 #include "string.h"
 #include "epicsExport.h"
 #include "epicsStdio.h"
+#include "errlog.h"
+#include "iocsh.h"
 #include "asynPortDriver.h"
 #include "asynPgpClSerial.h"
 #include "ClSerialMaster.h"
@@ -27,6 +30,9 @@ int	DEBUG_PGPCL_SER	= 2;
 #define	MAX_PARAM		100
 
 using namespace	std;
+
+/// ClSerial map - Stores ptr to all asynPgpClSerial instances indexed by name
+map<string, asynPgpClSerial *>   asynPgpClSerial::ms_ClSerialMap;
 
 static const char * driverName = "asynPgpClSerial";
 
@@ -43,7 +49,7 @@ asynPgpClSerial::asynPgpClSerial(
 	)	:
 	asynPortDriver(			portName,
 							MAX_ADDR,
-							MAX_PARAM,
+							//MAX_PARAM,
 							asynOctetMask,		// Interface mask
 							asynOctetMask,		// Interrupt mask
 							ASYN_CANBLOCK,		// asynFlags
@@ -79,6 +85,7 @@ asynPgpClSerial::asynPgpClSerial(
 		printf("portName missing or empty.\n");
 	}
 
+	asynPgpClSerial::ClSerialAdd( this );
 }
 
 /// virtual Destructor
@@ -474,10 +481,10 @@ asynStatus	asynPgpClSerial::getOutputEosOctet(
 
 void asynPgpClSerial::report( FILE * fp, int details )
 {
-    fprintf(	fp, "pgpCl camera serial port %s: %s\n",
+    fprintf(	fp, "pgpClSerial port %s: %s\n",
 				this->portName, m_fConnected ? "Connected" : "Disconnected" );
 #if 0
-    fprintf(	fp, "pgpCl camera serial port %s: camera model %s\n",
+    fprintf(	fp, "pgpClSerial port %s: model %s\n",
 				this->portName, get_camera_model( ) );
 #endif
 
@@ -487,7 +494,7 @@ void asynPgpClSerial::report( FILE * fp, int details )
 		pasynManager->isConnected( this->pasynUserSelf, &connected );
 		if ( m_fConnected && !connected )
 		{
-			fprintf(	fp, "Warning, Camera serial port %s thinks it's %s, but asynManager says %s\n",
+			fprintf(	fp, "Warning, pgpClSerial port %s thinks it's %s, but asynManager says %s\n",
 						portName,
 						m_fConnected	? "Connected" : "Disconnected",
 						connected		? "Connected" : "Disconnected"	);
@@ -503,9 +510,110 @@ void asynPgpClSerial::report( FILE * fp, int details )
     }
 }
 
-//	Private member variables
+
+bool asynPgpClSerial::IsClSerialLaneUsed( unsigned int unit,  unsigned int lane )
+{
+	map<string, asynPgpClSerial *>::iterator	it;
+	for ( it = ms_ClSerialMap.begin(); it != ms_ClSerialMap.end(); ++it )
+	{
+		asynPgpClSerial		*	pClSerial	= it->second;
+        if ( unit == pClSerial->m_unit && lane == pClSerial->m_lane )
+			return true;
+    }
+
+    return false;
+}
+
+
+asynPgpClSerial	*	asynPgpClSerial::ClSerialFindByName( const string & name )
+{
+	map<string, asynPgpClSerial *>::iterator	it	= ms_ClSerialMap.find( name );
+	if ( it == ms_ClSerialMap.end() )
+		return NULL;
+	return it->second;
+}
+
+void asynPgpClSerial::ClSerialAdd(		asynPgpClSerial * pClSerial )
+{
+	assert( ClSerialFindByName( pClSerial->m_devName ) == NULL );
+	if ( DEBUG_PGPCL_SER )
+		std::cout << "ClSerialAdd: " << pClSerial->m_devName << std::endl;
+	ms_ClSerialMap[ pClSerial->m_devName ]	= pClSerial;
+}
+
+void asynPgpClSerial::ClSerialRemove(	asynPgpClSerial * pClSerial )
+{
+	ms_ClSerialMap.erase( pClSerial->m_devName );
+}
+
+extern "C" int
+pgpClSerialConfig(
+	const char	*	portName,
+	int				unit,
+	int				lane,
+	const char	*	modelName,
+	const char	*	clMode	)
+{
+    if (  portName == NULL || strlen(portName) == 0 )
+    {
+        errlogPrintf( "NULL or zero length asyn portName.\nUsage: pgpClSerialConfig(portName,unit,lane,config)\n");
+        return  -1;
+    }
+    if (  modelName == NULL || strlen(modelName) == 0 )
+    {
+        errlogPrintf( "NULL or zero length config name.\nUsage: pgpClSerialConfig(portName,unit,lane,config)\n");
+        return  -1;
+    }
+    if (  clMode == NULL || strlen(clMode) == 0 )
+    {
+        errlogPrintf( "NULL or zero length camlink mode.\nUsage: pgpClSerialConfig(portName,unit,lane,config,mode)\n");
+        return  -1;
+    }
+#if 1
+	asynPgpClSerial		*	pClSerial;
+	pClSerial = new asynPgpClSerial( portName, unit, lane,
+								0	// 0 = default 50, high is 90
+								,0	// 0 = no auto-connect
+								,0	// 0 = unlimited
+								,0	// 0 = unlimited
+								,0	// 0 = default 1MB
+	);
+#else
+    if ( asynPgpClSerial::CreateClSerial( portName, unit, lane, modelName, clMode ) != 0 )
+    {
+        errlogPrintf( "pgpClSerialConfig failed for ClSerial %s, config %s, mode %s!\n", portName, modelName, clMode );
+		if ( DEBUG_PGPCL_SER >= 4 )
+        	epicsThreadSuspendSelf();
+        return -1;
+    }
+#endif
+    return 0;
+}
+
+// Register Function:
+//	int pgpClSerialConfig( const char * portName, int unit, int lane, const char * modelName )
+static const iocshArg		pgpClSerialConfigArg0	= { "name",			iocshArgString };
+static const iocshArg		pgpClSerialConfigArg1	= { "unit",			iocshArgInt };
+static const iocshArg		pgpClSerialConfigArg2	= { "lane",			iocshArgInt };
+static const iocshArg		pgpClSerialConfigArg3	= { "modelName",	iocshArgString };
+static const iocshArg		pgpClSerialConfigArg4	= { "clMode",		iocshArgString };
+static const iocshArg	*	pgpClSerialConfigArgs[5]	=
+{
+	&pgpClSerialConfigArg0, &pgpClSerialConfigArg1, &pgpClSerialConfigArg2, &pgpClSerialConfigArg3, &pgpClSerialConfigArg4
+};
+static const iocshFuncDef   pgpClSerialConfigFuncDef	= { "pgpClSerialConfig", 5, pgpClSerialConfigArgs };
+static int  pgpClSerialConfigCallFunc( const iocshArgBuf * args )
+{
+    return pgpClSerialConfig( args[0].sval, args[1].ival, args[2].ival, args[3].sval, args[4].sval );
+}
+void pgpClSerialConfigRegister(void)
+{
+	iocshRegister( &pgpClSerialConfigFuncDef, reinterpret_cast<iocshCallFunc>(pgpClSerialConfigCallFunc) );
+}
+
 
 extern "C"
 {
+	epicsExportRegistrar( pgpClSerialConfigRegister );
 	epicsExportAddress( int, DEBUG_PGPCL_SER );
 }
