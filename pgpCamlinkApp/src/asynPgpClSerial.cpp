@@ -24,7 +24,7 @@
 #include "ClSerialMaster.h"
 #include "ClSerialSlave.h"
 
-int	DEBUG_PGPCL_SER	= 2;
+extern int	DEBUG_PGPCL_SER;
 
 #define	MAX_ADDR		1
 #define	MAX_PARAM		100
@@ -75,7 +75,7 @@ asynPgpClSerial::asynPgpClSerial(
     m_serialLock	= epicsMutexMustCreate();
 
 	if ( DEBUG_PGPCL_SER >= 1 )
-		printf(  "%s %s: %s\n", driverName, functionName, portName );
+		printf(  "%s driver %s constructor: port %s\n", driverName, functionName, portName );
 
 	/*
 	 * Check arguments
@@ -103,11 +103,14 @@ asynStatus	asynPgpClSerial::connect(
     static const char	*	functionName	= "asynPgpClSerial::connect";
     epicsSnprintf(	pasynUser->errorMessage, pasynUser->errorMessageSize, "%s:\n", functionName );
 
+	if ( DEBUG_PGPCL_SER >= 1 )
+		printf(  "%s: port %s\n", functionName, this->portName );
 	asynPrint(	pasynUser, ASYN_TRACE_FLOW,
 				"%s port %s\n", functionName, this->portName );
 
 	epicsMutexLock(m_serialLock);
 	// TODO: open device
+	m_SerDev.connect();
 	m_fConnected	= true;
 	epicsMutexUnlock(m_serialLock);
 
@@ -133,11 +136,14 @@ asynStatus	asynPgpClSerial::disconnect(
     static const char	*	functionName	= "asynPgpClSerial::disconnect";
     epicsSnprintf(	pasynUser->errorMessage, pasynUser->errorMessageSize, "%s:\n", functionName );
 
+	if ( DEBUG_PGPCL_SER >= 1 )
+		printf(  "%s: %s\n", functionName, this->portName );
 	asynPrint(	pasynUser, ASYN_TRACE_FLOW,
 				"%s port %s\n", functionName, this->portName );
 
 	epicsMutexLock(m_serialLock);
 	// TODO: Close device
+	m_SerDev.disconnect();
 	m_fConnected	= false;
 	epicsMutexUnlock(m_serialLock);
 
@@ -342,6 +348,8 @@ asynStatus	asynPgpClSerial::writeOctet(
     static const char	*	functionName	= "asynPgpClSerial::writeOctet";
     // const char			*	reasonName		= "unknownReason";
 
+	if ( DEBUG_PGPCL_SER >= 1 )
+		printf(  "%s:\n", functionName );
 	// getParamName( 0, pasynUser->reason, &reasonName );
 	asynPrint(	pasynUser, ASYN_TRACE_FLOW,
 				"%s: %s maxChars %zu\n", functionName, this->portName, maxChars );

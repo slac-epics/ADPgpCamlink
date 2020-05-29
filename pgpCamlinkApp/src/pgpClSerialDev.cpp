@@ -14,6 +14,7 @@
 //
 
 #include <stdio.h>
+#include <unistd.h>
 #include <iostream>
 #include <DmaDriver.h>
 #include <AxiVersion.h>
@@ -21,6 +22,8 @@
 #include "pgpClSerialDev.h"
 
 using namespace	std;
+
+int	DEBUG_PGPCL_SER	= 2;
 
 ///	Constructor
 pgpClSerialDev::pgpClSerialDev(
@@ -31,7 +34,10 @@ pgpClSerialDev::pgpClSerialDev(
 	m_devName(				),
 	m_devLock(				)
 {
-//	const char		*	functionName	= "pgpClSerialDev::pgpClSerialDev";
+	const char		*	functionName	= "pgpClSerialDev::pgpClSerialDev";
+
+	if ( DEBUG_PGPCL_SER >= 1 )
+		printf(  "%s constructor: board %u lane %u\n", functionName, board, lane );
 
 	// Create mutexes
     m_devLock	= epicsMutexMustCreate();
@@ -43,6 +49,8 @@ pgpClSerialDev::pgpClSerialDev(
 	char	acDevName[60];
 	sprintf( acDevName, "/dev/datadev_%u", board );
 	m_devName = acDevName;
+	if ( DEBUG_PGPCL_SER >= 1 )
+		printf(  "%s constructor: devName %s\n", functionName, m_devName.c_str() );
 
 #if 0
 	uint8_t mask[DMA_MASK_SIZE];
@@ -58,6 +66,10 @@ void pgpClSerialDev::connect( )
 {
 	size_t		lane	= 0;
 	uint32_t	dest	= 0;
+	const char		*	functionName	= "pgpClSerialDev::connect";
+	if ( DEBUG_PGPCL_SER >= 1 )
+		printf(  "%s: board %u lane %u\n", functionName, m_board, m_lane );
+	sleep(2);
 	for ( uint32_t	ch = 0; ch < N_AXI_CHAN;	ch++ ) {
 		dest = (0x100 * lane) + ch;	// Derived from python code
 		dataChan[lane][ch]	= rogue::hardware::axi::AxiStreamDma::create( m_devName, dest, true);
@@ -89,6 +101,9 @@ void pgpClSerialDev::connect( )
 
 void pgpClSerialDev::disconnect( )
 {
+	const char		*	functionName	= "pgpClSerialDev::disconnect";
+	if ( DEBUG_PGPCL_SER >= 1 )
+		printf(  "%s: board %u lane %u\n", functionName, m_board, m_lane );
 }
 
 /// virtual Destructor
@@ -98,10 +113,16 @@ pgpClSerialDev::~pgpClSerialDev()
 
 int pgpClSerialDev::sendBytes( const unsigned char * buffer, size_t nBytes )
 {
+	const char		*	functionName	= "pgpClSerialDev::sendBytes";
+	if ( DEBUG_PGPCL_SER >= 1 )
+		printf(  "%s: board %u lane %u, sending %zu bytes\n", functionName, m_board, m_lane, nBytes );
 	return clSerialTx[0]->sendBytes( buffer, nBytes );
 }
 
 int pgpClSerialDev::readBytes( unsigned char * buffer, double timeout, size_t nBytes )
 {
+	const char		*	functionName	= "pgpClSerialDev::readBytes";
+	if ( DEBUG_PGPCL_SER >= 1 )
+		printf(  "%s: board %u lane %u\n", functionName, m_board, m_lane );
 	return clSerialRx[0]->readBytes( buffer, timeout, nBytes );
 }

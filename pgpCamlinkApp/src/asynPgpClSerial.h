@@ -45,7 +45,7 @@ public:		//	Public member functions
 		static std::shared_ptr<asynPgpClSerial> ret;
 		ret = std::make_shared<asynPgpClSerial>( portName, unit, lane,
 								0,		// 0 = default 50, high is 90
-								0,		// 0 = no auto-connect
+								1,		// 0 = no auto-connect
 								0,		// 0 = unlimited
 								0,		// 0 = unlimited
 								0 );	// 0 = default 1MB
