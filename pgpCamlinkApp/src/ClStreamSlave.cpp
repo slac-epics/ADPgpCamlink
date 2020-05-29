@@ -4,13 +4,13 @@
 #include <rogue/interfaces/stream/Frame.h>
 #include <rogue/interfaces/stream/FrameIterator.h>
 
-extern int	DEBUG_PGP_CAMLINK;
+int	DEBUG_CLSTREAM	= 2;
 
 void ClStreamSlave::acceptFrame ( std::shared_ptr<rogue::interfaces::stream::Frame> frame )
 {
 	const char	*	functionName	= "ClStreamSlave::acceptFrame";
 	if ( !frame ) {
-		if ( DEBUG_PGP_CAMLINK >= 2 )
+		if ( DEBUG_CLSTREAM >= 2 )
 			printf( "%s: No frame!\n", functionName );
 		return;
 	}
@@ -26,35 +26,36 @@ void ClStreamSlave::acceptFrame ( std::shared_ptr<rogue::interfaces::stream::Fra
 	rogue::interfaces::stream::FrameIterator it;
 	it = frame->begin();
 
-	if ( DEBUG_PGP_CAMLINK >= 4 )
+	if ( DEBUG_CLSTREAM >= 4 )
 	{
 		printf( "\n" );
 		// Print the values in the first 10 locations
 		printf( "ClStreamSlave::acceptFrame: SuperFrameSize=%u bytes:", frame->getPayload() );
-#if 0
-		for ( uint32_t x=0; x < 20; x++)
+		if ( DEBUG_CLSTREAM >= 4 )
 		{
+			for ( uint32_t x=0; x < 20; x++)
+			{
 #if 0
-			uint16_t	pixelData;
-			fromFrame( it, 2, &pixelData );
-			printf( " 0x%04x", pixelData );
+				uint16_t	pixelData;
+				fromFrame( it, 2, &pixelData );
+				printf( " 0x%04x", pixelData );
 #else
-			printf( " 0x%02x", *it );
-			it++;
+				printf( " 0x%02x", *it );
+				it++;
 #endif
+			}
 		}
-#endif
 		printf( " ...\n" );
 	}
 
 	// Use std::copy to copy data to a data buffer
 	// Here we copy the entire frame payload to the data buffer
-//		std::copy(frame->begin(), frame->end(), data);
+//	std::copy(frame->begin(), frame->end(), data);
 
 	// Process frame via CoreV1 protocol
 	rogue::protocols::batcher::CoreV1		core;
 	core.processFrame(frame);
-	if ( DEBUG_PGP_CAMLINK >= 4 )
+	if ( DEBUG_CLSTREAM >= 3 )
 		printf( "ClStreamSlave::acceptFrame: core count=%u, seq=%u, hdrSize=%u, tailSize=%u\n",
 				core.count(), core.sequence(), core.headerSize(), core.tailSize() );
 	for ( uint32_t sf = 0; sf < core.count(); sf++ )
@@ -63,7 +64,7 @@ void ClStreamSlave::acceptFrame ( std::shared_ptr<rogue::interfaces::stream::Fra
 		data = core.record(sf);
 		// FUSER_BIT_1 = StartOfFrame
 		// LUSER_BIT_0 = FrameError
-		if ( DEBUG_PGP_CAMLINK >= 4 )
+		if ( DEBUG_CLSTREAM >= 4 )
 			printf( "ClStreamSlave::acceptFrame SubFrame %d: dest=%u, size=%u, fUser=0x%02x, lUser=0x%02x\n",
 					sf, data->dest(), data->size(), data->fUser(), data->lUser() );
 		if ( data->dest() == 0 )
@@ -86,10 +87,10 @@ void ClStreamSlave::acceptFrame ( std::shared_ptr<rogue::interfaces::stream::Fra
 			fromFrame( it, 4, &ts.secPastEpoch );
 			char        acBuff[40];
 			epicsTimeToStrftime( acBuff, 40, "%H:%M:%S.%04f", &ts );
-			if ( DEBUG_PGP_CAMLINK >= 4 )
+			if ( DEBUG_CLSTREAM >= 2 )
 			{
 				printf( "ts %s, pulseId 0x%X\n", acBuff, ts.nsec & 0x1FFFF );
-				if ( DEBUG_PGP_CAMLINK >= 5 )
+				if ( DEBUG_CLSTREAM >= 5 )
 				{
 					printf( "Invalid timing frame:" );
 					for ( uint32_t x=0; x < 24; x++)
@@ -101,12 +102,13 @@ void ClStreamSlave::acceptFrame ( std::shared_ptr<rogue::interfaces::stream::Fra
 				}
 			}
 		}
-		else if ( data->dest() == 1 && 0 )
+		else if ( data->dest() == 1 && DEBUG_CLSTREAM >= 5 )
 		{	// TDEST 1 is framegrabber image data
 			//printf( "ClStreamSlave::acceptFrame SubFrame %d: ", sf );
 			//it = data->begin();
 			it = data->end();
-			for ( uint32_t x=0; x < 1030; x++)
+			//for ( uint32_t x=0; x < 1030; x++)
+			for ( uint32_t x=0; x < 10; x++)
 			{
 #if 1
 				if ( (x % 16) == 0 )
