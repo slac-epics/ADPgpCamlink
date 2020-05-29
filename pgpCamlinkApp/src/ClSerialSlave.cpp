@@ -7,7 +7,7 @@
 #include <rogue/interfaces/stream/FrameLock.h>
 
 
-int		clSerialSlaveDebug	= 0;
+int		clSerialSlaveDebug	= 2;
 
 ClSerialSlave::ClSerialSlave()
 	:	rogue::interfaces::stream::Slave(),

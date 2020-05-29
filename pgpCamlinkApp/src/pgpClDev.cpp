@@ -18,6 +18,7 @@
 
 // rogue headers
 #include "rogue/Version.h"
+#include "rogue/Logging.h"
 
 // aes-stream-drivers headers 
 #include <AxisDriver.h>
@@ -29,6 +30,8 @@
 
 using namespace	std;
 namespace rim = rogue::interfaces::memory;
+
+typedef	std::map< std::string, rim::VariablePtr >	mapVarPtr_t;
 
 // TODO Move to new file: src/rogue/memory/interfaces/memory/Constants.cpp
 // TODO Rename BlockProcessingType2String()?
@@ -113,9 +116,9 @@ pgpClAddrMap::pgpClAddrMap()
 #if 1
 	//printf( "NOT Parsing ROGUE_ADDR_MAP!\n" );
 #else
-	printf( "Parsing ROGUE_ADDR_MAP\n" );
+	printf( "pgpClAddrMap: Parsing ROGUE_ADDR_MAP\n" );
 	parseMemMap( ROGUE_ADDR_MAP ); // From generated pgpClAddrMap.h
-	printf( "ROGUE_ADDR_MAP parsed successfully\n" );
+	printf( "pgpClAddrMap: ROGUE_ADDR_MAP parsed successfully\n" );
 #endif
 }
 
@@ -134,11 +137,11 @@ pgpClDev::pgpClDev(
 	m_pFebRegChan(			),
 	m_pFebFrameChan(		),
 	m_pClMemMaster(			),	// Not needed
-	m_pClStreamSlave(		),
 	m_pFebMemMaster(		),	// not needed
+	m_pImageStream(			),
 	m_pSrpFeb(				)
 {
-//	const char		*	functionName	= "pgpClDev::pgpClDev";
+	const char		*	functionName	= "pgpClDev::pgpClDev";
 
 	// Create mutexes
     m_devLock	= epicsMutexMustCreate();
@@ -205,6 +208,7 @@ pgpClDev::pgpClDev(
 	m_pClMemMaster->setSlave( m_pAxiMemMap );
 	const char	*	szMemName = "Unnamed_3";
 	addMemory( szMemName, m_pAxiMemMap );
+	m_pRogueLib->addMemory( szMemName, m_pAxiMemMap );
 	printf("pgpClDev: addMemory AxiMemMap interface %s\n", szMemName );
 
 	//
@@ -216,6 +220,7 @@ pgpClDev::pgpClDev(
 	m_pSrpFeb->addSlave( m_pFebRegChan );
 	szMemName = "Unnamed_96";
 	addMemory( szMemName, m_pSrpFeb );
+	m_pRogueLib->addMemory( szMemName, m_pSrpFeb );
 	printf("pgpClDev: addMemory srpFeb interface %s\n", szMemName );
 	// Create FebMemMaster and link it to SRP
 	//m_pFebMemMaster = FebMemoryMaster::create( );
@@ -227,19 +232,31 @@ pgpClDev::pgpClDev(
 	printf( "Parsing ROGUE_ADDR_MAP\n" );
 	parseMemMap( ROGUE_ADDR_MAP ); // From generated pgpClAddrMap.h
 	printf( "ROGUE_ADDR_MAP parsed successfully\n" );
+	m_pRogueLib->parseMemMap( ROGUE_ADDR_MAP );
+	printf( "m_pRogueLib: ROGUE_ADDR_MAP parsed successfully\n" );
 #endif
+	const mapVarPtr_t &	mapVars		= getVariableList();
+	printf( "%s: %zu variables\n", functionName, mapVars.size() );
+	printf( "m_pRogueLib: %zu variables\n", (m_pRogueLib->getVariableList()).size() );
 
-	showVariableList( true );
+	//showVariableList( true );
 
-	std::string sFpgaVersionPath( "ClinkDev.Hardware.AxiPcieCore.AxiVersion.FpgaVersion" );
+	std::string sFpgaVersionPath( "ClinkDev.Hardware.AxiPcieCore.AxiVersion.BuildStamp" );
 	showVariable( sFpgaVersionPath.c_str(), true );
+	
+	std::string sDataCnt( "ClinkDev.Application.AppLane[0].EventBuilder.DataCnt[0]" );
+	showVariable( sDataCnt.c_str(), true );
+	showVariable( "ClinkDev.Hardware.AxiPcieCore.AxiVersion.FpgaVersion", true );
+	showVariable( "ClinkDev.Hardware.AxiPcieCore.AxiVersion.UpTimeCnt", true );
+	showVariable( "ClinkDev.ClinkFeb[0].AxiVersion.FpgaVersion", true );
+	showVariable( "ClinkDev.ClinkFeb[0].AxiVersion.UpTimeCnt", true );
 
 	//
 	// Connect DATACHAN 1 Camera Frames
-	// TODO: Move ClStreamSlave class and addSlave call to pgpCamlink.cpp
-	m_pClStreamSlave	= ClStreamSlave::create();
-	m_pFebFrameChan->addSlave( m_pClStreamSlave );
-	// or rogueStreamConnect( m_pFebFrameChan, m_pClStreamSlave );
+	// TODO?: Move ImageStream class and addSlave call to pgpCamlink.cpp
+	m_pImageStream	= ImageStream::create(NULL);
+	m_pFebFrameChan->addSlave( m_pImageStream );
+	// or rogueStreamConnect( m_pFebFrameChan, m_pImageStream );
 
 	m_fConnected = 1;	// Do we need this?
 	StartRun( m_fd );
@@ -261,8 +278,35 @@ void pgpClDev::showVariable( const char * pszVarPath, bool verbose )
 	{
 		if ( verbose )
 			printf( "%s%u: ", modelId2String( pVar->modelId() ), pVar->bitTotal() );
-		std::string		val = pVar->getString();
-		printf( "%s: %s\n", varPath.c_str(), val.c_str() );
+		switch ( pVar->modelId() )
+		{
+		default:
+			break;
+		case rim::PyFunc:
+			break;
+		case rim::Bytes:
+			break;
+		case rim::UInt:
+			printf( "%s: %lu\n", varPath.c_str(), pVar->getUInt() );
+			break;
+		case rim::Int:
+			printf( "%s: %li\n", varPath.c_str(), pVar->getInt() );
+			break;
+		case rim::Bool:
+			break;
+		case rim::String:
+			printf( "%s: '%s'\n", varPath.c_str(), pVar->getString().c_str() );
+			break;
+		case rim::Float:
+			break;
+		case rim::Double:
+			printf( "%s: %f\n", varPath.c_str(), pVar->getDouble() );
+			break;
+		case rim::Fixed:
+			break;
+		case rim::Custom:
+			break;
+		}
 	}
 	else
 	{
@@ -270,11 +314,10 @@ void pgpClDev::showVariable( const char * pszVarPath, bool verbose )
 	}
 }
 
-typedef	std::map< std::string, rim::VariablePtr >	mapVarPtr_t;
-
 void pgpClDev::showVariableList( bool verbose )
 {
 	const char *	functionName = "pgpClDev::showVariableList";
+#if 0
 	if ( ! m_pRogueLib )
 	{
 		printf( "%s Error: Unable to access rogue lib!\n", functionName );
@@ -282,6 +325,9 @@ void pgpClDev::showVariableList( bool verbose )
 	}
 
 	const mapVarPtr_t &	mapVars		= m_pRogueLib->getVariableList();
+#else
+	const mapVarPtr_t &	mapVars		= getVariableList();
+#endif
 	if ( mapVars.size() == 0 )
 	{
 		printf( "%s Error: Rogue VariableList is empty!\n", functionName );
@@ -300,9 +346,7 @@ void pgpClDev::showVariableList( bool verbose )
 			printf( "%s Error: Variable %s not found!\n", functionName, pVar->path().c_str() );
 			continue;
 		}
-		std::cout	<< vit->first << " => " << pVar->path()
-					<< " Type " << pVar->modelId() << pVar->bitTotal()
-					<< std::endl;
+		std::cout	<< pVar->path() << " Type " << pVar->modelId() << pVar->bitTotal() << std::endl;
 #endif
 	}
 }

@@ -8,7 +8,7 @@ record( calcout, "$(SER_OK_PV):MON_SER" )
 	field( SCAN, "$(MON_SCAN=10 second)" )
 	field( HIGH, "1" )
 	field( HSV,  "MAJOR" )
-	field( FLNK, "$(P)$(R)SER_OK" )
+	field( FLNK, "$(P)$(R)SER_DEAD" )
 	info( autosaveFields, "" )
 	info( archiveFields,  "" )
 }

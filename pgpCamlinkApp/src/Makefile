@@ -13,6 +13,7 @@ LIB_SRCS   		+= pgpCamlink.cpp
 LIB_SRCS		+= ClSerialMaster.cpp
 LIB_SRCS		+= ClSerialSlave.cpp
 LIB_SRCS		+= ClStreamSlave.cpp
+LIB_SRCS		+= ImageStream.cpp
 LIB_SRCS		+= pgpClDev.cpp
 LIB_SRCS		+= pgpClSerialDev.cpp
 LIB_SRCS		+= asynPgpClSerial.cpp

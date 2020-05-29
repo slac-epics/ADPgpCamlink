@@ -35,7 +35,7 @@
 
 // ADPgpCamlink headers
 #include "ClMemoryMaster.h"
-#include "ClStreamSlave.h"
+#include "ImageStream.h"
 #include "FebMemoryMaster.h"
 
 #define	N_AXI_LANES	4
@@ -105,8 +105,8 @@ private:
 	rogue::hardware::axi::AxiStreamDmaPtr		m_pFebRegChan;
 	rogue::hardware::axi::AxiStreamDmaPtr		m_pFebFrameChan;
 	ClMemoryMasterPtr				 			m_pClMemMaster;	// not needed
-	ClStreamSlavePtr							m_pClStreamSlave;
 	FebMemoryMasterPtr				 			m_pFebMemMaster;	// not needed
+	ImageStreamPtr								m_pImageStream;
 	rogue::protocols::srp::SrpV3Ptr				m_pSrpFeb;
 	//rogue::LibraryBasePtr						m_pRogueLib;
 	pgpClAddrMapPtr								m_pRogueLib;

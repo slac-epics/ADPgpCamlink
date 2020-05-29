@@ -20,6 +20,7 @@
 #include <AxiVersion.h>
 
 #include "pgpClSerialDev.h"
+#include "rogue/GeneralError.h"
 
 using namespace	std;
 
@@ -62,27 +63,76 @@ pgpClSerialDev::pgpClSerialDev(
 
 }
 
-void pgpClSerialDev::connect( )
+int pgpClSerialDev::connect( )
 {
-	size_t		lane	= 0;
 	uint32_t	dest	= 0;
 	const char		*	functionName	= "pgpClSerialDev::connect";
 	if ( DEBUG_PGPCL_SER >= 1 )
+	{
 		printf(  "%s: board %u lane %u\n", functionName, m_board, m_lane );
-	sleep(2);
-	for ( uint32_t	ch = 0; ch < N_AXI_CHAN;	ch++ ) {
-		dest = (0x100 * lane) + ch;	// Derived from python code
-		dataChan[lane][ch]	= rogue::hardware::axi::AxiStreamDma::create( m_devName, dest, true);
+		sleep(2);
 	}
 
-	// CHAN 2: Camera Serial Tx
-	clSerialTx[lane] = ClSerialMaster::create();
-	clSerialTx[lane]->addSlave( dataChan[lane][2] );
+	uint32_t ch = 2;	// Data channel 2 is used for pgpCamlink serial I/O
+	dest		= (0x100 * m_lane) + ch;	// Derived from python code
+	try
+	{
+		m_pDataChan	= rogue::hardware::axi::AxiStreamDma::create( m_devName, dest, true);
+	}
+	catch ( rogue::GeneralError & e )
+	{
+		printf(  "%s Error: Unable to create %s serial data channel!\n", functionName, m_devName.c_str() );
+		disconnect();
+		return -1;
+	}
 
-	// CHAN 3: Camera Serial Rx
-	clSerialRx[lane] = ClSerialSlave::create();
-	dataChan[lane][2]->addSlave( clSerialRx[lane] );
+	try
+	{
+		// CHAN 2: Camera Serial Tx
+		m_pClSerialTx = ClSerialMaster::create();
+		if ( m_pClSerialTx && m_pDataChan )
+		{
+			m_pClSerialTx->addSlave( m_pDataChan );
+			if ( DEBUG_PGPCL_SER >= 1 )
+				printf(  "%s: Created lane %u ClSerialTx data channel\n", functionName, m_lane );
+		}
+		else
+		{
+			printf( "%s Error: Unable to connect %s ClSerialTx stream!\n", functionName, m_devName.c_str() );
+		}
+	}
+	catch ( rogue::GeneralError & e )
+	{
+		printf( "%s Unable to connect %s ClSerialTx stream!\nRogue Error: %s\n", functionName, m_devName.c_str(), e.what() );
+		disconnect();
+		return -1;
+	}
 
+	try
+	{
+		// CHAN 3: Camera Serial Rx
+		m_pClSerialRx = ClSerialSlave::create();
+		if ( m_pClSerialRx && m_pDataChan )
+		{
+			m_pDataChan->addSlave( m_pClSerialRx );
+			if ( DEBUG_PGPCL_SER >= 1 )
+				printf(  "%s: Created lane %u ClSerialRx data channel\n", functionName, m_lane );
+		}
+		else
+		{
+			printf( "%s Unable to connect %s ClSerialRx stream!\n", functionName, m_devName.c_str() );
+		}
+	}
+	catch ( rogue::GeneralError & e )
+	{
+		printf( "%s Unable to connect %s ClSerialRx stream!\nRogue Error: %s\n", functionName, m_devName.c_str(), e.what() );
+		disconnect();
+		return -1;
+	}
+
+
+#if 0
+	// TODO: Move to pgpClSerialTool.cpp
 	int fd = open(m_devName.c_str(), O_RDWR);
 	if (fd < 0) {
 		std::cout << "Error opening " << m_devName << std::endl;
@@ -97,6 +147,11 @@ void pgpClSerialDev::connect( )
 		}
 		close( fd );
 	}
+#endif
+
+	if ( DEBUG_PGPCL_SER >= 1 )
+		printf(  "%s: Connected lane %u serial data channels\n", functionName, m_lane );
+	return 0;
 }
 
 void pgpClSerialDev::disconnect( )
@@ -104,25 +159,50 @@ void pgpClSerialDev::disconnect( )
 	const char		*	functionName	= "pgpClSerialDev::disconnect";
 	if ( DEBUG_PGPCL_SER >= 1 )
 		printf(  "%s: board %u lane %u\n", functionName, m_board, m_lane );
+
+	// Release the rogue interfaces and data channel
+	m_pClSerialRx.reset();
+	m_pClSerialTx.reset();
+	m_pDataChan.reset();
 }
 
 /// virtual Destructor
 pgpClSerialDev::~pgpClSerialDev()
 {
+	disconnect();
 }
 
 int pgpClSerialDev::sendBytes( const unsigned char * buffer, size_t nBytes )
 {
 	const char		*	functionName	= "pgpClSerialDev::sendBytes";
+	if ( ! m_pClSerialTx )
+	{
+		printf(  "%s: board %u lane %u, invalid ClSerialTx data channel!\n", functionName, m_board, m_lane );
+		return -1;
+	}
+
 	if ( DEBUG_PGPCL_SER >= 1 )
 		printf(  "%s: board %u lane %u, sending %zu bytes\n", functionName, m_board, m_lane, nBytes );
-	return clSerialTx[0]->sendBytes( buffer, nBytes );
+	return m_pClSerialTx->sendBytes( buffer, nBytes );
 }
 
 int pgpClSerialDev::readBytes( unsigned char * buffer, double timeout, size_t nBytes )
 {
 	const char		*	functionName	= "pgpClSerialDev::readBytes";
+	if ( ! m_pClSerialRx )
+	{
+		printf(  "%s: board %u lane %u, invalid ClSerialRx data channel!\n", functionName, m_board, m_lane );
+		return -1;
+	}
+
 	if ( DEBUG_PGPCL_SER >= 1 )
 		printf(  "%s: board %u lane %u\n", functionName, m_board, m_lane );
-	return clSerialRx[0]->readBytes( buffer, timeout, nBytes );
+	int		nRead = m_pClSerialRx->readBytes( buffer, timeout, nBytes );
+	if ( nRead <= 0 )
+	{
+		if ( DEBUG_PGPCL_SER >= 1 )
+			printf(  "%s: board %u lane %u read error!\n", functionName, m_board, m_lane );
+		return 0;
+	}
+	return nRead;
 }

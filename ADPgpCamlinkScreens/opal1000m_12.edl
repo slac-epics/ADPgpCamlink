@@ -3,8 +3,8 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 103
-y 1361
+x 60
+y 278
 w 700
 h 579
 font "helvetica-medium-r-12.0"
@@ -90,25 +90,6 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 4
-y 32
-w 136
-h 20
-font "helvetica-medium-r-12.0"
-fontAlign "right"
-fgColor index 14
-bgColor index 3
-value {
-  "Information"
-}
-endObjectProperties
-
-# (Static Text)
-object activeXTextClass
-beginObjectProperties
-major 4
-minor 1
-release 1
 x 32
 y 188
 w 172
@@ -119,25 +100,6 @@ fgColor index 14
 bgColor index 3
 value {
   "BIT: BuiltInTest (0;0=OK)"
-}
-endObjectProperties
-
-# (Static Text)
-object activeXTextClass
-beginObjectProperties
-major 4
-minor 1
-release 1
-x 4
-y 116
-w 136
-h 20
-font "helvetica-medium-r-12.0"
-fontAlign "right"
-fgColor index 14
-bgColor index 3
-value {
-  "BS: Build State Versions"
 }
 endObjectProperties
 
@@ -704,25 +666,6 @@ objType "monitors"
 noExecuteClipMask
 endObjectProperties
 
-# (Static Text)
-object activeXTextClass
-beginObjectProperties
-major 4
-minor 1
-release 1
-x 4
-y 88
-w 136
-h 20
-font "helvetica-medium-r-12.0"
-fontAlign "right"
-fgColor index 14
-bgColor index 3
-value {
-  "Firmware Timestamp"
-}
-endObjectProperties
-
 # (Text Monitor)
 object activeXTextDspClass:noedit
 beginObjectProperties
@@ -982,25 +925,6 @@ smartRefresh
 useHexPrefix
 newPos
 objType "monitors"
-endObjectProperties
-
-# (Static Text)
-object activeXTextClass
-beginObjectProperties
-major 4
-minor 1
-release 1
-x 4
-y 60
-w 136
-h 20
-font "helvetica-medium-r-12.0"
-fontAlign "right"
-fgColor index 14
-bgColor index 3
-value {
-  "Serial Number"
-}
 endObjectProperties
 
 # (Text Monitor)
@@ -1855,5 +1779,97 @@ bgColor index 3
 value {
   "Sensor Temperature"
 }
+endObjectProperties
+
+# (Message Button)
+object activeMessageButtonClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 4
+y 32
+w 136
+h 20
+fgColor index 14
+onColor index 6
+offColor index 3
+topShadowColor index 1
+botShadowColor index 11
+controlPv "$(P)$(R)OpalInfo_RBV.PROC"
+pressValue "1"
+onLabel "Rereading Info..."
+offLabel "Camera Info"
+3d
+font "helvetica-medium-r-12.0"
+endObjectProperties
+
+# (Message Button)
+object activeMessageButtonClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 4
+y 60
+w 136
+h 20
+fgColor index 14
+onColor index 6
+offColor index 3
+topShadowColor index 1
+botShadowColor index 11
+controlPv "$(P)$(R)OpalSerialNumber_RBV.PROC"
+pressValue "1"
+onLabel "Rereading S/N..."
+offLabel "Camera Serial Number"
+3d
+font "helvetica-medium-r-12.0"
+endObjectProperties
+
+# (Message Button)
+object activeMessageButtonClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 4
+y 88
+w 136
+h 20
+fgColor index 14
+onColor index 6
+offColor index 3
+topShadowColor index 1
+botShadowColor index 11
+controlPv "$(P)$(R)OpalFirmwareTimestamp_RBV.PROC"
+pressValue "1"
+onLabel "Rereading FW TS..."
+offLabel "Cam Firmware Timestamp"
+3d
+font "helvetica-medium-r-12.0"
+endObjectProperties
+
+# (Message Button)
+object activeMessageButtonClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 4
+y 116
+w 136
+h 20
+fgColor index 14
+onColor index 6
+offColor index 3
+topShadowColor index 1
+botShadowColor index 11
+controlPv "$(P)$(R)OpalBuildState_RBV.PROC"
+pressValue "1"
+onLabel "Rereading FW BuildState..."
+offLabel "Cam Build State Versions"
+3d
+font "helvetica-medium-r-12.0"
 endObjectProperties
 

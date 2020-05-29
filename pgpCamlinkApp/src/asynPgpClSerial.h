@@ -59,7 +59,7 @@ public:		//	Public member functions
 						int						unit,
 						int						lane,
 						int						priority	= 0,	// 0 = default 50, high is 90
-						int						autoConnect	= 0,	// 0 = no auto-connect
+						int						autoConnect	= 1,	// 0 = no auto-connect
 						int						maxBuffers	= 0,	// 0 = unlimited
 						size_t					maxMemory	= 0,	// 0 = unlimited
 						int						stackSize	= 0		// 0 = default 1MB
@@ -67,6 +67,12 @@ public:		//	Public member functions
 
 	/// Destructor
 	virtual ~asynPgpClSerial();
+
+	/// Open a fresh connection to the camera serial
+    asynStatus ConnectCamSerial( );
+
+	/// Close the camera serial connections
+    asynStatus DisconnectCamSerial( );
 
 	//
 	//	asynPortDriver function overrides

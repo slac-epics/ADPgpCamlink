@@ -29,10 +29,39 @@
 #include "ContextTimerMax.h"
 #endif	//	USE_DIAG_TIMER
 
-class pgpImage
+class pgpImage	// TODO: Do I need this class
 {
+ public:
+	pgpImage( )
+		:	m_pNDArray(	NULL	)
+	{
+	}
+	virtual ~pgpImage( )
+	{
+	}
+
+	NDArray		*	GetNDArrayPtr(	)
+	{
+		return m_pNDArray;
+	}
+
+	void ReleaseNDArray( )
+	{
+		if( m_pNDArray != NULL )
+		{
+			m_pNDArray->release();
+			m_pNDArray	= NULL;
+		}
+	}
+
+	void SetNDArrayPtr( NDArray * pNDArray )
+	{
+		assert( m_pNDArray == NULL );
+		m_pNDArray	= pNDArray;
+	}
+
 private:
-	void	*	pImage;
+	NDArray		*	m_pNDArray;
 };
 
 // Camera operation data structure definition
@@ -277,7 +306,8 @@ public:		//	Public member functions
 	int						StartAcquisition( );
 
 	///	Acquire next image from the camera
-	int						AcquireData(	pgpImage	*	pImage	);
+	int						NewImage(	rogue::interfaces::stream::FramePtr frame,
+										const epicsTimeStamp			&	ts		);
 
 	///	Check for a valid image, returns 0 on success, error code on error
 	int						CheckData(		pgpImage	*	pImage	);
@@ -366,7 +396,7 @@ private:	//	Private member functions
 	//	NDArray routines
 	//	Don't call without holding driver lock!
 	NDArray *	AllocNDArray(	);
-	int			LoadNDArray(	NDArray	*	pNDArray, void	*	pRawData	);
+	int			LoadNDArray( NDArray * pNDArray, rogue::interfaces::stream::FramePtr frame );
 
 private:	//	Private class functions
 	static	void			CameraAdd(		pgpCamlink * pCamera );

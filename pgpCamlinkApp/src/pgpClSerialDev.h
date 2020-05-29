@@ -42,7 +42,7 @@ public:		//	Public member functions
 	/// Destructor
 	virtual ~pgpClSerialDev();
 
-	void connect( );
+	int connect( );
 	void disconnect( );
 
 	const std::string	&	getName( ) const
@@ -68,13 +68,13 @@ public:		//	Public member functions
 
 	void flush( )
 	{
-		clSerialRx[0]->flush();
+		m_pClSerialRx->flush();
 	}
 
 	size_t	getNumAvailBytes( ) const
 	{
 		//return m_ReplyBuffer.size();
-		return clSerialRx[0]->getNumAvailBytes();
+		return m_pClSerialRx->getNumAvailBytes();
 	}
 
 private:
@@ -85,13 +85,9 @@ private:
 	std::string			m_devName;
 	epicsMutexId		m_devLock;
 
-	// TODO: We only use one of each of these.
-	// lane is always 0 for first camera and 1 for 2nd.
-	ClSerialSlavePtr	clSerialRx[N_AXI_LANES];
-	ClSerialMasterPtr	clSerialTx[N_AXI_LANES];
-	rogue::hardware::axi::AxiMemMapPtr 			memMap[N_AXI_LANES];
-	// For dataChan we only use dataChan[0][2]
-	rogue::hardware::axi::AxiStreamDmaPtr		dataChan[N_AXI_LANES][N_AXI_CHAN];
+	ClSerialSlavePtr						m_pClSerialRx;
+	ClSerialMasterPtr						m_pClSerialTx;
+	rogue::hardware::axi::AxiStreamDmaPtr	m_pDataChan;
 };
 
 #endif	//	pgpClSerialDev_H

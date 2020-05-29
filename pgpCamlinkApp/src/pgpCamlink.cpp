@@ -43,6 +43,8 @@
 //#include "syncDataAcq.h"
 //#include "promheader.h"
 
+#include "rogue/Logging.h"
+
 #ifdef	USE_DIAG_TIMER
 #include "HiResTime.h"
 #include "ContextTimer.h"
@@ -129,8 +131,8 @@ pgpCamlink::pgpCamlink(
 							priority, stackSize	),
 		m_fAcquireMode(		false			    ),
 		m_fExitApp(			false			    ),
-		m_fReconfig(		true			    ),
-		m_fReopen(			true			    ),
+		m_fReconfig(		false			    ),
+		m_fReopen(			false			    ),
 		m_pDev(				NULL				),
 		m_unit(				unit				),
 		m_lane(			lane				),
@@ -447,16 +449,47 @@ asynStatus pgpCamlink::ConnectCamera( )
 
 	if ( m_pDev == NULL )
 	{
+		int			connected	= 0;
+		pasynManager->isConnected( this->pasynUserSelf, &connected );
+		if ( connected )
+		{
+			// Signal asynManager that we are disconnected
+			UpdateStatus( ADStatusDisconnected );
+			if ( pasynManager->exceptionDisconnect( this->pasynUserSelf ) != asynSuccess )
+			{
+				asynPrint(	this->pasynUserSelf, ASYN_TRACE_ERROR,
+							"%s %s: error calling pasynManager->exceptionDisconnect, error=%s\n",
+							driverName, functionName, this->pasynUserSelf->errorMessage );
+			}
+		}
 		printf( "%s: %s failed to initialize camera!\n", functionName, m_CameraName.c_str() );
         return asynError;
 	}
+
+	// Signal asynManager that we are connected
+    status = pasynManager->exceptionConnect( this->pasynUserSelf );
+    if ( status != asynSuccess )
+	{
+        asynPrint(	this->pasynUserSelf, ASYN_TRACE_ERROR,
+					"%s %s: error calling pasynManager->exceptionConnect, error=%s\n",
+					driverName, functionName, this->pasynUserSelf->errorMessage );
+        return asynError;
+    }
+
+	if ( DEBUG_PGP_CAMLINK >= 1 )
+		printf(	"%s %s: PGP Framegrabber %s 0 connected!\n", 
+				driverName, functionName, m_CameraName.c_str() );
+    asynPrint(	this->pasynUserSelf, ASYN_TRACE_FLOW, 
+				"asynPrint "
+				"%s %s: PGP Framegrabber %s 0 connected!\n", 
+				driverName, functionName, m_CameraName.c_str() );
 
 	UpdateStatus( ADStatusIdle );
 
 	if ( DEBUG_PGP_CAMLINK >= 1 )
 		printf( "%s: connected in thread %s ...\n", functionName, epicsThreadGetNameSelf() );
 
-    return status;
+    return asynSuccess;
 }
 
 
@@ -511,41 +544,7 @@ asynStatus pgpCamlink::connect( asynUser *	pasynUser )
 
 	// The guts are in ConnectCamera(), which doesn't need a pasynUser ptr
 	asynStatus	status	= ConnectCamera();
-    if ( status != asynSuccess )
-	{
-		int			connected	= 0;
-		pasynManager->isConnected( pasynUser, &connected );
-		if ( connected )
-		{
-			// Signal asynManager that we are disconnected
-			UpdateStatus( ADStatusDisconnected );
-			if ( pasynManager->exceptionDisconnect( pasynUser ) != asynSuccess )
-			{
-				asynPrint(	pasynUser, ASYN_TRACE_ERROR,
-							"%s %s: error calling pasynManager->exceptionDisconnect, error=%s\n",
-							driverName, functionName, pasynUser->errorMessage );
-			}
-		}
-    	return status;
-    }
-
-	// Signal asynManager that we are connected
-    status = pasynManager->exceptionConnect( pasynUser );
-    if ( status != asynSuccess )
-	{
-        asynPrint(	pasynUser, ASYN_TRACE_ERROR,
-					"%s %s: error calling pasynManager->exceptionConnect, error=%s\n",
-					driverName, functionName, pasynUser->errorMessage );
-        return asynError;
-    }
-	if ( DEBUG_PGP_CAMLINK >= 1 )
-		printf(	"%s %s: PGP Framegrabber %s 0 connected!\n", 
-				driverName, functionName, m_CameraName.c_str() );
-    asynPrint(	pasynUser, ASYN_TRACE_FLOW, 
-				"asynPrint "
-				"%s %s: PGP Framegrabber %s 0 connected!\n", 
-				driverName, functionName, m_CameraName.c_str() );
-    return asynSuccess;
+    return status;
 }
 
 /// Overriding ADDriver::disconnect
@@ -556,6 +555,8 @@ asynStatus pgpCamlink::disconnect( asynUser *	pasynUser )
 
 	// The guts are in DisconnectCamera(), which doesn't need a pasynUser ptr
 	int	status	= DisconnectCamera();
+
+	// TODO: In ADProsilica, the rest of this is in DisconnectCamera
     if ( status != asynSuccess )
 	{
         asynPrint(	pasynUser, ASYN_TRACE_ERROR,
@@ -897,6 +898,9 @@ int pgpCamlink::_Reopen( )
 		if ( DEBUG_PGP_CAMLINK >= 1 )
 			printf( "%s: %s old Dev closed.\n", functionName, m_CameraName.c_str() );
 	}
+
+	// Enable rogue logging
+	//rogue::Logging::setLevel( rogue::Logging::Info );
 
 	// Open the camera lane
 	if ( DEBUG_PGP_CAMLINK >= 1 )
@@ -1307,10 +1311,12 @@ int pgpCamlink::DeIntlvRoiOnly16( NDArray * pNDArray, void	*	pRawData )
 	return 0;
 }
 
-int pgpCamlink::AcquireData( pgpImage	*	pImage )
+int pgpCamlink::NewImage(
+	rogue::interfaces::stream::FramePtr	frame,
+	const epicsTimeStamp			&	tsImage		)
 {
-    static const char	*	functionName = "pgpCamlink::AcquireData";
-	CONTEXT_TIMER( "AcquireData" );
+    static const char	*	functionName = "pgpCamlink::NewImage";
+	CONTEXT_TIMER( "NewImage" );
 	assert( m_pDev != NULL );
 
 	UpdateStatus( ADStatusWaiting );
@@ -1387,8 +1393,8 @@ int pgpCamlink::AcquireData( pgpImage	*	pImage )
     NDArray		*	pNDArray = AllocNDArray();
 	if ( pNDArray != NULL )
 	{
-		// Transfer the raw DMA buffer to the NDArray
-		int status = LoadNDArray( pNDArray, (void *) pRawImage );
+		// Transfer the image from the frame buffer to the NDArray
+		int status = LoadNDArray( pNDArray, frame );
 		if ( status != 0 )
 		{
 			pNDArray->release( );
@@ -1413,7 +1419,7 @@ int pgpCamlink::AcquireData( pgpImage	*	pImage )
 	unlock();
 
 	{
-	CONTEXT_TIMER( "AcquireData-wrapup" );
+	CONTEXT_TIMER( "NewImage-wrapup" );
 
 	// Increment NumImagesCounter
 	//	TODO: Replace this pattern w/ local m_numImagesCounter
@@ -1443,7 +1449,7 @@ int pgpCamlink::AcquireData( pgpImage	*	pImage )
 NDArray * pgpCamlink::AllocNDArray( )
 {
     static const char	*	functionName = "pgpCamlink::AllocNDArray";
-	CONTEXT_TIMER( "AcquireData-NDArrayPool-Update" );
+	CONTEXT_TIMER( "NewImage-NDArrayPool-Update" );
 
 	// TODO: Handle color images and 32 bit images
 	NDDataType_t	pixelType		= NDUInt8;
@@ -1499,7 +1505,9 @@ NDArray * pgpCamlink::AllocNDArray( )
 //
 //	Load image from DMA buffer to NDArray
 //	Note: Driver must be locked before calling this routine
-int pgpCamlink::LoadNDArray( NDArray * pNDArray, void * pRawData )
+int pgpCamlink::LoadNDArray(
+	NDArray								*	pNDArray,
+	rogue::interfaces::stream::FramePtr		frame )
 {
     static const char	*	functionName = "pgpCamlink::LoadNDArray";
 	int		status = 0;

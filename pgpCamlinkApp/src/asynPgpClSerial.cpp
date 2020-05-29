@@ -21,6 +21,7 @@
 #include "iocsh.h"
 #include "asynPortDriver.h"
 #include "asynPgpClSerial.h"
+#include "epicsThread.h"
 #include "ClSerialMaster.h"
 #include "ClSerialSlave.h"
 
@@ -50,7 +51,7 @@ asynPgpClSerial::asynPgpClSerial(
 	asynPortDriver(			portName,
 							MAX_ADDR,
 							//MAX_PARAM,
-							asynOctetMask,		// Interface mask
+							asynCommonMask | asynOctetMask,	// Interface mask
 							asynOctetMask,		// Interrupt mask
 							ASYN_CANBLOCK,		// asynFlags
 							autoConnect,
@@ -84,7 +85,6 @@ asynPgpClSerial::asynPgpClSerial(
 	{
 		printf("portName missing or empty.\n");
 	}
-
 	//asynPgpClSerial::ClSerialAdd( std::enable_shared_from_this<asynPgpClSerial>::shared_from_this() );
 }
 
@@ -93,6 +93,68 @@ asynPgpClSerial::~asynPgpClSerial()
 {
 }
 
+/// Open a fresh connection to the camera serial
+asynStatus asynPgpClSerial::ConnectCamSerial( )
+{
+    static const char	*	functionName	= "asynPgpClSerial::ConnectCamSerial";
+    asynStatus				status			= asynSuccess;
+
+	if ( DEBUG_PGPCL_SER >= 1 )
+		printf( "%s: in thread %s ...\n", functionName, epicsThreadGetNameSelf() );
+
+// asynPgpClSerial::connect not being called
+// streamDebug 1 output below
+// AsynDriverInterface.cc:450: TST:PGP:OPAL1:OpalSerialNumber_RBV: AsynDriverInterface::connectToBus(CAM.SER, -1): pasynManager->connectDevice(0x2394cd8, CAM.SER, -1) = asynSuccess
+// AsynDriverInterface.cc:522: TST:PGP:OPAL1:OpalSerialNumber_RBV: AsynDriverInterface::connectToBus(CAM.SER, -1): device is now connected
+// AsynDriverInterface.cc:373: AsynDriverInterface::getBusInterface(CAM.SER, -1): new interface allocated
+// StreamBusInterface.cc:70: StreamBusInterface::find AsynDriverInterface matches
+// StreamCore.cc:163: StreamCore::attachBus(busname="CAM.SER", addr=-1, param="") businterface=0x2394b00
+
+	epicsMutexLock(m_serialLock);
+	// TODO: open device
+	m_SerDev.connect();
+	m_fConnected	= true;
+	epicsMutexUnlock(m_serialLock);
+
+	int			connected	= 0;
+	pasynManager->isConnected( this->pasynUserSelf, &connected );
+	if ( !connected )
+	{
+		// Signal asynManager that we're connected.
+		int  status = pasynManager->exceptionConnect( this->pasynUserSelf );
+		if ( status != asynSuccess )
+			asynPrint(	this->pasynUserSelf, ASYN_TRACE_ERROR,
+						"%s port %s: Error calling pasynManager->exceptionConnect, error=%s\n",
+						functionName, this->portName, this->pasynUserSelf->errorMessage );
+	}
+
+	if ( DEBUG_PGPCL_SER >= 1 )
+		printf( "%s: connected in thread %s ...\n", functionName, epicsThreadGetNameSelf() );
+
+	return asynSuccess;
+}
+
+/// Close the camera serial connections
+asynStatus asynPgpClSerial::DisconnectCamSerial( )
+{
+    static const char	*	functionName	= "asynPgpClSerial::DisconnectCamSerial";
+    asynStatus				status			= asynSuccess;
+
+	epicsMutexLock(m_serialLock);
+	// TODO: Close device
+	m_SerDev.disconnect();
+	m_fConnected	= false;
+	epicsMutexUnlock(m_serialLock);
+
+	// Signal asynManager that we are disconnected
+	status = pasynManager->exceptionDisconnect( this->pasynUserSelf );
+	if ( status != asynSuccess )
+		asynPrint(	this->pasynUserSelf, ASYN_TRACE_ERROR,
+					"%s port %s: Error calling pasynManager->exceptionDisconnect, error=%s\n",
+					functionName, this->portName, this->pasynUserSelf->errorMessage );
+
+	return asynSuccess;
+}
 
 //
 //	asynPortDriver function overrides
@@ -108,25 +170,7 @@ asynStatus	asynPgpClSerial::connect(
 	asynPrint(	pasynUser, ASYN_TRACE_FLOW,
 				"%s port %s\n", functionName, this->portName );
 
-	epicsMutexLock(m_serialLock);
-	// TODO: open device
-	m_SerDev.connect();
-	m_fConnected	= true;
-	epicsMutexUnlock(m_serialLock);
-
-	int			connected	= 0;
-	pasynManager->isConnected( pasynUserSelf, &connected );
-	if ( !connected )
-	{
-		// Signal asynManager that we're connected.
-		int  status = pasynManager->exceptionConnect( pasynUser );
-		if ( status != asynSuccess )
-			asynPrint(	pasynUser, ASYN_TRACE_ERROR,
-						"%s port %s: Error calling pasynManager->exceptionConnect, error=%s\n",
-						functionName, this->portName, pasynUser->errorMessage );
-	}
-
-	return asynSuccess;
+	return ConnectCamSerial( );
 }
 
 
@@ -141,20 +185,7 @@ asynStatus	asynPgpClSerial::disconnect(
 	asynPrint(	pasynUser, ASYN_TRACE_FLOW,
 				"%s port %s\n", functionName, this->portName );
 
-	epicsMutexLock(m_serialLock);
-	// TODO: Close device
-	m_SerDev.disconnect();
-	m_fConnected	= false;
-	epicsMutexUnlock(m_serialLock);
-
-	// Signal asynManager that we are disconnected
-	int  status = pasynManager->exceptionDisconnect( pasynUser );
-	if ( status != asynSuccess )
-		asynPrint(	pasynUser, ASYN_TRACE_ERROR,
-					"%s port %s: Error calling pasynManager->exceptionDisconnect, error=%s\n",
-					functionName, this->portName, pasynUser->errorMessage );
-
-	return asynSuccess;
+	return DisconnectCamSerial( );
 }
 
 
@@ -200,6 +231,8 @@ asynStatus	asynPgpClSerial::readOctet(
 	unsigned char	*	pReadBuffer	= (unsigned char *) pBuffer;
 	size_t				sReadBuffer	= nBytesReadMax;
 
+	if( pasynUser->timeout == 0 ) pasynUser->timeout = 0.2;	// TODO: Shouldn't need this
+
 	int		nRead	= 0;
 	for (;;)
 	{
@@ -224,9 +257,14 @@ asynStatus	asynPgpClSerial::readOctet(
 			if ( DEBUG_PGPCL_SER >= 3 )
 				printf( "%s: %s Have serial lock, reading %d ...\n", functionName, this->portName, nToRead );
 			if ( m_fConnected )
-				nRead = m_SerDev.readBytes( pReadBuffer, pasynUser->timeout, nToRead );
+			{
+				double		timeout	= 0.2;
+				if ( pasynUser->timeout > 0 )
+					timeout = pasynUser->timeout;
+				nRead = m_SerDev.readBytes( pReadBuffer, timeout, nToRead );
+			}
 			else
-				nRead = -1;
+				nRead = 0;
 			epicsMutexUnlock(m_serialLock);
 			if ( DEBUG_PGPCL_SER >= 3 )
 				printf( "%s: %s Released serial lock, read %d ...\n", functionName, this->portName, nRead );
@@ -260,7 +298,7 @@ asynStatus	asynPgpClSerial::readOctet(
 				status = asynError;
 				m_fConnected = false;
 				m_fInputFlushNeeded = true;
-				pasynManager->exceptionDisconnect( pasynUser );
+				pasynManager->exceptionDisconnect( this->pasynUserSelf );
 				if ( eomReason )
 					*eomReason = ASYN_EOM_EOS;
 				break;		/* If we have an error, we're done. */
@@ -308,7 +346,7 @@ asynStatus	asynPgpClSerial::readOctet(
 			*eomReason = ASYN_EOM_CNT;
 	}
 
-	if ( *pnRead > 0 )
+	if ( nRead > 0 )
 	{
 		if ( isAscii( pBuffer, strlen(pBuffer) ) )
 		{
@@ -348,7 +386,7 @@ asynStatus	asynPgpClSerial::writeOctet(
     static const char	*	functionName	= "asynPgpClSerial::writeOctet";
     // const char			*	reasonName		= "unknownReason";
 
-	if ( DEBUG_PGPCL_SER >= 1 )
+	if ( DEBUG_PGPCL_SER >= 4 )
 		printf(  "%s:\n", functionName );
 	// getParamName( 0, pasynUser->reason, &reasonName );
 	asynPrint(	pasynUser, ASYN_TRACE_FLOW,
@@ -363,7 +401,7 @@ asynStatus	asynPgpClSerial::writeOctet(
 	if ( !m_fConnected )
 	{
 		epicsSnprintf(	pasynUser->errorMessage, pasynUser->errorMessageSize,
-						"%s Error: %s disconnected:", functionName, this->portName );
+						"\n%s Error: %s disconnected:", functionName, this->portName );
 		m_fInputFlushNeeded = true;
 		return asynError;
 	}
@@ -577,17 +615,13 @@ pgpClSerialConfig(
         errlogPrintf( "NULL or zero length camlink mode.\nUsage: pgpClSerialConfig(portName,unit,lane,config,mode)\n");
         return  -1;
     }
-#if 1
 	asynPgpClSerialPtr	pClSerial = asynPgpClSerial::create( portName, unit, lane );
-#else
-    if ( asynPgpClSerial::CreateClSerial( portName, unit, lane, modelName, clMode ) != 0 )
-    {
-        errlogPrintf( "pgpClSerialConfig failed for ClSerial %s, config %s, mode %s!\n", portName, modelName, clMode );
-		if ( DEBUG_PGPCL_SER >= 4 )
-        	epicsThreadSuspendSelf();
-        return -1;
-    }
-#endif
+	if ( pClSerial )
+	{
+		int status = pClSerial->ConnectCamSerial( );
+		if ( status != 0 )
+			errlogPrintf( "pgpClSerialConfig failed for unit %d lane %d!\n", unit, lane );
+	}
     return 0;
 }
 
