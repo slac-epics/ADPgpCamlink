@@ -111,7 +111,7 @@ pgpClAddrMap::pgpClAddrMap()
 	:	rogue::LibraryBase()
 {
 #if 1
-	printf( "NOT Parsing ROGUE_ADDR_MAP!\n" );
+	//printf( "NOT Parsing ROGUE_ADDR_MAP!\n" );
 #else
 	printf( "Parsing ROGUE_ADDR_MAP\n" );
 	parseMemMap( ROGUE_ADDR_MAP ); // From generated pgpClAddrMap.h
@@ -124,7 +124,8 @@ pgpClAddrMap::pgpClAddrMap()
 pgpClDev::pgpClDev(
 	unsigned int				board,
 	unsigned int				lane )
-:	m_board(		board	),
+:	rogue::LibraryBase(),
+	m_board(		board	),
 	m_lane(			lane	),
 	m_fConnected(	0		),
 	m_devName(				),
@@ -132,9 +133,9 @@ pgpClDev::pgpClDev(
 	m_pAxiMemMap(			),
 	m_pFebRegChan(			),
 	m_pFebFrameChan(		),
-	m_pClMemMaster(			),
+	m_pClMemMaster(			),	// Not needed
 	m_pClStreamSlave(		),
-	m_pFebMemMaster(		),
+	m_pFebMemMaster(		),	// not needed
 	m_pSrpFeb(				)
 {
 //	const char		*	functionName	= "pgpClDev::pgpClDev";
@@ -188,11 +189,6 @@ pgpClDev::pgpClDev(
 	//m_pRogueLib = rogue::LibraryBase::create();
 	m_pRogueLib = pgpClAddrMap::create();
 
-	showVariableList( true );
-
-	std::string sFpgaVersionPath( "ClinkDev.Hardware.AxiPcieCore.AxiVersion.FpgaVersion" );
-	showVariable( sFpgaVersionPath.c_str(), true );
-
 	//
 	// Create FEB Data Channels
 	// TODO: Make a function than encapsulates this
@@ -207,6 +203,9 @@ pgpClDev::pgpClDev(
 	m_pAxiMemMap		= rogue::hardware::axi::AxiMemMap::create( m_devName );
 	m_pClMemMaster		= ClMemoryMaster::create( );
 	m_pClMemMaster->setSlave( m_pAxiMemMap );
+	const char	*	szMemName = "Unnamed_3";
+	addMemory( szMemName, m_pAxiMemMap );
+	printf("pgpClDev: addMemory AxiMemMap interface %s\n", szMemName );
 
 	//
 	// Connect DATACHAN 0 FEB Register Access
@@ -215,13 +214,29 @@ pgpClDev::pgpClDev(
 	// Create bidirectional links between SRP and FebRegChan 
 	m_pFebRegChan->addSlave( m_pSrpFeb );
 	m_pSrpFeb->addSlave( m_pFebRegChan );
+	szMemName = "Unnamed_96";
+	addMemory( szMemName, m_pSrpFeb );
+	printf("pgpClDev: addMemory srpFeb interface %s\n", szMemName );
 	// Create FebMemMaster and link it to SRP
-	m_pFebMemMaster = FebMemoryMaster::create( );
-	m_pFebMemMaster->setSlave( m_pSrpFeb );
+	//m_pFebMemMaster = FebMemoryMaster::create( );
+	//m_pFebMemMaster->setSlave( m_pSrpFeb );
+
+#if 0
+	printf( "NOT Parsing ROGUE_ADDR_MAP!\n" );
+#else
+	printf( "Parsing ROGUE_ADDR_MAP\n" );
+	parseMemMap( ROGUE_ADDR_MAP ); // From generated pgpClAddrMap.h
+	printf( "ROGUE_ADDR_MAP parsed successfully\n" );
+#endif
+
+	showVariableList( true );
+
+	std::string sFpgaVersionPath( "ClinkDev.Hardware.AxiPcieCore.AxiVersion.FpgaVersion" );
+	showVariable( sFpgaVersionPath.c_str(), true );
 
 	//
 	// Connect DATACHAN 1 Camera Frames
-	//
+	// TODO: Move ClStreamSlave class and addSlave call to pgpCamlink.cpp
 	m_pClStreamSlave	= ClStreamSlave::create();
 	m_pFebFrameChan->addSlave( m_pClStreamSlave );
 	// or rogueStreamConnect( m_pFebFrameChan, m_pClStreamSlave );
@@ -240,7 +255,8 @@ void pgpClDev::showVariable( const char * pszVarPath, bool verbose )
 {
 	std::string		varPath( pszVarPath );
 	rogue::interfaces::memory::VariablePtr	pVar;
-	pVar = m_pRogueLib->getVariable( varPath );
+	//pVar = m_pRogueLib->getVariable( varPath );
+	pVar = getVariable( varPath );
 	if ( pVar )
 	{
 		if ( verbose )

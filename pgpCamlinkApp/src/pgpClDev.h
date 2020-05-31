@@ -47,7 +47,7 @@ class pgpClAddrMap;
 typedef std::shared_ptr<pgpClAddrMap> pgpClAddrMapPtr;
 
 ///	pgpClDev class
-class pgpClDev
+class pgpClDev :	public rogue::LibraryBase
 {
 public:		//	Public member functions
 	// Create a static class creator to return our custom class wrapped with a shared pointer
@@ -104,9 +104,9 @@ private:
 	rogue::hardware::axi::AxiStreamDmaPtr		m_pDataChan[N_AXI_CHAN];
 	rogue::hardware::axi::AxiStreamDmaPtr		m_pFebRegChan;
 	rogue::hardware::axi::AxiStreamDmaPtr		m_pFebFrameChan;
-	ClMemoryMasterPtr				 			m_pClMemMaster;
+	ClMemoryMasterPtr				 			m_pClMemMaster;	// not needed
 	ClStreamSlavePtr							m_pClStreamSlave;
-	FebMemoryMasterPtr				 			m_pFebMemMaster;
+	FebMemoryMasterPtr				 			m_pFebMemMaster;	// not needed
 	rogue::protocols::srp::SrpV3Ptr				m_pSrpFeb;
 	//rogue::LibraryBasePtr						m_pRogueLib;
 	pgpClAddrMapPtr								m_pRogueLib;
