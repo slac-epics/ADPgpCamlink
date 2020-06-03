@@ -181,9 +181,9 @@ int pgpClSerialDev::sendBytes( const unsigned char * buffer, size_t nBytes )
 		return -1;
 	}
 
+	int	nBytesSent = m_pClSerialTx->sendBytes( buffer, nBytes );
 	if ( DEBUG_PGPCL_SER >= 1 )
-		printf(  "%s: board %u lane %u, sending %zu bytes\n", functionName, m_board, m_lane, nBytes );
-	return m_pClSerialTx->sendBytes( buffer, nBytes );
+		printf(  "%s: board %u lane %u, sent %d bytes\n", functionName, m_board, m_lane, nBytesSent );
 }
 
 int pgpClSerialDev::readBytes( unsigned char * buffer, double timeout, size_t nBytes )

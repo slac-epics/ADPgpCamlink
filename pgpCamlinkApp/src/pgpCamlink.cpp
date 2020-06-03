@@ -444,13 +444,19 @@ asynStatus pgpCamlink::ConnectCamera( )
 	if ( DEBUG_PGP_CAMLINK >= 1 )
 		printf( "%s: %s in thread %s ...\n", functionName, m_CameraName.c_str(), epicsThreadGetNameSelf() );
 
+	int			connected	= 0;
+	pasynManager->isConnected( this->pasynUserSelf, &connected );
+	if ( connected )
+	{
+		printf( "%s: %s already connected.\n", functionName, m_CameraName.c_str() );
+		return asynSuccess;
+	}
+
 	// Initialize (or re-initialize) framegrabber connection
 	Reopen( );
 
 	if ( m_pDev == NULL )
 	{
-		int			connected	= 0;
-		pasynManager->isConnected( this->pasynUserSelf, &connected );
 		if ( connected )
 		{
 			// Signal asynManager that we are disconnected

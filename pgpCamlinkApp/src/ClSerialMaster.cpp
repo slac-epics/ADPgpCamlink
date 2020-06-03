@@ -41,5 +41,5 @@ int ClSerialMaster::sendBytes( unsigned const char * buffer, size_t nBytes )
 		return -1;
 	}
 
-	return 0;
+	return nBytes;
 }

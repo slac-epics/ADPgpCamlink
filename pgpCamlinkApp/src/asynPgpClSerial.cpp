@@ -101,6 +101,8 @@ asynStatus asynPgpClSerial::ConnectCamSerial( )
 
 	if ( DEBUG_PGPCL_SER >= 1 )
 		printf( "%s: in thread %s ...\n", functionName, epicsThreadGetNameSelf() );
+	if ( m_fConnected )
+		DisconnectCamSerial( );
 
 // asynPgpClSerial::connect not being called
 // streamDebug 1 output below
@@ -111,7 +113,8 @@ asynStatus asynPgpClSerial::ConnectCamSerial( )
 // StreamCore.cc:163: StreamCore::attachBus(busname="CAM.SER", addr=-1, param="") businterface=0x2394b00
 
 	epicsMutexLock(m_serialLock);
-	// TODO: open device
+
+	// open device
 	m_SerDev.connect();
 	m_fConnected	= true;
 	epicsMutexUnlock(m_serialLock);
@@ -250,6 +253,8 @@ asynStatus	asynPgpClSerial::readOctet(
 		if( 1 || nAvailToRead > 0 )
 		{
 			int		nToRead = static_cast<int>(sReadBuffer);
+			if( nAvailToRead > 0 )
+				nToRead = nAvailToRead;
 			asynPrint(	pasynUser, ASYN_TRACE_FLOW,
 						"%s: %s nToRead %d\n", functionName, this->portName, nToRead );
 
@@ -270,7 +275,7 @@ asynStatus	asynPgpClSerial::readOctet(
 				printf( "%s: %s Released serial lock, read %d ...\n", functionName, this->portName, nRead );
 		}
 		else
-		{
+		{	// Obsolete?
             // nAvailToRead <=0 so nothing to do here... fly away!
             *pnRead = 0;
             epicsMutexUnlock(m_serialLock);
@@ -283,7 +288,6 @@ asynStatus	asynPgpClSerial::readOctet(
         epicsMutexUnlock(m_serialLock);
 		if ( DEBUG_PGPCL_SER >= 4 )
 			printf( "%s: %s Released serial lock, Read %d, nAvailToRead %d ...\n", functionName, this->portName, nRead, nAvailToRead );
-
 
 		// If we read something
 		if( nRead > 0 )
@@ -426,7 +430,6 @@ asynStatus	asynPgpClSerial::writeOctet(
 
 	const unsigned char	*	pSendBuffer	= (unsigned char *) pBuffer;
 	size_t					sSendBuffer	= maxChars;
-	uint16_t				requestId	= 0xFFFF;
 
 	// Note: 
 	// This driver is designed to be used from DTYP "stream" PV's.
@@ -435,11 +438,6 @@ asynStatus	asynPgpClSerial::writeOctet(
 	// own layer of mutex protection.
 	//int		status	= -1;
 	epicsMutexLock( m_serialLock );
-	if ( requestId != 0xFFFF )
-	{
-		if ( DEBUG_PGPCL_SER >= 3 )
-			printf( "REQUESTID %-5hu: Sending  %zu bytes\n", requestId, sSendBuffer );
-	}
 	if ( m_fConnected )
 		*pnWritten = m_SerDev.sendBytes( pSendBuffer, sSendBuffer );
 	epicsMutexUnlock( m_serialLock );
@@ -464,8 +462,8 @@ asynStatus	asynPgpClSerial::writeOctet(
 	else
 	{
 		epicsSnprintf(	pasynUser->errorMessage, pasynUser->errorMessageSize,
-						"%s: %s write error: %s\n",
-						functionName, this->portName, strerror(errno)	);
+						"\n%s: %s write error\n",
+						functionName, this->portName );
 		status = asynError;
 		m_fInputFlushNeeded = 1;
 	}
