@@ -124,11 +124,12 @@ asynStatus asynPgpClSerial::ConnectCamSerial( )
 	if ( !connected )
 	{
 		// Signal asynManager that we're connected.
-		int  status = pasynManager->exceptionConnect( this->pasynUserSelf );
+		status = pasynManager->exceptionConnect( this->pasynUserSelf );
 		if ( status != asynSuccess )
 			asynPrint(	this->pasynUserSelf, ASYN_TRACE_ERROR,
 						"%s port %s: Error calling pasynManager->exceptionConnect, error=%s\n",
 						functionName, this->portName, this->pasynUserSelf->errorMessage );
+		return asynError;
 	}
 
 	if ( DEBUG_PGPCL_SER >= 1 )
@@ -248,13 +249,16 @@ asynStatus	asynPgpClSerial::readOctet(
 		 */
 		if ( m_fConnected )
 		{
-			nAvailToRead = m_SerDev.getNumAvailBytes();
+			//nAvailToRead = m_SerDev.getNumAvailBytes();
 		}
 		if( 1 || nAvailToRead > 0 )
 		{
 			int		nToRead = static_cast<int>(sReadBuffer);
 			if( nAvailToRead > 0 )
 				nToRead = nAvailToRead;
+			//else
+			//	nAvailToRead = nToRead;
+
 			asynPrint(	pasynUser, ASYN_TRACE_FLOW,
 						"%s: %s nToRead %d\n", functionName, this->portName, nToRead );
 
@@ -287,13 +291,13 @@ asynStatus	asynPgpClSerial::readOctet(
 
         epicsMutexUnlock(m_serialLock);
 		if ( DEBUG_PGPCL_SER >= 4 )
-			printf( "%s: %s Released serial lock, Read %d, nAvailToRead %d ...\n", functionName, this->portName, nRead, nAvailToRead );
+			printf( "%s: %s Released serial lock, Read %d, nBytesReadMax %zu ...\n", functionName, this->portName, nRead, nBytesReadMax );
 
 		// If we read something
 		if( nRead > 0 )
 		{
 			// Make sure we have a valid ascii response, and not garbage on the camlink Rx/Tx lines
-			if ( isAscii( pBuffer, strlen(pBuffer) ) == false )
+			if ( isAscii( pBuffer, nRead ) == false )
 			{
 				epicsSnprintf(	pasynUser->errorMessage, pasynUser->errorMessageSize, "Invalid ascii response!" );
 				asynPrint(	pasynUser, ASYN_TRACE_ERROR,
@@ -352,13 +356,13 @@ asynStatus	asynPgpClSerial::readOctet(
 
 	if ( nRead > 0 )
 	{
-		if ( isAscii( pBuffer, strlen(pBuffer) ) )
+		asynPrintIO(	pasynUser, ASYN_TRACEIO_DRIVER, pBuffer, nRead,
+						"%s: %s  read  %d of %d\n",
+						functionName, this->portName, nRead, nAvailToRead );
+		if ( isAscii( pBuffer, nRead ) )
 		{
 			if ( DEBUG_PGPCL_SER >= 3 )
 				printf( "%s: %s Read %zu: %s\n", functionName, this->portName, *pnRead, pBuffer );
-			asynPrintIO(	pasynUser, ASYN_TRACEIO_DRIVER, pBuffer, nRead,
-							"%s: %s  read  %d of %d\n",
-							functionName, this->portName, nRead, nAvailToRead );
 			asynPrint(		pasynUser, ASYN_TRACE_FLOW,
 							"%s: %s  read  %zu, status %d, Buffer: %s\n",
 							functionName, this->portName, *pnRead, status, pBuffer	);
