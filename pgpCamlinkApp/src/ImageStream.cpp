@@ -48,25 +48,21 @@ void ImageStream::acceptFrame ( rogue::interfaces::stream::FramePtr frame )
 		printf( " ...\n" );
 	}
 
-	// Use std::copy to copy data to a data buffer
-	// Here we copy the entire frame payload to the data buffer
-	// std::copy(frame->begin(), frame->end(), data);
-
 	// Timestamp should default to TOD
 	epicsTimeStamp		ts;
 	epicsTimeGetCurrent( &ts );
 
-#if 0
+#if 1
 	// Process frame via CoreV1 protocol
-	rogue::protocols::batcher::CoreV1		core;
-	core.processFrame(frame);
+	m_FrameCore.processFrame(frame);
+	rogue::protocols::batcher::DataPtr	ImageDataPtr;
 	if ( DEBUG_PGP_CAMLINK >= 4 )
 		printf( "ImageStream::acceptFrame: core count=%u, seq=%u, hdrSize=%u, tailSize=%u\n",
-				core.count(), core.sequence(), core.headerSize(), core.tailSize() );
-	for ( uint32_t sf = 0; sf < core.count(); sf++ )
+				m_FrameCore.count(), m_FrameCore.sequence(), m_FrameCore.headerSize(), m_FrameCore.tailSize() );
+	for ( uint32_t sf = 0; sf < m_FrameCore.count(); sf++ )
 	{
 		rogue::protocols::batcher::DataPtr	data;
-		data = core.record(sf);
+		data = m_FrameCore.record(sf);
 		// FUSER_BIT_1 = StartOfFrame
 		// LUSER_BIT_0 = FrameError
 		if ( DEBUG_PGP_CAMLINK >= 4 )
@@ -91,12 +87,12 @@ void ImageStream::acceptFrame ( rogue::interfaces::stream::FramePtr frame )
 			fromFrame( it, 4, &ts.secPastEpoch );
 			char        acBuff[40];
 			epicsTimeToStrftime( acBuff, 40, "%H:%M:%S.%04f", &ts );
-			if ( DEBUG_PGP_CAMLINK >= 4 )
+			if ( DEBUG_PGP_CAMLINK >= 3 )
 			{
 				printf( "ts %s, pulseId 0x%X\n", acBuff, ts.nsec & 0x1FFFF );
 				if ( DEBUG_PGP_CAMLINK >= 5 )
 				{
-					printf( "Invalid timing frame:" );
+					//printf( "Invalid timing frame:" );
 					for ( uint32_t x=0; x < 24; x++)
 					{
 						printf( " 0x%02x", *it );
@@ -111,22 +107,7 @@ void ImageStream::acceptFrame ( rogue::interfaces::stream::FramePtr frame )
 			//printf( "ImageStream::acceptFrame SubFrame %d: ", sf );
 			//it = data->begin();
 			it = data->end();
-			for ( uint32_t x=0; x < 1030; x++)
-			{
-#if 1
-				if ( (x % 16) == 0 )
-					printf( "\n" );
-				uint16_t	pixelData;
-				it -= 2;
-				fromFrame( it, 2, &pixelData );
-				printf( " 0x%04x", pixelData );
-				it -= 2;
-#else
-				printf( " 0x%02x", *it );
-				it++;
-#endif
-			}
-			printf( "\n" );
+			ImageDataPtr	= data;
 		}
 	}
 #endif

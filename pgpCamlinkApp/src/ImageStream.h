@@ -14,31 +14,31 @@
 #include <rogue/protocols/batcher/CoreV1.h>
 #include <rogue/protocols/batcher/Data.h>
 
-class pgpCamlink;
+class pgpClDev;
 
 class ImageStream : public rogue::interfaces::stream::Slave
-//class ImageStream : public rogue::hardware::axi::AxiStreamDma
 {
 public:
 
 	// Create a static class creator to return our custom class
 	// wrapped with a shared pointer
-	static std::shared_ptr<ImageStream> create( pgpCamlink * pCamDev )
+	static std::shared_ptr<ImageStream> create( pgpClDev * pClDev )
 	{
-		static std::shared_ptr<ImageStream> ret = std::make_shared<ImageStream>( pCamDev );
+		static std::shared_ptr<ImageStream> ret = std::make_shared<ImageStream>( pClDev );
 		return(ret);
 	}
 
-	ImageStream( pgpCamlink * pCamDev )
-		:	rogue::interfaces::stream::Slave( ),
-			m_pCamDev(	pCamDev	)
+	ImageStream( pgpClDev * pClDev )
+		:	rogue::interfaces::stream::Slave( )
+		,	m_pClDev(	pClDev	)
 	{
 	}
 
-	void acceptFrame ( std::shared_ptr<rogue::interfaces::stream::Frame> frame );
+	void acceptFrame ( rogue::interfaces::stream::FramePtr frame );
 
 private:
-	pgpCamlink		*	m_pCamDev;
+	pgpClDev		*	m_pClDev;
+	rogue::protocols::batcher::CoreV1	m_FrameCore;
 };
 
 // Shared pointer alias
