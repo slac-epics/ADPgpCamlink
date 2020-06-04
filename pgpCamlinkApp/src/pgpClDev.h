@@ -22,6 +22,7 @@
 #include <string>
 #include <string.h>
 #include <epicsMutex.h>
+#include <epicsTime.h>
 
 // rogue headers 
 #include <rogue/Helpers.h>
@@ -82,6 +83,9 @@ public:		//	Public member functions
 		return m_LibVersion;
 	}
 
+	void ProcessImage(	const epicsTimeStamp			&	tsImage,
+						rogue::protocols::batcher::DataPtr	pImageData );
+
 private:
 	//	Private member variables
 	unsigned int		m_fd;
@@ -95,12 +99,8 @@ private:
 
 	// TODO: We only use one of each of these.
 	// lane is always 0 for first camera and 1 for 2nd.
-	//ClSerialSlavePtr	clSerialRx[N_AXI_LANES];
-	//ClSerialMasterPtr	clSerialTx[N_AXI_LANES];
-	//rogue::hardware::axi::AxiMemMapPtr 			memMap[N_AXI_LANES];
-	// For dataChan we only use dataChan[0][2]
-	//rogue::hardware::axi::AxiStreamDmaPtr		dataChan[N_AXI_LANES][N_AXI_CHAN];
 	rogue::hardware::axi::AxiMemMapPtr 			m_pAxiMemMap;
+	// For dataChan we only use dataChan[2]
 	rogue::hardware::axi::AxiStreamDmaPtr		m_pDataChan[N_AXI_CHAN];
 	rogue::hardware::axi::AxiStreamDmaPtr		m_pFebRegChan;
 	rogue::hardware::axi::AxiStreamDmaPtr		m_pFebFrameChan;

@@ -110,9 +110,12 @@ void ImageStream::acceptFrame ( rogue::interfaces::stream::FramePtr frame )
 			ImageDataPtr	= data;
 		}
 	}
+
+	// Process image
+	if ( m_pClDev )
+	{
+		m_pClDev->ProcessImage( ts, ImageDataPtr );
+	}
 #endif
 
-	// Report the new frame to the camera device
-//	if( m_pCamDev )
-//		m_pCamDev->NewImage( frame, ts );
 }

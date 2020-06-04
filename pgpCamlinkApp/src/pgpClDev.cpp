@@ -253,8 +253,7 @@ pgpClDev::pgpClDev(
 
 	//
 	// Connect DATACHAN 1 Camera Frames
-	// TODO?: Move ImageStream class and addSlave call to pgpCamlink.cpp
-	m_pImageStream	= ImageStream::create(NULL);
+	m_pImageStream	= ImageStream::create(this);
 	m_pFebFrameChan->addSlave( m_pImageStream );
 	// or rogueStreamConnect( m_pFebFrameChan, m_pImageStream );
 
@@ -359,3 +358,13 @@ void pgpClDev::disconnect( )
 {
 }
 
+
+void pgpClDev::ProcessImage(
+	const epicsTimeStamp			&	tsImage,
+	rogue::protocols::batcher::DataPtr	pImageData )
+{
+	const char		*	functionName	= "pgpClDev::ProcessImage";
+	if ( 0 ) printf( "%s\n", functionName );
+
+	return;
+}
