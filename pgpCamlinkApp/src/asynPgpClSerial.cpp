@@ -584,7 +584,7 @@ asynPgpClSerialPtr	asynPgpClSerial::ClSerialFindByName( const string & name )
 void asynPgpClSerial::ClSerialAdd(		asynPgpClSerialPtr pClSerial )
 {
 	assert( ClSerialFindByName( pClSerial->m_SerDev.getName() ) == NULL );
-	if ( DEBUG_PGPCL_SER )
+	if ( DEBUG_PGPCL_SER >= 1 )
 		std::cout << "ClSerialAdd: " << pClSerial->m_SerDev.getName() << std::endl;
 	ms_ClSerialMap[ pClSerial->m_SerDev.getName() ]	= pClSerial;
 }
