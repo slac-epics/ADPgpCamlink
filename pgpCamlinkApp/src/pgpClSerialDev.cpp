@@ -69,6 +69,8 @@ std::string	ReadBuffer2Printable( const unsigned char * pBuffer, size_t nBytes )
 }
 #endif
 
+// TODO: Fix whitespace squashing
+
 ///	Constructor
 pgpClSerialDev::pgpClSerialDev(
 	unsigned int				board,
@@ -225,7 +227,7 @@ int pgpClSerialDev::sendBytes( const unsigned char * buffer, size_t nBytes )
 	}
 
 	int	nBytesSent = m_pClSerialTx->sendBytes( buffer, nBytes );
-	if ( DEBUG_PGPCL_SER >= 1 )
+	if ( DEBUG_PGPCL_SER >= 3 )
 		printf(  "%s: board %u lane %u, sent %d bytes\n", functionName, m_board, m_lane, nBytesSent );
 	return nBytesSent;
 }
@@ -239,12 +241,12 @@ int pgpClSerialDev::readBytes( unsigned char * buffer, double timeout, size_t nB
 		return -1;
 	}
 
-	if ( DEBUG_PGPCL_SER >= 1 )
+	if ( DEBUG_PGPCL_SER >= 4 )
 		printf(  "%s: board %u lane %u\n", functionName, m_board, m_lane );
 	int		nRead = m_pClSerialRx->readBytes( buffer, timeout, nBytes );
 	if ( nRead <= 0 )
 	{
-		if ( DEBUG_PGPCL_SER >= 1 )
+		if ( DEBUG_PGPCL_SER >= 3 )
 			printf(  "%s: board %u lane %u read error!\n", functionName, m_board, m_lane );
 		return 0;
 	}

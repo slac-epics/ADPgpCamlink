@@ -10,8 +10,6 @@ int ClSerialMaster::sendBytes( unsigned const char * buffer, size_t nBytes )
 	if ( nBytes == 0 )
 		return 0;
 	uint32_t	lValue;
-	if ( 1 and strlen( (const char *) buffer ) <= nBytes )
-		printf( "ClSerialMaster::sendBytes: %zu bytes.\n'%s'\n", nBytes, buffer );
 	std::shared_ptr<rogue::interfaces::stream::Frame> frame;
 	frame = reqFrame ( nBytes * 4, true );
 	if ( ! frame )

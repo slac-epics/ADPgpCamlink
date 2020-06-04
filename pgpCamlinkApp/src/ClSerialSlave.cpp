@@ -19,19 +19,19 @@ ClSerialSlave::ClSerialSlave()
 		m_replyLock( ),
 		m_bufferLock( )
 {
-	if ( clSerialSlaveDebug > 1 )
+	if ( clSerialSlaveDebug >= 1 )
 		printf( "Creating ClSerialSlave\n" );
 }
 
 ClSerialSlave::~ClSerialSlave()
 {
-	if ( clSerialSlaveDebug > 1 )
+	if ( clSerialSlaveDebug >= 1 )
 		printf( "Destructor for ClSerialSlave\n" );
 }
 
 int ClSerialSlave::readBytes( unsigned char * buffer, double timeout, size_t nBytesMax )
 {
-	if ( clSerialSlaveDebug > 1 )
+	if ( clSerialSlaveDebug >= 3 )
 		printf( "ClSerialSlave::readBytes: %zu bytes, timeout %.3f sec\n", nBytesMax, timeout );
 	std::chrono::milliseconds	timeoutDur( (int) (timeout * 1000) );
 	std::unique_lock<std::mutex>	lockIt(m_replyLock);
@@ -42,7 +42,7 @@ int ClSerialSlave::readBytes( unsigned char * buffer, double timeout, size_t nBy
 		std::cv_status	 cvStatus = m_replyReady.wait_for( lockIt, timeoutDur );
 		if ( cvStatus == std::cv_status::timeout )
 		{
-			if ( clSerialSlaveDebug > 1 )
+			if ( clSerialSlaveDebug >= 3 )
 				printf( "ClSerialSlave::readBytes: timeout waiting for %zu bytes.\n", m_nBytesReq );
 			break;
 		}
@@ -58,7 +58,7 @@ int ClSerialSlave::readFromBuffer( unsigned char * buffer, size_t nBytesMax )
 	if ( !buffer )
 		return -1;
 	unsigned char *	next	= buffer;
-	if ( clSerialSlaveDebug > 1 )
+	if ( clSerialSlaveDebug >= 4 )
 		printf( "ClSerialSlave::readFromBuffer: %zu of %zu bytes\n", m_replyBuffer.size(), nBytesMax );
 	try
 	{
@@ -76,7 +76,7 @@ int ClSerialSlave::readFromBuffer( unsigned char * buffer, size_t nBytesMax )
 		std::cerr << "ClSerialSlave::readFromBuffer caught exception: " << e.what() << std::endl;
 	}
 	int		nBytesRead = next - buffer;
-	if ( clSerialSlaveDebug > 1 )
+	if ( clSerialSlaveDebug >= 4 )
 		printf( "ClSerialSlave::readFromBuffer: Read %u bytes\n", nBytesRead );
 	return nBytesRead;
 }
