@@ -23,6 +23,8 @@
 #include <dbScan.h>
 #include "ADDriver.h"
 #include "pgpClDev.h"
+#include <rogue/protocols/batcher/Data.h>
+
 
 #ifdef	USE_DIAG_TIMER
 #include "HiResTime.h"
@@ -306,8 +308,8 @@ public:		//	Public member functions
 	int						StartAcquisition( );
 
 	///	Acquire next image from the camera
-	int						NewImage(	rogue::interfaces::stream::FramePtr frame,
-										const epicsTimeStamp			&	ts		);
+	int						ProcessImage(	const epicsTimeStamp			&	ts,
+											rogue::protocols::batcher::DataPtr	pImageData );
 
 	///	Check for a valid image, returns 0 on success, error code on error
 	int						CheckData(		pgpImage	*	pImage	);
@@ -396,7 +398,7 @@ private:	//	Private member functions
 	//	NDArray routines
 	//	Don't call without holding driver lock!
 	NDArray *	AllocNDArray(	);
-	int			LoadNDArray( NDArray * pNDArray, rogue::interfaces::stream::FramePtr frame );
+	int			LoadNDArray( NDArray * pNDArray, rogue::protocols::batcher::DataPtr	pImageData );
 
 private:	//	Private class functions
 	static	void			CameraAdd(		pgpCamlink * pCamera );

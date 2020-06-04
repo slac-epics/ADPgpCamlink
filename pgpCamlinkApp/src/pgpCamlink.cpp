@@ -1297,6 +1297,7 @@ int pgpCamlink::DeIntlvMidTopLine16( NDArray * pNDArray, void	*	pRawData )
 ///	DeIntlvRoiOnly16( )
 /// De-interleave as is from top to bottom, allowing only for HW ROI
 ///
+/// TODO: Rework to get pixels via rogue::protocols::batcher::DataPtr
 int pgpCamlink::DeIntlvRoiOnly16( NDArray * pNDArray, void	*	pRawData )
 {
 	assert( pNDArray		!= NULL );
@@ -1317,31 +1318,17 @@ int pgpCamlink::DeIntlvRoiOnly16( NDArray * pNDArray, void	*	pRawData )
 	return 0;
 }
 
-int pgpCamlink::NewImage(
-	rogue::interfaces::stream::FramePtr	frame,
-	const epicsTimeStamp			&	tsImage		)
+int pgpCamlink::ProcessImage(
+	const epicsTimeStamp			&	tsImage,
+	rogue::protocols::batcher::DataPtr	pImageData )
 {
-    static const char	*	functionName = "pgpCamlink::NewImage";
-	CONTEXT_TIMER( "NewImage" );
+    static const char	*	functionName = "pgpCamlink::ProcessImage";
+	CONTEXT_TIMER( "ProcessImage" );
 	assert( m_pDev != NULL );
-
-	UpdateStatus( ADStatusWaiting );
-
-#ifdef	USE_DIAG_TIMER
-	// The diag. ReAcquireTimer times the interval between calls to wait_images_*
-	m_ReAcquireTimer.StopTimer( );
-#endif	//	USE_DIAG_TIMER
-
-	// Wait for a new image
-	//u_int				pdvTimestamp[2];
-	//bool				fRaw		= 1;
-	unsigned char	*	pRawImage	= NULL;
-	//pRawImage	= pdv_wait_images_timed_raw( m_pDev, 1, pdvTimestamp, fRaw );
 
 #ifdef	USE_DIAG_TIMER
 	// Update diagnostic timers
 	m_ReArmTimer.StartTimer( );
-	m_ReAcquireTimer.StartTimer( );
 	m_ProcessImageTimer.StartTimer( );
 #endif	//	USE_DIAG_TIMER
 
@@ -1357,14 +1344,14 @@ int pgpCamlink::NewImage(
 	if( m_acquireCount > 0 )
 		m_acquireCount--;
 
-	if ( pRawImage == NULL )
+	if ( ! pImageData )
 	{
 #ifdef	USE_DIAG_TIMER
 		m_ReArmTimer.StopTimer( );
 #endif	//	USE_DIAG_TIMER
 		if ( DEBUG_PGP_CAMLINK >= 2 )
 		{
-			if ( pRawImage == NULL )
+			if ( ! pImageData )
 				printf(	"%s: Image Timeout: Failed to acquire image!\n", functionName );
 			else
 				printf(	"%s: Image Timeout: Stale Image\n", functionName );
@@ -1373,34 +1360,17 @@ int pgpCamlink::NewImage(
 		return asynError;
 	}
 
-	if ( m_acquireCount != 0 )
-	{	// pgpCamlink::ReArm()
-#ifdef	USE_DIAG_TIMER
-		m_ReArmTimer.StopTimer( );
-#endif	//	USE_DIAG_TIMER
-		//	Continue the pipeline by starting the next image
-		CONTEXT_TIMER( "pdv_start_image" );
-		if ( DEBUG_PGP_CAMLINK >= 4 )
-			printf(	"%s: Calling pdv_start_image in thread %s\n", functionName, epicsThreadGetNameSelf() );
-		// TODO: Consider delaying this in free run mode
-		//pdv_start_image( m_pDev );
-	}
-
 	UpdateStatus( ADStatusReadout );
 
 	// Lock NDArrayPool driver
 	lock();
-
-	//	TODO: We haven't tried to get a timestamp yet,
-	//	so we don't know yet if this is a frame we want.
-	//	Can we check timestamp before transferring image from DMA buffer?`
 
 	// Allocate an NDArray from the pool
     NDArray		*	pNDArray = AllocNDArray();
 	if ( pNDArray != NULL )
 	{
 		// Transfer the image from the frame buffer to the NDArray
-		int status = LoadNDArray( pNDArray, frame );
+		int status = LoadNDArray( pNDArray, pImageData );
 		if ( status != 0 )
 		{
 			pNDArray->release( );
@@ -1425,7 +1395,7 @@ int pgpCamlink::NewImage(
 	unlock();
 
 	{
-	CONTEXT_TIMER( "NewImage-wrapup" );
+	CONTEXT_TIMER( "ProcessImage-wrapup" );
 
 	// Increment NumImagesCounter
 	//	TODO: Replace this pattern w/ local m_numImagesCounter
@@ -1455,7 +1425,7 @@ int pgpCamlink::NewImage(
 NDArray * pgpCamlink::AllocNDArray( )
 {
     static const char	*	functionName = "pgpCamlink::AllocNDArray";
-	CONTEXT_TIMER( "NewImage-NDArrayPool-Update" );
+	CONTEXT_TIMER( "ProcessImage-NDArrayPool-Update" );
 
 	// TODO: Handle color images and 32 bit images
 	NDDataType_t	pixelType		= NDUInt8;
@@ -1512,11 +1482,13 @@ NDArray * pgpCamlink::AllocNDArray( )
 //	Load image from DMA buffer to NDArray
 //	Note: Driver must be locked before calling this routine
 int pgpCamlink::LoadNDArray(
-	NDArray								*	pNDArray,
-	rogue::interfaces::stream::FramePtr		frame )
+	NDArray							*	pNDArray,
+	rogue::protocols::batcher::DataPtr	pImageData )
 {
     static const char	*	functionName = "pgpCamlink::LoadNDArray";
 	int		status = 0;
+
+	printf(	"%s: \n", functionName );
 
 	return status;
 }
