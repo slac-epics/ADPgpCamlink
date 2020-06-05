@@ -366,5 +366,9 @@ void pgpClDev::ProcessImage(
 	const char		*	functionName	= "pgpClDev::ProcessImage";
 	if ( 0 ) printf( "%s\n", functionName );
 
+	if  ( m_CallbackClientFunc != NULL )
+		(*m_CallbackClientFunc)( m_pCallbackClient, tsImage, pImageData );
+
 	return;
 }
+

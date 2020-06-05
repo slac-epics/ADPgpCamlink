@@ -47,6 +47,10 @@
 class pgpClAddrMap;
 typedef std::shared_ptr<pgpClAddrMap> pgpClAddrMapPtr;
 
+typedef void (* ImageCallback)(	void							*	pCallbackClient,
+								const epicsTimeStamp			&	tsImage,
+								rogue::protocols::batcher::DataPtr	pImageData );
+
 ///	pgpClDev class
 class pgpClDev :	public rogue::LibraryBase
 {
@@ -86,6 +90,19 @@ public:		//	Public member functions
 	void ProcessImage(	const epicsTimeStamp			&	tsImage,
 						rogue::protocols::batcher::DataPtr	pImageData );
 
+	void cancelImageCallbacks( )
+	{
+		m_pCallbackClient		= NULL;
+		m_CallbackClientFunc	= NULL;
+	}
+
+	void requestImageCallbacks(	void			*	pCallbackClient,
+								ImageCallback		CallbackClientFunc )
+	{
+		m_pCallbackClient		= pCallbackClient;
+		m_CallbackClientFunc	= CallbackClientFunc;
+	}
+
 private:
 	//	Private member variables
 	unsigned int		m_fd;
@@ -110,6 +127,9 @@ private:
 	rogue::protocols::srp::SrpV3Ptr				m_pSrpFeb;
 	//rogue::LibraryBasePtr						m_pRogueLib;
 	pgpClAddrMapPtr								m_pRogueLib;
+	
+	void									*	m_pCallbackClient;
+	ImageCallback								m_CallbackClientFunc;
 };
 
 // Shared pointer alias

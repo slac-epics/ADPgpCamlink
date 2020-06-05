@@ -722,6 +722,8 @@ int pgpCamlink::_Reconfigure( )
 		printf( "%s: %s in thread %s ...\n", functionName, m_CameraName.c_str(), epicsThreadGetNameSelf() );
 	}
 
+	// Cancel Image Callbacks
+	m_pDev->cancelImageCallbacks( ProcessImage, this );
 #if 0
 	{
 	// Fetch the camera manufacturer and model and write them to ADBase parameters
@@ -1217,13 +1219,14 @@ int pgpCamlink::StartAcquisition( )
 	setIntegerParam( ADNumImagesCounter, 0 );
 	UpdateStatus( ADStatusAcquire );
 
-#if 0
-	if ( DEBUG_PGP_CAMLINK >= 3 )
-		printf( "%s: Calling pdv_start_images( pPdvDev, %d ) ...\n", functionName, m_NumMultiBuf );
+	if ( m_pDev )
+	{
+		if ( DEBUG_PGP_CAMLINK >= 3 )
+			printf( "%s: Enabled Image Callbacks\n", functionName );
 
-	// Start grabbing images
-	pdv_start_images( m_pDev, m_NumMultiBuf );
-#endif
+		// Enable Image Callbacks
+		m_pDev->requestImageCallbacks( ProcessImage, this );
+	}
 
 	asynPrint(	this->pasynUserSelf, ASYN_TRACEIO_DRIVER,
         		"%s: Start acquire, count = %d\n",
