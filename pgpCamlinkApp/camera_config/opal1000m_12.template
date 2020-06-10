@@ -5,7 +5,7 @@
 # Protocol root must match db filename root
 # i.e. opal1000m_12.proto
 
-record( seq, "$(P)$(R)EdtReConfigSeq" )
+record( seq, "$(P)$(R)CamReConfigSeq" )
 {
 	field ( DLY1, 0   ) field( DOL1, "1" )	field( LNK1, "$(P)$(R)OpalAcquireTime_RBV.PROC CA NMS" )
 	field ( DLY2, 0.2 ) field( DOL2, "1" )	field( LNK2, "$(P)$(R)OpalTriggerMode_RBV.PROC CA NMS" )
@@ -18,9 +18,9 @@ record( seq, "$(P)$(R)EdtReConfigSeq" )
 #	field ( DLY8, 0.5 ) field( DOL8, "1" )	field( LNK8, "$(P)$(R)OpalLastError_RBV.PROC CA NMS" )
 	field ( DLY9, 0.5 ) field( DOL9, "1" )	field( LNK9, "$(P)$(R)OpalElapsedTime_RBV.PROC CA NMS" )
 #	field ( DLYA, 0.5 ) field( DOLA, "1" )	field( LNKA, "$(P)$(R)OpalFSE.PROC CA NMS" )
-	field( FLNK, "$(P)$(R)EdtReConfigSeq2" )
+	field( FLNK, "$(P)$(R)CamReConfigSeq2" )
 }
-record( seq, "$(P)$(R)EdtReConfigSeq2" )
+record( seq, "$(P)$(R)CamReConfigSeq2" )
 {
 #	field ( DLY1, 0.5 ) field( DOL1, "1" )	field( LNK1, "$(P)$(R)OpalFSP.PROC CA NMS" )
 #	field ( DLY2, 0.5 ) field( DOL2, "1" )	field( LNK2, "$(P)$(R)OpalFSM.PROC CA NMS" )
@@ -30,9 +30,9 @@ record( seq, "$(P)$(R)EdtReConfigSeq2" )
 #	field ( DLY6, 0.5 ) field( DOL6, "1" )	field( LNK6, "$(P)$(R)OpalBitsPerPixel_RBV.PROC CA NMS" )
 #	field ( DLY7, 0.5 ) field( DOL7, "1" )	field( LNK7, "$(P)$(R)OpalInfoOverlay_RBV.PROC CA NMS" )
 #	field ( DLY8, 0.5 ) field( DOL8, "1" )	field( LNK8, "$(P)$(R)OpalSerialNumber_RBV.PROC CA NMS" )
-	field( FLNK, "$(P)$(R)EdtReConfigSeq3" )
+	field( FLNK, "$(P)$(R)CamReConfigSeq3" )
 }
-record( seq, "$(P)$(R)EdtReConfigSeq3" )
+record( seq, "$(P)$(R)CamReConfigSeq3" )
 {
 #	field ( DLY1, 0.5 ) field( DOL1, "1" )	field( LNK1, "$(P)$(R)OpalTestPattern_RBV.PROC CA NMS" )
 #	field ( DLY2, 0.5 ) field( DOL2, "1" )	field( LNK2, "$(P)$(R)OpalFirmwareTimestamp_RBV.PROC CA NMS" )
@@ -489,7 +489,7 @@ record( ao, "$(P)$(R)Gain" )
     field( HOPR, 32 )
     field( LOPR, 1  )
 }
-record( ao, "$(P)$(R)EdtGain" )
+record( ao, "$(P)$(R)CamGain" )
 {
 #	field( TPRO, 2 )
 	field( PREC, "2" )
@@ -498,7 +498,7 @@ record( ao, "$(P)$(R)EdtGain" )
 record( calcout, "$(P)$(R)OpalCalcGain" )
 {
 #	field( TPRO, 2 )
-	field( INPA, "$(P)$(R)EdtGain NPP NMS" )
+	field( INPA, "$(P)$(R)CamGain NPP NMS" )
 	field( CALC, "MAX(100,MIN(A*100,3200))" )
 	field( OUT,  "$(P)$(R)OpalGain PP MS" )
 	field( PREC, "2" )
@@ -541,10 +541,10 @@ record( calcout, "$(P)$(R)OpalCalcGain_RBV" )
 #	field( TPRO, 2 )
 	field( INPA, "$(P)$(R)OpalGain_RBV NPP NMS" )
 	field( CALC, "A==0?1.0:(A/100)" )
-	field( OUT,  "$(P)$(R)EdtGain_RBV PP MS" )
+	field( OUT,  "$(P)$(R)CamGain_RBV PP MS" )
 	field( PREC, "2" )
 }
-record( ao, "$(P)$(R)EdtGain_RBV" )
+record( ao, "$(P)$(R)CamGain_RBV" )
 {
 #	field( TPRO, 2 )
 	field( PREC, "2" )
@@ -566,7 +566,7 @@ record( stringin, "$(P)$(R)OpalInfo_RBV" )
     field( INP,	 "@opal1000m_12.proto GetQStr(ID) $(PORT).SER" )
 }
 
-record( ao, "$(P)$(R)EdtAcquireTime" )
+record( ao, "$(P)$(R)CamAcquireTime" )
 {
 #	field( TPRO, 2 )
 	field( PREC, "5" )
@@ -612,7 +612,7 @@ record( calcout, "$(P)$(R)OpalCalcAcquireTime" )
 # Write the AcquireTime to the trigger pulse width
 record( calcout, "$(P)$(R)OpalPulseAcquireTime" )
 {
-	field( INPA, "$(P)$(R)EdtAcquireTime NPP NMS"  )
+	field( INPA, "$(P)$(R)CamAcquireTime NPP NMS"  )
 	field( INPB, "$(PW_SCALE=1e9)"  )
 	field( CALC, "A*B" )
 	field( OUT,  "$(PWIDTH) CA NMS" )
@@ -630,7 +630,7 @@ record( calcout, "$(P)$(R)OpalPulseAcquireTime_RBV" )
 	field( CALC, "A/B" )
 	field( PREC, "5" )
 	field( OOPT, "On Change" )
-	field( OUT,  "$(P)$(R)EdtAcquireTime_RBV PP MS" )
+	field( OUT,  "$(P)$(R)CamAcquireTime_RBV PP MS" )
 	field( EGU,  "ns" )
 	info( autosaveFields, "HHSV HIGH HIHI HSV LLSV LOLO LOW LSV PREC" )
 	info( archiveFields,  "HHSV HIGH HIHI HSV LLSV LOLO LOW LSV PREC VAL" )
@@ -687,7 +687,7 @@ record( calcout, "$(P)$(R)OpalCalcAcquireTime_RBV" )
 	field( INPA, "$(P)$(R)OpalAcquireTime_RBV NPP NMS" )
 	field( INPB, "10e-6" )
 	field( CALC, "A*B" )
-	field( OUT,	 "$(P)$(R)EdtAcquireTime_RBV PP MS" )
+	field( OUT,	 "$(P)$(R)CamAcquireTime_RBV PP MS" )
     field( EGU,  "sec"  )
 	info( autosaveFields, "DESC" )
 }
@@ -698,14 +698,14 @@ record( calcout, "$(P)$(R)OpalCalcAcquireTime_RBV" )
 #	Pulse mode is used for exposure timing via external trigger pulse.
 #		Pulse width controls exposure, readout begins approx 418us after the end of the trigger pulse
 #	The Delayed and double modes are provided for slow framegrabbers and not used by this driver
-record( mbbi, "$(P)$(R)EdtTriggerMode" )
+record( mbbi, "$(P)$(R)CamTriggerMode" )
 {
 	field( FLNK, "$(P)$(R)OpalCalcTriggerMode" )
 }
 record( calc, "$(P)$(R)OpalCalcTriggerMode" )
 {
 #	field( TPRO, 2 )
-	field( INPA, "$(P)$(R)EdtTriggerMode NPP NMS" )
+	field( INPA, "$(P)$(R)CamTriggerMode NPP NMS" )
 	field( CALC, "A==0?0:(A==1?5:1)" )
 	field( FLNK, "$(P)$(R)OpalTriggerMode" )
 }
@@ -740,22 +740,22 @@ record( mbbi, "$(P)$(R)OpalTriggerMode_RBV" )
     field( FRVL, 4 ) field( FRST, "Double Delayed" )
     field( FVVL, 5 ) field( FVST, "External"   )
 	field( PINI, "YES" )
-	field( FLNK, "$(P)$(R)OpalCalcEdtTriggerMode" )
+	field( FLNK, "$(P)$(R)OpalCalcCamTriggerMode" )
 }
-record( calc, "$(P)$(R)OpalCalcEdtTriggerMode" )
+record( calc, "$(P)$(R)OpalCalcCamTriggerMode" )
 {
 #	field( TPRO, 2 )
 	field( INPA, "$(P)$(R)OpalTriggerMode_RBV NPP NMS" )
 	field( CALC, "A==0?0:(A==5?1:2)" )
-	field( FLNK, "$(P)$(R)EdtTriggerMode_RBV" )
+	field( FLNK, "$(P)$(R)CamTriggerMode_RBV" )
 }
 
-# Make EdtTriggerMode_RBV get it's value from OpalCalcEdtTriggerMode
-record( mbbo, "$(P)$(R)EdtTriggerMode_RBV" )
+# Make CamTriggerMode_RBV get it's value from OpalCalcCamTriggerMode
+record( mbbo, "$(P)$(R)CamTriggerMode_RBV" )
 {
 #	field( TPRO, 2 )
 	field( OMSL, "closed_loop" )
-	field( DOL,  "$(P)$(R)OpalCalcEdtTriggerMode NPP MS" )
+	field( DOL,  "$(P)$(R)OpalCalcCamTriggerMode NPP MS" )
 }
 
 record( bo, "$(P)$(R)OpalSetOLUTE" )
@@ -895,9 +895,9 @@ record( stringin, "$(P)$(R)OpalFirmwareTimestamp_RBV" )
 
 # Horizontal Binning is not installed on most Opal1000 cameras
 # Set horizontal binning
-# TODO: Use calc record to compute output value from EdtBinX
-#   EdtBinX == 1, Opal HBIN 0
-#   EdtBinX == 2, Opal HBIN 1
+# TODO: Use calc record to compute output value from CamBinX
+#   CamBinX == 1, Opal HBIN 0
+#   CamBinX == 2, Opal HBIN 1
 #record( longout, "$(P)$(R)OpalBinX" )
 #{
 #    field( DESC, "Set The horix binning" )
@@ -910,9 +910,9 @@ record( stringin, "$(P)$(R)OpalFirmwareTimestamp_RBV" )
 #    field( DRVL, 0 )
 #}
 
-# TODO: Use calc record to compute EdtBinX_RBV from HBIN reply
-#   Opal HBIN 0, EdtBinX_RBV 1
-#   Opal HBIN 1, EdtBinX_RBV 2
+# TODO: Use calc record to compute CamBinX_RBV from HBIN reply
+#   Opal HBIN 0, CamBinX_RBV 1
+#   Opal HBIN 1, CamBinX_RBV 2
 #record( longin, "$(P)$(R)OpalBinX_RBV" )
 #{
 #    field( DESC, "Horiz Binning" )
@@ -921,11 +921,11 @@ record( stringin, "$(P)$(R)OpalFirmwareTimestamp_RBV" )
 #}
 
 # Set vertical binning
-# TODO: Use calc record to compute output value from EdtBinX
-#   EdtBinY == 1, Opal VBIN 0
-#   EdtBinY == 2, Opal VBIN 1
-#   EdtBinY == 4, Opal VBIN 2
-#   EdtBinY == 8, Opal VBIN 3
+# TODO: Use calc record to compute output value from CamBinX
+#   CamBinY == 1, Opal VBIN 0
+#   CamBinY == 2, Opal VBIN 1
+#   CamBinY == 4, Opal VBIN 2
+#   CamBinY == 8, Opal VBIN 3
 record( longout, "$(P)$(R)OpalBinY" )
 {
     field( DESC, "Set The Vertical Binning" )
@@ -938,11 +938,11 @@ record( longout, "$(P)$(R)OpalBinY" )
     field( DRVL, 0 )
 }
 
-# TODO: Use calc record to compute EdtBinX_RBY from VBIN reply
-#   Opal VBIN 0, EdtBinY_RBV 1
-#   Opal VBIN 1, EdtBinY_RBV 2
-#   Opal VBIN 2, EdtBinY_RBV 4
-#   Opal VBIN 3, EdtBinY_RBV 8
+# TODO: Use calc record to compute CamBinX_RBY from VBIN reply
+#   Opal VBIN 0, CamBinY_RBV 1
+#   Opal VBIN 1, CamBinY_RBV 2
+#   Opal VBIN 2, CamBinY_RBV 4
+#   Opal VBIN 3, CamBinY_RBV 8
 record( longin, "$(P)$(R)OpalBinY_RBV" )
 {
     field( DESC, "Vertical Binning" )
@@ -950,7 +950,7 @@ record( longin, "$(P)$(R)OpalBinY_RBV" )
     field( INP,	 "@opal1000m_12.proto GetInt(VBIN) $(PORT).SER" )
 }
 
-# Vertical remapping is enabled by the EDT config file and should not be changed.
+# Vertical remapping is enabled by the config file and should not be changed.
 #record( bo, "$(P)$(R)OpalSetVR" )
 #{
 #    field( DESC, "Set Vertical Remapping" )
@@ -961,7 +961,7 @@ record( longin, "$(P)$(R)OpalBinY_RBV" )
 #    field( ONAM, "Remapping"    )
 #}
 
-# Vertical remapping is enabled by the EDT config file and should not be changed.
+# Vertical remapping is enabled by the config file and should not be changed.
 record( bi, "$(P)$(R)OpalVR" )
 {
     field( DESC, "Vertical Remapping" )
@@ -1080,7 +1080,7 @@ record( calc, "$(P)$(R)XmitDelay" )
 #	MON_SCAN:	PV used to verify serial link
 
 # Include a serialMonitor.template monitor
-# This should be the first PV you process in the EdtReConfigSeq
+# This should be the first PV you process in the CamReConfigSeq
 substitute "MON_SCAN=10 second"
 substitute "SER_OK_PV=$(P)$(R)OpalAcquireTime_RBV"
 include "serialMonitor.template"

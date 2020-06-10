@@ -11,7 +11,7 @@ record( stringin, "$(P)$(R)CamModel" )
 
 record( stringin, "$(P)$(R)CamModelScreen" )
 {
-	field( VAL,  "edtPdvScreens/up900.edl" )
+	field( VAL,  "ADPgpCamlinkScreens/up900.edl" )
 	field( PINI, "YES" )
 }
 
@@ -53,7 +53,7 @@ record( ao, "$(P)$(R)Gain" )
 	field( EGU,     "%" )
 	field( PREC,    "2" )
 }
-record( ao, "$(P)$(R)EdtGain" )
+record( ao, "$(P)$(R)CamGain" )
 {
 	field( HOPR,	"100.0" )
 	field( LOPR,	"0.0" )
@@ -63,7 +63,7 @@ record( ao, "$(P)$(R)EdtGain" )
 }
 record( calc, "$(P)$(R)Up900CalcGain" )
 {
-	field( INPA, "$(P)$(R)EdtGain NPP NMS" )
+	field( INPA, "$(P)$(R)CamGain NPP NMS" )
 	field( CALC, "A*1023/100" )
 	field( FLNK, "$(P)$(R)Up900Gain" )
 	field( PREC, "2" )
@@ -94,17 +94,17 @@ record( calcout, "$(P)$(R)Up900CalcGain_RBV" )
 {
 	field( INPA, "$(P)$(R)Up900Gain_RBV NPP NMS" )
 	field( CALC, "A*100/1023" )
-	field( OUT,  "$(P)$(R)EdtGain_RBV PP MS" )
+	field( OUT,  "$(P)$(R)CamGain_RBV PP MS" )
 	field( PREC, "2" )
 }
-record( ao, "$(P)$(R)EdtGain_RBV" )
+record( ao, "$(P)$(R)CamGain_RBV" )
 {
 #	field( TPRO, 2 )
 	field( EGU,  "%" )
 	field( PREC, "2" )
 }
 
-record( ao, "$(P)$(R)EdtAcquireTime" )
+record( ao, "$(P)$(R)CamAcquireTime" )
 {
 #	field( TPRO, 2 )
 	field( PREC, "5" )
@@ -152,7 +152,7 @@ record( fanout, "$(P)$(R)Up900AcquireTimeFanout" )
 record( calcout,	"$(P)$(R)Up900FreeRunShutter" )
 {
 	field( DESC, "Calc Normal Shutter Select" )
-	field( INPA, "$(P)$(R)EdtAcquireTime NPP MS" )
+	field( INPA, "$(P)$(R)CamAcquireTime NPP MS" )
 	field( INPB, "0.06666" )
 	field( INPC, "0.03333" )
 	field( INPD, "0.01666" )
@@ -183,7 +183,7 @@ record( calcout,	"$(P)$(R)Up900FreeRunShutter" )
 record( calcout,	"$(P)$(R)Up900TrigShutter" )
 {
 	field( DESC, "Calc Trig Shutter Select" )
-	field( INPA, "$(P)$(R)EdtAcquireTime NPP MS" )
+	field( INPA, "$(P)$(R)CamAcquireTime NPP MS" )
 	field( INPB, "0.01666" )
 	field( INPC, "0.00800" )
 	field( INPD, "0.00400" )
@@ -198,7 +198,7 @@ record( calcout,	"$(P)$(R)Up900TrigShutter" )
 record( calcout,	"$(P)$(R)Up900PulseShutter" )
 {
 	field( DESC, "Calc Pulse Width Shutter Select" )
-	field( INPA, "$(P)$(R)EdtAcquireTime NPP NMS"  )
+	field( INPA, "$(P)$(R)CamAcquireTime NPP NMS"  )
 	field( INPB, "$(PW_SCALE=1e9)"  )
 	field( CALC, "A*B" )
 	field( OUT,  "$(PWIDTH=) CA NMS" )
@@ -265,8 +265,8 @@ record( aSub, "$(P)$(R)Up900Shutter_ASub" )
 {
 	field( SCAN,	"Passive" )
 	field( SNAM,	"Up900Shutter_Process" )
-	field( FTA,		"DOUBLE")	field( INPA,	"$(P)$(R)EdtAcquireTime		  PP  MS" )
-	field( FTB,		"LONG"	)	field( INPB,	"$(P)$(R)EdtTriggerMode		  PP  MS" )
+	field( FTA,		"DOUBLE")	field( INPA,	"$(P)$(R)CamAcquireTime		  PP  MS" )
+	field( FTB,		"LONG"	)	field( INPB,	"$(P)$(R)CamTriggerMode		  PP  MS" )
 	field( FTC,		"DOUBLE")	field( INPC,	"$(PW_SCALE=1e9)" )
 
 	field( FTVA,	"LONG"	)	field( OUTA,	"$(P)$(R)Up900RawShutterSpeed PP  MS" )
@@ -283,8 +283,8 @@ record( aSub, "$(P)$(R)Up900Shutter_RBV_ASub" )
 	field( FTC,		"DOUBLE")	field( INPC,	"$(PW_RBV=1e6)"   )
 	field( FTD,		"DOUBLE")	field( INPD,	"$(PW_SCALE=1e9)" )
 
-	field( FTVA,	"DOUBLE")	field( OUTA,	"$(P)$(R)EdtAcquireTime_RBV  PP  MS" )
-	field( FTVB,	"LONG"	)	field( OUTB,	"$(P)$(R)EdtTriggerMode_RBV  PP  MS" )
+	field( FTVA,	"DOUBLE")	field( OUTA,	"$(P)$(R)CamAcquireTime_RBV  PP  MS" )
+	field( FTVB,	"LONG"	)	field( OUTB,	"$(P)$(R)CamTriggerMode_RBV  PP  MS" )
 }
 
 
@@ -316,7 +316,7 @@ record( ao, "$(P)$(R)XmitRate" )
 #	ROIx;y;w;h		Set ROI x offset, y offset, width, and height
 
 # Include a serialMonitor.template monitor
-# This should be the first PV you process in the EdtReConfigSeq
+# This should be the first PV you process in the CamReConfigSeq
 substitute "MON_SCAN=10 second"
 substitute "SER_OK_PV= $(P)$(R)Up900Report"
 include "serialMonitor.template"
