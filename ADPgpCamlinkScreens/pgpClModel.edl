@@ -3,10 +3,10 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 920
-y 417
+x 507
+y 61
 w 739
-h 659
+h 782
 font "helvetica-medium-r-12.0"
 ctlFont "helvetica-medium-r-12.0"
 btnFont "helvetica-medium-r-12.0"
@@ -129,25 +129,6 @@ objType "monitors"
 noExecuteClipMask
 endObjectProperties
 
-# (Embedded Window)
-object activePipClass
-beginObjectProperties
-major 4
-minor 1
-release 0
-x 8
-y 48
-w 720
-h 544
-fgColor index 14
-bgColor index 0
-topShadowColor index 1
-botShadowColor index 11
-filePv "$(P)$(R)CamModelScreen"
-numDsps 0
-noScroll
-endObjectProperties
-
 # (Group)
 object activeGroupClass
 beginObjectProperties
@@ -155,7 +136,7 @@ major 4
 minor 0
 release 0
 x 8
-y 48
+y 172
 w 720
 h 604
 
@@ -168,7 +149,7 @@ major 4
 minor 1
 release 0
 x 8
-y 48
+y 172
 w 720
 h 604
 fgColor index 14
@@ -370,5 +351,290 @@ onLabel "Cycle"
 offLabel "Cycle"
 3d
 font "helvetica-medium-r-12.0"
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 156
+y 44
+w 576
+h 24
+controlPv "$(CAM):PgpAxiVersion"
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+fgColor index 15
+fgAlarm
+bgColor index 12
+limitsFromDb
+nullColor index 0
+useHexPrefix
+newPos
+objType "monitors"
+noExecuteClipMask
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 16
+y 44
+w 132
+h 24
+font "helvetica-medium-r-14.0"
+fgColor index 14
+bgColor index 12
+useDisplayBg
+value {
+  "PgpAxiVersion"
+}
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 156
+y 72
+w 124
+h 24
+controlPv "$(CAM):PgpCoreFpgaVersion"
+format "hex"
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+fgColor index 15
+fgAlarm
+bgColor index 12
+limitsFromDb
+nullColor index 0
+useHexPrefix
+newPos
+objType "monitors"
+noExecuteClipMask
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 16
+y 72
+w 132
+h 24
+font "helvetica-medium-r-14.0"
+fgColor index 14
+bgColor index 12
+useDisplayBg
+value {
+  "PgpCoreFpgaVersion"
+}
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 156
+y 100
+w 124
+h 24
+controlPv "$(CAM):PgpFebFpgaVersion"
+format "hex"
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+fgColor index 15
+fgAlarm
+bgColor index 12
+limitsFromDb
+nullColor index 0
+useHexPrefix
+newPos
+objType "monitors"
+noExecuteClipMask
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 16
+y 100
+w 132
+h 24
+font "helvetica-medium-r-14.0"
+fgColor index 14
+bgColor index 12
+useDisplayBg
+value {
+  "PgpFebFpgaVersion"
+}
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 156
+y 128
+w 124
+h 24
+controlPv "$(CAM):PgpAppDataCnt"
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+fgColor index 15
+fgAlarm
+bgColor index 12
+limitsFromDb
+nullColor index 0
+useHexPrefix
+newPos
+objType "monitors"
+noExecuteClipMask
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 16
+y 128
+w 132
+h 24
+font "helvetica-medium-r-14.0"
+fgColor index 14
+bgColor index 12
+useDisplayBg
+value {
+  "PgpAppDataCnt"
+}
+endObjectProperties
+
+# (Related Display)
+object relatedDisplayClass
+beginObjectProperties
+major 4
+minor 4
+release 0
+x 700
+y 72
+w 32
+h 24
+fgColor index 14
+bgColor index 3
+topShadowColor index 0
+botShadowColor index 14
+font "helvetica-medium-r-12.0"
+buttonLabel "TOP"
+numPvs 4
+numDsps 1
+displayFileName {
+  0 "pgpCamlinkScreens/pgpCamTop.edl"
+}
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 428
+y 72
+w 264
+h 24
+controlPv "$(P)$(R)CamDrvVersion"
+font "helvetica-medium-r-14.0"
+fgColor index 15
+fgAlarm
+bgColor index 12
+limitsFromDb
+nullColor index 40
+smartRefresh
+useHexPrefix
+useAlarmBorder
+newPos
+objType "monitors"
+noExecuteClipMask
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 300
+y 72
+w 120
+h 24
+font "helvetica-medium-r-14.0"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "Driver Version"
+}
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 428
+y 100
+w 264
+h 24
+controlPv "$(P)$(R)CamLibVersion"
+font "helvetica-medium-r-14.0"
+fgColor index 15
+fgAlarm
+bgColor index 12
+limitsFromDb
+nullColor index 40
+smartRefresh
+useHexPrefix
+useAlarmBorder
+newPos
+objType "monitors"
+noExecuteClipMask
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 300
+y 100
+w 120
+h 24
+font "helvetica-medium-r-14.0"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "Lib Version"
+}
 endObjectProperties
 

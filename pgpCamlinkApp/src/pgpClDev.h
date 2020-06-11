@@ -103,6 +103,14 @@ public:		//	Public member functions
 		m_CallbackClientFunc	= CallbackClientFunc;
 	}
 
+	int		setTriggerEnable( unsigned int triggerNum, bool fEnable );
+	bool	getTriggerEnable( unsigned int triggerNum );
+
+	int		readVarPath( const char * pVarPath, bool		& valueRet );
+	int		readVarPath( const char * pVarPath, int64_t		& valueRet );
+	int		readVarPath( const char * pVarPath, uint64_t	& valueRet );
+	int		readVarPath( const char * pVarPath, std::string	& valueRet );
+
 private:
 	//	Private member variables
 	unsigned int		m_fd;
@@ -114,8 +122,28 @@ private:
 	std::string			m_LibVersion;	// Library Version
 	epicsMutexId		m_devLock;
 
-	// TODO: We only use one of each of these.
-	// lane is always 0 for first camera and 1 for 2nd.
+	///
+	// Firmware Lane assignments:
+	// Lane 0: First camera
+	// Lane 1: 2nd camera,
+	// Lane 2: 3rd camera
+	// Lane 3: 4th camera
+	//
+	// PGP channel mapping
+	// PGP[lane].VC[0] = SRPv3 (register access)
+	// PGP[lane].VC[1] = Camera Image (streaming data)
+	// PGP[lane].VC[2] = Camera UART (serial I/O)
+	// PGP[lane].VC[3] = Unused
+	//
+	// DMA channel mapping
+	// DMA[lane].DEST[0] = SRPv3
+	// DMA[lane].DEST[1] = Event Builder Batcher (super-frame)
+	// DMA[lane].DEST[1].DEST[0] = XPM Trigger Message (sub-frame)
+	// DMA[lane].DEST[1].DEST[1] = XPM Transition Message (sub-frame)
+	// DMA[lane].DEST[1].DEST[2] = Camera Image (sub-frame)
+	// DMA[lane].DEST[2] = Camera UART
+	// DMA[lane].DEST[255:3] = Unused
+	///
 	rogue::hardware::axi::AxiMemMapPtr 			m_pAxiMemMap;
 	// For dataChan we only use dataChan[2]
 	rogue::hardware::axi::AxiStreamDmaPtr		m_pDataChan[N_AXI_CHAN];

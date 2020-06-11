@@ -7,8 +7,24 @@
 
 extern int	DEBUG_PGP_CAMLINK;
 
+// TDEST 0 is Timing Event
+// Offset 0:  4 byte nsec of timestamp
+// Offset 4:  4 byte sec  of timestamp
+// Offset 8:  4 byte edefAvgDoneMask
+// Offset 12: 4 byte edefAvgMinorMask
+// Offset 16: 4 byte edefAvgMajorMask
+// Offset 20: 4 byte edefInitMask
+// Offset 24: 4 byte Modifier1
+// Offset 28: 4 byte Modifier2
+// Offset 32: 4 byte Modifier3
+// Offset 36: 4 byte Modifier4
+// Offset 40: 4 byte Modifier5
+// Offset 44: 4 byte Modifier6
+
+
 void ImageStream::acceptFrame ( rogue::interfaces::stream::FramePtr frame )
 {
+	char        	acBuff[40];
 	const char	*	functionName	= "ImageStream::acceptFrame";
 	if ( !frame ) {
 		if ( DEBUG_PGP_CAMLINK >= 2 )
@@ -70,24 +86,11 @@ void ImageStream::acceptFrame ( rogue::interfaces::stream::FramePtr frame )
 					sf, data->dest(), data->size(), data->fUser(), data->lUser() );
 		if ( data->dest() == 0 )
 		{	// TDEST 0 is Timing Event
-			// Offset 0:  4 byte nsec of timestamp
-			// Offset 4:  4 byte sec  of timestamp
-			// Offset 8:  4 byte edefAvgDoneMask
-			// Offset 12: 4 byte edefAvgMinorMask
-			// Offset 16: 4 byte edefAvgMajorMask
-			// Offset 20: 4 byte edefInitMask
-			// Offset 24: 4 byte Modifier1
-			// Offset 28: 4 byte Modifier2
-			// Offset 32: 4 byte Modifier3
-			// Offset 36: 4 byte Modifier4
-			// Offset 40: 4 byte Modifier5
-			// Offset 44: 4 byte Modifier6
 			it = data->begin();
 			fromFrame( it, 4, &ts.nsec );
 			fromFrame( it, 4, &ts.secPastEpoch );
-			char        acBuff[40];
 			epicsTimeToStrftime( acBuff, 40, "%H:%M:%S.%04f", &ts );
-			if ( DEBUG_PGP_CAMLINK >= 3 )
+			if ( DEBUG_PGP_CAMLINK >= 4 )
 			{
 				printf( "ts %s, pulseId 0x%X\n", acBuff, ts.nsec & 0x1FFFF );
 				if ( DEBUG_PGP_CAMLINK >= 5 )
@@ -102,11 +105,12 @@ void ImageStream::acceptFrame ( rogue::interfaces::stream::FramePtr frame )
 				}
 			}
 		}
-		else if ( data->dest() == 1 && 0 )
+		else if ( data->dest() == 1 )
 		{	// TDEST 1 is framegrabber image data
-			//printf( "ImageStream::acceptFrame SubFrame %d: ", sf );
+			if ( DEBUG_PGP_CAMLINK >= 4 )
+				printf( "ImageStream::acceptFrame TDEST 1 SubFrame %d: ", sf );
 			//it = data->begin();
-			it = data->end();
+			//it = data->end();
 			ImageDataPtr	= data;
 		}
 	}
@@ -114,6 +118,8 @@ void ImageStream::acceptFrame ( rogue::interfaces::stream::FramePtr frame )
 	// Process image
 	if ( m_pClDev )
 	{
+		if ( !ImageDataPtr && ( DEBUG_PGP_CAMLINK >= 4 ) )
+			printf( "ts %s, pulseId 0x%X, no image!\n", acBuff, ts.nsec & 0x1FFFF );
 		m_pClDev->ProcessImage( ts, ImageDataPtr );
 	}
 #endif

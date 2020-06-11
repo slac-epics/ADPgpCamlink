@@ -33,6 +33,8 @@ namespace rim = rogue::interfaces::memory;
 
 typedef	std::map< std::string, rim::VariablePtr >	mapVarPtr_t;
 
+int		DEBUG_PGP_CAMLINK	= 2;
+
 // TODO Move to new file: src/rogue/memory/interfaces/memory/Constants.cpp
 // TODO Rename BlockProcessingType2String()?
 // TODO Rename rim::Variable::getTypeName()?
@@ -74,12 +76,59 @@ int ResetCounters( int fd )
 	return status;
 }
 
+#define CLINKDEV_TRIG0_ENABLEREG	0x930000
+int		pgpClDev::setTriggerEnable( unsigned int triggerNum, bool fEnable )
+{
+	int		status	= 0;
+#if 1
+	const char		*	functionName	= "pgpClDev::setTriggerEnable";
+	std::string	varPath = "ClinkDev.Hardware.Timing.Triggering.Ch[0].EnableReg";
+	rogue::interfaces::memory::VariablePtr	pVar = getVariable( varPath );
+	if ( !pVar )
+	{
+		printf( "pgpClDev error: %s not found!\n", varPath.c_str() );
+	}
+	else
+	{
+		if ( pVar->modelId() == rim::Bool )
+		{
+			try
+			{
+				pVar->setLogLevel( rogue::Logging::Debug );
+				pVar->setBool( fEnable );
+				pVar->setLogLevel( rogue::Logging::Warning );
+				printf( "%s type is %s, nBits %u, byteSize %u, fastCopy %u!\n",
+						varPath.c_str(), modelId2String( pVar->modelId() ), pVar->bitTotal(),
+						pVar->byteSize(), pVar->fastCopy() );
+			}
+			catch ( rogue::GeneralError & e )
+			{
+				pVar->setLogLevel( rogue::Logging::Warning );
+				printf( "%s error: %s!\n", functionName, e.what() );
+			}
+		}
+		else
+		{
+			printf( "%s error: %s type is %s!\n", functionName,
+					varPath.c_str(), modelId2String( pVar->modelId() ) );
+		}
+	}
+#else
+	status = dmaWriteRegister( m_fd, CLINKDEV_TRIG0_ENABLEREG, fEnable );
+#endif
+	return status;
+}
+
+bool	pgpClDev::getTriggerEnable( unsigned int triggerNum )
+{
+	return false;
+}
+
 int StartRun( int fd )
 {
 	int		status;
 	status = ResetCounters( fd );
 
-#define CLINKDEV_TRIG0_ENABLEREG	0x930000
 	// Enable EVR trigger
 	status = dmaWriteRegister( fd, CLINKDEV_TRIG0_ENABLEREG, 1 );
 	return status;
@@ -164,7 +213,7 @@ pgpClDev::pgpClDev(
 
 	m_LibVersion = rogue::Version::current();
 	// See if we can connect to the device
-	int m_fd = open(m_devName.c_str(), O_RDWR);
+	m_fd = open(m_devName.c_str(), O_RDWR);
 	if (m_fd < 0) {
 		std::cout << "Error opening " << m_devName << std::endl;
 	}
@@ -267,6 +316,123 @@ pgpClDev::~pgpClDev()
 	close( m_fd );
 }
 
+int	pgpClDev::readVarPath( const char * pszVarPath, bool & valueRet )
+{
+	const char *	functionName = "pgpClDev::readVarPath";
+	int				status	= -1;
+	std::string		varPath( pszVarPath );
+	rogue::interfaces::memory::VariablePtr	pVar;
+	//pVar = m_pRogueLib->getVariable( varPath );
+	pVar = getVariable( varPath );
+	if ( !pVar )
+	{
+		printf( "%s error: %s not found!\n", functionName, varPath.c_str() );
+	}
+	else
+	{
+		if ( pVar->modelId() == rim::Bool )
+		{
+			valueRet = pVar->getBool();
+			status = 0;
+		}
+		else
+		{
+			printf( "%s error: %s is type %s%u, not Bool!\n",
+					functionName, varPath.c_str(),
+					modelId2String( pVar->modelId() ), pVar->bitTotal() );
+		}
+	}
+	return status;
+}
+
+int	pgpClDev::readVarPath( const char * pszVarPath, int64_t & valueRet )
+{
+	const char *	functionName = "pgpClDev::readVarPath";
+	int				status	= -1;
+	std::string		varPath( pszVarPath );
+	rogue::interfaces::memory::VariablePtr	pVar;
+	//pVar = m_pRogueLib->getVariable( varPath );
+	pVar = getVariable( varPath );
+	if ( !pVar )
+	{
+		printf( "%s error: %s not found!\n", functionName, varPath.c_str() );
+	}
+	else
+	{
+		if ( pVar->modelId() == rim::Int )
+		{
+			valueRet = pVar->getInt();
+			status = 0;
+		}
+		else
+		{
+			printf( "%s error: %s is type %s%u, not Int!\n",
+					functionName, varPath.c_str(),
+					modelId2String( pVar->modelId() ), pVar->bitTotal() );
+		}
+	}
+	return status;
+}
+
+int	pgpClDev::readVarPath( const char * pszVarPath, uint64_t & valueRet )
+{
+	const char *	functionName = "pgpClDev::readVarPath";
+	int				status	= -1;
+	std::string		varPath( pszVarPath );
+	rogue::interfaces::memory::VariablePtr	pVar;
+	//pVar = m_pRogueLib->getVariable( varPath );
+	pVar = getVariable( varPath );
+	if ( !pVar )
+	{
+		printf( "%s error: %s not found!\n", functionName, varPath.c_str() );
+	}
+	else
+	{
+		if ( pVar->modelId() == rim::UInt )
+		{
+			valueRet = pVar->getUInt();
+			status = 0;
+		}
+		else
+		{
+			printf( "%s error: %s is type %s%u, not UInt!\n",
+					functionName, varPath.c_str(),
+					modelId2String( pVar->modelId() ), pVar->bitTotal() );
+		}
+	}
+	return status;
+}
+
+int	pgpClDev::readVarPath( const char * pszVarPath, std::string & valueRet )
+{
+	const char *	functionName = "pgpClDev::readVarPath";
+	int				status	= -1;
+	std::string		varPath( pszVarPath );
+	rogue::interfaces::memory::VariablePtr	pVar;
+	//pVar = m_pRogueLib->getVariable( varPath );
+	pVar = getVariable( varPath );
+	if ( !pVar )
+	{
+		printf( "%s error: %s not found!\n", functionName, varPath.c_str() );
+	}
+	else
+	{
+		if ( pVar->modelId() == rim::String )
+		{
+			pVar->getValue( valueRet );
+			status = 0;
+		}
+		else
+		{
+			printf( "%s error: %s is type %s%u, not String!\n",
+					functionName, varPath.c_str(),
+					modelId2String( pVar->modelId() ), pVar->bitTotal() );
+		}
+	}
+	return status;
+}
+
+
 void pgpClDev::showVariable( const char * pszVarPath, bool verbose )
 {
 	std::string		varPath( pszVarPath );
@@ -364,7 +530,7 @@ void pgpClDev::ProcessImage(
 	rogue::protocols::batcher::DataPtr	pImageData )
 {
 	const char		*	functionName	= "pgpClDev::ProcessImage";
-	if ( 0 ) printf( "%s\n", functionName );
+	if ( DEBUG_PGP_CAMLINK >= 3 ) printf( "%s\n", functionName );
 
 	if  ( m_CallbackClientFunc != NULL )
 		(*m_CallbackClientFunc)( m_pCallbackClient, tsImage, pImageData );

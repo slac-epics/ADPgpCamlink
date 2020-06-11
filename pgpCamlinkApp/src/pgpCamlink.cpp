@@ -60,7 +60,7 @@ static	const char *		driverName	= "PgpCamlink";
 // View and reset via iocsh cmds.
 // From iocsh, type: help *Context*
 
-int		DEBUG_PGP_CAMLINK	= 2;
+extern int		DEBUG_PGP_CAMLINK;
 
 //	t_HiResTime		imageCaptureCumTicks	= 0LL;
 //	unsigned long	imageCaptureCount		= 0L;
@@ -106,6 +106,32 @@ const char * TriggerModeToString( pgpCamlink::TriggerMode_t	tyTriggerMode )
 	}
 	return pstrTriggerMode;
 }
+
+
+// ImageCallback function
+void ProcessImageCallback(
+	void							*	pCallbackClient,
+	const epicsTimeStamp			&	tsImage,
+	rogue::protocols::batcher::DataPtr	pImageData )
+{
+	pgpCamlink	*	pADCam = (pgpCamlink *) pCallbackClient;
+
+    if ( DEBUG_PGP_CAMLINK >= 4 )
+	{
+		if ( pImageData )
+        	printf( "ProcessImageCallback: %u bytes, pulseID %d\n", pImageData->size(), tsImage.nsec & 0x1FFFF );
+		else
+        	printf( "ProcessImageCallback: Null Image, pulseID %d\n", tsImage.nsec & 0x1FFFF );
+	}
+
+	if( pADCam )
+	{
+		pADCam->ProcessImage( tsImage, pImageData );
+	}
+
+	return;
+}
+
 
 //
 // pgpCamlink functions
@@ -235,6 +261,12 @@ pgpCamlink::pgpCamlink(
 	createParam( CamlinkInfoString,			asynParamOctet,		&CamlinkInfo		);
 	createParam( CamlinkTrigLevelString,	asynParamInt32,		&CamlinkTrigLevel	);
 	createParam( CamlinkReCfgCntString,		asynParamInt32,		&CamlinkReCfgCnt	);
+	createParam( CamlinkDebugLevelString,	asynParamInt32,		&CamlinkDebugLevel	);
+	createParam( CamlinkDebugSerString,		asynParamInt32,		&CamlinkDebugSer	);
+	createParam( PgpAxiVersionString,		asynParamOctet,		&PgpAxiVersion		);
+	createParam( PgpCoreFpgaVersionString,	asynParamInt32,		&PgpCoreFpgaVersion	);
+	createParam( PgpFebFpgaVersionString,	asynParamInt32,		&PgpFebFpgaVersion	);
+	createParam( PgpAppDataCntString,		asynParamInt32,		&PgpAppDataCnt	);
 
 	// This group provides a way to have serial readbacks get reflected in
 	// their ADBase class equivalents, for example
@@ -329,7 +361,7 @@ int pgpCamlink::CreateCamera(
         return  -1;
     }
 
-    if ( DEBUG_PGP_CAMLINK )
+    if ( DEBUG_PGP_CAMLINK >= 1 )
         cout << "Creating pgpCamlink: " << string(cameraName) << endl;
     pgpCamlink	* pCamera = new pgpCamlink( cameraName, unit, lane, modelName, clMode );
     assert( pCamera != NULL );
@@ -386,7 +418,7 @@ pgpCamlink	*	pgpCamlink::CameraFindByName( const string & name )
 void pgpCamlink::CameraAdd(		pgpCamlink * pCamera )
 {
 	assert( CameraFindByName( pCamera->m_CameraName ) == NULL );
-	if ( DEBUG_PGP_CAMLINK )
+	if ( DEBUG_PGP_CAMLINK >= 3 )
 		cout << "CameraAdd: " << pCamera->m_CameraName << endl;
 	ms_cameraMap[ pCamera->m_CameraName ]	= pCamera;
 }
@@ -664,8 +696,8 @@ int pgpCamlink::Reconfigure( )
 
 int pgpCamlink::Reopen( )
 {
-    static const char	*	functionName = "pgpCamlink::ReReopen";
-	CONTEXT_TIMER( "ReReopen" );
+    static const char	*	functionName = "pgpCamlink::Reopen";
+	CONTEXT_TIMER( "Reopen" );
 
 	if ( DEBUG_PGP_CAMLINK >= 1 )
 	{
@@ -682,10 +714,12 @@ int pgpCamlink::Reopen( )
 	status	= pgpCamlink::_Reopen( );
 	if ( status != 0 )
 	{
+		if ( DEBUG_PGP_CAMLINK >= 1 )
+			printf( "%s: _Reopen error %d\n", functionName, status );
 		// Reopen failed, request another
 		m_fReopen	= true;
 	}
-	m_fReconfig = true;
+
 	epicsMutexUnlock(	m_reconfigLock );
 
 	if ( status != 0 )
@@ -700,6 +734,10 @@ int pgpCamlink::Reopen( )
 					"%s %s: Reopen succeeded, but Reopen flag has already been set again!\n",
 					driverName, functionName );
 	}
+
+	// Always Reconfigure after a Reopen
+	status = Reconfigure();
+
 	return status;
 }
 
@@ -723,7 +761,36 @@ int pgpCamlink::_Reconfigure( )
 	}
 
 	// Cancel Image Callbacks
-	m_pDev->cancelImageCallbacks( ProcessImage, this );
+	m_pDev->cancelImageCallbacks( );
+	m_pDev->setTriggerEnable( 0, false );
+
+	// Fetch the pgpCamlink driver and library versions
+	m_DrvVersion = m_pDev->GetDrvVersion();
+#if 0
+	size_t end_of_vers = m_DrvVersion.find( " " );
+	if ( end_of_vers != string::npos )
+	{
+		// The driver version has a date on the end that we don't care about
+		m_DrvVersion.erase( m_DrvVersion.find( " " ) );
+	}
+#endif
+	setStringParam( CamlinkDrvVersion, m_DrvVersion.c_str()	);
+
+	m_LibVersion = m_pDev->GetLibVersion();
+	setStringParam( CamlinkLibVersion, m_LibVersion.c_str()	);
+
+	int64_t		int64Value	= 0;
+	uint64_t	uint64Value	= 0;
+	m_pDev->readVarPath(	PgpCoreFpgaVersionString,	uint64Value );
+	setIntegerParam(		PgpCoreFpgaVersion,			uint64Value	);
+	m_pDev->readVarPath(	PgpFebFpgaVersionString,	uint64Value );
+	setIntegerParam(		PgpFebFpgaVersion,			uint64Value	);
+	m_pDev->readVarPath(	PgpAxiVersionString,		m_AxiVersion );
+	setStringParam(			PgpAxiVersion, m_AxiVersion.c_str()	);
+
+	// Already shown in _Reopen()
+	//printf( "pgpCamlink Driver  version: %s\n", m_DrvVersion.c_str() ); 
+	//printf( "pgpCamlink Library version: %s\n", m_LibVersion.c_str() );
 #if 0
 	{
 	// Fetch the camera manufacturer and model and write them to ADBase parameters
@@ -736,40 +803,6 @@ int pgpCamlink::_Reconfigure( )
 	setStringParam( ADManufacturer, m_CameraClass.c_str()	);
     setStringParam( CamlinkClass,	m_CameraClass.c_str()	);
     setStringParam( CamlinkInfo,	m_CameraInfo.c_str()	);
-
-	// Fetch the pgpCamlink driver and library versions and make sure they match
-    //char		buf[MAX_STRING_SIZE];
-    //edt_get_driver_version(	m_pDev, buf, MAX_STRING_SIZE );
-	m_DrvVersion = m_pDev->GetDrvVersion();
-#if 0
-	size_t end_of_vers = m_DrvVersion.find( " " );
-	if ( end_of_vers != string::npos )
-	{
-		// The driver version has a date on the end that we don't care about
-		m_DrvVersion.erase( m_DrvVersion.find( " " ) );
-	}
-#endif
-	setStringParam( CamlinkDrvVersion, m_DrvVersion.c_str()	);
-
-    //edt_get_library_version( m_pDev, buf, MAX_STRING_SIZE );
-	m_LibVersion = m_pDev->GetLibVersion();
-	setStringParam( CamlinkLibVersion, m_LibVersion.c_str()	);
-
-#if 0
-	if ( m_DrvVersion.find(m_LibVersion) == string::npos )
-	{
-		printf( 
-					"%s %s: ERROR, pgpCamlink driver version %s does not match lib version %s!\n",
-					driverName, functionName, m_DrvVersion.c_str(), m_LibVersion.c_str() );
-        asynPrint(	this->pasynUserSelf,	ASYN_TRACE_ERROR, 
-					"asynPrint "
-					"%s %s: ERROR, pgpCamlink driver version %s does not match lib version %s!\n",
-					driverName, functionName, m_DrvVersion.c_str(), m_LibVersion.c_str() );
-        return -1;
-    }
-#endif
-	printf( "pgpCamlink Driver  version: %s\n", m_DrvVersion.c_str() ); 
-	printf( "pgpCamlink Library version: %s\n", m_LibVersion.c_str() );
 	}
 #endif
 
@@ -1129,6 +1162,10 @@ asynStatus	pgpCamlink::SetAcquireMode( int fAcquire )
 		if ( DEBUG_PGP_CAMLINK >= 2 )
 			printf(	"%s: Stopping acquisition on camera %s\n", 
 					functionName, m_CameraName.c_str() );
+
+		// Cancel Image Callbacks
+		m_pDev->cancelImageCallbacks( );
+
 		// Stop acquisition
 		m_fAcquireMode = false;
 		m_acquireCount = 0;
@@ -1181,6 +1218,14 @@ asynStatus	pgpCamlink::SetAcquireMode( int fAcquire )
 		}
 		}
 		m_fAcquireMode = true;
+
+		if ( DEBUG_PGP_CAMLINK >= 2 )
+			printf(	"%s: Enabling ImageCallbacks on camera %s\n", 
+					functionName, m_CameraName.c_str() );
+		// Enable Image Callbacks
+		m_pDev->requestImageCallbacks( this, ProcessImageCallback );
+		// Enable Image Callbacks
+		m_pDev->setTriggerEnable( 0, true );
 #if 0
 		if( m_pSyncDataAcquirer != NULL )
 			m_pSyncDataAcquirer->SignalAcquireEvent();
@@ -1209,7 +1254,16 @@ int pgpCamlink::StartAcquisition( )
 	}
 
 	if ( m_fReconfig || !InAcquireMode() )
+	{
+		if ( DEBUG_PGP_CAMLINK >= 1 )
+		{
+			if ( m_fReconfig )
+				printf( "%s: Reconfig requested\n", functionName );
+			else
+				printf( "%s: Not InAcquireMode\n", functionName );
+		}
     	return -1;
+	}
 
 	if ( DEBUG_PGP_CAMLINK >= 2 )
 		printf(	"%s: Acquire image from %zu,%zu size %zux%zu\n", functionName,
@@ -1221,11 +1275,13 @@ int pgpCamlink::StartAcquisition( )
 
 	if ( m_pDev )
 	{
-		if ( DEBUG_PGP_CAMLINK >= 3 )
-			printf( "%s: Enabled Image Callbacks\n", functionName );
+		if ( DEBUG_PGP_CAMLINK >= 2 )
+			printf( "%s: Enabling Image Callbacks\n", functionName );
 
 		// Enable Image Callbacks
-		m_pDev->requestImageCallbacks( ProcessImage, this );
+		m_pDev->requestImageCallbacks( this, ProcessImageCallback );
+		// Enable Image Callbacks
+		m_pDev->setTriggerEnable( 0, true );
 	}
 
 	asynPrint(	this->pasynUserSelf, ASYN_TRACEIO_DRIVER,
@@ -1329,18 +1385,39 @@ int pgpCamlink::ProcessImage(
 	CONTEXT_TIMER( "ProcessImage" );
 	assert( m_pDev != NULL );
 
-#ifdef	USE_DIAG_TIMER
-	// Update diagnostic timers
-	m_ReArmTimer.StartTimer( );
-	m_ProcessImageTimer.StartTimer( );
-#endif	//	USE_DIAG_TIMER
+	// Fetch and update DataCnt
+	uint64_t		DataCnt = 0;
+	if ( m_pDev->readVarPath( PgpAppDataCntString, DataCnt ) == 0 )
+	{
+		asynStatus	status	= setIntegerParam( PgpAppDataCnt, static_cast<int>(DataCnt) );
+		if( status == asynSuccess )
+			status = callParamCallbacks( 0, 0 );
+	}
 
 	// See if we exited acquire mode while waiting for an image
-	if ( m_fReconfig || !InAcquireMode() )
+	if ( 0 /*m_fReconfig*/ || !InAcquireMode() )
 	{
 		if ( DEBUG_PGP_CAMLINK >= 1 )
-			printf(	"%s: AcquireMode cancelled in thread %s\n", functionName, epicsThreadGetNameSelf() );
+		{
+			if ( m_fReconfig )
+				printf(	"%s: Reconfig request, cancelling AcquireMode\n", functionName );
+			else
+				printf(	"%s: AcquireMode cancelled\n", functionName );
+		}
+
+		// Cancel Image Callbacks
+		if ( m_pDev )
+		{
+			m_pDev->cancelImageCallbacks( );
+			// Disable Image Callbacks
+			m_pDev->setTriggerEnable( 0, false );
+		}
 		return asynError;
+	}
+	if ( m_fReconfig )
+	{
+		printf(	"%s: TODO: Reconfig flag still active!\n", functionName );
+		m_fReconfig = false;
 	}
 
 	// Decrement acquire count
@@ -1349,9 +1426,6 @@ int pgpCamlink::ProcessImage(
 
 	if ( ! pImageData )
 	{
-#ifdef	USE_DIAG_TIMER
-		m_ReArmTimer.StopTimer( );
-#endif	//	USE_DIAG_TIMER
 		if ( DEBUG_PGP_CAMLINK >= 2 )
 		{
 			if ( ! pImageData )
@@ -1391,9 +1465,6 @@ int pgpCamlink::ProcessImage(
 			}
 		}
 	}
-#ifdef	USE_DIAG_TIMER
-	m_ProcessImageTimer.StopTimer( );
-#endif	//	USE_DIAG_TIMER
 
 	unlock();
 

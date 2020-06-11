@@ -108,6 +108,7 @@ pgpClSerialDev::pgpClSerialDev(
 
 }
 
+// TODO: Fix indentation
 int pgpClSerialDev::connect( )
 {
 	uint32_t		dest	= 0;

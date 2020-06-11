@@ -426,6 +426,7 @@ private:	//	Private member variables
 	std::string		m_CameraName;	// name of this camera, must be unique
 	std::string		m_ConfigFile;	// current configuration file for camera
 	std::string		m_DrvVersion;	// Driver Version
+	std::string		m_AxiVersion;	// PGP AxiVersion
 	std::string		m_LibVersion;	// Library Version
 	std::string		m_ModelName;	// Configuration model name for camera (selected in st.cmd)
 	std::string		m_SerialPort;	// name of camera's serial port
@@ -494,6 +495,12 @@ private:	//	Private member variables
 	int		CamlinkInfo;
 	int		CamlinkLibVersion;
 	int		CamlinkTrigLevel;
+	int		CamlinkDebugLevel;
+	int		CamlinkDebugSer;
+	int		PgpAxiVersion;
+	int		PgpCoreFpgaVersion;
+	int		PgpFebFpgaVersion;
+	int		PgpAppDataCnt;
 
 	// Serial front-end params for ADBase parameters
 	int		SerAcquireTime;
@@ -547,6 +554,12 @@ private:	//	Private class variables
 #define CamlinkInfoString		"CLCAM_INFO"
 #define CamlinkLibVersionString	"CLCAM_LIB_VERSION"
 #define CamlinkTrigLevelString	"CLCAM_TRIG_LEVEL"
+#define CamlinkDebugLevelString	"CLCAM_DEBUG"
+#define CamlinkDebugSerString	"CLCAM_DEBUG_SER"
+#define PgpAxiVersionString			"ClinkDev.Hardware.AxiPcieCore.AxiVersion.BuildStamp"
+#define PgpCoreFpgaVersionString	"ClinkDev.Hardware.AxiPcieCore.AxiVersion.FpgaVersion"
+#define PgpFebFpgaVersionString		"ClinkDev.ClinkFeb[0].AxiVersion.FpgaVersion"
+#define PgpAppDataCntString			"ClinkDev.Application.AppLane[0].EventBuilder.DataCnt[0]" 
 
 // This group provides a way to have serial readbacks get reflected in
 // their ADBase class equivalents, for example

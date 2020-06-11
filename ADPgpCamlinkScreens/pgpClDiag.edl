@@ -412,7 +412,7 @@ fgColor index 14
 bgColor index 0
 useDisplayBg
 value {
-  "pgpCl Debug Msg Level"
+  "pgpCl Debug Serial Level"
 }
 endObjectProperties
 
@@ -426,7 +426,7 @@ x 176
 y 484
 w 59
 h 18
-controlPv "$(P)$(R)CamDebugMsgLevel"
+controlPv "$(P)$(R)CamDebugSerLevel"
 format "decimal"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
@@ -456,7 +456,7 @@ x 244
 y 484
 w 88
 h 20
-controlPv "$(P)$(R)CamDebugMsgLevel_RBV"
+controlPv "$(P)$(R)CamDebugSerLevel_RBV"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
 fgColor index 15

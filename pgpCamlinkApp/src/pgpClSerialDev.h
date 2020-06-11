@@ -85,6 +85,12 @@ private:
 	std::string			m_devName;
 	epicsMutexId		m_devLock;
 
+	// lane is always 0 for first camera and 1 for 2nd.
+	// Each lane has 4 channels
+	// Channel 0: SRPv3 (serial register protocol)
+	// Channel 1: Image Stream
+	// Channel 2: Camlink Serial I/O
+	// Channel 3: Unused
 	ClSerialSlavePtr						m_pClSerialRx;
 	ClSerialMasterPtr						m_pClSerialTx;
 	rogue::hardware::axi::AxiStreamDmaPtr	m_pDataChan;
