@@ -377,6 +377,12 @@ int pgpCamlink::CreateCamera(
 }
 
 
+extern "C"
+int ShowAllCameras( int level )
+{
+	return pgpCamlink::ShowAllCameras( level );
+}
+
 int pgpCamlink::ShowAllCameras( int level )
 {
 	if ( level <= 0 )
@@ -445,6 +451,18 @@ int pgpCamlink::CameraShow( int level )
 				<< "bits" << endl;
 	}
     return 0;
+}
+
+int pgpCamlink::ShowPgpVariable( const char * pszVarPath, int level )
+{
+	const char	*	functionName = "pgpCamlink::ShowPgpVariable";
+	if ( m_pDev == NULL )
+	{
+		printf( "%s error: %s PGP Dev not configured!\n", functionName, m_CameraName.c_str() );
+		return -1;
+	}
+	m_pDev->showVariable( pszVarPath, level != 0 );
+	return 0;
 }
 
 void pgpCamlink::ExitHook(void * arg)
@@ -779,7 +797,7 @@ int pgpCamlink::_Reconfigure( )
 	m_LibVersion = m_pDev->GetLibVersion();
 	setStringParam( CamlinkLibVersion, m_LibVersion.c_str()	);
 
-	int64_t		int64Value	= 0;
+//	int64_t		int64Value	= 0;
 	uint64_t	uint64Value	= 0;
 	m_pDev->readVarPath(	PgpCoreFpgaVersionString,	uint64Value );
 	setIntegerParam(		PgpCoreFpgaVersion,			uint64Value	);
@@ -2350,14 +2368,14 @@ unsigned int pgpCamlink::GetTraceLevel()
 }
 
 
-extern "C" int resetImageTiming( )
+extern "C" int ResetImageTiming( )
 {
 //	imageCaptureCumTicks	= 0LL;
 //	imageCaptureCount		= 0L;
 	return 0;
 }
 
-extern "C" int showImageTiming( )
+extern "C" int ShowImageTiming( )
 {
 #if 0
 	double	cumDur	= HiResTicksToSeconds( imageCaptureCumTicks );
@@ -2443,34 +2461,80 @@ pgpCamlinkConfigFull(
 }
 
 // Register function:
-//		int resetImageTiming( void )
-static const iocshFuncDef   resetImageTimingFuncDef	= { "resetImageTiming", 0, NULL };
-static int  resetImageTimingCallFunc( const iocshArgBuf * args )
+//		int ResetImageTiming( void )
+static const iocshFuncDef   ResetImageTimingFuncDef	= { "ResetImageTiming", 0, NULL };
+static int  ResetImageTimingCallFunc( const iocshArgBuf * args )
 {
-	return static_cast<int>( resetImageTiming( ) );
+	return static_cast<int>( ResetImageTiming( ) );
 }
-void resetImageTimingRegister(void)
+void ResetImageTimingRegister(void)
 {
-	iocshRegister( &resetImageTimingFuncDef, reinterpret_cast<iocshCallFunc>(resetImageTimingCallFunc) );
+	iocshRegister( &ResetImageTimingFuncDef, reinterpret_cast<iocshCallFunc>(ResetImageTimingCallFunc) );
 }
 
-//epicsRegisterFunction( resetImageTiming );
-epicsExportRegistrar( resetImageTimingRegister );
 
 // Register function:
-//		int showImageTiming( void )
-static const iocshFuncDef   showImageTimingFuncDef	= { "showImageTiming", 0, NULL };
-static int  showImageTimingCallFunc( const iocshArgBuf * args )
+//		int ShowImageTiming( void )
+static const iocshFuncDef   ShowImageTimingFuncDef	= { "ShowImageTiming", 0, NULL };
+static int  ShowImageTimingCallFunc( const iocshArgBuf * args )
 {
-	return static_cast<int>( showImageTiming( ) );
+	return static_cast<int>( ShowImageTiming( ) );
 }
-void showImageTimingRegister(void)
+void ShowImageTimingRegister(void)
 {
-	iocshRegister( &showImageTimingFuncDef, reinterpret_cast<iocshCallFunc>(showImageTimingCallFunc) );
+	iocshRegister( &ShowImageTimingFuncDef, reinterpret_cast<iocshCallFunc>(ShowImageTimingCallFunc) );
 }
 
-//epicsRegisterFunction( showImageTiming );
-epicsExportRegistrar( showImageTimingRegister );
+// Register function:
+//		int ShowAllCameras( int level )
+static const iocshArg		ShowAllCamerasArg0		= { "level",		iocshArgInt };
+static const iocshArg	*	ShowAllCamerasArgs[1]	=
+{
+	&ShowAllCamerasArg0
+};
+static const iocshFuncDef   ShowAllCamerasFuncDef	= { "ShowAllCameras", 1, ShowAllCamerasArgs };
+static int  ShowAllCamerasCallFunc( const iocshArgBuf * args )
+{
+	return static_cast<int>( ShowAllCameras( args[0].ival ) );
+}
+void ShowAllCamerasRegister(void)
+{
+	iocshRegister( &ShowAllCamerasFuncDef, reinterpret_cast<iocshCallFunc>(ShowAllCamerasCallFunc) );
+}
+
+
+extern "C"
+int ShowPgpVariable( const char * pszCamName, const char * pszVarPath, int level )
+{
+	const char	*	functionName = "ShowPgpVariable";
+	pgpCamlink	*	pCamDev = pgpCamlink::CameraFindByName( std::string(pszCamName) );
+	if ( pCamDev == NULL )
+	{
+		printf( "%s error: Camera %s not found!\n", functionName, pszCamName );
+		return -1;
+	}
+
+	return pCamDev->ShowPgpVariable( pszVarPath, level );
+}
+
+// Register function:
+//		int ShowPgpVar( int level )
+static const iocshArg		ShowPgpVarArg0		= { "camName",		iocshArgString };
+static const iocshArg		ShowPgpVarArg1		= { "varName",		iocshArgString };
+static const iocshArg		ShowPgpVarArg2		= { "level",		iocshArgInt };
+static const iocshArg	*	ShowPgpVarArgs[3]	=
+{
+	&ShowPgpVarArg0, &ShowPgpVarArg1, &ShowPgpVarArg2
+};
+static const iocshFuncDef   ShowPgpVarFuncDef	= { "ShowPgpVar", 3, ShowPgpVarArgs };
+static int  ShowPgpVarCallFunc( const iocshArgBuf * args )
+{
+	return static_cast<int>( ShowPgpVariable( args[0].sval, args[1].sval, args[2].ival ) );
+}
+void ShowPgpVarRegister(void)
+{
+	iocshRegister( &ShowPgpVarFuncDef, reinterpret_cast<iocshCallFunc>(ShowPgpVarCallFunc) );
+}
 
 // Register Function:
 //	int pgpCamlinkConfig( const char * cameraName, int unit, int lane, const char * modelName )
@@ -2530,5 +2594,9 @@ extern "C"
 {
 	epicsExportRegistrar( pgpCamlinkConfigRegister );
 	epicsExportRegistrar( pgpCamlinkConfigFullRegister );
+	epicsExportRegistrar( ShowImageTimingRegister );
+	epicsExportRegistrar( ResetImageTimingRegister );
+	epicsExportRegistrar( ShowAllCamerasRegister );
+	epicsExportRegistrar( ShowPgpVarRegister );
 	epicsExportAddress( int, DEBUG_PGP_CAMLINK );
 }

@@ -304,6 +304,9 @@ public:		//	Public member functions
 	///	Show Camera info on stdout
 	int						CameraShow( int level );
 
+	///	Show Camera PGP variable on stdout
+	int						ShowPgpVariable( const char * pszVarPath, int level );
+
 	///	Start Camera image acquisition
 	int						StartAcquisition( );
 
