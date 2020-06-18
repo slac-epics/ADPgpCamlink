@@ -1,0 +1,27 @@
+#
+# ClinkTop rogue PVs
+#
+# Required macros:
+#	P				- Prefix
+#	R				- Region, common camera PV prefix is $(P)$(R)
+#	B				- Board number
+#	L				- Lane number
+# Optional macros
+#	TIMEOUT			- Defaults to 1 sec
+#
+
+record( longin, "$(P)$(R)Feb0:ClCh0:FrameCount" )
+{
+	field( DTYP, "RogueLI" )
+	field( INP,  "@B$(B) L$(L) ClinkDev.ClinkFeb[0].ClinkTop.Ch[0].FrameCount" )
+#	field( SCAN, "I/O Intr" )
+	info( autosaveFields, "" )
+}
+
+record( longin, "$(P)$(R)Feb0:ClCh1:FrameCount" )
+{
+	field( DTYP, "RogueLI" )
+	field( INP,  "@B$(B) L$(L) ClinkDev.ClinkFeb[0].ClinkTop.Ch[1].FrameCount" )
+#	field( SCAN, "I/O Intr" )
+	info( autosaveFields, "" )
+}

@@ -1,0 +1,7 @@
+# EPICS DBD file for accessing Rogue via its Library class
+#device( ai,			INST_IO,	devRogueAi,	"RogueAI"	)
+#device( ao,			INST_IO,	devRogueAo,	"RogueAO"	)
+device( longin,		INST_IO,	dsetRogueLi,	"RogueLI"	)
+#device( longout,	INST_IO,	devRogueLo,	"RogueLO"	)
+#device( stringin,	INST_IO,	devRogueSi,	"RogueSI"	)
+#device( waveform,	INST_IO,	devRogueWf,	"RogueWF"	)

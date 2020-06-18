@@ -15,4 +15,5 @@ variable(	DEBUG_PGP_CAMLINK,	int	)
 
 #include "pgpClDev.dbd"
 include "pgpClSerialDev.dbd"
+include "devRogue.dbd"
 

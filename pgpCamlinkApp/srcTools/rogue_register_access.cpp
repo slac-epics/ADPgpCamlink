@@ -45,13 +45,10 @@
 
 int main (int argc, char **argv)
 {
-	uint32_t ver;
-	uint32_t spad;
-
 	//rogue::Logging::setLevel(rogue::Logging::Debug);
 	std::string		devName( "/dev/datadev_0" );
-	uint32_t		minPcieVersion	= 0x01000200;
-	uint32_t		minFebVersion	= 0x01000200;
+	//uint32_t		minPcieVersion	= 0x01000200;
+	//uint32_t		minFebVersion	= 0x01000200;
 
 	// Not PgpCard::create() as it uses aes-stream-drivers pgpcard.ko instead of datatdev.ko
 	// rogue::hardware::pgp::PgpCardPtr	pCard = rogue::hardware::pgp::PgpCard::create( devName, lane, vc )
@@ -147,8 +144,8 @@ int main (int argc, char **argv)
 		printf("Establishing link ...\n");
 	}
 
-	ver = 0xFFFFFFFF;
-	spad = 0xFFFFFFFF;
+	uint32_t ver	= 0xFFFFFFFF;
+	uint32_t spad	= 0xFFFFFFFF;
 
 	// Read from fpga version
 	mast->reqTransaction(0x00000000,4,&ver,rogue::interfaces::memory::Read);
