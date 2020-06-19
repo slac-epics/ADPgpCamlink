@@ -73,7 +73,7 @@ public:		//	Public member functions
 
 	///	Constructor
 	pgpCamlink(	const char			*	cameraName,
-				int						unit,
+				int						board,
 				int						lane,
 				const char			*	modelName,
 				const char			*	clMode,
@@ -367,6 +367,20 @@ public:		//	Public member functions
     int IncrSyncBadTSCount();
     int IncrSyncBadSyncCount();
 
+	// Return shared_ptr to pgpClDev device
+	pgpClDevPtr				GetDevPtr( ) const
+	{
+		return m_pDev;
+	}
+	unsigned int			GetBoard( ) const
+	{
+		return m_board;
+	}
+	unsigned int			GetLane( ) const
+	{
+		return m_lane;
+	}
+
 	// Trace level for diagnostics
 	unsigned int GetTraceLevel();
 
@@ -374,21 +388,17 @@ public:		//	Public member functions
 
 public:		//	Public class functions
 
-	static int				CreateCamera(	const char *	cameraName, int unit, int lane,
+	static int				CreateCamera(	const char *	cameraName, int board, int lane,
 											const char *	modelName,	const char * clMode );
 
 	static pgpCamlink	*	CameraFindByName( const std::string & name );
 
-#if 0
-	pgpClDev			*	GetDevPtr( ) const
-	{
-		return m_pDev;
-	}
-#endif
+	static pgpCamlink	*	CameraFindByBoardLane( unsigned int board, unsigned int lane );
+
 
 	static	int				ShowAllCameras( int level );
 
-	static bool				IsCameraLaneUsed( unsigned int unit,  unsigned int lane );
+	static bool				IsCameraLaneUsed( unsigned int board,  unsigned int lane );
 
 private:	//	Private member functions
 	//	Internal version of reconfigure
@@ -418,7 +428,7 @@ protected:	//	Protected member variables
 private:	//	Private member variables
 	pgpClDevPtr 	m_pDev;			// shared_ptr to pgpClDev device
 
-	unsigned int	m_unit;			// index of Pgpcamlink card
+	unsigned int	m_board;		// index of Pgpcamlink card
 	unsigned int	m_lane;			// lane on  Pgpcamlink card
 
 	epicsTimeStamp	m_priorTimeStamp;	// Last timestamp for this event number
@@ -589,13 +599,13 @@ extern unsigned long	imageCaptureCount;
 /* "C" linkage Configuration functions for iocsh */
 extern "C" int	pgpCamlinkConfig(
 	const char	*	cameraName,
-	int				unit,
+	int				board,
 	int				lane,
 	const char	*	modelName,
 	const char	*	clMode		);
 extern "C" int	pgpCamlinkConfigFull(
 	const char	*	cameraName,
-	int				unit,
+	int				board,
 	int				lane,
 	const char	*	modelName,
 	const char	*	clMode,

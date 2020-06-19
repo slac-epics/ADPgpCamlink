@@ -390,7 +390,11 @@ int	pgpClDev::readVarPath( const char * pszVarPath, uint64_t & valueRet )
 	{
 		if ( pVar->modelId() == rim::UInt )
 		{
+#if 1
+			pVar->getValue( valueRet );
+#else
 			valueRet = pVar->getUInt();
+#endif
 			status = 0;
 		}
 		else

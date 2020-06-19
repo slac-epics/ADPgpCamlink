@@ -140,7 +140,7 @@ void ProcessImageCallback(
 ///	pgpCamlink constructor
 pgpCamlink::pgpCamlink(
 	const char			*	cameraName,
-	int						unit,					// board
+	int						board,					// board
 	int						lane,					// channel
 	const char			*	modelName,
 	const char			*	clMode,
@@ -160,8 +160,8 @@ pgpCamlink::pgpCamlink(
 		m_fReconfig(		false			    ),
 		m_fReopen(			false			    ),
 		m_pDev(				NULL				),
-		m_unit(				unit				),
-		m_lane(			lane				),
+		m_board(			board				),
+		m_lane(				lane				),
 		m_CameraClass(							),
 		m_CameraInfo(							),
 		m_CameraModel(		modelName			),
@@ -325,7 +325,7 @@ pgpCamlink::~pgpCamlink( )
 
 int pgpCamlink::CreateCamera(
 	const char *	cameraName,
-	int				unit,
+	int				board,
 	int				lane,
 	const char *	modelName,
 	const char *	clMode		)
@@ -347,10 +347,10 @@ int pgpCamlink::CreateCamera(
         return -1;
     }
 
-    if (  IsCameraLaneUsed( unit, lane ) )
+    if (  IsCameraLaneUsed( board, lane ) )
     {
-        errlogPrintf(	"%s %s: ERROR, Unit %d lane %d already in use!\n",
-						driverName, functionName, unit, lane	);
+        errlogPrintf(	"%s %s: ERROR, board %d lane %d already in use!\n",
+						driverName, functionName, board, lane	);
         return -1;
     }
 
@@ -363,7 +363,7 @@ int pgpCamlink::CreateCamera(
 
     if ( DEBUG_PGP_CAMLINK >= 1 )
         cout << "Creating pgpCamlink: " << string(cameraName) << endl;
-    pgpCamlink	* pCamera = new pgpCamlink( cameraName, unit, lane, modelName, clMode );
+    pgpCamlink	* pCamera = new pgpCamlink( cameraName, board, lane, modelName, clMode );
     assert( pCamera != NULL );
 
     int	status	= pCamera->ConnectCamera( );
@@ -399,13 +399,13 @@ int pgpCamlink::ShowAllCameras( int level )
 }
 
 
-bool pgpCamlink::IsCameraLaneUsed( unsigned int unit,  unsigned int lane )
+bool pgpCamlink::IsCameraLaneUsed( unsigned int board,  unsigned int lane )
 {
 	map<string, pgpCamlink *>::iterator	it;
 	for ( it = ms_cameraMap.begin(); it != ms_cameraMap.end(); ++it )
 	{
 		pgpCamlink		*	pCamera	= it->second;
-        if ( unit == pCamera->m_unit && lane == pCamera->m_lane )
+        if ( board == pCamera->m_board && lane == pCamera->m_lane )
 			return true;
     }
 
@@ -419,6 +419,18 @@ pgpCamlink	*	pgpCamlink::CameraFindByName( const string & name )
 	if ( it == ms_cameraMap.end() )
 		return NULL;
 	return it->second;
+}
+
+pgpCamlink	*	pgpCamlink::CameraFindByBoardLane( unsigned int board, unsigned int lane )
+{
+	map<string, pgpCamlink *>::iterator	it;
+	for ( it = ms_cameraMap.begin(); it != ms_cameraMap.end(); it++ )
+	{
+		pgpCamlink	*	pCam	= it->second;
+		if ( pCam->GetBoard() == board && pCam->GetLane() == lane )
+			return pCam;
+	}
+	return NULL;
 }
 
 void pgpCamlink::CameraAdd(		pgpCamlink * pCamera )
@@ -439,7 +451,7 @@ int pgpCamlink::CameraShow( int level )
     if ( level < 0 )
 		return 0;
 
-	cout << "\tCamera " << m_CameraName	<< " is installed on Unit " << m_unit << " Lane " << m_lane << endl;
+	cout << "\tCamera " << m_CameraName	<< " is installed on board " << m_board << " Lane " << m_lane << endl;
 	if ( level >= 1 )
 	{
 		cout	<< "\t\tType: "			<< m_CameraClass
@@ -964,12 +976,12 @@ int pgpCamlink::_Reopen( )
 	// Open the camera lane
 	if ( DEBUG_PGP_CAMLINK >= 1 )
 		printf( "%s: %s Reopening Dev ...\n", functionName, m_CameraName.c_str() );
-    m_pDev = pgpClDev::create( m_unit, m_lane );
+    m_pDev = pgpClDev::create( m_board, m_lane );
     if ( m_pDev == NULL )
 	{
         asynPrint(	this->pasynUserSelf,	ASYN_TRACE_FLOW, 
 					"%s %s: ERROR, Unable to open camera for pgpCamlink card %u, lane %u\n",
-					driverName,		functionName, m_unit, m_lane );
+					driverName,		functionName, m_board, m_lane );
         return -1;
     }
 
@@ -1021,8 +1033,8 @@ int pgpCamlink::_Reopen( )
 	}
 
     char    fpga_name[128];
-    printf( "Unit %d, Chan %d, Mode: %s\n",
-			m_unit, m_lane, CamlinkModeToString( m_CamlinkMode ) );
+    printf( "board %d, Chan %d, Mode: %s\n",
+			m_board, m_lane, CamlinkModeToString( m_CamlinkMode ) );
 #if 0
     printf( "Boot sector FPGA header: \"%s\"\n", get_pci_fpga_header( m_pDev , fpga_name));
 #endif
@@ -1044,10 +1056,10 @@ int pgpCamlink::_Reopen( )
 	// Diagnostics
 	if ( DEBUG_PGP_CAMLINK >= 1 )
 		printf(	"%s %s: %s framegrabber opened on card %u, ch %u\n",
-				driverName, functionName, m_CameraName.c_str(), m_unit, m_lane );
+				driverName, functionName, m_CameraName.c_str(), m_board, m_lane );
 	asynPrint(	this->pasynUserSelf,	ASYN_TRACEIO_DRIVER,
 				"%s %s: %s framegrabber opened on card %u, ch %u\n",
-				driverName, functionName, m_CameraName.c_str(), m_unit, m_lane );
+				driverName, functionName, m_CameraName.c_str(), m_board, m_lane );
     return 0;
 }
 
@@ -1084,12 +1096,12 @@ int pgpCamlink::UpdateADConfigParams( )
 //	if ( DEBUG_PGP_CAMLINK >= 1 )
 //		printf(
 //				"%s %s: Camera %s ready on card %u, ch %u, %zu x %zu pixels, %u bits/pixel\n",
-//				driverName, functionName, m_CameraName.c_str(), m_unit, m_lane
+//				driverName, functionName, m_CameraName.c_str(), m_board, m_lane
 //				, GetSizeX(), GetSizeY(), m_ClNumBits
 //				);
 //	asynPrint(	this->pasynUserSelf,	ASYN_TRACEIO_DRIVER,
 //				"%s %s: Camera %s ready on card %u, ch %u, %zu x %zu pixels, %u bits/pixel\n",
-//				driverName, functionName, m_CameraName.c_str(), m_unit, m_lane
+//				driverName, functionName, m_CameraName.c_str(), m_board, m_lane
 //				, GetSizeX(), GetSizeY(), m_ClNumBits
 //				);
     return 0;
@@ -2115,7 +2127,7 @@ void pgpCamlink::report( FILE * fp, int details )
 		fprintf( fp, "  Config file:       %s\n",   m_ConfigFile.c_str() );
 		fprintf( fp, "  Drv Version:       %s\n",   m_DrvVersion.c_str() );
 		fprintf( fp, "  Lib Version:       %s\n",   m_LibVersion.c_str() );
-		fprintf( fp, "  Unit:              %u\n",   m_unit );
+		fprintf( fp, "  board:              %u\n",   m_board );
 		fprintf( fp, "  Lane:              %u\n",   m_lane );
 
 		fprintf( fp, "  Sensor bits:       %u\n",   m_ClNumBits );
@@ -2392,27 +2404,27 @@ extern "C" int ShowImageTiming( )
 extern "C" int
 pgpCamlinkConfig(
 	const char	*	cameraName,
-	int				unit,
+	int				board,
 	int				lane,
 	const char	*	modelName,
 	const char	*	clMode	)
 {
     if (  cameraName == NULL || strlen(cameraName) == 0 )
     {
-        errlogPrintf( "NULL or zero length camera name.\nUsage: pgpCamlinkConfig(name,unit,chan,config)\n");
+        errlogPrintf( "NULL or zero length camera name.\nUsage: pgpCamlinkConfig(name,board,chan,config)\n");
         return  -1;
     }
     if (  modelName == NULL || strlen(modelName) == 0 )
     {
-        errlogPrintf( "NULL or zero length config name.\nUsage: pgpCamlinkConfig(name,unit,chan,config)\n");
+        errlogPrintf( "NULL or zero length config name.\nUsage: pgpCamlinkConfig(name,board,chan,config)\n");
         return  -1;
     }
     if (  clMode == NULL || strlen(clMode) == 0 )
     {
-        errlogPrintf( "NULL or zero length camlink mode.\nUsage: pgpCamlinkConfig(name,unit,chan,config,mode)\n");
+        errlogPrintf( "NULL or zero length camlink mode.\nUsage: pgpCamlinkConfig(name,board,chan,config,mode)\n");
         return  -1;
     }
-    if ( pgpCamlink::CreateCamera( cameraName, unit, lane, modelName, clMode ) != 0 )
+    if ( pgpCamlink::CreateCamera( cameraName, board, lane, modelName, clMode ) != 0 )
     {
         errlogPrintf( "pgpCamlinkConfig failed for camera %s, config %s, mode %s!\n", cameraName, modelName, clMode );
 		if ( DEBUG_PGP_CAMLINK >= 4 )
@@ -2425,7 +2437,7 @@ pgpCamlinkConfig(
 extern "C" int
 pgpCamlinkConfigFull(
 	const char	*	cameraName,
-	int				unit,
+	int				board,
 	int				lane,
 	const char	*	modelName,
 	const char	*	clMode,
@@ -2436,21 +2448,21 @@ pgpCamlinkConfigFull(
 {
     if (  cameraName == NULL || strlen(cameraName) == 0 )
     {
-        errlogPrintf( "NULL or zero length camera name.\nUsage: pgpCamlinkConfig(name,unit,chan,config)\n");
+        errlogPrintf( "NULL or zero length camera name.\nUsage: pgpCamlinkConfig(name,board,chan,config)\n");
         return  -1;
     }
     if (  modelName == NULL || strlen(modelName) == 0 )
     {
-        errlogPrintf( "NULL or zero length config name.\nUsage: pgpCamlinkConfig(name,unit,chan,config)\n");
+        errlogPrintf( "NULL or zero length config name.\nUsage: pgpCamlinkConfig(name,board,chan,config)\n");
         return  -1;
     }
     if (  clMode == NULL || strlen(clMode) == 0 )
     {
-        errlogPrintf( "NULL or zero length camlink mode.\nUsage: pgpCamlinkConfig(name,unit,chan,config,mode)\n");
+        errlogPrintf( "NULL or zero length camlink mode.\nUsage: pgpCamlinkConfig(name,board,chan,config,mode)\n");
         return  -1;
     }
 
-    if ( pgpCamlink::CreateCamera( cameraName, unit, lane, modelName, clMode ) != 0 )
+    if ( pgpCamlink::CreateCamera( cameraName, board, lane, modelName, clMode ) != 0 )
     {
         errlogPrintf( "pgpCamlinkConfig failed for camera %s!\n", cameraName );
 		if ( DEBUG_PGP_CAMLINK >= 4 )
@@ -2507,6 +2519,13 @@ extern "C"
 int ShowPgpVariable( const char * pszCamName, const char * pszVarPath, int level )
 {
 	const char	*	functionName = "ShowPgpVariable";
+	if ( pszCamName == NULL || pszVarPath == NULL )
+	{
+		printf( "Usage: %s camPortName varPath\n", functionName );
+		printf( "Example: %s CAM ClinkDev.Hardware.AxiPcieCore.AxiVersion.BuildStamp\n", functionName );
+		return -1;
+	}
+
 	pgpCamlink	*	pCamDev = pgpCamlink::CameraFindByName( std::string(pszCamName) );
 	if ( pCamDev == NULL )
 	{
@@ -2537,9 +2556,9 @@ void ShowPgpVarRegister(void)
 }
 
 // Register Function:
-//	int pgpCamlinkConfig( const char * cameraName, int unit, int lane, const char * modelName )
+//	int pgpCamlinkConfig( const char * cameraName, int board, int lane, const char * modelName )
 static const iocshArg		pgpCamlinkConfigArg0	= { "name",			iocshArgString };
-static const iocshArg		pgpCamlinkConfigArg1	= { "unit",			iocshArgInt };
+static const iocshArg		pgpCamlinkConfigArg1	= { "board",		iocshArgInt };
 static const iocshArg		pgpCamlinkConfigArg2	= { "lane",			iocshArgInt };
 static const iocshArg		pgpCamlinkConfigArg3	= { "modelName",	iocshArgString };
 static const iocshArg		pgpCamlinkConfigArg4	= { "clMode",		iocshArgString };
@@ -2558,9 +2577,9 @@ void pgpCamlinkConfigRegister(void)
 }
 
 // Register Function:
-//	int pgpCamlinkConfigFull( const char * cameraName, int unit, int lane, const char * modelName, int, size_t, int, int  )
+//	int pgpCamlinkConfigFull( const char * cameraName, int board, int lane, const char * modelName, int, size_t, int, int  )
 static const iocshArg		pgpCamlinkConfigFullArg0	= { "name",			iocshArgString };
-static const iocshArg		pgpCamlinkConfigFullArg1	= { "unit",			iocshArgInt };
+static const iocshArg		pgpCamlinkConfigFullArg1	= { "board",		iocshArgInt };
 static const iocshArg		pgpCamlinkConfigFullArg2	= { "lane",			iocshArgInt };
 static const iocshArg		pgpCamlinkConfigFullArg3	= { "cfgFile",		iocshArgString };
 static const iocshArg		pgpCamlinkConfigFullArg4	= { "clMode",		iocshArgString };

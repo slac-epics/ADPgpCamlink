@@ -106,6 +106,7 @@ public:		//	Public member functions
 	int		setTriggerEnable( unsigned int triggerNum, bool fEnable );
 	bool	getTriggerEnable( unsigned int triggerNum );
 
+	// TODO: Templatize this call
 	int		readVarPath( const char * pVarPath, bool		& valueRet );
 	int		readVarPath( const char * pVarPath, int64_t		& valueRet );
 	int		readVarPath( const char * pVarPath, uint64_t	& valueRet );

@@ -10,11 +10,59 @@
 #	TIMEOUT			- Defaults to 1 sec
 #
 
+# AppEventBuilder
+record( longin, "$(P)$(R)AppEventBuilder:DataCnt0" )
+{
+	field( DTYP, "RogueLI" )
+	field( INP, "@B$(B) L$(L) ClinkDev.Application.AppLane[$(L)].EventBuilder.DataCnt[0]" )
+	field( SCAN, "1 second" )
+	info( autosaveFields, "" )
+}
+
+# AxiPcieCore
+record( longin, "$(P)$(R)AxiPcieCore:FpgaVersion" )
+{
+	field( DESC, "AxiPcieCore FPGA Version (show as hex)" )
+	field( DTYP, "RogueLI" )
+	field( INP, "@B$(B) L$(L) ClinkDev.Hardware.AxiPcieCore.AxiVersion.FpgaVersion" )
+	field( PINI, "YES" )
+	info( autosaveFields, "" )
+}
+
+record( longin, "$(P)$(R)AxiPcieCore:UpTime" )
+{
+	field( DTYP, "RogueLI" )
+	field( INP, "@B$(B) L$(L) ClinkDev.Hardware.AxiPcieCore.AxiVersion.UpTimeCnt" )
+	field( EGU, "sec" )
+	field( SCAN, "1 second" )
+	info( autosaveFields, "" )
+}
+
+# Feb0
+record( longin, "$(P)$(R)Feb0:FpgaVersion" )
+{
+	field( DESC, "FEB FPGA Version (show as hex)" )
+	field( DTYP, "RogueLI" )
+	field( INP, "@B$(B) L$(L) ClinkDev.ClinkFeb[0].AxiVersion.FpgaVersion" )
+	field( PINI, "YES" )
+	info( autosaveFields, "" )
+}
+
+record( longin, "$(P)$(R)Feb0:UpTime" )
+{
+	field( DTYP, "RogueLI" )
+	field( INP, "@B$(B) L$(L) ClinkDev.ClinkFeb[0].AxiVersion.UpTimeCnt" )
+	field( EGU, "sec" )
+	field( SCAN, "1 second" )
+	info( autosaveFields, "" )
+}
+
 record( longin, "$(P)$(R)Feb0:ClCh0:FrameCount" )
 {
 	field( DTYP, "RogueLI" )
 	field( INP,  "@B$(B) L$(L) ClinkDev.ClinkFeb[0].ClinkTop.Ch[0].FrameCount" )
 #	field( SCAN, "I/O Intr" )
+	field( SCAN, "1 second" )
 	info( autosaveFields, "" )
 }
 
@@ -22,6 +70,6 @@ record( longin, "$(P)$(R)Feb0:ClCh1:FrameCount" )
 {
 	field( DTYP, "RogueLI" )
 	field( INP,  "@B$(B) L$(L) ClinkDev.ClinkFeb[0].ClinkTop.Ch[1].FrameCount" )
-#	field( SCAN, "I/O Intr" )
+	field( SCAN, "1 second" )
 	info( autosaveFields, "" )
 }

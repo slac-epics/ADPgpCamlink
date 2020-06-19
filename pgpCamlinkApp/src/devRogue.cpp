@@ -14,7 +14,10 @@
 
 //#include "drvRogue.h"
 #include "devRogue.h"
+#include "pgpCamlink.h"
 
+
+int	DEBUG_ROGUE_DEV = 2;
 
 
 static int
@@ -29,9 +32,9 @@ devRogue_bad_field(
 	return 15;
 }
 
-template < class T > int
-devRogue_init_record(
-	T		*	record,
+template < class R >
+int devRogue_init_record(
+	R		*	record,
 	DBLINK		link )
 {
 	const char * functionName = "template devRogue_init_record";
@@ -46,7 +49,6 @@ devRogue_init_record(
 		return devRogue_bad_field( record, "invalid link", "" );
 	}
 
-	rogue_record_t		*	arc		= new rogue_record_t;
 	const char			*	sinp	= pinstio->string;
 	int                 	status;
 	epicsUInt32            	board;
@@ -58,17 +60,23 @@ devRogue_init_record(
 	{
 		return devRogue_bad_field( record, "cannot parse INP or OUT field!\n%s\n", sinp );
 	}
-	printf( "%s Parse succeeded: Board %u, Lane %u, VarPath %s\n", functionName, board, lane, varPath );
-	//rogue_driver_t	*	ad = &( rogue_drivers[arc->module] );
 
-	record->dpvt = arc;
+	pgpCamlink	*	pgpCam = pgpCamlink::CameraFindByBoardLane( board, lane );
+
+	if ( DEBUG_ROGUE_DEV >= 4 )
+		printf( "%s Parse succeeded: Board %u, Lane %u, VarPath %s\n", functionName, board, lane, varPath );
+
+	rogue_info_t	*	pRogueInfo		= new rogue_info_t;
+	pRogueInfo->varPath	= varPath;
+	pRogueInfo->pClDev		= pgpCam->GetDevPtr();
+	record->dpvt	= pRogueInfo;
 
 #if 0
 	status = devRogue_init_record_specialized( record );
 	if ( status )
 	{
 		record->dpvt = 0;
-		delete              arc;
+		delete              pRogueInfo;
 
 		return devRogue_bad_field( record, "cannot find record name", sinp );
 	}
@@ -76,15 +84,20 @@ devRogue_init_record(
 	return 0;
 }
 
-template < class T > int
-devRogue_read_record(
-	T * record )
+template < class R, class V >
+int devRogue_read_record( R * record, V & valueRet )
 {
-	int					status	= 1;
-//	rogue_record_t	*	arc		= reinterpret_cast < rogue_record_t * >( record->dpvt );
-//	rogue_driver_t	*	ad		= &rogue_drivers[arc->module];
-//	status = !ad->run_semaphore || devRogue_read_record_specialized( record );
+	const char 		*	functionName = "devRogue_read_record<R>";
+	int					status		= 1;
+	rogue_info_t	*	pRogueInfo	= reinterpret_cast < rogue_info_t * >( record->dpvt );
+	status = pRogueInfo->pClDev->readVarPath( pRogueInfo->varPath.c_str(), valueRet );
 
+	rogue::interfaces::memory::VariablePtr	pVar;
+	pVar = pRogueInfo->pClDev->getVariable( pRogueInfo->varPath );
+	if ( !pVar )
+	{
+		printf( "%s error: %s not found!\n", functionName, pRogueInfo->varPath.c_str() );
+	}
 	if ( status )
 	{
 		record->nsta = UDF_ALARM;
@@ -94,13 +107,12 @@ devRogue_read_record(
 	return 0;
 }
 
-template < class T > int
-devRogue_write_record(
-	T * record )
+template < class R, class V >
+int devRogue_write_record( R * record, V value )
 {
-	rogue_record_t	*	arc		= reinterpret_cast < rogue_record_t * >( record->dpvt );
+	rogue_info_t	*	pRogueInfo		= reinterpret_cast < rogue_info_t * >( record->dpvt );
 	int					status	= 0;
-//	rogue_driver_t	*	ad		= &rogue_drivers[arc->module];
+//	rogue_driver_t	*	ad		= &rogue_drivers[pRogueInfo->module];
 //	status	= !ad->run_semaphore || devRogue_write_record_specialized( record );
 
 	if ( status )
@@ -128,7 +140,8 @@ template int        devRogue_init_record(	waveformRecord	*, DBLINK );
 #endif
 
 template int        devRogue_init_record(	longinRecord	*, DBLINK );
-template int        devRogue_read_record(	longinRecord * );
+template int        devRogue_read_record(	longinRecord *, int64_t  & rogueVal );
+template int        devRogue_read_record(	longinRecord *, uint64_t & rogueVal );
 #if 0
 template int        devRogue_read_record(	longoutRecord * );
 template int        devRogue_read_record(	aiRecord * );
@@ -148,16 +161,28 @@ extern "C"
 #endif
 
 #ifdef USE_TYPED_DSET
-static long init_record( struct dbCommon * pCommon )
+static long init_li( struct dbCommon * pCommon )
 #else
-static long init_record( void * pCommon )
+static long init_li( void * pCommon )
 #endif
 {
 	longinRecord	*	pRecord	= reinterpret_cast < longinRecord * >( pCommon );
 	int             status	= devRogue_init_record( pRecord, pRecord->inp );
 	if ( status == 0 )
 	{
-		devRogue_read_record( pRecord );
+		bool	signedValue	= false;
+		if ( signedValue )
+		{
+			int64_t		rogueValue;
+			devRogue_read_record( pRecord, rogueValue );
+			pRecord->val = static_cast<epicsInt32>( rogueValue );
+		}
+		else
+		{
+			uint64_t	rogueValue;
+			devRogue_read_record( pRecord, rogueValue );
+			pRecord->val = static_cast<epicsInt32>( rogueValue );
+		}
 		//pRecord->linr = 0;		// prevent conversions
 	}
 	return status;
@@ -166,15 +191,47 @@ static long init_record( void * pCommon )
 #ifdef USE_TYPED_DSET
 static long read_li( longinRecord	*	pRecord )
 {
-	//epicsUInt32		longValue = 0;
-	return devRogue_read_record( pRecord );
+	long	status = 0;
+	bool	signedValue	= false;
+	if ( signedValue )
+	{
+		int64_t		rogueValue;
+		status = devRogue_read_record( pRecord, rogueValue );
+		pRecord->val = static_cast<epicsInt32>( rogueValue );
+	}
+	else
+	{
+		uint64_t	rogueValue;
+		status = devRogue_read_record( pRecord, rogueValue );
+		pRecord->val = static_cast<epicsInt32>( rogueValue );
+	}
+	//pRecord->linr = 0;		// prevent conversions
+	return status;
 }
 #else
 static long read_li( void	*	record )
 {
+	const char 		*	functionName = "read_li";
+	long				status = 0;
 	longinRecord	*	pRecord	= reinterpret_cast <longinRecord *>( record );
-	//epicsUInt32		longValue = 0;
-	return devRogue_read_record( pRecord );
+	bool				signedValue	= false;
+	if ( signedValue )
+	{
+		int64_t		rogueValue	= -1L;
+		status = devRogue_read_record( pRecord, rogueValue );
+		pRecord->val = static_cast<epicsInt32>( rogueValue );
+		if ( DEBUG_ROGUE_DEV >= 4 )
+			printf( "%s: status %ld, intValue %d\n", functionName, status, pRecord->val );
+	}
+	else
+	{
+		uint64_t	rogueValue	= 0L;
+		status = devRogue_read_record( pRecord, rogueValue );
+		pRecord->val = static_cast<epicsInt32>( rogueValue );
+		if ( DEBUG_ROGUE_DEV >= 4 )
+			printf( "%s: status %ld, uintValue %u\n", functionName, status, pRecord->val );
+	}
+	return status;
 }
 #endif
 
@@ -184,7 +241,7 @@ struct
 	long                number;
 	DEVSUPFUN           report;
 	DEVSUPFUN           init;
-	DEVSUPFUN           init_record;
+	DEVSUPFUN           init_li;
 	DEVSUPFUN           get_ioint_info;
 	DEVSUPFUN           read_li;
 	DEVSUPFUN           special_linconv;
@@ -194,9 +251,9 @@ struct
 #endif
 }	dsetRogueLi =
 #ifdef USE_TYPED_DSET
-{ { 5, NULL, NULL, init_record, NULL }, read_li };
+{ { 5, NULL, NULL, init_li, NULL }, read_li };
 #else
-{ 5, NULL, NULL, init_record, NULL, read_li };
+{ 5, NULL, NULL, init_li, NULL, read_li };
 #endif
 
 
