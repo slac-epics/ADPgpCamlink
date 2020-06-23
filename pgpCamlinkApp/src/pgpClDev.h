@@ -112,6 +112,8 @@ public:		//	Public member functions
 	int		readVarPath( const char * pVarPath, uint64_t	& valueRet );
 	int		readVarPath( const char * pVarPath, std::string	& valueRet );
 
+	template<class R> int writeVarPath( const char * pVarPath, const R & value );
+
 private:
 	//	Private member variables
 	unsigned int		m_fd;

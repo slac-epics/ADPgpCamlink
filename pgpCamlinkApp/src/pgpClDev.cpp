@@ -437,6 +437,28 @@ int	pgpClDev::readVarPath( const char * pszVarPath, std::string & valueRet )
 }
 
 
+template<class R> int pgpClDev::writeVarPath( const char * pszVarPath, const R & value )
+{
+	const char *	functionName = "pgpClDev::writeVarPath";
+	int				status	= -1;
+	std::string		varPath( pszVarPath );
+	rogue::interfaces::memory::VariablePtr	pVar;
+	//pVar = m_pRogueLib->getVariable( varPath );
+	pVar = getVariable( varPath );
+	if ( !pVar )
+	{
+		printf( "%s error: %s not found!\n", functionName, varPath.c_str() );
+	}
+	else
+	{
+		pVar->setValue( value );
+		status = 0;
+	}
+	return status;
+}
+
+template int pgpClDev::writeVarPath( const char * pszVarPath, const uint64_t & value );
+
 void pgpClDev::showVariable( const char * pszVarPath, bool verbose )
 {
 	std::string		varPath( pszVarPath );
