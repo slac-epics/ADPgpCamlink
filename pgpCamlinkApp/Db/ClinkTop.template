@@ -57,6 +57,74 @@ record( longin, "$(P)$(R)Feb0:UpTime" )
 	info( autosaveFields, "" )
 }
 
+# TODO Use mbbi w/ enumerated baud rates
+record( longin, "$(P)$(R)Feb0:ClCh0:BaudRate_RBV" )
+{
+	field( DTYP, "RogueLI" )
+	field( INP,  "@B$(B) L$(L) ClinkDev.ClinkFeb[0].ClinkTop.Ch[0].BaudRate" )
+	field( SCAN, "1 second" )
+	field( EGU,  "bps" )
+	info( autosaveFields, "" )
+}
+
+# TODO Use mbbo w/ enumerated baud rates
+record( longout, "$(P)$(R)Feb0:ClCh0:BaudRate" )
+{
+	field( DTYP, "RogueLO" )
+	field( OUT,  "@B$(B) L$(L) ClinkDev.ClinkFeb[0].ClinkTop.Ch[0].BaudRate" )
+	field( VAL,  "57600" )
+	field( EGU,  "bps" )
+	info( autosaveFields, "VAL" )
+}
+
+# TODO: Use mbbi
+# 0: 'Disable', 1: 'Base', 2: 'Medium', 3: 'Full', 4: 'Deca'
+record( longin, "$(P)$(R)Feb0:ClCh0:LinkMode_RBV" )
+{
+	field( DTYP, "RogueLI" )
+	field( INP,  "@B$(B) L$(L) ClinkDev.ClinkFeb[0].ClinkTop.Ch[0].LinkMode" )
+	field( SCAN, "1 second" )
+	info( autosaveFields, "" )
+}
+
+# TODO: Use mbbi
+# 0: 'None', 1: '8Bit', 2: '10Bit', 3: '12Bit',
+# 4: '14Bit', 5: '16Bit', 6: '24Bit', 7: '30Bit', 8: '36Bit' 
+record( longin, "$(P)$(R)Feb0:ClCh0:DataMode_RBV" )
+{
+	field( DTYP, "RogueLI" )
+	field( INP,  "@B$(B) L$(L) ClinkDev.ClinkFeb[0].ClinkTop.Ch[0].DataMode" )
+	field( SCAN, "1 second" )
+	info( autosaveFields, "" )
+}
+
+# TODO: Use mbbi
+# 0: 'None', 1: 'Line', 2: 'Frame'
+record( longin, "$(P)$(R)Feb0:ClCh0:FrameMode_RBV" )
+{
+	field( DTYP, "RogueLI" )
+	field( INP,  "@B$(B) L$(L) ClinkDev.ClinkFeb[0].ClinkTop.Ch[0].FrameMode" )
+	field( SCAN, "1 second" )
+	info( autosaveFields, "" )
+}
+
+record( longin, "$(P)$(R)Feb0:ClCh0:SerThrottle_RBV" )
+{
+	field( DTYP, "RogueLI" )
+	field( INP,  "@B$(B) L$(L) ClinkDev.ClinkFeb[0].ClinkTop.Ch[0].SerThrottle" )
+	field( SCAN, "1 second" )
+	info( autosaveFields, "" )
+}
+
+record( longout, "$(P)$(R)Feb0:ClCh0:SerThrottle" )
+{
+	field( DTYP, "RogueLO" )
+	field( OUT,  "@B$(B) L$(L) ClinkDev.ClinkFeb[0].ClinkTop.Ch[0].SerThrottle" )
+	field( VAL,  "10000" )
+	field( EGU,  "usec" )
+	info( autosaveFields, "VAL" )
+}
+
 record( longin, "$(P)$(R)Feb0:ClCh0:FrameCount" )
 {
 	field( DTYP, "RogueLI" )
@@ -90,12 +158,22 @@ record( longin, "$(P)$(R)Feb0:ClCh1:FrameCount" )
 	info( autosaveFields, "" )
 }
 
-#record( bi, "$(P)$(R)Feb0:ClCh0:Running" )
-#{
-#	field( DTYP, "RogueBI" )
-#	field( INP,  "@B$(B) L$(L) ClinkDev.ClinkFeb[0].ClinkTop.Ch[0].Running" )
-#	field( SCAN, "1 second" )
-#    field( ZNAM, "Stopped" )
-#    field( ONAM, "Running"  )
-#	info( autosaveFields, "" )
-#}
+record( bi, "$(P)$(R)Feb0:ClCh0:Running" )
+{
+	field( DTYP, "RogueBI" )
+	field( INP,  "@B$(B) L$(L) ClinkDev.ClinkFeb[0].ClinkTop.Ch[0].Running" )
+	field( SCAN, "1 second" )
+    field( ZNAM, "Stopped" )
+    field( ONAM, "Running"  )
+	info( autosaveFields, "" )
+}
+
+record( bi, "$(P)$(R)Feb0:ClCh1:Running" )
+{
+	field( DTYP, "RogueBI" )
+	field( INP,  "@B$(B) L$(L) ClinkDev.ClinkFeb[0].ClinkTop.Ch[1].Running" )
+	field( SCAN, "1 second" )
+    field( ZNAM, "Stopped" )
+    field( ONAM, "Running"  )
+	info( autosaveFields, "" )
+}
