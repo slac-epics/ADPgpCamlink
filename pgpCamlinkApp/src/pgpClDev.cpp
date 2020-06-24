@@ -15,6 +15,7 @@
 
 #include <stdio.h>
 #include <iostream>
+#include <typeinfo>
 
 // rogue headers
 #include "rogue/Version.h"
@@ -451,13 +452,17 @@ template<class R> int pgpClDev::writeVarPath( const char * pszVarPath, const R &
 	}
 	else
 	{
+		if ( typeid(value) == typeid(uint64_t) )
+			std::cout << functionName << ": " << varPath << " is uint64_t" << std::endl;
+		std::cout << functionName << ": " << varPath << ", type = " << std::string(typeid(value).name()) << ", value = " << value << std::endl;
 		pVar->setValue( value );
 		status = 0;
 	}
 	return status;
 }
 
-template int pgpClDev::writeVarPath( const char * pszVarPath, const uint64_t & value );
+template int pgpClDev::writeVarPath( const char * pszVarPath, const int64_t		& value );
+template int pgpClDev::writeVarPath( const char * pszVarPath, const uint64_t	& value );
 
 void pgpClDev::showVariable( const char * pszVarPath, bool verbose )
 {

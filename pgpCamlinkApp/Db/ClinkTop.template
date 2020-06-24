@@ -10,6 +10,22 @@
 #	TIMEOUT			- Defaults to 1 sec
 #
 
+# AxiPcieCore
+record( longin, "$(P)$(R)AxiPcieCoreScratchPad_RBV" )
+{
+	field( DTYP, "RogueLI" )
+	field( INP, "@B$(B) L$(L) ClinkDev.Hardware.AxiPcieCore.AxiVersion.ScratchPad" )
+	field( SCAN, "2 second" )
+}
+record( longout, "$(P)$(R)AxiPcieCoreScratchPad" )
+{
+	field( DTYP, "RogueLO" )
+	field( OUT,  "@B$(B) L$(L) ClinkDev.Hardware.AxiPcieCore.AxiVersion.ScratchPad" )
+	field( FLNK, "$(P)$(R)AxiPcieCoreScratchPad_RBV" )
+	field( TPRO, "2" )
+}
+
+
 # AppEventBuilder
 record( longin, "$(P)$(R)AppEventBuilder:DataCnt0" )
 {
@@ -72,8 +88,10 @@ record( longout, "$(P)$(R)Feb0:ClCh0:BaudRate" )
 {
 	field( DTYP, "RogueLO" )
 	field( OUT,  "@B$(B) L$(L) ClinkDev.ClinkFeb[0].ClinkTop.Ch[0].BaudRate" )
-	field( VAL,  "57600" )
+	field( DOL,  "57600" )
 	field( EGU,  "bps" )
+	field( PINI, "YES" )
+	field( TPRO, "2" )
 	info( autosaveFields, "VAL" )
 }
 
@@ -120,8 +138,10 @@ record( longout, "$(P)$(R)Feb0:ClCh0:SerThrottle" )
 {
 	field( DTYP, "RogueLO" )
 	field( OUT,  "@B$(B) L$(L) ClinkDev.ClinkFeb[0].ClinkTop.Ch[0].SerThrottle" )
-	field( VAL,  "10000" )
+	field( DOL,  "10000" )
 	field( EGU,  "usec" )
+	field( PINI, "YES" )
+	field( TPRO, "2" )
 	info( autosaveFields, "VAL" )
 }
 

@@ -1592,7 +1592,6 @@ bgColor index 12
 limitsFromDb
 nullColor index 40
 smartRefresh
-showUnits
 newPos
 objType "monitors"
 noExecuteClipMask
@@ -1681,6 +1680,7 @@ bgColor index 12
 limitsFromDb
 nullColor index 40
 smartRefresh
+showUnits
 newPos
 objType "monitors"
 noExecuteClipMask
@@ -1813,6 +1813,7 @@ bgColor index 12
 limitsFromDb
 nullColor index 40
 smartRefresh
+showUnits
 newPos
 objType "monitors"
 noExecuteClipMask
@@ -1849,6 +1850,36 @@ y 236
 w 76
 h 18
 controlPv "$(P)$(R)Feb0:ClCh0:BaudRate"
+format "decimal"
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+fgColor index 25
+fgAlarm
+bgColor index 5
+editable
+autoHeight
+motifWidget
+limitsFromDb
+nullColor index 40
+smartRefresh
+fastUpdate
+useHexPrefix
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 572
+y 308
+w 76
+h 18
+controlPv "$(P)$(R)Feb0:ClCh0:SerThrottle"
 format "decimal"
 font "helvetica-medium-r-12.0"
 fontAlign "center"

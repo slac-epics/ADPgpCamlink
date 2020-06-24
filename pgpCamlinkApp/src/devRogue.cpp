@@ -19,7 +19,7 @@
 #include "pgpCamlink.h"
 
 
-int	DEBUG_ROGUE_DEV = 2;
+int	DEBUG_ROGUE_DEV = 3;
 
 
 static int
@@ -277,11 +277,9 @@ epicsExportAddress( dset, dsetRogueLi );
 }
 #endif
 
-template int        devRogue_init_record(	longoutRecord	*, DBLINK );
-//template int        devRogue_read_record(	longoutRecord *, int64_t  & rogueVal );
-//template int        devRogue_read_record(	longoutRecord *, uint64_t & rogueVal );
-template int        devRogue_write_record(	longoutRecord *, const uint64_t & rogueVal );
 // longout record support
+template int        devRogue_init_record(	longoutRecord	*, DBLINK );
+template int        devRogue_write_record(	longoutRecord *, const uint64_t & rogueVal );
 
 #ifdef __cplusplus
 extern "C"
@@ -301,50 +299,33 @@ static long init_lo( void * pCommon )
 
 #ifdef USE_TYPED_DSET
 static long write_lo( longoutRecord	*	pRecord )
+#else
+static long write_lo( void	*	record )
+#endif
 {
-	long	status = 0;
-	bool	signedValue	= false;
+#ifndef USE_TYPED_DSET
+	longoutRecord	*	pRecord	= reinterpret_cast <longoutRecord *>( record );
+#endif
+	const char 		*	functionName = "write_lo";
+	long				status = 0;
+	bool				signedValue	= false;
 	if ( signedValue )
 	{
-		int64_t		rogueValue;
-		status = devRogue_read_record( pRecord, rogueValue );
-		pRecord->val = static_cast<epicsInt32>( rogueValue );
+		if ( DEBUG_ROGUE_DEV >= 3 )
+			printf( "%s: status %ld, intValue %d\n", functionName, status, pRecord->val );
+		int64_t		rogueValue	= static_cast<int64_t>( pRecord->val );
+		status = devRogue_write_record( pRecord, rogueValue );
 	}
 	else
 	{
-		uint64_t	rogueValue;
-		status = devRogue_read_record( pRecord, rogueValue );
-		pRecord->val = static_cast<epicsInt32>( rogueValue );
+		if ( DEBUG_ROGUE_DEV >= 3 )
+			printf( "%s: status %ld, uintValue %u\n", functionName, status, pRecord->val );
+		uint64_t	rogueValue	= static_cast<uint64_t>( pRecord->val );
+		status = devRogue_write_record( pRecord, rogueValue );
 	}
 	//pRecord->linr = 0;		// prevent conversions
 	return status;
 }
-#else
-static long write_lo( void	*	record )
-{
-	const char 		*	functionName = "write_lo";
-	long				status = 0;
-	longoutRecord	*	pRecord	= reinterpret_cast <longoutRecord *>( record );
-	bool				signedValue	= false;
-	if ( signedValue )
-	{
-		int64_t		rogueValue	= -1L;
-		status = devRogue_read_record( pRecord, rogueValue );
-		pRecord->val = static_cast<epicsInt32>( rogueValue );
-		if ( DEBUG_ROGUE_DEV >= 4 )
-			printf( "%s: status %ld, intValue %d\n", functionName, status, pRecord->val );
-	}
-	else
-	{
-		uint64_t	rogueValue	= 0L;
-		status = devRogue_read_record( pRecord, rogueValue );
-		pRecord->val = static_cast<epicsInt32>( rogueValue );
-		if ( DEBUG_ROGUE_DEV >= 4 )
-			printf( "%s: status %ld, uintValue %u\n", functionName, status, pRecord->val );
-	}
-	return status;
-}
-#endif
 
 struct
 {
@@ -448,6 +429,7 @@ struct
 #endif
 
 epicsExportAddress( dset, dsetRogueBi );
+epicsExportAddress( int,  DEBUG_ROGUE_DEV );
 
 #ifdef __cplusplus
 }
