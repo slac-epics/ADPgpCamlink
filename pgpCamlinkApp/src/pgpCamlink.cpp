@@ -385,7 +385,7 @@ int ShowAllCameras( int level )
 
 int pgpCamlink::ShowAllCameras( int level )
 {
-	if ( level <= 0 )
+	if ( level < 0 )
 		return 0;
 
 	map<string, pgpCamlink *>::iterator	it;
@@ -457,10 +457,12 @@ int pgpCamlink::CameraShow( int level )
 		cout	<< "\t\tType: "			<< m_CameraClass
 				<< " "					<< m_CameraModel
 				<< ", configuration: " 	<< m_ConfigFile << endl;
-		cout	<< "\t\tMax Res: "		<< m_ClMaxWidth
-				<<	" x "				<< m_ClMaxHeight
-				<< ", "					<< m_ClNumBits
-				<< "bits" << endl;
+		cout	<< "\t\tMax Res: "		<< m_ClMaxWidth << " x " << m_ClMaxHeight
+				<< ", "					<< m_ClNumBits	<< " bits/px" << endl;
+	}
+	if ( level >= 3 && m_pDev )
+	{
+		m_pDev->showVariableList( level >= 4 );
 	}
     return 0;
 }
