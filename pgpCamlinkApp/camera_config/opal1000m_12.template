@@ -119,7 +119,7 @@ record( mbbo, "$(P)$(R)OpalTrigPol" )
     field( DTYP, "stream" )
 	field( DOL,  "0" )
 	# or   OUT,	 "@opal1000m_12.proto SetCCE $(PORT).SER" )
-	# which would send CCE${OpalTrigInput};${OpalTrigPol}
+	# which would send CCE$OpalTrigInput;$OpalTrigPol
     field( OUT,	 "@opal1000m_12.proto SetInt(CCE0;) $(PORT).SER" )
     field( ZRVL, 0 )
     field( ONVL, 1 )
