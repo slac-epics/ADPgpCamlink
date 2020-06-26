@@ -268,7 +268,7 @@ pgpClDev::pgpClDev(
 	// Create bidirectional links between SRP and FebRegChan 
 	m_pFebRegChan->addSlave( m_pSrpFeb );
 	m_pSrpFeb->addSlave( m_pFebRegChan );
-	szMemName = "Unnamed_78";
+	szMemName = "Unnamed_72";
 	addMemory( szMemName, m_pSrpFeb );
 	m_pRogueLib->addMemory( szMemName, m_pSrpFeb );
 	printf("pgpClDev: addMemory srpFeb interface %s\n", szMemName );
