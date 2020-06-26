@@ -54,6 +54,24 @@ record( longin, "$(P)$(R)AxiPcieCore:UpTime" )
 	info( autosaveFields, "" )
 }
 
+# Timing
+record( bi, "$(P)$(R)Timing:Trig0:EnableReg_RBV" )
+{
+	field( DTYP, "RogueBI" )
+	field( INP,  "@B$(B) L$(L) ClinkDev.Hardware.Timing.Triggering.Ch[0].EnableReg" )
+	field( SCAN, "1 second" )
+	info( autosaveFields, "" )
+}
+
+#record( bo, "$(P)$(R)Timing:Trig0:EnableReg" )
+#{
+#	field( DTYP, "RogueBO" )
+#	field( OUT,  "@B$(B) L$(L) ClinkDev.Hardware.Timing.Triggering.Ch[0].EnableReg" )
+#	field( PINI, "YES" )
+#	field( FLNK, "$(P)$(R)Timing:Trig0:EnableReg_RBV" )
+#	field( TPRO, "2" )
+#}
+
 # Feb0
 record( longin, "$(P)$(R)Feb0:FpgaVersion" )
 {
@@ -154,12 +172,82 @@ record( longin, "$(P)$(R)Feb0:ClCh0:FrameCount" )
 	info( autosaveFields, "" )
 }
 
-record( longin, "$(P)$(R)Feb0:ClCh0:Trig0Rate" )
+record( longin, "$(P)$(R)Feb0:Trig0:Rate" )
 {
 	field( DTYP, "RogueLI" )
 	field( INP,  "@B$(B) L$(L) ClinkDev.ClinkFeb[0].TrigCtrl[0].TrigRate" )
 	field( SCAN, "1 second" )
 	info( autosaveFields, "" )
+}
+
+record( bi, "$(P)$(R)Feb0:Trig0:InvCC_RBV" )
+{
+	field( DTYP, "RogueBI" )
+	field( INP,  "@B$(B) L$(L) ClinkDev.ClinkFeb[0].TrigCtrl[0].InvCC" )
+	field( SCAN, "1 second" )
+	info( autosaveFields, "" )
+}
+
+#record( bo, "$(P)$(R)Feb0:Trig0:InvCC" )
+#{
+#	field( DTYP, "RogueBO" )
+#	field( OUT,  "@B$(B) L$(L) ClinkDev.ClinkFeb[0].TrigCtrl[0].InvCC" )
+#	field( PINI, "YES" )
+#	field( FLNK, "$(P)$(R)Feb0:Trig0:InvCC_RBV" )
+#	field( TPRO, "2" )
+#}
+
+record( longin, "$(P)$(R)Feb0:Trig0:Map_RBV" )
+{
+	field( DTYP, "RogueLI" )
+	field( INP,  "@B$(B) L$(L) ClinkDev.ClinkFeb[0].TrigCtrl[0].TrigMap" )
+	field( SCAN, "1 second" )
+	info( autosaveFields, "" )
+}
+
+record( longout, "$(P)$(R)Feb0:Trig0:Map" )
+{
+	field( DTYP, "RogueLO" )
+	field( OUT,  "@B$(B) L$(L) ClinkDev.ClinkFeb[0].TrigCtrl[0].TrigMap" )
+	field( PINI, "YES" )
+	field( FLNK, "$(P)$(R)Feb0:Trig0:Map_RBV" )
+	field( TPRO, "2" )
+}
+
+record( longin, "$(P)$(R)Feb0:Trig0:Mask_RBV" )
+{
+	field( DTYP, "RogueLI" )
+	field( INP,  "@B$(B) L$(L) ClinkDev.ClinkFeb[0].TrigCtrl[0].TrigMask" )
+	field( SCAN, "1 second" )
+	info( autosaveFields, "" )
+}
+
+record( longout, "$(P)$(R)Feb0:Trig0:Mask" )
+{
+	field( DTYP, "RogueLO" )
+	field( OUT,  "@B$(B) L$(L) ClinkDev.ClinkFeb[0].TrigCtrl[0].TrigMask" )
+	field( PINI, "YES" )
+	field( FLNK, "$(P)$(R)Feb0:Trig0:Mask_RBV" )
+	field( TPRO, "2" )
+}
+
+record( longin, "$(P)$(R)Feb0:Trig0:PulseWidthRaw_RBV" )
+{
+	field( DTYP, "RogueLI" )
+	field( INP,  "@B$(B) L$(L) ClinkDev.ClinkFeb[0].TrigCtrl[0].TrigPulseWidthRaw" )
+	field( SCAN, "1 second" )
+	info( autosaveFields, "" )
+}
+
+record( longout, "$(P)$(R)Feb0:Trig0:PulseWidthRaw" )
+{
+	field( DTYP, "RogueLO" )
+	field( OUT,  "@B$(B) L$(L) ClinkDev.ClinkFeb[0].TrigCtrl[0].TrigPulseWidthRaw" )
+#	field( EGU,  "usec?" )
+	field( PINI, "YES" )
+	field( FLNK, "$(P)$(R)Feb0:Trig0:PulseWidthRaw_RBV" )
+	field( TPRO, "2" )
+	info( autosaveFields, "VAL" )
 }
 
 record( longin, "$(P)$(R)Feb0:ClCh0:Trig1Rate" )
