@@ -438,6 +438,7 @@ int	pgpClDev::readVarPath( const char * pszVarPath, std::string & valueRet )
 }
 
 
+// TODO: All rogue calls should use try clause and catch at least rogue::GeneralError
 template<class R> int pgpClDev::writeVarPath( const char * pszVarPath, const R & value )
 {
 	const char *	functionName = "pgpClDev::writeVarPath";
@@ -454,7 +455,9 @@ template<class R> int pgpClDev::writeVarPath( const char * pszVarPath, const R &
 	{
 		if ( typeid(value) == typeid(uint64_t) )
 			std::cout << functionName << ": " << varPath << " is uint64_t" << std::endl;
-		std::cout << functionName << ": " << varPath << ", type = " << std::string(typeid(value).name()) << ", value = " << value << std::endl;
+		std::cout	<< functionName	<< ": " << varPath
+					<< ", type = "	<< typeid(R).name()
+					<< ", value = "	<< value << std::endl;
 		pVar->setValue( value );
 		status = 0;
 	}
@@ -463,6 +466,66 @@ template<class R> int pgpClDev::writeVarPath( const char * pszVarPath, const R &
 
 template int pgpClDev::writeVarPath( const char * pszVarPath, const int64_t		& value );
 template int pgpClDev::writeVarPath( const char * pszVarPath, const uint64_t	& value );
+
+// TODO: Replace this function w/ template<class R> int pgpClDev::writeVarPath()
+void pgpClDev::setVariable( const char * pszVarPath, int value )
+{
+	bool			verbose = true;
+	std::string		varPath( pszVarPath );
+	rogue::interfaces::memory::VariablePtr	pVar;
+	//pVar = m_pRogueLib->getVariable( varPath );
+	pVar = getVariable( varPath );
+	if ( pVar )
+	{
+		switch ( pVar->modelId() )
+		{
+		default:
+			break;
+		case rim::PyFunc:
+			break;
+		case rim::Bytes:
+			break;
+		case rim::UInt:
+			{
+			uint64_t	rogueUInt	= value;
+			pVar->setValue( rogueUInt );
+			if ( verbose )
+				printf( "%s%u: %s: %lu\n",
+						modelId2String( pVar->modelId() ), pVar->bitTotal(),
+						varPath.c_str(), rogueUInt );
+			}
+			break;
+		case rim::Int:
+			{
+			int64_t	rogueInt	= value;
+			pVar->setValue( rogueInt );
+			if ( verbose )
+				printf( "%s%u: %s: %ld\n",
+						modelId2String( pVar->modelId() ), pVar->bitTotal(),
+						varPath.c_str(), rogueInt );
+			}
+			break;
+		case rim::Bool:
+			break;
+		case rim::String:
+			//printf( "%s: '%s'\n", varPath.c_str(), pVar->getString().c_str() );
+			break;
+		case rim::Float:
+			break;
+		case rim::Double:
+			//printf( "%s: %f\n", varPath.c_str(), pVar->getDouble() );
+			break;
+		case rim::Fixed:
+			break;
+		case rim::Custom:
+			break;
+		}
+	}
+	else
+	{
+		printf( "pgpClDev error: %s not found!\n", varPath.c_str() );
+	}
+}
 
 void pgpClDev::showVariable( const char * pszVarPath, bool verbose )
 {

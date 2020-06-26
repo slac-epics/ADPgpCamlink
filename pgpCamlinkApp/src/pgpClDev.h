@@ -72,6 +72,7 @@ public:		//	Public member functions
 	void connect( );
 	void disconnect( );
 
+	void setVariable(  const char * pszVarPath, int value );
 	void showVariable( const char * pszVarPath, bool verbose );
 	void showVariableList( bool verbose );
 

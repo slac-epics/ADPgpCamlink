@@ -465,6 +465,18 @@ int pgpCamlink::CameraShow( int level )
     return 0;
 }
 
+int pgpCamlink::SetPgpVariable( const char * pszVarPath, int value )
+{
+	const char	*	functionName = "pgpCamlink::SetPgpVariable";
+	if ( m_pDev == NULL )
+	{
+		printf( "%s error: %s PGP Dev not configured!\n", functionName, m_CameraName.c_str() );
+		return -1;
+	}
+	m_pDev->setVariable( pszVarPath, value );
+	return 0;
+}
+
 int pgpCamlink::ShowPgpVariable( const char * pszVarPath, int level )
 {
 	const char	*	functionName = "pgpCamlink::ShowPgpVariable";
@@ -2516,6 +2528,46 @@ void ShowAllCamerasRegister(void)
 
 
 extern "C"
+int SetPgpVariable( const char * pszCamName, const char * pszVarPath, int value )
+{
+	const char	*	functionName = "SetPgpVariable";
+	if ( pszCamName == NULL || pszVarPath == NULL )
+	{
+		printf( "Usage: %s camPortName varPath\n", functionName );
+		printf( "Example: %s CAM ClinkDev.Hardware.AxiPcieCore.AxiVersion.BuildStamp\n", functionName );
+		return -1;
+	}
+
+	pgpCamlink	*	pCamDev = pgpCamlink::CameraFindByName( std::string(pszCamName) );
+	if ( pCamDev == NULL )
+	{
+		printf( "%s error: Camera %s not found!\n", functionName, pszCamName );
+		return -1;
+	}
+
+	return pCamDev->SetPgpVariable( pszVarPath, value );
+}
+
+// Register function:
+//		int SetPgpVar( camName, varName, value )
+static const iocshArg		SetPgpVarArg0		= { "camName",		iocshArgString };
+static const iocshArg		SetPgpVarArg1		= { "varName",		iocshArgString };
+static const iocshArg		SetPgpVarArg2		= { "value",		iocshArgInt };
+static const iocshArg	*	SetPgpVarArgs[3]	=
+{
+	&SetPgpVarArg0, &SetPgpVarArg1, &SetPgpVarArg2
+};
+static const iocshFuncDef   SetPgpVarFuncDef	= { "SetPgpVar", 3, SetPgpVarArgs };
+static int  SetPgpVarCallFunc( const iocshArgBuf * args )
+{
+	return static_cast<int>( SetPgpVariable( args[0].sval, args[1].sval, args[2].ival ) );
+}
+void SetPgpVarRegister(void)
+{
+	iocshRegister( &SetPgpVarFuncDef, reinterpret_cast<iocshCallFunc>(SetPgpVarCallFunc) );
+}
+
+extern "C"
 int ShowPgpVariable( const char * pszCamName, const char * pszVarPath, int level )
 {
 	const char	*	functionName = "ShowPgpVariable";
@@ -2537,7 +2589,7 @@ int ShowPgpVariable( const char * pszCamName, const char * pszVarPath, int level
 }
 
 // Register function:
-//		int ShowPgpVar( int level )
+//		int ShowPgpVar( camName, varName, level )
 static const iocshArg		ShowPgpVarArg0		= { "camName",		iocshArgString };
 static const iocshArg		ShowPgpVarArg1		= { "varName",		iocshArgString };
 static const iocshArg		ShowPgpVarArg2		= { "level",		iocshArgInt };
@@ -2613,6 +2665,7 @@ extern "C"
 {
 	epicsExportRegistrar( pgpCamlinkConfigRegister );
 	epicsExportRegistrar( pgpCamlinkConfigFullRegister );
+	epicsExportRegistrar( SetPgpVarRegister );
 	epicsExportRegistrar( ShowImageTimingRegister );
 	epicsExportRegistrar( ResetImageTimingRegister );
 	epicsExportRegistrar( ShowAllCamerasRegister );
