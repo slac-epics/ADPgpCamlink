@@ -111,24 +111,20 @@ record( stringin, "$(P)$(R)OpalBuildState_RBV" )
 }
 
 # Set Camera Control Exposure source
-#	We use source 4, the I/O connector for external trigger in Pulse mode.
+#	We use source 0, CC1 for external trigger in Pulse mode.
 #	CCE source isn't used in FreeRun mode.
-record( mbbo, "$(P)$(R)OpalCCE" )
+record( mbbo, "$(P)$(R)OpalTrigPol" )
 {
     field( DESC, "Set Exposure Source & Event" )
     field( DTYP, "stream" )
-	field( DOL,  "4" )
-    field( OUT,	 "@opal1000m_12.proto SetInt(CCE) $(PORT).SER" )
-#   field( ZRVL, 0 )
-#   field( ONVL, 1 )
-#   field( TWVL, 2 )
-#   field( THVL, 3 )
-    field( FRVL, 4 )
-#   field( ZRST, "CC1"	)
-#   field( ONST, "CC2"	)
-#   field( TWST, "CC3"	)
-#   field( THST, "CC4"	)
-    field( FRST, "I/O"	)
+	field( DOL,  "0" )
+	# or   OUT,	 "@opal1000m_12.proto SetCCE $(PORT).SER" )
+	# which would send CCE${OpalTrigInput};${OpalTrigPol}
+    field( OUT,	 "@opal1000m_12.proto SetInt(CCE0;) $(PORT).SER" )
+    field( ZRVL, 0 )
+    field( ONVL, 1 )
+    field( ZRST, "Active Hi"	)
+    field( ONST, "Active Low"	)
     field( FLNK, "$(P)$(R)OpalCCE_RBV" )
 # Disabled to avoid accidental use
 	field( DISV, "0" )
@@ -136,23 +132,17 @@ record( mbbo, "$(P)$(R)OpalCCE" )
 }
 
 # Read Camera Control Exposure source
-#	We use source 4, the I/O connector for external trigger in Pulse mode.
+#	We use source 0, CC1 for external trigger in Pulse mode.
 #	CCE source isn't used in FreeRun mode.
-record( mbbi, "$(P)$(R)OpalCCE_RBV" )
+record( mbbi, "$(P)$(R)OpalTrigPol_RBV" )
 {
     field( DESC, "Exposure Source and Event" )
     field( DTYP, "stream" )
-    field( INP,	 "@opal1000m_12.proto GetInt(CCE) $(PORT).SER" )
+    field( INP,	 "@opal1000m_12.proto GetCCE $(PORT).SER" )
     field( ZRVL, 0 )
     field( ONVL, 1 )
-    field( TWVL, 2 )
-    field( THVL, 3 )
-    field( FRVL, 4 )
-    field( ZRST, "CC1"	)
-    field( ONST, "CC2"	)
-    field( TWST, "CC3"	)
-    field( THST, "CC4"	)
-    field( FRST, "I/O"	)
+    field( ZRST, "Active Hi"	)
+    field( ONST, "Active Low"	)
 	field( PINI, "YES"  )
 }
 
@@ -162,19 +152,11 @@ record( mbbo, "$(P)$(R)OpalCCFS" )
 {
     field( DESC, "Set Trigger Source & Event" )
     field( DTYP, "stream" )
-    field( OUT,	 "@opal1000m_12.proto SetInt(CCFS) $(PORT).SER" )
+    field( OUT,	 "@opal1000m_12.proto SetInt(CCFS4;) $(PORT).SER" )
     field( ZRVL, 0 )
     field( ONVL, 1 )
-    field( TWVL, 2 )
-    field( THVL, 3 )
-    field( FRVL, 4 )
-    field( FVVL, 5 )
-    field( ZRST, "CC1"	)
-    field( ONST, "CC2"	)
-    field( TWST, "CC3"	)
-    field( THST, "CC4"	)
-    field( FRST, "I/O"	)
-    field( FVST, "Soft"	)
+    field( ZRST, "RdOutOnFalling"	)
+    field( ONST, "RdOutOnRising"	)
     field( FLNK, "$(P)$(R)OpalCCFS_RBV" )
 # Disabled to avoid accidental use
 	field( DISV, "0" )
@@ -185,19 +167,11 @@ record( mbbi, "$(P)$(R)OpalCCFS_RBV" )
 {
     field( DESC, "Trigger Source and Event" )
     field( DTYP, "stream" )
-    field( INP,	 "@opal1000m_12.proto GetInt(CCFS) $(PORT).SER" )
+    field( INP,	 "@opal1000m_12.proto GetCCFS(4) $(PORT).SER" )
     field( ZRVL, 0 )
     field( ONVL, 1 )
-    field( TWVL, 2 )
-    field( THVL, 3 )
-    field( FRVL, 4 )
-    field( FVVL, 5 )
-    field( ZRST, "CC1"	)
-    field( ONST, "CC2"	)
-    field( TWST, "CC3"	)
-    field( THST, "CC4"	)
-    field( FRST, "I/O"	)
-    field( FVST, "Soft"	)
+    field( ZRST, "RdOutOnFalling"	)
+    field( ONST, "RdOutOnRising"	)
 	field( PINI, "YES"  )
 }
 
@@ -415,12 +389,12 @@ record( bi, "$(P)$(R)OpalFSM" )
     field( ONAM, "Programmed" )
 }
 
-#	FSM		Set flash strobe timing mode
+#	FST		Set flash strobe timing mode
 record( longout, "$(P)$(R)OpalSetFST" )
 {
     field( DESC, "Set Flash Strobe Timing" )
     field( DTYP, "stream" )
-    field( OUT,	 "@opal1000m_12.proto SetInt(FST) $(PORT).SER" )
+    field( OUT,	 "@opal1000m_12.proto SetInt(FST0;) $(PORT).SER" )
     field( FLNK, "$(P)$(R)OpalFST" )
 	info( autosaveFields, "DESC VAL" )
 }
@@ -429,7 +403,7 @@ record( longin, "$(P)$(R)OpalFST" )
 {
     field( DESC, "Flash Strobe Timing" )
     field( DTYP, "stream" )
-    field( INP,	 "@opal1000m_12.proto GetInt(FST) $(PORT).SER" )
+    field( INP,	 "@opal1000m_12.proto GetFST0() $(PORT).SER" )
 }
 
 # Disabled as not supported by Opal1000
