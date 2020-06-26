@@ -257,13 +257,13 @@ record( longin, "$(P)$(R)Feb0:ClCh0:Trig1Rate" )
 	info( autosaveFields, "" )
 }
 
-record( longin, "$(P)$(R)Feb0:ClCh1:FrameCount" )
-{
-	field( DTYP, "RogueLI" )
-	field( INP,  "@B$(B) L$(L) ClinkDevRoot.ClinkFeb[0].ClinkTop.Ch[1].FrameCount" )
-	field( SCAN, "$(SCAN=1 second)" )
-	info( autosaveFields, "" )
-}
+#record( longin, "$(P)$(R)Feb0:ClCh1:FrameCount" )
+#{
+#	field( DTYP, "RogueLI" )
+#	field( INP,  "@B$(B) L$(L) ClinkDevRoot.ClinkFeb[0].ClinkTop.Ch[1].FrameCount" )
+#	field( SCAN, "$(SCAN=1 second)" )
+#	info( autosaveFields, "" )
+#}
 
 record( bi, "$(P)$(R)Feb0:ClCh0:Running" )
 {
@@ -275,12 +275,12 @@ record( bi, "$(P)$(R)Feb0:ClCh0:Running" )
 	info( autosaveFields, "" )
 }
 
-record( bi, "$(P)$(R)Feb0:ClCh1:Running" )
-{
-	field( DTYP, "RogueBI" )
-	field( INP,  "@B$(B) L$(L) ClinkDevRoot.ClinkFeb[0].ClinkTop.Ch[1].Running" )
-	field( SCAN, "$(SCAN=1 second)" )
-	field( ZNAM, "Stopped" )
-	field( ONAM, "Running"  )
-	info( autosaveFields, "" )
-}
+#record( bi, "$(P)$(R)Feb0:ClCh1:Running" )
+#{
+#	field( DTYP, "RogueBI" )
+#	field( INP,  "@B$(B) L$(L) ClinkDevRoot.ClinkFeb[0].ClinkTop.Ch[1].Running" )
+#	field( SCAN, "$(SCAN=1 second)" )
+#	field( ZNAM, "Stopped" )
+#	field( ONAM, "Running"  )
+#	info( autosaveFields, "" )
+#}
