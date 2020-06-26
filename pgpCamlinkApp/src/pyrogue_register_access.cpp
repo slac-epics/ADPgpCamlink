@@ -118,9 +118,9 @@ PyObject *	createClinkDev( )
 	return pClinkDev;
 }
 
-//	std::string	rogueVersion		= zmq->getDisp( "ClinkDev.RogueVersion" );
-//	std::string	disablePollStatus	= zmq->setDisp( "ClinkDev.PollEn", "False" );
-//	std::string	enablePolltatus		= zmq->setDisp( "ClinkDev.PollEn", "True" );
+//	std::string	rogueVersion		= zmq->getDisp( "ClinkDevRoot.RogueVersion" );
+//	std::string	disablePollStatus	= zmq->setDisp( "ClinkDevRoot.PollEn", "False" );
+//	std::string	enablePolltatus		= zmq->setDisp( "ClinkDevRoot.PollEn", "True" );
 //
 std::string		ClinkDevGetRogueVersion(
 	PyObject	*	pClinkDev )
@@ -188,16 +188,16 @@ int zmqServerTest()
 	printf("Waiting 5s for connection to start\n");fflush(stdout);
 	sleep(5);
 
-	std::string	rogueVersion		= zmq->getDisp( "ClinkDev.RogueVersion" );
+	std::string	rogueVersion		= zmq->getDisp( "ClinkDevRoot.RogueVersion" );
 	printf( "zmqServerTest: Rouge Version: %s\n", rogueVersion.c_str() );
 
-	std::string	scratchPad		= zmq->getDisp( "ClinkDev.Hardware.AxiPcieCore.AxiVersion.ScratchPad" );
+	std::string	scratchPad		= zmq->getDisp( "ClinkDevRoot.ClinkPcie.AxiPcieCore.AxiVersion.ScratchPad" );
 	printf( "zmqServerTest: scratchPad: %s\n", scratchPad.c_str() );
 
-	zmq->setDisp( "ClinkDev.Hardware.AxiPcieCore.AxiVersion.ScratchPad", "22" );
+	zmq->setDisp( "ClinkDevRoot.ClinkPcie.AxiPcieCore.AxiVersion.ScratchPad", "22" );
 	printf( "zmqServerTest: set scratchPad = %s\n", "22" );
 
-	scratchPad = zmq->getDisp( "ClinkDev.Hardware.AxiPcieCore.AxiVersion.ScratchPad" );
+	scratchPad = zmq->getDisp( "ClinkDevRoot.ClinkPcie.AxiPcieCore.AxiVersion.ScratchPad" );
 	printf( "zmqServerTest: scratchPad: %s\n", scratchPad.c_str() );
 
 	return 0;

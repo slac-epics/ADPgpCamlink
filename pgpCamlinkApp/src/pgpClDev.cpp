@@ -71,7 +71,7 @@ int ResetCounters( int fd )
 	//status = dmaWriteRegister( fd, CLINKDEV_ERRORCOUNT,	0 );
 	//status = dmaWriteRegister( fd, CLINKDEV_BYTECOUNT,	0 );
 	status = dmaWriteRegister( fd, CLINKDEV_LANE0_COUNTRESET,	0 );
-	// This resets ClinkDev.Application.AppLane[0].EventBuilder.DataCnt[0]
+	// This resets ClinkDevRoot.ClinkPcie.Application.AppLane[0].EventBuilder.DataCnt[0]
 	status = dmaWriteRegister( fd, CLINKDEV_LANE0_EVENTBUILDER_CNTRST,	0 );
 
 	return status;
@@ -83,7 +83,7 @@ int		pgpClDev::setTriggerEnable( unsigned int triggerNum, bool fEnable )
 	int		status	= 0;
 #if 1
 	const char		*	functionName	= "pgpClDev::setTriggerEnable";
-	std::string	varPath = "ClinkDev.Hardware.Timing.Triggering.Ch[0].EnableReg";
+	std::string	varPath = "ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TriggerEventManager.EvrV2CoreTriggers.EvrV2ChannelReg[0].EnableReg";
 	rogue::interfaces::memory::VariablePtr	pVar = getVariable( varPath );
 	if ( !pVar )
 	{
@@ -268,7 +268,7 @@ pgpClDev::pgpClDev(
 	// Create bidirectional links between SRP and FebRegChan 
 	m_pFebRegChan->addSlave( m_pSrpFeb );
 	m_pSrpFeb->addSlave( m_pFebRegChan );
-	szMemName = "Unnamed_96";
+	szMemName = "Unnamed_78";
 	addMemory( szMemName, m_pSrpFeb );
 	m_pRogueLib->addMemory( szMemName, m_pSrpFeb );
 	printf("pgpClDev: addMemory srpFeb interface %s\n", szMemName );
@@ -291,15 +291,15 @@ pgpClDev::pgpClDev(
 
 	//showVariableList( true );
 
-	std::string sFpgaVersionPath( "ClinkDev.Hardware.AxiPcieCore.AxiVersion.BuildStamp" );
+	std::string sFpgaVersionPath( "ClinkDevRoot.ClinkPcie.AxiPcieCore.AxiVersion.BuildStamp" );
 	showVariable( sFpgaVersionPath.c_str(), true );
 	
-	std::string sDataCnt( "ClinkDev.Application.AppLane[0].EventBuilder.DataCnt[0]" );
+	std::string sDataCnt( "ClinkDevRoot.ClinkPcie.Application.AppLane[0].EventBuilder.DataCnt[0]" );
 	showVariable( sDataCnt.c_str(), true );
-	showVariable( "ClinkDev.Hardware.AxiPcieCore.AxiVersion.FpgaVersion", true );
-	showVariable( "ClinkDev.Hardware.AxiPcieCore.AxiVersion.UpTimeCnt", true );
-	showVariable( "ClinkDev.ClinkFeb[0].AxiVersion.FpgaVersion", true );
-	showVariable( "ClinkDev.ClinkFeb[0].AxiVersion.UpTimeCnt", true );
+	showVariable( "ClinkDevRoot.ClinkPcie.AxiPcieCore.AxiVersion.FpgaVersion", true );
+	showVariable( "ClinkDevRoot.ClinkPcie.AxiPcieCore.AxiVersion.UpTimeCnt", true );
+	showVariable( "ClinkDevRoot.ClinkFeb[0].AxiVersion.FpgaVersion", true );
+	showVariable( "ClinkDevRoot.ClinkFeb[0].AxiVersion.UpTimeCnt", true );
 
 	//
 	// Connect DATACHAN 1 Camera Frames
@@ -602,7 +602,7 @@ void pgpClDev::showVariableList( bool verbose )
 		rogue::interfaces::memory::VariablePtr	pVar	= vit->second;
 		if ( ! pVar )
 		{
-			printf( "%s Error: Variable %s not found!\n", functionName, pVar->path().c_str() );
+			printf( "%s Error: Variable %s not found!\n", functionName, vit->first.c_str() );
 			continue;
 		}
 		std::cout	<< pVar->path() << " Type " << pVar->modelId() << pVar->bitTotal() << std::endl;

@@ -2536,7 +2536,7 @@ int SetPgpVariable( const char * pszCamName, const char * pszVarPath, int value 
 	if ( pszCamName == NULL || pszVarPath == NULL )
 	{
 		printf( "Usage: %s camPortName varPath\n", functionName );
-		printf( "Example: %s CAM ClinkDev.Hardware.AxiPcieCore.AxiVersion.BuildStamp\n", functionName );
+		printf( "Example: %s CAM ClinkDevRoot.ClinkPcie.AxiPcieCore.AxiVersion.BuildStamp\n", functionName );
 		return -1;
 	}
 
@@ -2576,7 +2576,7 @@ int ShowPgpVariable( const char * pszCamName, const char * pszVarPath, int level
 	if ( pszCamName == NULL || pszVarPath == NULL )
 	{
 		printf( "Usage: %s camPortName varPath\n", functionName );
-		printf( "Example: %s CAM ClinkDev.Hardware.AxiPcieCore.AxiVersion.BuildStamp\n", functionName );
+		printf( "Example: %s CAM ClinkDevRoot.ClinkPcie.AxiPcieCore.AxiVersion.BuildStamp\n", functionName );
 		return -1;
 	}
 

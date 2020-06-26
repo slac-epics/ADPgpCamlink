@@ -39,11 +39,11 @@ unsigned dmaDest(unsigned lane, unsigned vc)
     return (lane<<8) | vc;
 }
 
-#define CLINKDEV_AXIVERSION_FPGAVERSION	0x20000			// ClinkDev.Hardware.AxiPcieCore.AxiVersion.FpgaVersion
-#define CLINKDEV_AXIVERSION_SCRATCHPAD	0x20004			// ClinkDev.Hardware.AxiPcieCore.AxiVersion.ScratchPad
-#define CLINKDEV_AXIVERSION_UPTIMESEC	0x20008			// ClinkDev.Hardware.AxiPcieCore.AxiVersion.UpTimeCnt
-#define CLINKDEV_AXIVERSION_FPGARELOAD	0x20104			// ClinkDev.Hardware.AxiPcieCore.AxiVersion.FpgaReload
-#define CLINKDEV_AXIVERSION_BUILDSTAMP	0x20800			// ClinkDev.Hardware.AxiPcieCore.AxiVersion.BuildStamp
+#define CLINKDEV_AXIVERSION_FPGAVERSION	0x20000			// ClinkDevRoot.ClinkPcie.AxiPcieCore.AxiVersion.FpgaVersion
+#define CLINKDEV_AXIVERSION_SCRATCHPAD	0x20004			// ClinkDevRoot.ClinkPcie.AxiPcieCore.AxiVersion.ScratchPad
+#define CLINKDEV_AXIVERSION_UPTIMESEC	0x20008			// ClinkDevRoot.ClinkPcie.AxiPcieCore.AxiVersion.UpTimeCnt
+#define CLINKDEV_AXIVERSION_FPGARELOAD	0x20104			// ClinkDevRoot.ClinkPcie.AxiPcieCore.AxiVersion.FpgaReload
+#define CLINKDEV_AXIVERSION_BUILDSTAMP	0x20800			// ClinkDevRoot.ClinkPcie.AxiPcieCore.AxiVersion.BuildStamp
 
 #define CLINKDEV_LANE0_DATACNT0		0xC00000
 #define CLINKDEV_LANE0_DATACNT1		0xC00004
@@ -72,7 +72,7 @@ int ResetCounters( int fd )
 	//status = dmaWriteRegister( fd, CLINKDEV_ERRORCOUNT,	0 );
 	//status = dmaWriteRegister( fd, CLINKDEV_BYTECOUNT,	0 );
 	status = dmaWriteRegister( fd, CLINKDEV_LANE0_COUNTRESET,	0 );
-	// This resets ClinkDev.Application.AppLane[0].EventBuilder.DataCnt[0]
+	// This resets ClinkDevRoot.ClinkPcie.Application.AppLane[0].EventBuilder.DataCnt[0]
 	status = dmaWriteRegister( fd, CLINKDEV_LANE0_EVENTBUILDER_CNTRST,	0 );
 
 	return status;
@@ -83,19 +83,19 @@ int ResetCounters( int fd )
 #define CLINKDEV_TRIG2_ENABLEREG	0x930200
 #define CLINKDEV_TRIG3_ENABLEREG	0x930300
 
-#define CLINKDEV_FEB0_AXIVERSION_FPGAVERSION 0x0000			// ClinkDev.ClinkFeb[0].AxiVersion.FpgaVersion
-#define CLINKDEV_FEB0_AXIVERSION_SCRATCHPAD	0x00004			// ClinkDev.ClinkFeb[0].AxiVersion.ScratchPad
-#define CLINKDEV_FEB0_AXIVERSION_UPTIMESEC	0x00008			// ClinkDev.ClinkFeb[0].AxiVersion.UpTimeCnt
-#define CLINKDEV_FEB0_AXIVERSION_FPGARELOAD	0x00104			// ClinkDev.ClinkFeb[0].AxiVersion.FpgaReload
-#define CLINKDEV_FEB0_AXIVERSION_DEVICEID	0x00500			// ClinkDev.ClinkFeb[0].AxiVersion.DeviceId
-#define CLINKDEV_FEB0_AXIVERSION_BUILDSTAMP	0x00800			// ClinkDev.ClinkFeb[0].AxiVersion.BuildStamp
+#define CLINKDEV_FEB0_AXIVERSION_FPGAVERSION 0x0000			// ClinkDevRoot.ClinkFeb[0].AxiVersion.FpgaVersion
+#define CLINKDEV_FEB0_AXIVERSION_SCRATCHPAD	0x00004			// ClinkDevRoot.ClinkFeb[0].AxiVersion.ScratchPad
+#define CLINKDEV_FEB0_AXIVERSION_UPTIMESEC	0x00008			// ClinkDevRoot.ClinkFeb[0].AxiVersion.UpTimeCnt
+#define CLINKDEV_FEB0_AXIVERSION_FPGARELOAD	0x00104			// ClinkDevRoot.ClinkFeb[0].AxiVersion.FpgaReload
+#define CLINKDEV_FEB0_AXIVERSION_DEVICEID	0x00500			// ClinkDevRoot.ClinkFeb[0].AxiVersion.DeviceId
+#define CLINKDEV_FEB0_AXIVERSION_BUILDSTAMP	0x00800			// ClinkDevRoot.ClinkFeb[0].AxiVersion.BuildStamp
 
-#define CLINKDEV_FEB0_CL0_LINKRUNNING		0x100120		// ClinkDev.Hardware.PgpMon[0].RxRemLinkReady
-#define CLINKDEV_FEB0_CL1_LINKRUNNING		0x100220		// ClinkDev.Hardware.PgpMon[0].RxRemLinkReady
+#define CLINKDEV_FEB0_CL0_LINKRUNNING		0x100120		// ClinkDevRoot.ClinkPcie.PgpMon[0].RxRemLinkReady
+#define CLINKDEV_FEB0_CL1_LINKRUNNING		0x100220		// ClinkDevRoot.ClinkPcie.PgpMon[0].RxRemLinkReady
 
-#define CLINKDEV_LANE0_RXREMLINKREADY		0x800020		// ClinkDev.Hardware.PgpMon[0].RxRemLinkReady
-#define CLINKDEV_FEB0_PGP0_RXREMLINKREADY	0x400020		// ClinkDev.ClinkFeb[0].PgpMon[0].RxRemLinkReady
-#define CLINKDEV_FEB0_PGP1_RXREMLINKREADY	0x406020		// ClinkDev.ClinkFeb[0].PgpMon[1].RxRemLinkReady
+#define CLINKDEV_LANE0_RXREMLINKREADY		0x800020		// ClinkDevRoot.ClinkPcie.PgpMon[0].RxRemLinkReady
+#define CLINKDEV_FEB0_PGP0_RXREMLINKREADY	0x400020		// ClinkDevRoot.ClinkFeb[0].PgpMon[0].RxRemLinkReady
+#define CLINKDEV_FEB0_PGP1_RXREMLINKREADY	0x406020		// ClinkDevRoot.ClinkFeb[0].PgpMon[1].RxRemLinkReady
 
 
 int StartRun( int fd )

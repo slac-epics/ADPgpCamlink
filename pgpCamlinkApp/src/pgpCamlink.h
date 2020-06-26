@@ -572,10 +572,10 @@ private:	//	Private class variables
 #define CamlinkTrigLevelString	"CLCAM_TRIG_LEVEL"
 #define CamlinkDebugLevelString	"CLCAM_DEBUG"
 #define CamlinkDebugSerString	"CLCAM_DEBUG_SER"
-#define PgpAxiVersionString			"ClinkDev.Hardware.AxiPcieCore.AxiVersion.BuildStamp"
-#define PgpCoreFpgaVersionString	"ClinkDev.Hardware.AxiPcieCore.AxiVersion.FpgaVersion"
-#define PgpFebFpgaVersionString		"ClinkDev.ClinkFeb[0].AxiVersion.FpgaVersion"
-#define PgpAppDataCntString			"ClinkDev.Application.AppLane[0].EventBuilder.DataCnt[0]" 
+#define PgpAxiVersionString			"ClinkDevRoot.ClinkPcie.AxiPcieCore.AxiVersion.BuildStamp"
+#define PgpCoreFpgaVersionString	"ClinkDevRoot.ClinkPcie.AxiPcieCore.AxiVersion.FpgaVersion"
+#define PgpFebFpgaVersionString		"ClinkDevRoot.ClinkFeb[0].AxiVersion.FpgaVersion"
+#define PgpAppDataCntString			"ClinkDevRoot.ClinkPcie.Application.AppLane[0].EventBuilder.DataCnt[0]" 
 
 // This group provides a way to have serial readbacks get reflected in
 // their ADBase class equivalents, for example
