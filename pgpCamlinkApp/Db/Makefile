@@ -13,7 +13,8 @@ include $(TOP)/configure/CONFIG
 
 # db templates
 DB += pgpCamlinkBase.template
-DB += ClinkTop.template
+DB += ClinkPcie.template
+DB += ClinkFeb.template
 DB += putMonitor.template
 DB += rbvMonitor.template
 DB += serialMonitor.template
