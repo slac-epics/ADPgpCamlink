@@ -118,9 +118,11 @@ record( mbbo, "$(P)$(R)OpalTrigPol" )
     field( DESC, "Set Exposure Source & Event" )
     field( DTYP, "stream" )
 	field( DOL,  "0" )
-	# or   OUT,	 "@opal1000m_12.proto SetCCE $(PORT).SER" )
-	# which would send CCE$OpalTrigInput;$OpalTrigPol
     field( OUT,	 "@opal1000m_12.proto SetInt(CCE0;) $(PORT).SER" )
+	# or if we want to allow selection of CC1, CC2, CC3, or CC4   
+	# add an OpalTrigInput mbbo record and change OUT to
+	#      OUT,	 "@opal1000m_12.proto SetCCE $(PORT).SER" )
+	# which would send CCE$OpalTrigInput;$OpalTrigPol
     field( ZRVL, 0 )
     field( ONVL, 1 )
     field( ZRST, "Active Hi"	)
@@ -138,7 +140,7 @@ record( mbbi, "$(P)$(R)OpalTrigPol_RBV" )
 {
     field( DESC, "Exposure Source and Event" )
     field( DTYP, "stream" )
-    field( INP,	 "@opal1000m_12.proto GetCCE $(PORT).SER" )
+    field( INP,	 "@opal1000m_12.proto GetCCE0() $(PORT).SER" )
     field( ZRVL, 0 )
     field( ONVL, 1 )
     field( ZRST, "Active Hi"	)
@@ -167,7 +169,7 @@ record( mbbi, "$(P)$(R)OpalCCFS_RBV" )
 {
     field( DESC, "Trigger Source and Event" )
     field( DTYP, "stream" )
-    field( INP,	 "@opal1000m_12.proto GetCCFS(4) $(PORT).SER" )
+    field( INP,	 "@opal1000m_12.proto GetCCFS4() $(PORT).SER" )
     field( ZRVL, 0 )
     field( ONVL, 1 )
     field( ZRST, "RdOutOnFalling"	)

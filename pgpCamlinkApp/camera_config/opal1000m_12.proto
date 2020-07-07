@@ -25,7 +25,24 @@ GetQStr
 GetInt
 {
     out "@\$1?";    in  ACK "@%d";
-    @init { out "@\$1?";    in  ACK "@%d"; }
+#   @init { out "@\$1?";    in  ACK "@%d"; }
+}
+
+GetCCE0
+{
+    out "@CCE?";    in  ACK "@0;%d";
+#   @init { out "@CCE?";    in  ACK "@0;%d"; }
+}
+
+GetCCFS4
+{
+    out "@CCFS?";    in  ACK "@4;%d";
+#   @init { out "@CCFS?";    in  ACK "@4;%d"; }
+}
+
+GetFST0
+{
+    out "@FST?";    in  ACK "@0;%d";
 }
 
 GetTempC
