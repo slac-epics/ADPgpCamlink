@@ -1,6 +1,6 @@
 # EPICS DBD file for accessing Rogue via its Library class
 device( bi,			INST_IO,	dsetRogueBi,	"RogueBI"	)
-#device( bo,			INST_IO,	dsetRogueBo,	"RogueBO"	)
+device( bo,			INST_IO,	dsetRogueBo,	"RogueBO"	)
 #device( ai,			INST_IO,	dsetRogueAi,	"RogueAI"	)
 #device( ao,			INST_IO,	dsetRogueAo,	"RogueAO"	)
 device( longin,		INST_IO,	dsetRogueLi,	"RogueLI"	)

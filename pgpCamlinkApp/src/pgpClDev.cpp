@@ -77,7 +77,7 @@ int ResetCounters( int fd )
 	return status;
 }
 
-#define CLINKDEV_TRIG0_ENABLEREG	0x930000
+#define CLINKDEV_TRIG0_ENABLEREG	0x940000
 int		pgpClDev::setTriggerEnable( unsigned int triggerNum, bool fEnable )
 {
 	int		status	= 0;
@@ -125,6 +125,7 @@ bool	pgpClDev::getTriggerEnable( unsigned int triggerNum )
 	return false;
 }
 
+#if 0
 int StartRun( int fd )
 {
 	int		status;
@@ -143,6 +144,7 @@ int StopRun( int fd )
 	status = dmaWriteRegister( fd, CLINKDEV_TRIG0_ENABLEREG, 0 );
 	return status;
 }
+#endif
 
 
 #include "pgpClAddrMap.h" 
@@ -268,7 +270,7 @@ pgpClDev::pgpClDev(
 	// Create bidirectional links between SRP and FebRegChan 
 	m_pFebRegChan->addSlave( m_pSrpFeb );
 	m_pSrpFeb->addSlave( m_pFebRegChan );
-	szMemName = "Unnamed_72";
+	szMemName = "Unnamed_78";
 	addMemory( szMemName, m_pSrpFeb );
 	m_pRogueLib->addMemory( szMemName, m_pSrpFeb );
 	printf("pgpClDev: addMemory srpFeb interface %s\n", szMemName );
@@ -308,7 +310,7 @@ pgpClDev::pgpClDev(
 	// or rogueStreamConnect( m_pFebFrameChan, m_pImageStream );
 
 	m_fConnected = 1;	// Do we need this?
-	StartRun( m_fd );
+	//StartRun( m_fd );
 }
 
 /// virtual Destructor
@@ -317,6 +319,8 @@ pgpClDev::~pgpClDev()
 	close( m_fd );
 }
 
+// TODO	template<class R> pgpClDev::readVarPath(
+// template<class R> int pgpClDev::readVarPath( const char * pszVarPath, R & valueRet )
 int	pgpClDev::readVarPath( const char * pszVarPath, bool & valueRet )
 {
 	const char *	functionName = "pgpClDev::readVarPath";
@@ -464,6 +468,7 @@ template<class R> int pgpClDev::writeVarPath( const char * pszVarPath, const R &
 	return status;
 }
 
+template int pgpClDev::writeVarPath( const char * pszVarPath, const bool		& value );
 template int pgpClDev::writeVarPath( const char * pszVarPath, const int64_t		& value );
 template int pgpClDev::writeVarPath( const char * pszVarPath, const uint64_t	& value );
 

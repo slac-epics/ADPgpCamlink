@@ -6,6 +6,7 @@
 #include <devSup.h>
 #include <dbCommon.h>
 #include <biRecord.h>
+#include <boRecord.h>
 #include <longinRecord.h>
 #include <longoutRecord.h>
 //#include <dbAccess.h>
@@ -20,6 +21,7 @@
 
 
 int	DEBUG_ROGUE_DEV = 3;
+epicsExportAddress( int,  DEBUG_ROGUE_DEV );
 
 
 static int
@@ -69,9 +71,20 @@ int devRogue_init_record(
 		printf( "%s Parse succeeded: Board %u, Lane %u, VarPath %s\n", functionName, board, lane, varPath );
 
 	rogue_info_t	*	pRogueInfo		= new rogue_info_t;
-	pRogueInfo->varPath	= varPath;
-	pRogueInfo->pClDev	= pgpCam->GetDevPtr();
-	record->dpvt		= pRogueInfo;
+	pRogueInfo->m_varPath		= varPath;
+	pRogueInfo->m_pClDev		= pgpCam->GetDevPtr();
+	pRogueInfo->m_fSignedValue	= false;
+	rogue::interfaces::memory::VariablePtr	pVar;
+	pVar = pRogueInfo->m_pClDev->getVariable( pRogueInfo->m_varPath );
+	if ( !pVar )
+	{
+		printf( "%s error: %s not found!\n", functionName, pRogueInfo->m_varPath.c_str() );
+	}
+	else if ( pVar->modelId() == rogue::interfaces::memory::Int )
+	{
+		pRogueInfo->m_fSignedValue	= true;
+	}
+	record->dpvt				= pRogueInfo;
 
 #if 0
 	status = devRogue_init_record_specialized( record );
@@ -89,17 +102,19 @@ int devRogue_init_record(
 template < class R, class V >
 int devRogue_read_record( R * record, V & valueRet )
 {
-	const char 		*	functionName = "devRogue_read_record<R>";
 	int					status		= 1;
 	rogue_info_t	*	pRogueInfo	= reinterpret_cast < rogue_info_t * >( record->dpvt );
-	status = pRogueInfo->pClDev->readVarPath( pRogueInfo->varPath.c_str(), valueRet );
+	status = pRogueInfo->m_pClDev->readVarPath( pRogueInfo->m_varPath.c_str(), valueRet );
 
+#if 0
+	const char 		*	functionName = "devRogue_read_record<R>";
 	rogue::interfaces::memory::VariablePtr	pVar;
-	pVar = pRogueInfo->pClDev->getVariable( pRogueInfo->varPath );
+	pVar = pRogueInfo->m_pClDev->getVariable( pRogueInfo->m_varPath );
 	if ( !pVar )
 	{
-		printf( "%s error: %s not found!\n", functionName, pRogueInfo->varPath.c_str() );
+		printf( "%s error: %s not found!\n", functionName, pRogueInfo->m_varPath.c_str() );
 	}
+#endif
 	if ( status )
 	{
 		record->nsta = UDF_ALARM;
@@ -115,15 +130,15 @@ int devRogue_write_record( R * record, const V & value )
 //	const char 		*	functionName = "devRogue_write_record<R>";
 	int					status		= 1;
 	rogue_info_t	*	pRogueInfo	= reinterpret_cast < rogue_info_t * >( record->dpvt );
-	status = pRogueInfo->pClDev->writeVarPath( pRogueInfo->varPath.c_str(), value );
+	status = pRogueInfo->m_pClDev->writeVarPath( pRogueInfo->m_varPath.c_str(), value );
 
 #if 0
 	// TODO: Can pVar lookup be moved into devRogue_init_record?
 	rogue::interfaces::memory::VariablePtr	pVar;
-	pVar = pRogueInfo->pClDev->getVariable( pRogueInfo->varPath );
+	pVar = pRogueInfo->m_pClDev->getVariable( pRogueInfo->m_varPath );
 	if ( !pVar )
 	{
-		printf( "%s error: %s not found!\n", functionName, pRogueInfo->varPath.c_str() );
+		printf( "%s error: %s not found!\n", functionName, pRogueInfo->m_varPath.c_str() );
 	}
 	if ( status )
 	{
@@ -308,8 +323,8 @@ static long write_lo( void	*	record )
 #endif
 	const char 		*	functionName = "write_lo";
 	long				status = 0;
-	bool				signedValue	= false;
-	if ( signedValue )
+	rogue_info_t	*	pRogueInfo	= reinterpret_cast < rogue_info_t * >( pRecord->dpvt );
+	if ( pRogueInfo->m_fSignedValue )
 	{
 		if ( DEBUG_ROGUE_DEV >= 3 )
 			printf( "%s: status %ld, intValue %d\n", functionName, status, pRecord->val );
@@ -352,6 +367,10 @@ epicsExportAddress( dset, dsetRogueLo );
 
 #ifdef __cplusplus
 }
+#endif
+
+#ifdef DBR_INT64
+// TODO: Add support for int64inRecord and int64outRecord
 #endif
 
 // bi record support
@@ -429,7 +448,50 @@ struct
 #endif
 
 epicsExportAddress( dset, dsetRogueBi );
-epicsExportAddress( int,  DEBUG_ROGUE_DEV );
+
+#ifdef __cplusplus
+}
+#endif
+
+// bo record support
+template int        devRogue_init_record(	boRecord *, DBLINK );
+template int        devRogue_write_record(	boRecord *, const uint64_t & rogueVal );
+
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+static long init_bo( void * pCommon )
+{
+	boRecord	*	pRecord	= reinterpret_cast < boRecord * >( pCommon );
+	return devRogue_init_record( pRecord, pRecord->out );
+}
+
+static long write_bo( void	*	record )
+{
+	boRecord	*	pRecord		= reinterpret_cast <boRecord *>( record );
+	bool			rogueValue	= static_cast<bool>( pRecord->val );
+	int				status		=  devRogue_write_record( pRecord, rogueValue );
+
+	const char 	*	functionName = "write_bo";
+	if ( DEBUG_ROGUE_DEV >= 3 )
+		printf( "%s: status %d, value %u\n", functionName, status, pRecord->val );
+	return status;
+}
+
+struct
+{
+	long                number;
+	DEVSUPFUN           report;
+	DEVSUPFUN           init;
+	DEVSUPFUN           init_bo;
+	DEVSUPFUN           get_ioint_info;
+	DEVSUPFUN           write_bo;
+}	dsetRogueBo =
+{ 5, NULL, NULL, init_bo, NULL, write_bo };
+
+epicsExportAddress( dset, dsetRogueBo );
 
 #ifdef __cplusplus
 }

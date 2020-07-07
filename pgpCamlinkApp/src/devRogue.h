@@ -7,8 +7,9 @@
 
 typedef struct _rogue_info_t
 {
-	std::string	varPath;
-	pgpClDevPtr	pClDev;
+	std::string		m_varPath;
+	pgpClDevPtr		m_pClDev;
+	bool			m_fSignedValue;
 }	rogue_info_t;
 
 template<class R>		   int		 devRogue_init_record(	R * record, DBLINK link	);
