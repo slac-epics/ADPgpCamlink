@@ -1,0 +1,185 @@
+#
+# Canned Sequences
+#
+# Contains various sequence record's to aid in changing between camera and timing modes
+#	
+#
+# Required macros:
+#	CAM				- Prefix for camera
+#
+
+record( ao, "$(CAM):Def120HzTrigDelay" )
+{
+    field( DESC, "Default trigger delay" )
+    field( DOL,  "1.0e-6" )
+    field( PINI, "YES" )
+    field( PREC, "5" )
+	info( autosaveFields, "DESC PREC VAL" )
+}
+
+record( ao, "$(CAM):Def120HzExposure" )
+{
+    field( DESC, "Default exposure" )
+	field( DOL,  "1.0e-3" )
+    field( PINI, "YES" )
+    field( PREC, "5" )
+	info( autosaveFields, "DESC PREC VAL" )
+}
+
+record( longout, "$(CAM):Def120HzMinY" )
+{
+    field( DESC, "Default Y start line" )
+	field( DOL,  "0" )
+    field( PINI, "YES" )
+	info( autosaveFields, "DESC VAL" )
+}
+
+
+# TODO: Set trigger polarity and width
+record( seq, "$(CAM):GoTo120HzMode" )
+{
+	field( DOL2, "$(CAM):Def120HzMinY" )
+	field( LNK2, "$(CAM):MinY PP NMS" )
+	field( DLY2, "2.0" )
+
+	field( DOL3, "1" )
+	field( LNK3, "$(CAM):TriggerMode PP NMS" )
+	field( DLY3, "0.0" )
+
+	field( DOL4, "2" )
+	field( LNK4, "$(CAM):ImageMode PP NMS" )
+	field( DLY4, "0.0" )
+
+#	field( DOL5, "40" )
+#	field( LNK5, "$(CAM):CamEventCode CA NMS" )
+#	field( DLY5, "0.0" )
+
+#	field( DOL6, "140" )
+#	field( LNK6, "$(CAM):BeamEventCode CA NMS" )
+#	field( DLY6, "0.0" )
+
+#	field( DOL7, "$(CAM):Def120HzTrigDelay" )
+#	field( LNK7, "$(CAM):CamTrigDelay CA NMS" )
+#	field( DLY7, "0.0" )
+
+	field( DOL8, "$(CAM):Def120HzExposure" )
+	field( LNK8, "$(CAM):AcquireTime PP NMS" )
+	field( DLY8, "0.0" )
+
+	field( DOL9, "0.0" )
+	field( LNK9, "$(CAM):IMAGE1:MinCallbackTime PP NMS" )
+	field( DLY9, "0.0" )
+
+	field( DOLA, "1" )
+	field( LNKA, "$(CAM):Acquire CA NMS" )
+	field( DLYA, "2.0" )
+
+	info( autosaveFields, "DESC" )
+}
+
+
+record( seq, "$(CAM):GoToFullMode" )
+{
+	field( DOL2, "0" )
+	field( LNK2, "$(CAM):TriggerMode PP NMS" )
+	field( DLY2, "2.0" )
+
+	field( DOL3, "0" )
+	field( LNK3, "$(CAM):MinY PP NMS" )
+	field( DLY3, "0.0" )
+
+#	field( DOL4, "4.1e-3" )
+#	field( LNK4, "$(CAM):CamTrigDelay CA NMS" )
+#	field( DLY4, "0.0" )
+
+	field( DOL5, "0.05" )
+	field( LNK5, "$(CAM):AcquireTime PP NMS" )
+	field( DLY5, "0.0" )
+
+	field( DOL6, "2" )
+	field( LNK6, "$(CAM):ImageMode PP NMS" )
+	field( DLY6, "0.0" )
+
+	field( DOL7, "0.5" )
+	field( LNK7, "$(CAM):IMAGE1:MinCallbackTime PP NMS" )
+	field( DLY7, "0.0" )
+
+#	field( DOL8, "44" )
+#	field( LNK8, "$(CAM):CamEventCode PP NMS" )
+#	field( DLY8, "0.0" )
+
+#	field( DOL9, "40" )
+#	field( LNK9, "$(CAM):BeamEventCode PP NMS" )
+#	field( DLY9, "0.0" )
+
+	field( DOLA, "1" )
+	field( LNKA, "$(CAM):Acquire CA NMS" )
+	field( DLYA, "1.0" )
+
+	info( autosaveFields, "DESC" )
+#	info( autosaveFields, "DESC DOL1 DLY1 DOL2 DLY2 DOL3 DLY3 DOL4 DLY4 DOL5 DLY5 DOL6 DLY6 DOL7 DLY7 DOL8 DLY8 DOL9 DLY9 DOLA DLYA" )
+}
+
+# Select XpmMini Internally generated LCLS-II Clock
+record( seq, "$(CAM):SeqXpmMiniTiming" )
+{
+	# Disable MiniTpg and set ModeSelEn to UseClkSel
+	field( DLY1, "0" ) field( DOL1, "0" ) field( LNK1, "$(CAM):Timing:UseMiniTpg    PP NMS" )
+	field( DLY2, "0" ) field( DOL2, "0" ) field( LNK2, "$(CAM):Timing:ModeSelEn     PP NMS" )
+
+	# Assert RxPllReset for 1 sec 
+	field( DLY3, "0" ) field( DOL3, "1" ) field( LNK3, "$(CAM):Timing:RxPllReset    PP NMS" )
+	field( DLY4, "1" ) field( DOL4, "0" ) field( LNK4, "$(CAM):Timing:RxPllReset    PP NMS" )
+
+	# Select LCLS-II Clock
+	field( DLY5, "1" ) field( DOL5, "1" ) field( LNK5, "$(CAM):Timing:ClkSel        PP NMS" )
+
+	# Assert C_RxReset for 1 sec 
+	field( DLY6, "0" ) field( DOL6, "1" ) field( LNK6, "$(CAM):Timing:C_RxReset     PP NMS" )
+	field( DLY7, "1" ) field( DOL7, "0" ) field( LNK7, "$(CAM):Timing:C_RxReset     PP NMS" )
+
+	# Reset the latching register
+	field( DLY8, ".1") field( DOL8, "0" ) field( LNK8, "$(CAM):Timing:RxDown        PP NMS" )
+
+	# Enable MiniTpg
+	field( DLY9, "1" ) field( DOL9, "1" ) field( LNK9, "$(CAM):Timing:UseMiniTpg    PP NMS" )
+	field( DOLA, "1" ) field( DLYA, "0" ) field( LNKA, "$(CAM):XpmMini:HwEnable     PP NMS" )
+	field( DOLB, "0" ) field( DLYB, "0" ) field( LNKB, "$(CAM):XpmMini:Link         PP NMS" )
+
+	# Configure rate and enable
+	# 4: 100Hz, 5: 10Hz, 6: 1Hz
+	field( DOLC, "6" ) field( DLYC, "0" ) field( LNKC, "$(CAM):XpmMini:Config_L0Select_RateSel PP NMS" )
+	field( DOLD, "1" ) field( DLYD, "0" ) field( LNKD, "$(CAM):XpmMini:Config_L0Select_Enabled PP NMS" )
+
+#	field( DOLE, "1" ) field( DLYE, "0" ) field( LNKE, "$(CAM):Trigger:MasterEnable PP NMS" )
+#	field( DOLF, "0" ) field( DLYF, "0" ) field( LNKF, "$(CAM):?    PP NMS" )
+
+	info( autosaveFields, "DESC" )
+	#	info( autosaveFields, "DESC DOL1 DLY1 DOL2 DLY2 DOL3 DLY3 DOL4 DLY4 DOL5 DLY5 DOL6 DLY6 DOL7 DLY7 DOL8 DLY8 DOL9 DLY9 DOLA DLYA" )
+}
+
+# StartRun
+record( seq, "$(CAM):SeqStartRun" )
+{
+	field( DESC, "Arm EventBuilder and enable triggers" )
+	# Arm EventBuilder for data stream
+	field( DLY1, "0" ) field( DOL1, "0" ) field( LNK1, "$(CAM):EventBuilder:Blowoff PP NMS" )
+	# Enable triggering
+	field( DLY2, "1" ) field( DOL2, "0" ) field( LNK2, "$(CAM):Trigger:MasterEnable PP NMS" )
+
+	info( autosaveFields, "DESC" )
+	#	info( autosaveFields, "DESC DOL1 DLY1 DOL2 DLY2 DOL3 DLY3 DOL4 DLY4 DOL5 DLY5 DOL6 DLY6 DOL7 DLY7 DOL8 DLY8 DOL9 DLY9 DOLA DLYA" )
+}
+
+# StopRun
+record( seq, "$(CAM):SeqStopRun" )
+{
+	field( DESC, "Stop triggers & blow off pipeline data" )
+	# Disable triggering
+	field( DLY1, "0" ) field( DOL1, "0" ) field( LNK1, "$(CAM):Trigger:MasterEnable PP NMS" )
+	# Blow off data in EventBuilder pipeline
+	field( DLY2, "1" ) field( DOL2, "0" ) field( LNK2, "$(CAM):EventBuilder:Blowoff PP NMS" )
+
+	info( autosaveFields, "DESC" )
+	#	info( autosaveFields, "DESC DOL1 DLY1 DOL2 DLY2 DOL3 DLY3 DOL4 DLY4 DOL5 DLY5 DOL6 DLY6 DOL7 DLY7 DOL8 DLY8 DOL9 DLY9 DOLA DLYA" )
+}
