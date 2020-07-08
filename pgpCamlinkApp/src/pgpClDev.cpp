@@ -319,9 +319,7 @@ pgpClDev::~pgpClDev()
 	close( m_fd );
 }
 
-// TODO	template<class R> pgpClDev::readVarPath(
-// template<class R> int pgpClDev::readVarPath( const char * pszVarPath, R & valueRet )
-int	pgpClDev::readVarPath( const char * pszVarPath, bool & valueRet )
+template<class R> int pgpClDev::readVarPath( const char * pszVarPath, R & valueRet )
 {
 	const char *	functionName = "pgpClDev::readVarPath";
 	int				status	= -1;
@@ -332,114 +330,26 @@ int	pgpClDev::readVarPath( const char * pszVarPath, bool & valueRet )
 	if ( !pVar )
 	{
 		printf( "%s error: %s not found!\n", functionName, varPath.c_str() );
+		return -1;
 	}
-	else
+
+	try
 	{
-		if ( pVar->modelId() == rim::Bool )
-		{
-			valueRet = pVar->getBool();
-			status = 0;
-		}
-		else
-		{
-			printf( "%s error: %s is type %s%u, not Bool!\n",
-					functionName, varPath.c_str(),
-					modelId2String( pVar->modelId() ), pVar->bitTotal() );
-		}
+		pVar->getValue( valueRet );
+		status = 0;
 	}
+	catch ( rogue::GeneralError & e )
+	{
+		printf( "%s error: %s!\n", functionName, e.what() );
+	}
+	//pVar->setLogLevel( rogue::Logging::Warning );
 	return status;
 }
 
-int	pgpClDev::readVarPath( const char * pszVarPath, int64_t & valueRet )
-{
-	const char *	functionName = "pgpClDev::readVarPath";
-	int				status	= -1;
-	std::string		varPath( pszVarPath );
-	rogue::interfaces::memory::VariablePtr	pVar;
-	//pVar = m_pRogueLib->getVariable( varPath );
-	pVar = getVariable( varPath );
-	if ( !pVar )
-	{
-		printf( "%s error: %s not found!\n", functionName, varPath.c_str() );
-	}
-	else
-	{
-		if ( pVar->modelId() == rim::Int )
-		{
-			valueRet = pVar->getInt();
-			status = 0;
-		}
-		else
-		{
-			printf( "%s error: %s is type %s%u, not Int!\n",
-					functionName, varPath.c_str(),
-					modelId2String( pVar->modelId() ), pVar->bitTotal() );
-		}
-	}
-	return status;
-}
-
-int	pgpClDev::readVarPath( const char * pszVarPath, uint64_t & valueRet )
-{
-	const char *	functionName = "pgpClDev::readVarPath";
-	int				status	= -1;
-	std::string		varPath( pszVarPath );
-	rogue::interfaces::memory::VariablePtr	pVar;
-	//pVar = m_pRogueLib->getVariable( varPath );
-	pVar = getVariable( varPath );
-	if ( !pVar )
-	{
-		printf( "%s error: %s not found!\n", functionName, varPath.c_str() );
-	}
-	else
-	{
-		if ( pVar->modelId() == rim::UInt )
-		{
-#if 1
-			pVar->getValue( valueRet );
-#else
-			valueRet = pVar->getUInt();
-#endif
-			status = 0;
-		}
-		else
-		{
-			printf( "%s error: %s is type %s%u, not UInt!\n",
-					functionName, varPath.c_str(),
-					modelId2String( pVar->modelId() ), pVar->bitTotal() );
-		}
-	}
-	return status;
-}
-
-int	pgpClDev::readVarPath( const char * pszVarPath, std::string & valueRet )
-{
-	const char *	functionName = "pgpClDev::readVarPath";
-	int				status	= -1;
-	std::string		varPath( pszVarPath );
-	rogue::interfaces::memory::VariablePtr	pVar;
-	//pVar = m_pRogueLib->getVariable( varPath );
-	pVar = getVariable( varPath );
-	if ( !pVar )
-	{
-		printf( "%s error: %s not found!\n", functionName, varPath.c_str() );
-	}
-	else
-	{
-		if ( pVar->modelId() == rim::String )
-		{
-			pVar->getValue( valueRet );
-			status = 0;
-		}
-		else
-		{
-			printf( "%s error: %s is type %s%u, not String!\n",
-					functionName, varPath.c_str(),
-					modelId2String( pVar->modelId() ), pVar->bitTotal() );
-		}
-	}
-	return status;
-}
+template int pgpClDev::readVarPath( const char * pszVarPath, bool		& valueRet );
+template int pgpClDev::readVarPath( const char * pszVarPath, int64_t	& valueRet );
+template int pgpClDev::readVarPath( const char * pszVarPath, uint64_t	& valueRet );
+template int pgpClDev::readVarPath( const char * pszVarPath, std::string & valueRet );
 
 
 // TODO: All rogue calls should use try clause and catch at least rogue::GeneralError
@@ -454,17 +364,36 @@ template<class R> int pgpClDev::writeVarPath( const char * pszVarPath, const R &
 	if ( !pVar )
 	{
 		printf( "%s error: %s not found!\n", functionName, varPath.c_str() );
+		return -1;
 	}
-	else
+
+	if ( DEBUG_PGP_CAMLINK >= 3 )
 	{
+		if ( pVar->modelId() == rim::Bool )
+			pVar->setLogLevel( rogue::Logging::Debug );
 		if ( typeid(value) == typeid(uint64_t) )
 			std::cout << functionName << ": " << varPath << " is uint64_t" << std::endl;
 		std::cout	<< functionName	<< ": " << varPath
-					<< ", type = "	<< typeid(R).name()
+					<< ", typeid = "	<< typeid(R).name()
+					<< ", modelId = "	<< modelId2String(pVar->modelId()) << pVar->bitTotal()
 					<< ", value = "	<< value << std::endl;
+		printf( "%s type is %s, nBits %u, byteSize %u, fastCopy %u!\n",
+				varPath.c_str(),
+				modelId2String( pVar->modelId() ), pVar->bitTotal(),
+				pVar->byteSize(), pVar->fastCopy() );
+	}
+
+	try
+	{
 		pVar->setValue( value );
 		status = 0;
 	}
+	catch ( rogue::GeneralError & e )
+	{
+		printf( "%s error: %s!\n", functionName, e.what() );
+	}
+	pVar->setLogLevel( rogue::Logging::Warning );
+
 	return status;
 }
 

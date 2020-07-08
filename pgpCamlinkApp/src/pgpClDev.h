@@ -107,13 +107,8 @@ public:		//	Public member functions
 	int		setTriggerEnable( unsigned int triggerNum, bool fEnable );
 	bool	getTriggerEnable( unsigned int triggerNum );
 
-	// TODO: Templatize this call
-	int		readVarPath( const char * pVarPath, bool		& valueRet );
-	int		readVarPath( const char * pVarPath, int64_t		& valueRet );
-	int		readVarPath( const char * pVarPath, uint64_t	& valueRet );
-	int		readVarPath( const char * pVarPath, std::string	& valueRet );
-
-	template<class R> int writeVarPath( const char * pVarPath, const R & value );
+	template<class R> int readVarPath(	const char * pVarPath, R & valueRet );
+	template<class R> int writeVarPath(	const char * pVarPath, const R & value );
 
 private:
 	//	Private member variables
