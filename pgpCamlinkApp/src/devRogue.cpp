@@ -5,8 +5,12 @@
 
 #include <devSup.h>
 #include <dbCommon.h>
+#include <aiRecord.h>
+#include <aoRecord.h>
 #include <biRecord.h>
 #include <boRecord.h>
+#include <mbbiRecord.h>
+#include <mbboRecord.h>
 #include <longinRecord.h>
 #include <longoutRecord.h>
 //#include <dbAccess.h>
@@ -355,7 +359,7 @@ struct
 	dset				common;
 	long (*write_lo)(	struct longoutRecord	*	pRec );
 #endif
-}	dsetRogueLo =
+}	dsetRogueLO =
 #ifdef USE_TYPED_DSET
 { { 5, NULL, NULL, init_lo, NULL }, write_lo };
 #else
@@ -363,7 +367,7 @@ struct
 #endif
 
 
-epicsExportAddress( dset, dsetRogueLo );
+epicsExportAddress( dset, dsetRogueLO );
 
 #ifdef __cplusplus
 }
@@ -371,6 +375,120 @@ epicsExportAddress( dset, dsetRogueLo );
 
 #ifdef DBR_INT64
 // TODO: Add support for int64inRecord and int64outRecord
+#endif
+
+// ai record support
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+template int        devRogue_init_record(	aiRecord	*, DBLINK );
+template int        devRogue_read_record(	aiRecord	*, double  & rogueVal );
+
+#ifdef USE_TYPED_DSET
+static long init_ai( struct dbCommon * pCommon )
+#else
+static long init_ai( void * pCommon )
+#endif
+{
+	aiRecord	*	pRecord	= reinterpret_cast < aiRecord * >( pCommon );
+	int             status	= devRogue_init_record( pRecord, pRecord->inp );
+	if ( status == 0 )
+	{
+		devRogue_read_record( pRecord, pRecord->val );
+	}
+	return status;
+}
+
+#ifdef USE_TYPED_DSET
+static long read_ai( aiRecord	*	pRecord )
+{
+	long	status = 0;
+	devRogue_read_record( pRecord, pRecord->val );
+	return status;
+}
+#else
+static long read_ai( void	*	record )
+{
+	const char 		*	functionName = "read_ai";
+	long				status = 0;
+	aiRecord		*	pRecord	= reinterpret_cast <aiRecord *>( record );
+	devRogue_read_record( pRecord, pRecord->val );
+	if ( DEBUG_ROGUE_DEV >= 4 )
+		printf( "%s: status %ld, aiValue %f\n", functionName, status, pRecord->val );
+	return status;
+}
+#endif
+
+struct
+{
+#ifndef USE_TYPED_DSET
+	long                number;
+	DEVSUPFUN           report;
+	DEVSUPFUN           init;
+	DEVSUPFUN           init_ai;
+	DEVSUPFUN           get_ioint_info;
+	DEVSUPFUN           read_ai;
+	DEVSUPFUN           special_linconv;
+#else
+	dset				common;
+	long (*read_ai)(	struct aiRecord	*	pRec );
+#endif
+}	dsetRogueAI =
+#ifdef USE_TYPED_DSET
+{ { 5, NULL, NULL, init_ai, NULL }, read_ai };
+#else
+{ 5, NULL, NULL, init_ai, NULL, read_ai };
+#endif
+
+epicsExportAddress( dset, dsetRogueAI );
+
+#ifdef __cplusplus
+}
+#endif
+
+// ao record support
+template int        devRogue_init_record(	aoRecord *, DBLINK );
+template int        devRogue_write_record(	aoRecord *, const double & rogueVal );
+
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+static long init_ao( void * pCommon )
+{
+	aoRecord	*	pRecord	= reinterpret_cast < aoRecord * >( pCommon );
+	return devRogue_init_record( pRecord, pRecord->out );
+}
+
+static long write_ao( void	*	record )
+{
+	aoRecord	*	pRecord		= reinterpret_cast <aoRecord *>( record );
+	int				status		=  devRogue_write_record( pRecord, pRecord->val );
+
+	const char 	*	functionName = "write_ao";
+	if ( DEBUG_ROGUE_DEV >= 3 )
+		printf( "%s: status %d, value %u\n", functionName, status, pRecord->val );
+	return status;
+}
+
+struct
+{
+	long                number;
+	DEVSUPFUN           report;
+	DEVSUPFUN           init;
+	DEVSUPFUN           init_ao;
+	DEVSUPFUN           get_ioint_info;
+	DEVSUPFUN           write_ao;
+}	dsetRogueAO =
+{ 5, NULL, NULL, init_ao, NULL, write_ao };
+
+epicsExportAddress( dset, dsetRogueAO );
+
+#ifdef __cplusplus
+}
 #endif
 
 // bi record support
@@ -440,14 +558,14 @@ struct
 	dset				common;
 	long (*read_bi)(	struct biRecord	*	pRec );
 #endif
-}	dsetRogueBi =
+}	dsetRogueBI =
 #ifdef USE_TYPED_DSET
 { { 5, NULL, NULL, init_bi, NULL }, read_bi };
 #else
 { 5, NULL, NULL, init_bi, NULL, read_bi };
 #endif
 
-epicsExportAddress( dset, dsetRogueBi );
+epicsExportAddress( dset, dsetRogueBI );
 
 #ifdef __cplusplus
 }
@@ -488,10 +606,131 @@ struct
 	DEVSUPFUN           init_bo;
 	DEVSUPFUN           get_ioint_info;
 	DEVSUPFUN           write_bo;
-}	dsetRogueBo =
+}	dsetRogueBO =
 { 5, NULL, NULL, init_bo, NULL, write_bo };
 
-epicsExportAddress( dset, dsetRogueBo );
+epicsExportAddress( dset, dsetRogueBO );
+
+#ifdef __cplusplus
+}
+#endif
+
+// mbbi record support
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+template int        devRogue_init_record(	mbbiRecord	*, DBLINK );
+template int        devRogue_read_record(	mbbiRecord	*, uint64_t & rogueVal );
+
+#ifdef USE_TYPED_DSET
+static long init_mbbi( struct dbCommon * pCommon )
+#else
+static long init_mbbi( void * pCommon )
+#endif
+{
+	mbbiRecord	*	pRecord	= reinterpret_cast < mbbiRecord * >( pCommon );
+	int             status	= devRogue_init_record( pRecord, pRecord->inp );
+	if ( status == 0 )
+	{
+		uint64_t	rogueValue;
+		devRogue_read_record( pRecord, rogueValue );
+		pRecord->val = static_cast<epicsEnum16>( rogueValue );
+	}
+	return status;
+}
+
+#ifdef USE_TYPED_DSET
+static long read_mbbi( mbbiRecord	*	pRecord )
+{
+	long		status = 0;
+	uint64_t	rogueValue;
+	devRogue_read_record( pRecord, rogueValue );
+	pRecord->val = static_cast<epicsEnum16>( rogueValue );
+	return status;
+}
+#else
+static long read_mbbi( void	*	record )
+{
+	const char 		*	functionName = "read_mbbi";
+	long				status = 0;
+	mbbiRecord		*	pRecord	= reinterpret_cast <mbbiRecord *>( record );
+	uint64_t			rogueValue;
+	devRogue_read_record( pRecord, rogueValue );
+	pRecord->val = static_cast<epicsEnum16>( rogueValue );
+	if ( DEBUG_ROGUE_DEV >= 4 )
+		printf( "%s: status %ld, mbbiValue %d\n", functionName, status, pRecord->val );
+	return status;
+}
+#endif
+
+struct
+{
+#ifndef USE_TYPED_DSET
+	long                number;
+	DEVSUPFUN           report;
+	DEVSUPFUN           init;
+	DEVSUPFUN           init_mbbi;
+	DEVSUPFUN           get_ioint_info;
+	DEVSUPFUN           read_mbbi;
+	DEVSUPFUN           special_linconv;
+#else
+	dset				common;
+	long (*read_mbbi)(	struct mbbiRecord	*	pRec );
+#endif
+}	dsetRogueMBBI =
+#ifdef USE_TYPED_DSET
+{ { 5, NULL, NULL, init_mbbi, NULL }, read_mbbi };
+#else
+{ 5, NULL, NULL, init_mbbi, NULL, read_mbbi };
+#endif
+
+epicsExportAddress( dset, dsetRogueMBBI );
+
+#ifdef __cplusplus
+}
+#endif
+
+// mbbo record support
+template int        devRogue_init_record(	mbboRecord *, DBLINK );
+template int        devRogue_write_record(	mbboRecord *, const uint64_t & rogueVal );
+
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+static long init_mbbo( void * pCommon )
+{
+	mbboRecord	*	pRecord	= reinterpret_cast < mbboRecord * >( pCommon );
+	return devRogue_init_record( pRecord, pRecord->out );
+}
+
+static long write_mbbo( void	*	record )
+{
+	mbboRecord	*	pRecord		= reinterpret_cast <mbboRecord *>( record );
+	uint64_t		rogueValue	= static_cast<uint64_t>( pRecord->val );
+	int				status		= devRogue_write_record( pRecord, rogueValue );
+
+	const char 	*	functionName = "write_mbbo";
+	if ( DEBUG_ROGUE_DEV >= 3 )
+		printf( "%s: status %d, value %u\n", functionName, status, pRecord->val );
+	return status;
+}
+
+struct
+{
+	long                number;
+	DEVSUPFUN           report;
+	DEVSUPFUN           init;
+	DEVSUPFUN           init_mbbo;
+	DEVSUPFUN           get_ioint_info;
+	DEVSUPFUN           write_mbbo;
+}	dsetRogueMBBO =
+{ 5, NULL, NULL, init_mbbo, NULL, write_mbbo };
+
+epicsExportAddress( dset, dsetRogueMBBO );
 
 #ifdef __cplusplus
 }

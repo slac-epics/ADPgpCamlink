@@ -347,6 +347,7 @@ template<class R> int pgpClDev::readVarPath( const char * pszVarPath, R & valueR
 }
 
 template int pgpClDev::readVarPath( const char * pszVarPath, bool		& valueRet );
+template int pgpClDev::readVarPath( const char * pszVarPath, double		& valueRet );
 template int pgpClDev::readVarPath( const char * pszVarPath, int64_t	& valueRet );
 template int pgpClDev::readVarPath( const char * pszVarPath, uint64_t	& valueRet );
 template int pgpClDev::readVarPath( const char * pszVarPath, std::string & valueRet );
@@ -398,6 +399,7 @@ template<class R> int pgpClDev::writeVarPath( const char * pszVarPath, const R &
 }
 
 template int pgpClDev::writeVarPath( const char * pszVarPath, const bool		& value );
+template int pgpClDev::writeVarPath( const char * pszVarPath, const double		& value );
 template int pgpClDev::writeVarPath( const char * pszVarPath, const int64_t		& value );
 template int pgpClDev::writeVarPath( const char * pszVarPath, const uint64_t	& value );
 
