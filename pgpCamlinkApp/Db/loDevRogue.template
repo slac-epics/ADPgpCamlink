@@ -1,0 +1,9 @@
+# loDevRogue.template
+record( longout, "$(P)$(R)$(NAME)" )
+{
+	field( DTYP, "RogueLO" )
+	field( OUT,  "@B$(B) L$(L) $(PATH)" )
+	field( PINI, "YES" )
+	field( FLNK, "$(P)$(R)$(NAME)_RBV" )
+	info( autosaveFields, "VAL" )
+}

@@ -1,0 +1,7 @@
+# liDevRogue.template
+record( longin, "$(P)$(R)$(NAME)_RBV" )
+{
+	field( DTYP, "RogueLI" )
+	field( INP,  "@B$(B) L$(L) $(PATH)" )
+	info( autosaveFields, "" )
+}

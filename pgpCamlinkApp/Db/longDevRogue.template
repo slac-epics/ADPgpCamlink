@@ -1,17 +1,3 @@
 # longDevRogue.template
-
-record( longin, "$(P)$(R)$(NAME)_RBV" )
-{
-	field( DTYP, "RogueLI" )
-	field( INP,  "@B$(B) L$(L) $(PATH)" )
-	info( autosaveFields, "" )
-}
-
-record( longout, "$(P)$(R)$(NAME)" )
-{
-	field( DTYP, "RogueLO" )
-	field( OUT,  "@B$(B) L$(L) $(PATH)" )
-	field( PINI, "YES" )
-	field( FLNK, "$(P)$(R)$(NAME)_RBV" )
-	info( autosaveFields, "VAL" )
-}
+include "liDevRogue.template"
+include "loDevRogue.template"
