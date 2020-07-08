@@ -11,31 +11,6 @@
 #
 
 # AxiPcieCore
-record( longin, "$(P)$(R)AxiPcieCoreScratchPad_RBV" )
-{
-	field( DTYP, "RogueLI" )
-	field( INP, "@B$(B) L$(L) ClinkDevRoot.ClinkPcie.AxiPcieCore.AxiVersion.ScratchPad" )
-	field( SCAN, "$(SCAN=10 second)" )
-}
-record( longout, "$(P)$(R)AxiPcieCoreScratchPad" )
-{
-	field( DTYP, "RogueLO" )
-	field( OUT,  "@B$(B) L$(L) ClinkDevRoot.ClinkPcie.AxiPcieCore.AxiVersion.ScratchPad" )
-	field( FLNK, "$(P)$(R)AxiPcieCoreScratchPad_RBV" )
-	field( TPRO, "2" )
-}
-
-
-# AppEventBuilder
-record( longin, "$(P)$(R)AppEventBuilder:DataCnt0" )
-{
-	field( DTYP, "RogueLI" )
-	field( INP, "@B$(B) L$(L) ClinkDevRoot.ClinkPcie.Application.AppLane[$(L)].EventBuilder.DataCnt[0]" )
-	field( SCAN, "$(SCAN=1 second)" )
-	info( autosaveFields, "" )
-}
-
-# AxiPcieCore
 record( longin, "$(P)$(R)AxiPcieCore:FpgaVersion" )
 {
 	field( DESC, "AxiPcieCore FPGA Version (show as hex)" )
@@ -54,3 +29,102 @@ record( longin, "$(P)$(R)AxiPcieCore:UpTime" )
 	info( autosaveFields, "" )
 }
 
+# EventBuilder
+record( longin, "$(P)$(R)EventBuilder:DataCnt0" )
+{
+	field( DTYP, "RogueLI" )
+	field( INP, "@B$(B) L$(L) ClinkDevRoot.ClinkPcie.Application.AppLane[$(L)].EventBuilder.DataCnt[0]" )
+	field( SCAN, "$(SCAN=1 second)" )
+	info( autosaveFields, "" )
+}
+
+# Clock Select
+record( mbbi, "$(P)$(R)Timing:ClkSel_RBV" )
+{
+	field( DTYP, "RogueMBBI" )
+	field( INP,  "@B$(B) L$(L) ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TimingFrameRx.ClkSel" )
+	field( ZRVL, "0" ) field( ZRST, "LCLS-I  Clock" )
+	field( ONVL, "1" ) field( ONST, "LCLS-II Clock" )
+	info( autosaveFields, "" )
+}
+
+record( mbbo, "$(P)$(R)Timing:ClkSel" )
+{
+	field( DTYP, "RogueMBBO" )
+	field( OUT,  "@B$(B) L$(L) ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TimingFrameRx.ClkSel" )
+	field( PINI, "YES" )
+	field( ZRVL, "0" ) field( ZRST, "LCLS-I  Clock" )
+	field( ONVL, "1" ) field( ONST, "LCLS-II Clock" )
+	field( FLNK, "$(P)$(R)Timing:ClkSel_RBV" )
+#	info( autosaveFields, "VAL" )
+}
+
+# Mode Select
+record( mbbi, "$(P)$(R)Timing:ModeSel_RBV" )
+{
+	field( DTYP, "RogueMBBI" )
+	field( INP,  "@B$(B) L$(L) ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TimingFrameRx.ModeSel" )
+	field( ZRVL, "0" ) field( ZRST, "Lcls1Protocol" )
+	field( ONVL, "1" ) field( ONST, "Lcls2Protocol" )
+	info( autosaveFields, "" )
+}
+
+record( mbbo, "$(P)$(R)Timing:ModeSel" )
+{
+	field( DTYP, "RogueMBBO" )
+	field( OUT,  "@B$(B) L$(L) ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TimingFrameRx.ModeSel" )
+	field( PINI, "YES" )
+	field( ZRVL, "0" ) field( ZRST, "Lcls1Protocol" )
+	field( ONVL, "1" ) field( ONST, "Lcls2Protocol" )
+	field( FLNK, "$(P)$(R)Timing:ClkSel_RBV" )
+#	info( autosaveFields, "VAL" )
+}
+
+# Mode Select Enable
+record( mbbi, "$(P)$(R)Timing:ModeSelEn_RBV" )
+{
+	field( DTYP, "RogueMBBI" )
+	field( INP,  "@B$(B) L$(L) ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TimingFrameRx.ModeSelEn" )
+	field( ZRVL, "0" ) field( ZRST, "UseClkSel" )
+	field( ONVL, "1" ) field( ONST, "UseModeSel" )
+	info( autosaveFields, "" )
+}
+
+record( mbbo, "$(P)$(R)Timing:ModeSelEn" )
+{
+	field( DTYP, "RogueMBBO" )
+	field( OUT,  "@B$(B) L$(L) ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TimingFrameRx.ModeSelEn" )
+	field( PINI, "YES" )
+	field( ZRVL, "0" ) field( ZRST, "UseClkSel" )
+	field( ONVL, "1" ) field( ONST, "UseModeSel" )
+	field( FLNK, "$(P)$(R)Timing:ModeSelEn_RBV" )
+#	info( autosaveFields, "VAL" )
+}
+
+# XpmMini LCLS-II Rate Select
+record( mbbi, "$(P)$(R)Timing:Config_L0Select_RateSel_RBV" )
+{
+	field( DESC, "XpmMini LCLS-II Rate Select" )
+	field( DTYP, "RogueMBBI" )
+	field( INP,  "@B$(B) L$(L) ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TimingFrameRx.Config_L0Select_RateSel" )
+	field( ZRVL, "0" ) field( ZRST, "LCLS-I  Clock" )
+	field( ONVL, "1" ) field( ONST, "LCLS-II Clock" )
+	info( autosaveFields, "" )
+}
+
+record( mbbo, "$(P)$(R)Timing:Config_L0Select_RateSel" )
+{
+	field( DTYP, "RogueMBBO" )
+	field( OUT,  "@B$(B) L$(L) ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TimingFrameRx.Config_L0Select_RateSel" )
+	field( PINI, "YES" )
+	field( ZRVL, "0" ) field( ZRST, "929 kHz" )
+	field( ONVL, "1" ) field( ONST, " 71 kHz" )
+	field( TWVL, "2" ) field( TWST, " 10 kHz" )
+	field( THVL, "3" ) field( THST, "  1 kHz" )
+	field( FRVL, "4" ) field( FRST, "100 Hz" )
+	field( FVVL, "5" ) field( FVST, " 10 Hz" )
+	field( SXVL, "6" ) field( SXST, "  1 Hz" )
+	field( SVVL, "32768" ) field( SVST, "Undefined" )
+	field( FLNK, "$(P)$(R)Timing:Config_L0Select_RateSel_RBV" )
+#	info( autosaveFields, "VAL" )
+}

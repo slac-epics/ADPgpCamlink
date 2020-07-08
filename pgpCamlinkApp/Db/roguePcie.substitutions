@@ -1,5 +1,12 @@
 # roguePcie.substitutions
 
+file biDevRogue.template
+{
+	{
+		NAME	= "PgpMon:RxRemLinkReady_RBV",
+		PATH	= "ClinkDevRoot.ClinkPcie.Hsio.PgpMon[0].RxRemLinkReady"
+	}
+}
 file boolDevRogue.template
 {
 	{
@@ -30,6 +37,10 @@ file boolDevRogue.template
 
 file longDevRogue.template
 {
+	{
+		NAME	= "AxiPcieCore:ScratchPad",
+		PATH	= "ClinkDevRoot.ClinkPcie.AxiPcieCore.AxiVersion.ScratchPad"
+	}
 	{
 		NAME	= "EvrV2:Polarity",
 		PATH	= "ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TriggerEventManager.EvrV2CoreTriggers.EvrV2TriggerReg[0].Polarity"

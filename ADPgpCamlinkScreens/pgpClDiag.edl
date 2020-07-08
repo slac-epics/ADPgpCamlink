@@ -46,7 +46,7 @@ major 4
 minor 0
 release 0
 x 352
-y 672
+y 700
 w 336
 h 116
 lineColor index 3
@@ -63,7 +63,7 @@ release 0
 x 352
 y 52
 w 336
-h 108
+h 136
 lineColor index 3
 fill
 fillColor index 3
@@ -1202,7 +1202,7 @@ major 4
 minor 7
 release 0
 x 484
-y 80
+y 72
 w 80
 h 20
 controlPv "$(P)$(R)AxiPcieCore:FpgaVersion"
@@ -1228,7 +1228,7 @@ major 4
 minor 1
 release 1
 x 356
-y 80
+y 72
 w 120
 h 20
 font "helvetica-medium-r-12.0"
@@ -1248,7 +1248,7 @@ major 4
 minor 7
 release 0
 x 484
-y 108
+y 100
 w 80
 h 20
 controlPv "$(P)$(R)AxiPcieCore:UpTime"
@@ -1273,7 +1273,7 @@ major 4
 minor 1
 release 1
 x 356
-y 108
+y 100
 w 120
 h 20
 font "helvetica-medium-r-12.0"
@@ -1282,7 +1282,7 @@ fgColor index 14
 bgColor index 0
 useDisplayBg
 value {
-  "AxiPcieCore UpTime"
+  "UpTime"
 }
 endObjectProperties
 
@@ -1293,7 +1293,7 @@ major 4
 minor 0
 release 0
 x 352
-y 168
+y 196
 w 336
 h 408
 lineColor index 3
@@ -1308,7 +1308,7 @@ major 4
 minor 1
 release 1
 x 352
-y 168
+y 196
 w 133
 h 14
 font "helvetica-bold-r-12.0"
@@ -1328,7 +1328,7 @@ major 4
 minor 7
 release 0
 x 484
-y 184
+y 212
 w 80
 h 20
 controlPv "$(P)$(R)Feb0:FpgaVersion"
@@ -1354,7 +1354,7 @@ major 4
 minor 1
 release 1
 x 356
-y 184
+y 212
 w 120
 h 20
 font "helvetica-medium-r-12.0"
@@ -1374,7 +1374,7 @@ major 4
 minor 7
 release 0
 x 484
-y 208
+y 236
 w 80
 h 20
 controlPv "$(P)$(R)Feb0:UpTime"
@@ -1399,7 +1399,7 @@ major 4
 minor 1
 release 1
 x 356
-y 208
+y 236
 w 120
 h 20
 font "helvetica-medium-r-12.0"
@@ -1419,7 +1419,7 @@ major 4
 minor 7
 release 0
 x 484
-y 356
+y 384
 w 80
 h 20
 controlPv "$(P)$(R)Feb0:ClCh0:FrameCount"
@@ -1444,7 +1444,7 @@ major 4
 minor 1
 release 1
 x 356
-y 356
+y 384
 w 120
 h 20
 font "helvetica-medium-r-12.0"
@@ -1464,7 +1464,7 @@ major 4
 minor 1
 release 1
 x 356
-y 552
+y 580
 w 120
 h 20
 font "helvetica-medium-r-12.0"
@@ -1484,7 +1484,7 @@ major 4
 minor 7
 release 0
 x 484
-y 552
+y 580
 w 80
 h 20
 controlPv "$(P)$(R)Feb0:ClCh1:FrameCount"
@@ -1509,7 +1509,7 @@ major 4
 minor 0
 release 0
 x 352
-y 584
+y 612
 w 336
 h 80
 lineColor index 3
@@ -1524,8 +1524,8 @@ major 4
 minor 1
 release 1
 x 352
-y 584
-w 98
+y 612
+w 76
 h 14
 font "helvetica-bold-r-12.0"
 fontAlign "center"
@@ -1544,7 +1544,7 @@ major 4
 minor 7
 release 0
 x 484
-y 600
+y 628
 w 80
 h 20
 controlPv "$(P)$(R)EventBuilder:DataCnt0"
@@ -1570,7 +1570,7 @@ major 4
 minor 1
 release 1
 x 356
-y 600
+y 628
 w 120
 h 20
 font "helvetica-medium-r-12.0"
@@ -1610,7 +1610,7 @@ major 4
 minor 7
 release 0
 x 484
-y 528
+y 556
 w 80
 h 20
 controlPv "$(P)$(R)Feb0:ClCh1:Running"
@@ -1634,7 +1634,7 @@ major 4
 minor 1
 release 1
 x 356
-y 528
+y 556
 w 120
 h 20
 font "helvetica-medium-r-12.0"
@@ -1654,7 +1654,7 @@ major 4
 minor 1
 release 1
 x 356
-y 332
+y 360
 w 120
 h 20
 font "helvetica-medium-r-12.0"
@@ -1674,7 +1674,7 @@ major 4
 minor 7
 release 0
 x 484
-y 332
+y 360
 w 80
 h 20
 controlPv "$(P)$(R)Feb0:ClCh0:Running"
@@ -1698,7 +1698,7 @@ major 4
 minor 7
 release 0
 x 484
-y 236
+y 264
 w 80
 h 20
 controlPv "$(P)$(R)Feb0:ClCh0:BaudRate_RBV"
@@ -1723,7 +1723,7 @@ major 4
 minor 1
 release 1
 x 356
-y 236
+y 264
 w 120
 h 20
 font "helvetica-medium-r-12.0"
@@ -1743,7 +1743,7 @@ major 4
 minor 7
 release 0
 x 484
-y 260
+y 288
 w 80
 h 20
 controlPv "$(P)$(R)Feb0:ClCh0:LinkMode_RBV"
@@ -1767,7 +1767,7 @@ major 4
 minor 1
 release 1
 x 356
-y 260
+y 288
 w 120
 h 20
 font "helvetica-medium-r-12.0"
@@ -1787,7 +1787,7 @@ major 4
 minor 7
 release 0
 x 484
-y 284
+y 312
 w 80
 h 20
 controlPv "$(P)$(R)Feb0:ClCh0:DataMode_RBV"
@@ -1811,7 +1811,7 @@ major 4
 minor 1
 release 1
 x 356
-y 284
+y 312
 w 120
 h 20
 font "helvetica-medium-r-12.0"
@@ -1831,7 +1831,7 @@ major 4
 minor 7
 release 0
 x 484
-y 308
+y 336
 w 80
 h 20
 controlPv "$(P)$(R)Feb0:ClCh0:SerThrottle_RBV"
@@ -1856,7 +1856,7 @@ major 4
 minor 1
 release 1
 x 356
-y 308
+y 336
 w 120
 h 20
 font "helvetica-medium-r-12.0"
@@ -1876,7 +1876,7 @@ major 4
 minor 7
 release 0
 x 572
-y 236
+y 264
 w 76
 h 18
 controlPv "$(P)$(R)Feb0:ClCh0:BaudRate"
@@ -1906,7 +1906,7 @@ major 4
 minor 7
 release 0
 x 572
-y 308
+y 336
 w 76
 h 18
 controlPv "$(P)$(R)Feb0:ClCh0:SerThrottle"
@@ -1936,7 +1936,7 @@ major 4
 minor 7
 release 0
 x 572
-y 380
+y 408
 w 76
 h 18
 controlPv "$(P)$(R)Feb0:Trig0:InvCC"
@@ -1966,7 +1966,7 @@ major 4
 minor 7
 release 0
 x 484
-y 380
+y 408
 w 80
 h 20
 controlPv "$(P)$(R)Feb0:Trig0:InvCC_RBV"
@@ -1990,7 +1990,7 @@ major 4
 minor 1
 release 1
 x 356
-y 380
+y 408
 w 120
 h 20
 font "helvetica-medium-r-12.0"
@@ -2010,7 +2010,7 @@ major 4
 minor 1
 release 1
 x 356
-y 404
+y 432
 w 120
 h 20
 font "helvetica-medium-r-12.0"
@@ -2030,7 +2030,7 @@ major 4
 minor 7
 release 0
 x 484
-y 404
+y 432
 w 80
 h 20
 controlPv "$(P)$(R)Feb0:Trig0:Mask_RBV"
@@ -2055,7 +2055,7 @@ major 4
 minor 7
 release 0
 x 572
-y 404
+y 432
 w 76
 h 18
 controlPv "$(P)$(R)Feb0:Trig0:Mask"
@@ -2085,7 +2085,7 @@ major 4
 minor 1
 release 1
 x 356
-y 428
+y 456
 w 120
 h 20
 font "helvetica-medium-r-12.0"
@@ -2105,7 +2105,7 @@ major 4
 minor 7
 release 0
 x 484
-y 428
+y 456
 w 80
 h 20
 controlPv "$(P)$(R)Feb0:Trig0:Map_RBV"
@@ -2130,7 +2130,7 @@ major 4
 minor 7
 release 0
 x 572
-y 428
+y 456
 w 76
 h 18
 controlPv "$(P)$(R)Feb0:Trig0:Map"
@@ -2160,7 +2160,7 @@ major 4
 minor 1
 release 1
 x 356
-y 452
+y 480
 w 120
 h 20
 font "helvetica-medium-r-12.0"
@@ -2180,7 +2180,7 @@ major 4
 minor 7
 release 0
 x 484
-y 452
+y 480
 w 80
 h 20
 controlPv "$(P)$(R)Feb0:Trig0:PulseWidthRaw_RBV"
@@ -2205,7 +2205,7 @@ major 4
 minor 7
 release 0
 x 572
-y 452
+y 480
 w 76
 h 18
 controlPv "$(P)$(R)Feb0:Trig0:PulseWidthRaw"
@@ -2718,7 +2718,7 @@ major 4
 minor 1
 release 1
 x 360
-y 692
+y 720
 w 120
 h 20
 font "helvetica-medium-r-12.0"
@@ -2738,7 +2738,7 @@ major 4
 minor 7
 release 0
 x 488
-y 692
+y 720
 w 80
 h 20
 controlPv "$(P)$(R)XpmMini:HwEnable_RBV"
@@ -2762,7 +2762,7 @@ major 4
 minor 7
 release 0
 x 576
-y 692
+y 720
 w 76
 h 18
 controlPv "$(P)$(R)XpmMini:HwEnable"
@@ -2791,7 +2791,7 @@ major 4
 minor 1
 release 1
 x 360
-y 716
+y 744
 w 120
 h 20
 font "helvetica-medium-r-12.0"
@@ -2811,7 +2811,7 @@ major 4
 minor 7
 release 0
 x 488
-y 716
+y 744
 w 80
 h 20
 controlPv "$(P)$(R)XpmMini:Config_L0Select_Enabled_RBV"
@@ -2835,7 +2835,7 @@ major 4
 minor 7
 release 0
 x 576
-y 716
+y 744
 w 76
 h 18
 controlPv "$(P)$(R)XpmMini:Config_L0Select_Enabled"
@@ -2864,7 +2864,7 @@ major 4
 minor 1
 release 1
 x 360
-y 740
+y 768
 w 120
 h 20
 font "helvetica-medium-r-12.0"
@@ -2884,7 +2884,7 @@ major 4
 minor 7
 release 0
 x 488
-y 740
+y 768
 w 80
 h 20
 controlPv "$(P)$(R)XpmMini:Link_RBV"
@@ -2909,7 +2909,7 @@ major 4
 minor 7
 release 0
 x 576
-y 740
+y 768
 w 76
 h 18
 controlPv "$(P)$(R)XpmMini:Link"
@@ -2939,7 +2939,7 @@ major 4
 minor 1
 release 1
 x 352
-y 672
+y 700
 w 50
 h 14
 font "helvetica-bold-r-12.0"
@@ -2959,7 +2959,7 @@ major 4
 minor 1
 release 1
 x 360
-y 764
+y 792
 w 120
 h 20
 font "helvetica-medium-r-12.0"
@@ -2979,7 +2979,7 @@ major 4
 minor 7
 release 0
 x 488
-y 764
+y 792
 w 80
 h 20
 controlPv "$(P)$(R)XpmMini:Config_L0Select_DestSel_RBV"
@@ -3004,7 +3004,7 @@ major 4
 minor 7
 release 0
 x 576
-y 764
+y 792
 w 76
 h 18
 controlPv "$(P)$(R)XpmMini:Config_L0Select_DestSel"
@@ -3034,7 +3034,7 @@ major 4
 minor 7
 release 0
 x 572
-y 624
+y 652
 w 76
 h 18
 controlPv "$(P)$(R)EvrV2:EnableReg"
@@ -3063,7 +3063,7 @@ major 4
 minor 7
 release 0
 x 484
-y 624
+y 652
 w 80
 h 20
 controlPv "$(P)$(R)EvrV2:EnableReg_RBV"
@@ -3087,7 +3087,7 @@ major 4
 minor 1
 release 1
 x 356
-y 624
+y 652
 w 120
 h 20
 font "helvetica-medium-r-12.0"
@@ -3595,5 +3595,126 @@ value {
   "EvrV2CoreTriggers"
 }
 autoSize
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 484
+y 124
+w 80
+h 20
+controlPv "$(P)$(R)AxiPcieCore:ScratchPad"
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+fgColor index 15
+fgAlarm
+bgColor index 12
+limitsFromDb
+nullColor index 40
+smartRefresh
+showUnits
+newPos
+objType "monitors"
+noExecuteClipMask
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 356
+y 124
+w 120
+h 20
+font "helvetica-medium-r-12.0"
+fontAlign "right"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "ScratchPad"
+}
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 572
+y 128
+w 76
+h 18
+controlPv "$(P)$(R)AxiPcieCore:ScratchPad"
+format "decimal"
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+fgColor index 25
+fgAlarm
+bgColor index 5
+editable
+autoHeight
+motifWidget
+limitsFromDb
+nullColor index 40
+smartRefresh
+fastUpdate
+useHexPrefix
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 484
+y 148
+w 80
+h 20
+controlPv "$(P)$(R)PgpMon:RxRemLinkReady"
+format "hex"
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+fgColor index 15
+fgAlarm
+bgColor index 12
+limitsFromDb
+nullColor index 40
+smartRefresh
+useHexPrefix
+newPos
+objType "monitors"
+noExecuteClipMask
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 356
+y 148
+w 120
+h 20
+font "helvetica-medium-r-12.0"
+fontAlign "right"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "PGP link ready"
+}
 endObjectProperties
 
