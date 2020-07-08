@@ -54,21 +54,3 @@ record( longin, "$(P)$(R)AxiPcieCore:UpTime" )
 	info( autosaveFields, "" )
 }
 
-# Timing
-record( bi, "$(P)$(R)Timing:Trig0:EnableReg_RBV" )
-{
-	field( DTYP, "RogueBI" )
-	field( INP,  "@B$(B) L$(L) ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TriggerEventManager.EvrV2CoreTriggers.EvrV2ChannelReg[0].EnableReg" )
-	field( SCAN, "$(SCAN=1 second)" )
-	info( autosaveFields, "" )
-}
-
-#record( bo, "$(P)$(R)Timing:Trig0:EnableReg" )
-#{
-#	field( DTYP, "RogueBO" )
-#	field( OUT,  "@B$(B) L$(L) ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TriggerEventManager.EvrV2CoreTriggers.EvrV2ChannelReg[0].EnableReg" )
-#	field( PINI, "YES" )
-#	field( FLNK, "$(P)$(R)Timing:Trig0:EnableReg_RBV" )
-#	field( TPRO, "2" )
-#}
-
