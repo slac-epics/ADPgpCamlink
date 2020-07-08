@@ -1,22 +1,3 @@
 # boolDevRogue.template
-
-record( bi, "$(P)$(R)$(NAME)_RBV" )
-{
-	field( DTYP, "RogueBI" )
-	field( INP,  "@B$(B) L$(L) $(PATH)" )
-	field( SCAN, "$(SCAN=1 second)" )
-	field( ZNAM, "Disabled" )
-	field( ONAM, "Enabled" )
-	info( autosaveFields, "" )
-}
-
-record( bo, "$(P)$(R)$(NAME)" )
-{
-	field( DTYP, "RogueBO" )
-	field( OUT,  "@B$(B) L$(L) $(PATH)" )
-	field( PINI, "YES" )
-	field( ZNAM, "Disable" )
-	field( ONAM, "Enable" )
-	field( FLNK, "$(P)$(R)$(NAME)_RBV" )
-	info( autosaveFields, "VAL" )
-}
+include "biDevRogue.template"
+include "boDevRogue.template"

@@ -1,0 +1,10 @@
+# biDevRogue.template
+record( bi, "$(P)$(R)$(NAME)_RBV" )
+{
+	field( DTYP, "RogueBI" )
+	field( INP,  "@B$(B) L$(L) $(PATH)" )
+	field( SCAN, "$(SCAN=1 second)" )
+	field( ZNAM, "Disabled" )
+	field( ONAM, "Enabled" )
+	info( autosaveFields, "" )
+}

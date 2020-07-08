@@ -1,0 +1,11 @@
+# boDevRogue.template
+record( bo, "$(P)$(R)$(NAME)" )
+{
+	field( DTYP, "RogueBO" )
+	field( OUT,  "@B$(B) L$(L) $(PATH)" )
+	field( PINI, "YES" )
+	field( ZNAM, "Disable" )
+	field( ONAM, "Enable" )
+	field( FLNK, "$(P)$(R)$(NAME)_RBV" )
+	info( autosaveFields, "VAL" )
+}
