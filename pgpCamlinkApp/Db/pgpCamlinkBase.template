@@ -647,6 +647,7 @@ record( longout, "$(P)$(R)SyncBadSyncCnt" )
 	info( archiveFields,  "VAL" )
 }
 
+# TODO: Normalize these FpgaVersion PV names
 record( longin, "$(P)$(R)PgpCoreFpgaVersion" )
 {
 	field( DTYP, "asynInt32" )

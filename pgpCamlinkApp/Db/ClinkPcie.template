@@ -10,34 +10,6 @@
 #	TIMEOUT			- Defaults to 1 sec
 #
 
-# AxiPcieCore
-record( longin, "$(P)$(R)AxiPcieCore:FpgaVersion" )
-{
-	field( DESC, "AxiPcieCore FPGA Version (show as hex)" )
-	field( DTYP, "RogueLI" )
-	field( INP, "@B$(B) L$(L) ClinkDevRoot.ClinkPcie.AxiPcieCore.AxiVersion.FpgaVersion" )
-	field( PINI, "YES" )
-	info( autosaveFields, "" )
-}
-
-record( longin, "$(P)$(R)AxiPcieCore:UpTime" )
-{
-	field( DTYP, "RogueLI" )
-	field( INP, "@B$(B) L$(L) ClinkDevRoot.ClinkPcie.AxiPcieCore.AxiVersion.UpTimeCnt" )
-	field( EGU,  "sec" )
-	field( SCAN, "$(SCAN=1 second)" )
-	info( autosaveFields, "" )
-}
-
-# EventBuilder
-record( longin, "$(P)$(R)EventBuilder:DataCnt0" )
-{
-	field( DTYP, "RogueLI" )
-	field( INP, "@B$(B) L$(L) ClinkDevRoot.ClinkPcie.Application.AppLane[$(L)].EventBuilder.DataCnt[0]" )
-	field( SCAN, "$(SCAN=1 second)" )
-	info( autosaveFields, "" )
-}
-
 # Clock Select
 record( mbbi, "$(P)$(R)Timing:ClkSel_RBV" )
 {

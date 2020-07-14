@@ -43,6 +43,28 @@ file boolDevRogue.template
 file liDevRogue.template
 {
 	{
+		NAME	= "AxiPcieCore:FpgaVersion",
+		PATH	= "ClinkDevRoot.ClinkPcie.AxiPcieCore.AxiVersion.FpgaVersion",
+		DESC	= "AxiPcieCore FPGA Version (show as hex)"
+	}
+	{
+		NAME	= "AxiPcieCore:UpTime",
+		PATH	= "ClinkDevRoot.ClinkPcie.AxiPcieCore.AxiVersion.UpTimeCnt",
+		EGU		= "sec"
+	}
+	{
+		NAME	= "EventBuilder:DataCnt0",
+		PATH	= "ClinkDevRoot.ClinkPcie.Application.AppLane[$(L)].EventBuilder.DataCnt[0]",
+	}
+	{
+		NAME	= "EventBuilder:DataCnt1",
+		PATH	= "ClinkDevRoot.ClinkPcie.Application.AppLane[$(L)].EventBuilder.DataCnt[1]"
+	}
+	{
+		NAME	= "PgpRx:Bandwidth",
+		PATH	= "ClinkDevRoot.ClinkPcie.Hsio.PgpRxAxisMon[0].Ch[1].RawBandwidth"
+	}
+	{
 		NAME	= "PgpRx:FrameCnt",
 		PATH	= "ClinkDevRoot.ClinkPcie.Hsio.PgpRxAxisMon[0].Ch[1].FrameCnt"
 	}
@@ -50,6 +72,11 @@ file liDevRogue.template
 		NAME	= "PgpRx:FrameRate",
 		PATH	= "ClinkDevRoot.ClinkPcie.Hsio.PgpRxAxisMon[0].Ch[1].FrameRate"
 		DESC	= "Incoming frame rate on PGP RX PHY"
+	}
+	{
+		NAME	= "PgpRx:FrameSize",
+		PATH	= "ClinkDevRoot.ClinkPcie.Hsio.PgpRxAxisMon[0].Ch[1].FrameSize"
+		DESC	= "Incoming frame size on PGP RX PHY"
 	}
 	{
 		NAME	= "Feb0:Trig0:TrigCnt",
