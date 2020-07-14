@@ -343,6 +343,14 @@ template<class R> int pgpClDev::readVarPath( const char * pszVarPath, R & valueR
 		printf( "%s error: %s!\n", functionName, e.what() );
 	}
 	//pVar->setLogLevel( rogue::Logging::Warning );
+
+	if ( DEBUG_PGP_CAMLINK >= 5 )
+	{
+		std::cout	<< functionName	<< ": " << varPath
+					<< ", typeid = "	<< typeid(R).name()
+					<< ", modelId = "	<< modelId2String(pVar->modelId()) << pVar->bitTotal()
+					<< ", valueRet = "	<< valueRet << std::endl;
+	}
 	return status;
 }
 
@@ -388,6 +396,14 @@ template<class R> int pgpClDev::writeVarPath( const char * pszVarPath, const R &
 	{
 		pVar->setValue( value );
 		status = 0;
+		R	valueRet;
+		pVar->getValue( valueRet );
+		if ( 1 || value != valueRet )
+		{
+			std::cout	<< functionName	<< ": " << varPath
+						<< ", setValue="	<< value
+						<< ", getValue="	<< valueRet << std::endl;
+		}
 	}
 	catch ( rogue::GeneralError & e )
 	{
