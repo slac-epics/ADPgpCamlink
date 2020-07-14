@@ -117,14 +117,15 @@ record( longin, "$(P)$(R)Feb0:Trig0:Rate" )
 	info( autosaveFields, "" )
 }
 
-record( bi, "$(P)$(R)Feb0:Trig0:InvCC_RBV" )
-{
-	field( DTYP, "RogueBI" )
-	field( INP,  "@B$(B) L$(L) ClinkDevRoot.ClinkFeb[0].TrigCtrl[0].InvCC" )
-	field( SCAN, "$(SCAN=1 second)" )
-	info( autosaveFields, "" )
-}
-
+#Moved to roguePcie.substitutions using boolDevRogue.template
+#record( bi, "$(P)$(R)Feb0:Trig0:InvCC_RBV" )
+#{
+#	field( DTYP, "RogueBI" )
+#	field( INP,  "@B$(B) L$(L) ClinkDevRoot.ClinkFeb[0].TrigCtrl[0].InvCC" )
+#	field( SCAN, "$(SCAN=1 second)" )
+#	info( autosaveFields, "" )
+#}
+#
 #record( bo, "$(P)$(R)Feb0:Trig0:InvCC" )
 #{
 #	field( DTYP, "RogueBO" )

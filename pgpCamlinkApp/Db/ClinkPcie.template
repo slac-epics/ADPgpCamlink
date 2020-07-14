@@ -76,7 +76,7 @@ record( mbbo, "$(P)$(R)Timing:ModeSel" )
 	field( PINI, "YES" )
 	field( ZRVL, "0" ) field( ZRST, "Lcls1Protocol" )
 	field( ONVL, "1" ) field( ONST, "Lcls2Protocol" )
-	field( FLNK, "$(P)$(R)Timing:ClkSel_RBV" )
+	field( FLNK, "$(P)$(R)Timing:ModeSel_RBV" )
 #	info( autosaveFields, "VAL" )
 }
 
@@ -102,20 +102,26 @@ record( mbbo, "$(P)$(R)Timing:ModeSelEn" )
 }
 
 # XpmMini LCLS-II Rate Select
-record( mbbi, "$(P)$(R)Timing:Config_L0Select_RateSel_RBV" )
+record( mbbi, "$(P)$(R)XpmMini:Config_L0Select_RateSel_RBV" )
 {
 	field( DESC, "XpmMini LCLS-II Rate Select" )
 	field( DTYP, "RogueMBBI" )
-	field( INP,  "@B$(B) L$(L) ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TimingFrameRx.Config_L0Select_RateSel" )
-	field( ZRVL, "0" ) field( ZRST, "LCLS-I  Clock" )
-	field( ONVL, "1" ) field( ONST, "LCLS-II Clock" )
+	field( INP,  "@B$(B) L$(L) ClinkDevRoot.ClinkPcie.Hsio.TimingRx.XpmMiniWrapper.XpmMini.Config_L0Select_RateSel" )
+	field( ZRVL, "0" ) field( ZRST, "929 kHz" )
+	field( ONVL, "1" ) field( ONST, " 71 kHz" )
+	field( TWVL, "2" ) field( TWST, " 10 kHz" )
+	field( THVL, "3" ) field( THST, "  1 kHz" )
+	field( FRVL, "4" ) field( FRST, "100 Hz" )
+	field( FVVL, "5" ) field( FVST, " 10 Hz" )
+	field( SXVL, "6" ) field( SXST, "  1 Hz" )
+	field( SVVL, "32768" ) field( SVST, "Undefined" )
 	info( autosaveFields, "" )
 }
 
-record( mbbo, "$(P)$(R)Timing:Config_L0Select_RateSel" )
+record( mbbo, "$(P)$(R)XpmMini:Config_L0Select_RateSel" )
 {
 	field( DTYP, "RogueMBBO" )
-	field( OUT,  "@B$(B) L$(L) ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TimingFrameRx.Config_L0Select_RateSel" )
+	field( OUT,  "@B$(B) L$(L) ClinkDevRoot.ClinkPcie.Hsio.TimingRx.XpmMiniWrapper.XpmMini.Config_L0Select_RateSel" )
 	field( PINI, "YES" )
 	field( ZRVL, "0" ) field( ZRST, "929 kHz" )
 	field( ONVL, "1" ) field( ONST, " 71 kHz" )
@@ -125,6 +131,6 @@ record( mbbo, "$(P)$(R)Timing:Config_L0Select_RateSel" )
 	field( FVVL, "5" ) field( FVST, " 10 Hz" )
 	field( SXVL, "6" ) field( SXST, "  1 Hz" )
 	field( SVVL, "32768" ) field( SVST, "Undefined" )
-	field( FLNK, "$(P)$(R)Timing:Config_L0Select_RateSel_RBV" )
+	field( FLNK, "$(P)$(R)XpmMini:Config_L0Select_RateSel_RBV" )
 #	info( autosaveFields, "VAL" )
 }
