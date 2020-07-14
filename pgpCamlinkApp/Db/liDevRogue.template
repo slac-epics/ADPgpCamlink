@@ -1,7 +1,9 @@
 # liDevRogue.template
 record( longin, "$(P)$(R)$(NAME)_RBV" )
 {
+	field( DESC, "$(DESC=?)" )
 	field( DTYP, "RogueLI" )
 	field( INP,  "@B$(B) L$(L) $(PATH)" )
+	field( SCAN, "$(SCAN=1 second)" )
 	info( autosaveFields, "" )
 }

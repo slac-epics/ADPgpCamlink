@@ -1,3 +1,7 @@
 # boolDevRogue.template
 include "biDevRogue.template"
 include "boDevRogue.template"
+record( bo, "$(P)$(R)$(NAME)" )
+{
+	field( FLNK, "$(P)$(R)$(NAME)_RBV" )
+}

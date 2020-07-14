@@ -1,3 +1,7 @@
 # longDevRogue.template
 include "liDevRogue.template"
 include "loDevRogue.template"
+record( longout, "$(P)$(R)$(NAME)" )
+{
+	field( FLNK, "$(P)$(R)$(NAME)_RBV" )
+}
