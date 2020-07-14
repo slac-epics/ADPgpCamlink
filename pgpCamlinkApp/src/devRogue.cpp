@@ -90,17 +90,8 @@ int devRogue_init_record(
 	}
 	record->dpvt				= pRogueInfo;
 
-#if 0
-	status = devRogue_init_record_specialized( record );
-	if ( status )
-	{
-		record->dpvt = 0;
-		delete              pRogueInfo;
-
-		return devRogue_bad_field( record, "cannot find record name", sinp );
-	}
-#endif
-	return 0;
+	// Do not convert
+	return 2;
 }
 
 template < class R, class V >
@@ -124,6 +115,10 @@ int devRogue_read_record( R * record, V & valueRet )
 		record->nsta = UDF_ALARM;
 		record->nsev = INVALID_ALARM;
 		return -1;
+	}
+	else
+	{
+		record->udf = FALSE;
 	}
 	return 0;
 }
@@ -199,12 +194,12 @@ static long init_li( struct dbCommon * pCommon )
 static long init_li( void * pCommon )
 #endif
 {
-	longinRecord	*	pRecord	= reinterpret_cast < longinRecord * >( pCommon );
-	int             status	= devRogue_init_record( pRecord, pRecord->inp );
+	longinRecord	*	pRecord		= reinterpret_cast < longinRecord * >( pCommon );
+	int             	status		= devRogue_init_record( pRecord, pRecord->inp );
+	rogue_info_t	*	pRogueInfo	= reinterpret_cast < rogue_info_t * >( pRecord->dpvt );
 	if ( status == 0 )
 	{
-		bool	signedValue	= false;
-		if ( signedValue )
+		if ( pRogueInfo->m_fSignedValue )
 		{
 			int64_t		rogueValue;
 			devRogue_read_record( pRecord, rogueValue );
@@ -224,9 +219,9 @@ static long init_li( void * pCommon )
 #ifdef USE_TYPED_DSET
 static long read_li( longinRecord	*	pRecord )
 {
-	long	status = 0;
-	bool	signedValue	= false;
-	if ( signedValue )
+	long				status		= 0;
+	rogue_info_t	*	pRogueInfo	= reinterpret_cast < rogue_info_t * >( pRecord->dpvt );
+	if ( pRogueInfo->m_fSignedValue )
 	{
 		int64_t		rogueValue;
 		status = devRogue_read_record( pRecord, rogueValue );
@@ -245,10 +240,10 @@ static long read_li( longinRecord	*	pRecord )
 static long read_li( void	*	record )
 {
 	const char 		*	functionName = "read_li";
-	long				status = 0;
-	longinRecord	*	pRecord	= reinterpret_cast <longinRecord *>( record );
-	bool				signedValue	= false;
-	if ( signedValue )
+	long				status		= 0;
+	longinRecord	*	pRecord		= reinterpret_cast <longinRecord *>( record );
+	rogue_info_t	*	pRogueInfo	= reinterpret_cast < rogue_info_t * >( pRecord->dpvt );
+	if ( pRogueInfo->m_fSignedValue )
 	{
 		int64_t		rogueValue	= -1L;
 		status = devRogue_read_record( pRecord, rogueValue );
@@ -282,7 +277,7 @@ struct
 	dset				common;
 	long (*read_li)(	struct longinRecord	*	pRec );
 #endif
-}	dsetRogueLi =
+}	dsetRogueLI =
 #ifdef USE_TYPED_DSET
 { { 5, NULL, NULL, init_li, NULL }, read_li };
 #else
@@ -290,7 +285,7 @@ struct
 #endif
 
 
-epicsExportAddress( dset, dsetRogueLi );
+epicsExportAddress( dset, dsetRogueLI );
 
 #ifdef __cplusplus
 }
@@ -470,7 +465,7 @@ static long write_ao( void	*	record )
 
 	const char 	*	functionName = "write_ao";
 	if ( DEBUG_ROGUE_DEV >= 3 )
-		printf( "%s: status %d, value %u\n", functionName, status, pRecord->val );
+		printf( "%s: status %d, value %f\n", functionName, status, pRecord->val );
 	return status;
 }
 
@@ -512,7 +507,7 @@ static long init_bi( void * pCommon )
 	{
 		bool	rogueValue;
 		devRogue_read_record( pRecord, rogueValue );
-		pRecord->val = static_cast<epicsEnum16>( rogueValue );
+		pRecord->rval = static_cast<epicsEnum16>( rogueValue );
 
 		//pRecord->linr = 0;		// prevent conversions
 	}
@@ -525,7 +520,7 @@ static long read_bi( biRecord	*	pRecord )
 	long	status = 0;
 	bool	rogueValue;
 	devRogue_read_record( pRecord, rogueValue );
-	pRecord->val = static_cast<epicsEnum16>( rogueValue );
+	pRecord->rval = static_cast<epicsEnum16>( rogueValue );
 	//pRecord->linr = 0;		// prevent conversions
 	return status;
 }
@@ -537,7 +532,7 @@ static long read_bi( void	*	record )
 	biRecord		*	pRecord	= reinterpret_cast <biRecord *>( record );
 	bool				rogueValue;
 	devRogue_read_record( pRecord, rogueValue );
-	pRecord->val = static_cast<epicsEnum16>( rogueValue );
+	pRecord->rval = static_cast<epicsEnum16>( rogueValue );
 	if ( DEBUG_ROGUE_DEV >= 4 )
 		printf( "%s: status %ld, biValue %d\n", functionName, status, pRecord->val );
 	return status;
@@ -636,7 +631,7 @@ static long init_mbbi( void * pCommon )
 	{
 		uint64_t	rogueValue;
 		devRogue_read_record( pRecord, rogueValue );
-		pRecord->val = static_cast<epicsEnum16>( rogueValue );
+		pRecord->rval = static_cast<epicsEnum16>( rogueValue );
 	}
 	return status;
 }
@@ -647,7 +642,7 @@ static long read_mbbi( mbbiRecord	*	pRecord )
 	long		status = 0;
 	uint64_t	rogueValue;
 	devRogue_read_record( pRecord, rogueValue );
-	pRecord->val = static_cast<epicsEnum16>( rogueValue );
+	pRecord->rval = static_cast<epicsEnum16>( rogueValue );
 	return status;
 }
 #else
@@ -658,7 +653,7 @@ static long read_mbbi( void	*	record )
 	mbbiRecord		*	pRecord	= reinterpret_cast <mbbiRecord *>( record );
 	uint64_t			rogueValue;
 	devRogue_read_record( pRecord, rogueValue );
-	pRecord->val = static_cast<epicsEnum16>( rogueValue );
+	pRecord->rval = static_cast<epicsEnum16>( rogueValue );
 	if ( DEBUG_ROGUE_DEV >= 4 )
 		printf( "%s: status %ld, mbbiValue %d\n", functionName, status, pRecord->val );
 	return status;
