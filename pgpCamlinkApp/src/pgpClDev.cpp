@@ -15,6 +15,7 @@
 
 #include <stdio.h>
 #include <iostream>
+#include <fstream>
 #include <typeinfo>
 
 // rogue headers
@@ -477,6 +478,44 @@ void pgpClDev::setVariable( const char * pszVarPath, int value )
 	{
 		printf( "pgpClDev error: %s not found!\n", varPath.c_str() );
 	}
+}
+
+void pgpClDev::dumpVariables( const char * pszFilePath, bool fWriteOnly, bool fForceRead, bool verbose )
+{
+	const char *	functionName = "pgpClDev::dumpVariables";
+
+	std::ofstream	dumpFile;
+	dumpFile.open( pszFilePath, ios_base::out );
+	if ( ! dumpFile.is_open() )
+	{
+		printf( "%s Error: Unable to open write access for file:\n%s\n", functionName, pszFilePath );
+		return;
+	}
+
+#if 0
+	if ( ! m_pRogueLib )
+	{
+		printf( "%s Error: Unable to access rogue lib!\n", functionName );
+		return;
+	}
+
+	const mapVarPtr_t &	mapVars		= m_pRogueLib->getVariableList();
+#else
+	const mapVarPtr_t &	mapVars		= getVariableList();
+#endif
+	if ( mapVars.size() == 0 )
+	{
+		printf( "%s Error: Rogue VariableList is empty!\n", functionName );
+		return;
+	}
+
+	dumpFile << functionName << ": " << mapVars.size() << std::endl;
+	for ( mapVarPtr_t::const_iterator vit = mapVars.begin(); vit != mapVars.end(); ++vit )
+	{
+		dumpFile << vit->second->getDumpValue( fForceRead );
+	}
+
+	dumpFile.close();
 }
 
 void pgpClDev::showVariable( const char * pszVarPath, bool verbose )

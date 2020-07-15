@@ -72,6 +72,10 @@ public:		//	Public member functions
 	void connect( );
 	void disconnect( );
 
+	/// dumpVariables() allows dumping the value of rogue variables to a file
+	void dumpVariables( const char * pszFilePath, bool fWriteOnly, bool fForceRead, bool verbose );
+
+	// Functions to allow setting or showing the value of rogue variables
 	void setVariable(  const char * pszVarPath, int value );
 	void showVariable( const char * pszVarPath, bool verbose );
 	void showVariableList( bool verbose );
