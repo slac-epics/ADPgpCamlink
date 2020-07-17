@@ -15,7 +15,12 @@ file boolDevRogue.template
 	}
 	{
 		NAME	= "EvrV2:EnableReg",
+		DESC	= "Enables the EvrV2 Channel logic"
 		PATH	= "ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TriggerEventManager.EvrV2CoreTriggers.EvrV2ChannelReg[0].EnableReg"
+	}
+	{
+		NAME	= "EvrV2:EnableFebTrig",
+		PATH	= "ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TriggerEventManager.EvrV2CoreTriggers.EvrV2TriggerReg[0].EnableTrig"
 	}
 	{
 		NAME	= "Feb0:Trig0:InvCC",
@@ -61,6 +66,16 @@ file liDevRogue.template
 		PATH	= "ClinkDevRoot.ClinkPcie.Application.AppLane[$(L)].EventBuilder.DataCnt[1]"
 	}
 	{
+		NAME	= "Feb0:Trig0:TrigCnt",
+		PATH	= "ClinkDevRoot.ClinkFeb[0].TrigCtrl[0].TrigCnt"
+		DESC	= "Feb0 Lane0 TriggerCtrl count"
+	}
+	{
+		NAME	= "Feb0:Trig0:TrigRate",
+		PATH	= "ClinkDevRoot.ClinkFeb[0].TrigCtrl[0].TrigRate"
+		DESC	= "Feb0 Lane0 TriggerCtrl rate"
+	}
+	{
 		NAME	= "PgpRx:Bandwidth",
 		PATH	= "ClinkDevRoot.ClinkPcie.Hsio.PgpRxAxisMon[0].Ch[1].RawBandwidth"
 	}
@@ -79,14 +94,28 @@ file liDevRogue.template
 		DESC	= "Incoming frame size on PGP RX PHY"
 	}
 	{
-		NAME	= "Feb0:Trig0:TrigCnt",
-		PATH	= "ClinkDevRoot.ClinkFeb[0].TrigCtrl[0].TrigCnt"
-		DESC	= "Feb0 Lane0 TriggerCtrl count"
+		NAME	= "Timing:sofCount",
+		PATH	= "ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TimingFrameRx.sofCount"
+		DESC	= "Count for Start of Timing Frame"
 	}
 	{
-		NAME	= "Feb0:Trig0:TrigRate",
-		PATH	= "ClinkDevRoot.ClinkFeb[0].TrigCtrl[0].TrigRate"
-		DESC	= "Feb0 Lane0 TriggerCtrl rate"
+		NAME	= "Timing:eofCount",
+		PATH	= "ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TimingFrameRx.eofCount"
+		DESC	= "Count for End of Timing Frame"
+	}
+	{
+		NAME	= "Timing:FidCount",
+		PATH	= "ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TimingFrameRx.FidCount"
+		DESC	= "Fiducial Count"
+	}
+	{
+		NAME	= "Timing:RxLinkUp",
+		PATH	= "ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TimingFrameRx.RxLinkUp"
+		DESC	= "Timing fiber link status"
+	}
+	{
+		NAME	= "EvrV2Channel:Count",
+		PATH	= "ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TriggerEventManager.EvrV2CoreTriggers.EvrV2ChannelReg[0].Count"
 	}
 	{
 		NAME	= "Timing:TriggerCount",
@@ -110,8 +139,23 @@ file longDevRogue.template
 		PATH	= "ClinkDevRoot.ClinkPcie.AxiPcieCore.AxiVersion.ScratchPad"
 	}
 	{
+		NAME	= "EvrV2:EventCode",
+		PATH	= "ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TriggerEventManager.EvrV2CoreTriggers.EvrV2ChannelReg[0].RateSel"
+	}
+	{
+		NAME	= "EvrV2:FebTrigWidth",
+		DESC	= "Must be non-zero, recommend set to 1"
+		PATH	= "ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TriggerEventManager.EvrV2CoreTriggers.EvrV2TriggerReg[0].Width"
+	}
+	{
 		NAME	= "EvrV2:Polarity",
 		PATH	= "ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TriggerEventManager.EvrV2CoreTriggers.EvrV2TriggerReg[0].Polarity"
+		INFO	= "info( autosaveFields, \"VAL\" )"
+	}
+	{
+		NAME	= "EvrV2:Source",
+		PATH	= "ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TriggerEventManager.EvrV2CoreTriggers.EvrV2TriggerReg[0].Source"
+		INFO	= "info( autosaveFields, \"VAL\" )"
 	}
 	{
 		NAME	= "Timing:RxDown",
@@ -122,12 +166,8 @@ file longDevRogue.template
 		PATH	= "ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TimingFrameRx.RxPllReset"
 	}
 	{
-		NAME	= "Trigger:PauseThreshold",
-		PATH	= "ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TriggerEventManager.TriggerEventBuffer[0].PauseThreshold"
-	}
-	{
 		NAME	= "Trigger:TriggerDelay",
-		PATH	= "ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TriggerEventManager.TriggerEventBuffer[0].TriggerDelay"
+		PATH	= "ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TriggerEventManager.EvrV2CoreTriggers.EvrV2TriggerReg[0].Delay"
 	}
 	{
 		NAME	= "XpmMini:Config_L0Select_DestSel",

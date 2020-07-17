@@ -120,9 +120,109 @@ record( seq, "$(CAM):GoToFullMode" )
 #	info( autosaveFields, "DESC DOL1 DLY1 DOL2 DLY2 DOL3 DLY3 DOL4 DLY4 DOL5 DLY5 DOL6 DLY6 DOL7 DLY7 DOL8 DLY8 DOL9 DLY9 DOLA DLYA" )
 }
 
+# Select LCLS-I Timing
+record( seq, "$(CAM):SeqLcls1Timing" )
+{
+	field( DESC, "Select LCLS-I Timing" )
+
+	# Disable MiniTpg and set ModeSelEn to UseClkSel
+	field( DLY1, "0" ) field( DOL1, "0" ) field( LNK1, "$(CAM):Timing:UseMiniTpg    PP NMS" )
+	field( DLY2, "0" ) field( DOL2, "0" ) field( LNK2, "$(CAM):Timing:ModeSelEn     PP NMS" )
+
+	# Assert RxPllReset for 1 sec 
+	field( DLY3, "0" ) field( DOL3, "1" ) field( LNK3, "$(CAM):Timing:RxPllReset    PP NMS" )
+	field( DLY4, "1" ) field( DOL4, "0" ) field( LNK4, "$(CAM):Timing:RxPllReset    PP NMS" )
+
+	# Select LCLS-I Clock
+	field( DLY5, "0" ) field( DOL5, "0" ) field( LNK5, "$(CAM):Timing:ClkSel        PP NMS" )
+
+	# Assert C_RxReset for 1 sec 
+	field( DLY6, "0" ) field( DOL6, "1" ) field( LNK6, "$(CAM):Timing:C_RxReset     PP NMS" )
+	field( DLY7, "1" ) field( DOL7, "0" ) field( LNK7, "$(CAM):Timing:C_RxReset     PP NMS" )
+
+	# Reset the latching register
+	field( DLY8, ".1") field( DOL8, "0" ) field( LNK8, "$(CAM):Timing:RxDown        PP NMS" )
+
+	# Configure EvrV2 registers
+	field( DLY9, "0" ) field( DOL9, "1" ) field( LNK9, "$(CAM):EvrV2:EnableReg      PP NMS" )
+	field( DLYA, "0" ) field( DOLA, "2" ) field( LNKA, "$(CAM):EvrV2:RateType       PP NMS" )
+	field( DLYB, "0" ) field( DOLB, "2" ) field( LNKB, "$(CAM):EvrV2:DestType       PP NMS" )
+	field( DLYC, "0" ) field( DOLC, "1" ) field( LNKC, "$(CAM):EvrV2:EnableTrig     PP NMS" )
+	field( DLYD, "0" ) field( DOLD, "1" ) field( LNKD, "$(CAM):EvrV2:FebTrigWidth   PP NMS" )
+
+	info( autosaveFields, "DESC" )
+	#	info( autosaveFields, "DESC DOL1 DLY1 DOL2 DLY2 DOL3 DLY3 DOL4 DLY4 DOL5 DLY5 DOL6 DLY6 DOL7 DLY7 DOL8 DLY8 DOL9 DLY9 DOLA DLYA" )
+}
+
+# Select TpgMini Internally generated LCLS-I Clock
+record( seq, "$(CAM):SeqTpgMiniTiming" )
+{
+	field( DESC, "Select TpgMini Internal LCLS-I Clock" )
+
+	# Disable MiniTpg and set ModeSelEn to UseClkSel
+	field( DLY1, "0" ) field( DOL1, "0" ) field( LNK1, "$(CAM):Timing:UseMiniTpg    PP NMS" )
+	field( DLY2, "0" ) field( DOL2, "0" ) field( LNK2, "$(CAM):Timing:ModeSelEn     PP NMS" )
+
+	# Assert RxPllReset for 1 sec 
+	field( DLY3, "0" ) field( DOL3, "1" ) field( LNK3, "$(CAM):Timing:RxPllReset    PP NMS" )
+	field( DLY4, "1" ) field( DOL4, "0" ) field( LNK4, "$(CAM):Timing:RxPllReset    PP NMS" )
+
+	# Select LCLS-I Clock
+	field( DLY5, "0" ) field( DOL5, "0" ) field( LNK5, "$(CAM):Timing:ClkSel        PP NMS" )
+
+	# Assert C_RxReset for 1 sec 
+	field( DLY6, "0" ) field( DOL6, "1" ) field( LNK6, "$(CAM):Timing:C_RxReset     PP NMS" )
+	field( DLY7, "1" ) field( DOL7, "0" ) field( LNK7, "$(CAM):Timing:C_RxReset     PP NMS" )
+
+	# Reset the latching register
+	field( DLY8, ".1") field( DOL8, "0" ) field( LNK8, "$(CAM):Timing:RxDown        PP NMS" )
+
+	# Configure EvrV2 registers
+	field( DLY9, "0" ) field( DOL9, "1" ) field( LNK9, "$(CAM):EvrV2:EnableReg      PP NMS" )
+	field( DLYA, "0" ) field( DOLA, "2" ) field( LNKA, "$(CAM):EvrV2:RateType       PP NMS" )
+	field( DLYB, "0" ) field( DOLB, "2" ) field( LNKB, "$(CAM):EvrV2:DestType       PP NMS" )
+	field( DLYC, "0" ) field( DOLC, "1" ) field( LNKC, "$(CAM):EvrV2:EnableTrig     PP NMS" )
+	field( DLYD, "0" ) field( DOLD, "1" ) field( LNKD, "$(CAM):EvrV2:FebTrigWidth   PP NMS" )
+
+	# Enable MiniTpg
+	field( DLYF, "0" ) field( DOLF, "1" ) field( LNKF, "$(CAM):Timing:UseMiniTpg    PP NMS" )
+
+	info( autosaveFields, "DESC" )
+	#	info( autosaveFields, "DESC DOL1 DLY1 DOL2 DLY2 DOL3 DLY3 DOL4 DLY4 DOL5 DLY5 DOL6 DLY6 DOL7 DLY7 DOL8 DLY8 DOL9 DLY9 DOLA DLYA" )
+}
+
+# Select LCLS-II Timing
+record( seq, "$(CAM):SeqLcls2Timing" )
+{
+	field( DESC, "Select LCLS-II Timing" )
+
+	# Disable MiniTpg and set ModeSelEn to UseClkSel
+	field( DLY1, "0" ) field( DOL1, "0" ) field( LNK1, "$(CAM):Timing:UseMiniTpg    PP NMS" )
+	field( DLY2, "0" ) field( DOL2, "0" ) field( LNK2, "$(CAM):Timing:ModeSelEn     PP NMS" )
+
+	# Assert RxPllReset for 1 sec 
+	field( DLY3, "0" ) field( DOL3, "1" ) field( LNK3, "$(CAM):Timing:RxPllReset    PP NMS" )
+	field( DLY4, "1" ) field( DOL4, "0" ) field( LNK4, "$(CAM):Timing:RxPllReset    PP NMS" )
+
+	# Select LCLS-II Clock
+	field( DLY5, "1" ) field( DOL5, "1" ) field( LNK5, "$(CAM):Timing:ClkSel        PP NMS" )
+
+	# Assert C_RxReset for 1 sec 
+	field( DLY6, "0" ) field( DOL6, "1" ) field( LNK6, "$(CAM):Timing:C_RxReset     PP NMS" )
+	field( DLY7, "1" ) field( DOL7, "0" ) field( LNK7, "$(CAM):Timing:C_RxReset     PP NMS" )
+
+	# Reset the latching register
+	field( DLY8, ".1") field( DOL8, "0" ) field( LNK8, "$(CAM):Timing:RxDown        PP NMS" )
+
+	info( autosaveFields, "DESC" )
+	#	info( autosaveFields, "DESC DOL1 DLY1 DOL2 DLY2 DOL3 DLY3 DOL4 DLY4 DOL5 DLY5 DOL6 DLY6 DOL7 DLY7 DOL8 DLY8 DOL9 DLY9 DOLA DLYA" )
+}
+
 # Select XpmMini Internally generated LCLS-II Clock
 record( seq, "$(CAM):SeqXpmMiniTiming" )
 {
+	field( DESC, "Select XpmMini Internal LCLS-II Clock" )
+
 	# Disable MiniTpg and set ModeSelEn to UseClkSel
 	field( DLY1, "0" ) field( DOL1, "0" ) field( LNK1, "$(CAM):Timing:UseMiniTpg    PP NMS" )
 	field( DLY2, "0" ) field( DOL2, "0" ) field( LNK2, "$(CAM):Timing:ModeSelEn     PP NMS" )

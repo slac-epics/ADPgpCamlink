@@ -73,6 +73,124 @@ record( mbbo, "$(P)$(R)Timing:ModeSelEn" )
 #	info( autosaveFields, "VAL" )
 }
 
+# LCLS-I Dest Select
+record( mbbi, "$(P)$(R)EvrV2:DestSel_RBV" )
+{
+	field( DESC, "LCLS-I Dest Select" )
+	field( INP,  "@B$(B) L$(L) ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TriggerEventManager.EvrV2CoreTriggers.EvrV2ChannelReg[0].DestSel" )
+	field( DTYP, "RogueMBBI" )
+	field( ZRVL, "0" ) field( ZRST, "Inclusive" )
+	field( ONVL, "1" ) field( ONST, "Exclusive" )
+	field( TWVL, "2" ) field( TWST, "Don't care" )
+	field( THVL, "3" ) field( THST, "Reserved" )
+	info( autosaveFields, "" )
+}
+
+record( mbbo, "$(P)$(R)EvrV2:DestSel" )
+{
+	field( DESC, "LCLS-I Dest Select" )
+	field( OUT,  "@B$(B) L$(L) ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TriggerEventManager.EvrV2CoreTriggers.EvrV2ChannelReg[0].DestSel" )
+	field( DTYP, "RogueMBBO" )
+	field( ZRVL, "0" ) field( ZRST, "Inclusive" )
+	field( ONVL, "1" ) field( ONST, "Exclusive" )
+	field( TWVL, "2" ) field( TWST, "Don't care" )
+	field( THVL, "3" ) field( THST, "Reserved" )
+	field( PINI, "YES" )
+	field( FLNK, "$(P)$(R)EvrV2:DestSel_RBV" )
+#	info( autosaveFields, "VAL" )
+}
+
+# LCLS-I Dest Type
+record( mbbi, "$(P)$(R)EvrV2:DestType_RBV" )
+{
+	field( DESC, "LCLS-I Dest Type" )
+	field( INP,  "@B$(B) L$(L) ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TriggerEventManager.EvrV2CoreTriggers.EvrV2ChannelReg[0].DestType" )
+	field( DTYP, "RogueMBBI" )
+	field( ZRVL, "0" ) field( ZRST, "BeamRequest" )
+	field( ONVL, "1" ) field( ONST, "NotBeamRequest" )
+	field( TWVL, "2" ) field( TWST, "All" )
+	field( THVL, "3" ) field( THST, "Invalid" )
+	info( autosaveFields, "" )
+}
+
+record( mbbo, "$(P)$(R)EvrV2:DestType" )
+{
+	field( DESC, "LCLS-I Dest Type" )
+	field( OUT,  "@B$(B) L$(L) ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TriggerEventManager.EvrV2CoreTriggers.EvrV2ChannelReg[0].DestType" )
+	field( DTYP, "RogueMBBO" )
+	field( ZRVL, "0" ) field( ZRST, "BeamRequest" )
+	field( ONVL, "1" ) field( ONST, "NotBeamRequest" )
+	field( TWVL, "2" ) field( TWST, "All" )
+	field( THVL, "3" ) field( THST, "Invalid" )
+	field( PINI, "YES" )
+	field( FLNK, "$(P)$(R)EvrV2:DestType_RBV" )
+#	info( autosaveFields, "VAL" )
+}
+
+# LCLS-I Rate Type
+record( mbbi, "$(P)$(R)EvrV2:RateType_RBV" )
+{
+	field( DESC, "LCLS-I Rate Type" )
+	field( INP,  "@B$(B) L$(L) ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TriggerEventManager.EvrV2CoreTriggers.EvrV2ChannelReg[0].RateType" )
+	field( DTYP, "RogueMBBI" )
+	field( ZRVL, "0" ) field( ZRST, "FixedRates" )
+	field( ONVL, "1" ) field( ONST, "AcRates" )
+	field( TWVL, "2" ) field( TWST, "ControlWord" )
+	field( THVL, "3" ) field( THST, "INVALID" )
+	info( autosaveFields, "" )
+}
+
+record( mbbo, "$(P)$(R)EvrV2:RateType" )
+{
+	field( DESC, "LCLS-I Rate Type" )
+	field( OUT,  "@B$(B) L$(L) ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TriggerEventManager.EvrV2CoreTriggers.EvrV2ChannelReg[0].RateType" )
+	field( DTYP, "RogueMBBO" )
+	field( ZRVL, "0" ) field( ZRST, "FixedRates" )
+	field( ONVL, "1" ) field( ONST, "AcRates" )
+	field( TWVL, "2" ) field( TWST, "ControlWord" )
+	field( THVL, "3" ) field( THST, "INVALID" )
+	field( PINI, "YES" )
+	field( FLNK, "$(P)$(R)EvrV2:RateType_RBV" )
+#	info( autosaveFields, "VAL" )
+}
+
+# LCLS-I Rate Select
+record( longin, "$(P)$(R)EvrV2:RateSel_RBV" )
+{
+	field( DESC, "LCLS-I Rate Select" )
+	field( INP,  "@B$(B) L$(L) ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TriggerEventManager.EvrV2CoreTriggers.EvrV2ChannelReg[0].RateSel" )
+	field( DTYP, "RogueLI" )
+#	field( DTYP, "RogueMBBI" )
+#	field( ZRVL, "0" ) field( ZRST, "929 kHz" )
+#	field( ONVL, "1" ) field( ONST, " 71 kHz" )
+#	field( TWVL, "2" ) field( TWST, " 10 kHz" )
+#	field( THVL, "3" ) field( THST, "  1 kHz" )
+#	field( FRVL, "4" ) field( FRST, "100 Hz" )
+#	field( FVVL, "5" ) field( FVST, " 10 Hz" )
+#	field( SXVL, "6" ) field( SXST, "  1 Hz" )
+#	field( SVVL, "32768" ) field( SVST, "Undefined" )
+	info( autosaveFields, "" )
+}
+
+record( longout, "$(P)$(R)EvrV2:RateSel" )
+{
+	field( DESC, "LCLS-I Rate Select" )
+	field( OUT,  "@B$(B) L$(L) ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TriggerEventManager.EvrV2CoreTriggers.EvrV2ChannelReg[0].RateSel" )
+	field( DTYP, "RogueLO" )
+#	field( DTYP, "RogueMBBO" )
+#	field( ZRVL, "0" ) field( ZRST, "929 kHz" )
+#	field( ONVL, "1" ) field( ONST, " 71 kHz" )
+#	field( TWVL, "2" ) field( TWST, " 10 kHz" )
+#	field( THVL, "3" ) field( THST, "  1 kHz" )
+#	field( FRVL, "4" ) field( FRST, "100 Hz" )
+#	field( FVVL, "5" ) field( FVST, " 10 Hz" )
+#	field( SXVL, "6" ) field( SXST, "  1 Hz" )
+#	field( SVVL, "32768" ) field( SVST, "Undefined" )
+	field( PINI, "YES" )
+	field( FLNK, "$(P)$(R)EvrV2:RateSel_RBV" )
+#	info( autosaveFields, "VAL" )
+}
+
 # XpmMini LCLS-II Rate Select
 record( mbbi, "$(P)$(R)XpmMini:Config_L0Select_RateSel_RBV" )
 {
@@ -92,6 +210,7 @@ record( mbbi, "$(P)$(R)XpmMini:Config_L0Select_RateSel_RBV" )
 
 record( mbbo, "$(P)$(R)XpmMini:Config_L0Select_RateSel" )
 {
+	field( DESC, "XpmMini LCLS-II Rate Select" )
 	field( DTYP, "RogueMBBO" )
 	field( OUT,  "@B$(B) L$(L) ClinkDevRoot.ClinkPcie.Hsio.TimingRx.XpmMiniWrapper.XpmMini.Config_L0Select_RateSel" )
 	field( PINI, "YES" )
