@@ -420,57 +420,51 @@ template int pgpClDev::writeVarPath( const char * pszVarPath, const double		& va
 template int pgpClDev::writeVarPath( const char * pszVarPath, const int64_t		& value );
 template int pgpClDev::writeVarPath( const char * pszVarPath, const uint64_t	& value );
 
-// TODO: Replace this function w/ template<class R> int pgpClDev::writeVarPath()
-void pgpClDev::setVariable( const char * pszVarPath, int value )
+
+void pgpClDev::setVariable( const char * pszVarPath, double value, bool verbose )
 {
-	bool			verbose = true;
+	uint64_t	u64Value;
+	int64_t		i64Value;
+	bool		bValue;
+	float		fValue;
+	double		dValue;
 	std::string		varPath( pszVarPath );
 	rogue::interfaces::memory::VariablePtr	pVar;
 	//pVar = m_pRogueLib->getVariable( varPath );
 	pVar = getVariable( varPath );
 	if ( pVar )
 	{
+		if ( verbose )
+			printf( "%s%u: ", modelId2String( pVar->modelId() ), pVar->bitTotal() );
 		switch ( pVar->modelId() )
 		{
-		default:
-			break;
-		case rim::PyFunc:
-			break;
 		case rim::Bytes:
+		case rim::Custom:
+		case rim::Fixed:
+		case rim::PyFunc:
+		case rim::String:
+		default:
+			printf( "pgpClDev::setVariable error: Type %s%u not supported.", modelId2String( pVar->modelId() ), pVar->bitTotal() );
 			break;
 		case rim::UInt:
-			{
-			uint64_t	rogueUInt	= value;
-			pVar->setValue( rogueUInt );
-			if ( verbose )
-				printf( "%s%u: %s: %lu\n",
-						modelId2String( pVar->modelId() ), pVar->bitTotal(),
-						varPath.c_str(), rogueUInt );
-			}
+			u64Value	= static_cast<uint64_t>(value);
+			writeVarPath( pszVarPath, u64Value );
 			break;
 		case rim::Int:
-			{
-			int64_t	rogueInt	= value;
-			pVar->setValue( rogueInt );
-			if ( verbose )
-				printf( "%s%u: %s: %ld\n",
-						modelId2String( pVar->modelId() ), pVar->bitTotal(),
-						varPath.c_str(), rogueInt );
-			}
+			i64Value	= static_cast<int64_t>(value);
+			writeVarPath( pszVarPath, i64Value );
 			break;
 		case rim::Bool:
-			break;
-		case rim::String:
-			//printf( "%s: '%s'\n", varPath.c_str(), pVar->getString().c_str() );
+			bValue	= static_cast<bool>(value);
+			writeVarPath( pszVarPath, bValue );
 			break;
 		case rim::Float:
+			fValue	= static_cast<float>(value);
+			writeVarPath( pszVarPath, fValue );
 			break;
 		case rim::Double:
-			//printf( "%s: %f\n", varPath.c_str(), pVar->getDouble() );
-			break;
-		case rim::Fixed:
-			break;
-		case rim::Custom:
+			dValue	= static_cast<double>(value);
+			writeVarPath( pszVarPath, dValue );
 			break;
 		}
 	}
