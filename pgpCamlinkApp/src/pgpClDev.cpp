@@ -365,19 +365,13 @@ template int pgpClDev::readVarPath( const char * pszVarPath, int64_t	& valueRet 
 template int pgpClDev::readVarPath( const char * pszVarPath, uint64_t	& valueRet );
 template int pgpClDev::readVarPath( const char * pszVarPath, std::string & valueRet );
 
-
-// TODO: All rogue calls should use try clause and catch at least rogue::GeneralError
-template<class R> int pgpClDev::writeVarPath( const char * pszVarPath, const R & value )
+template<class R> int pgpClDev::writeVarPath( rim::VariablePtr pVar, const R & value )
 {
 	const char *	functionName = "pgpClDev::writeVarPath";
 	int				status	= -1;
-	std::string		varPath( pszVarPath );
-	rogue::interfaces::memory::VariablePtr	pVar;
-	//pVar = m_pRogueLib->getVariable( varPath );
-	pVar = getVariable( varPath );
 	if ( !pVar )
 	{
-		printf( "%s error: %s not found!\n", functionName, varPath.c_str() );
+		printf( "%s error: Invalid VariablePtr!\n", functionName );
 		return -1;
 	}
 
@@ -386,13 +380,13 @@ template<class R> int pgpClDev::writeVarPath( const char * pszVarPath, const R &
 		if ( pVar->modelId() == rim::Bool )
 			pVar->setLogLevel( rogue::Logging::Debug );
 		if ( typeid(value) == typeid(uint64_t) )
-			std::cout << functionName << ": " << varPath << " is uint64_t" << std::endl;
-		std::cout	<< functionName	<< ": " << varPath
+			std::cout << functionName << ": " << pVar->path() << " is uint64_t" << std::endl;
+		std::cout	<< functionName	<< ": " << pVar->path()
 					<< ", typeid = "	<< typeid(R).name()
 					<< ", modelId = "	<< modelId2String(pVar->modelId()) << pVar->bitTotal()
 					<< ", value = "	<< value << std::endl;
 		printf( "%s type is %s, nBits %u, byteSize %u, fastCopy %u!\n",
-				varPath.c_str(),
+				pVar->path().c_str(),
 				modelId2String( pVar->modelId() ), pVar->bitTotal(),
 				pVar->byteSize(), pVar->fastCopy() );
 	}
@@ -405,7 +399,7 @@ template<class R> int pgpClDev::writeVarPath( const char * pszVarPath, const R &
 		pVar->getValue( valueRet );
 		if ( 1 || value != valueRet )
 		{
-			std::cout	<< functionName	<< ": " << varPath
+			std::cout	<< functionName	<< ": " << pVar->path()
 						<< ", setValue="	<< value
 						<< ", getValue="	<< valueRet << std::endl;
 		}
@@ -419,11 +413,70 @@ template<class R> int pgpClDev::writeVarPath( const char * pszVarPath, const R &
 	return status;
 }
 
+template<class R> int pgpClDev::writeVarPath( const char * pszVarPath, const R & value )
+{
+	const char *	functionName = "pgpClDev::writeVarPath";
+	std::string		varPath( pszVarPath );
+	rogue::interfaces::memory::VariablePtr	pVar;
+	//pVar = m_pRogueLib->getVariable( varPath );
+	pVar = getVariable( varPath );
+	if ( !pVar )
+	{
+		printf( "%s error: %s not found!\n", functionName, varPath.c_str() );
+		return -1;
+	}
+	return writeVarPath( pVar, value );
+}
+
 template int pgpClDev::writeVarPath( const char * pszVarPath, const bool		& value );
 template int pgpClDev::writeVarPath( const char * pszVarPath, const double		& value );
 template int pgpClDev::writeVarPath( const char * pszVarPath, const int64_t		& value );
 template int pgpClDev::writeVarPath( const char * pszVarPath, const uint64_t	& value );
 
+template int pgpClDev::writeVarPath( rim::VariablePtr pVar, const bool		& value );
+template int pgpClDev::writeVarPath( rim::VariablePtr pVar, const double	& value );
+template int pgpClDev::writeVarPath( rim::VariablePtr pVar, const int64_t	& value );
+template int pgpClDev::writeVarPath( rim::VariablePtr pVar, const uint64_t	& value );
+
+void pgpClDev::dumpVariables( const char * pszFilePath, bool fWritableOnly, bool fForceRead, bool verbose )
+{
+	const char *	functionName = "pgpClDev::dumpVariables";
+
+	std::ofstream	dumpFile;
+	dumpFile.open( pszFilePath, ios_base::out );
+	if ( ! dumpFile.is_open() )
+	{
+		printf( "%s Error: Unable to open write access for file:\n%s\n", functionName, pszFilePath );
+		return;
+	}
+
+#if 0
+	if ( ! m_pRogueLib )
+	{
+		printf( "%s Error: Unable to access rogue lib!\n", functionName );
+		return;
+	}
+
+	const mapVarPtr_t &	mapVars		= m_pRogueLib->getVariableList();
+#else
+	const mapVarPtr_t &	mapVars		= getVariableList();
+#endif
+	if ( mapVars.size() == 0 )
+	{
+		printf( "%s Error: Rogue VariableList is empty!\n", functionName );
+		return;
+	}
+
+	//dumpFile << functionName << ": " << mapVars.size() << std::endl;
+	for ( mapVarPtr_t::const_iterator vit = mapVars.begin(); vit != mapVars.end(); ++vit )
+	{
+		if ( fWritableOnly and vit->second->mode() == std::string("RO") )
+			continue;
+		dumpFile << vit->second->getDumpValue( fForceRead );
+	}
+
+	dumpFile.close();
+}
 
 void pgpClDev::setVariable( const char * pszVarPath, double value, bool verbose )
 {
@@ -476,44 +529,6 @@ void pgpClDev::setVariable( const char * pszVarPath, double value, bool verbose 
 	{
 		printf( "pgpClDev error: %s not found!\n", varPath.c_str() );
 	}
-}
-
-void pgpClDev::dumpVariables( const char * pszFilePath, bool fWriteOnly, bool fForceRead, bool verbose )
-{
-	const char *	functionName = "pgpClDev::dumpVariables";
-
-	std::ofstream	dumpFile;
-	dumpFile.open( pszFilePath, ios_base::out );
-	if ( ! dumpFile.is_open() )
-	{
-		printf( "%s Error: Unable to open write access for file:\n%s\n", functionName, pszFilePath );
-		return;
-	}
-
-#if 0
-	if ( ! m_pRogueLib )
-	{
-		printf( "%s Error: Unable to access rogue lib!\n", functionName );
-		return;
-	}
-
-	const mapVarPtr_t &	mapVars		= m_pRogueLib->getVariableList();
-#else
-	const mapVarPtr_t &	mapVars		= getVariableList();
-#endif
-	if ( mapVars.size() == 0 )
-	{
-		printf( "%s Error: Rogue VariableList is empty!\n", functionName );
-		return;
-	}
-
-	dumpFile << functionName << ": " << mapVars.size() << std::endl;
-	for ( mapVarPtr_t::const_iterator vit = mapVars.begin(); vit != mapVars.end(); ++vit )
-	{
-		dumpFile << vit->second->getDumpValue( fForceRead );
-	}
-
-	dumpFile.close();
 }
 
 void pgpClDev::showVariable( const char * pszVarPath, bool verbose )
