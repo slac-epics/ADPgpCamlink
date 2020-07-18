@@ -1,6 +1,7 @@
 
 registrar(	pgpCamlinkConfigRegister		)
 registrar(	pgpCamlinkConfigFullRegister	)
+registrar(	DumpPgpVarsRegister		)
 registrar(	ResetImageTimingRegister		)
 registrar(	SetPgpVarRegister				)
 registrar(	ShowImageTimingRegister			)

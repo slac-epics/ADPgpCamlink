@@ -301,11 +301,14 @@ public:		//	Public member functions
 		return m_ioscan;
 	}
 
+	///	Dump Camera PGP variables
+	int						DumpPgpVars( const char * pszFilePath, bool fWriteOnly, bool fForceRead );
+
 	///	Show Camera info on stdout
 	int						CameraShow( int level );
 
 	///	Set Camera PGP variable
-	int						SetPgpVariable( const char * pszVarPath, int value );
+	int						SetPgpVariable( const char * pszVarPath, double value );
 
 	///	Show Camera PGP variable on stdout
 	int						ShowPgpVariable( const char * pszVarPath, int level );
