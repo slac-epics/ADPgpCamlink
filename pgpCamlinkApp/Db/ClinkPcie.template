@@ -28,7 +28,7 @@ record( mbbo, "$(P)$(R)Timing:ClkSel" )
 	field( ZRVL, "0" ) field( ZRST, "LCLS-I  Clock" )
 	field( ONVL, "1" ) field( ONST, "LCLS-II Clock" )
 	field( FLNK, "$(P)$(R)Timing:ClkSel_RBV" )
-#	info( autosaveFields, "VAL" )
+	info( autosaveFields, "VAL" )
 }
 
 # Mode Select
@@ -49,7 +49,7 @@ record( mbbo, "$(P)$(R)Timing:ModeSel" )
 	field( ZRVL, "0" ) field( ZRST, "Lcls1Protocol" )
 	field( ONVL, "1" ) field( ONST, "Lcls2Protocol" )
 	field( FLNK, "$(P)$(R)Timing:ModeSel_RBV" )
-#	info( autosaveFields, "VAL" )
+	info( autosaveFields, "VAL" )
 }
 
 # Mode Select Enable
@@ -70,7 +70,7 @@ record( mbbo, "$(P)$(R)Timing:ModeSelEn" )
 	field( ZRVL, "0" ) field( ZRST, "UseClkSel" )
 	field( ONVL, "1" ) field( ONST, "UseModeSel" )
 	field( FLNK, "$(P)$(R)Timing:ModeSelEn_RBV" )
-#	info( autosaveFields, "VAL" )
+	info( autosaveFields, "VAL" )
 }
 
 # LCLS-I Dest Select
@@ -97,7 +97,7 @@ record( mbbo, "$(P)$(R)EvrV2:DestSel" )
 	field( THVL, "3" ) field( THST, "Reserved" )
 	field( PINI, "YES" )
 	field( FLNK, "$(P)$(R)EvrV2:DestSel_RBV" )
-#	info( autosaveFields, "VAL" )
+	info( autosaveFields, "VAL" )
 }
 
 # LCLS-I Dest Type
@@ -124,7 +124,7 @@ record( mbbo, "$(P)$(R)EvrV2:DestType" )
 	field( THVL, "3" ) field( THST, "Invalid" )
 	field( PINI, "YES" )
 	field( FLNK, "$(P)$(R)EvrV2:DestType_RBV" )
-#	info( autosaveFields, "VAL" )
+	info( autosaveFields, "VAL" )
 }
 
 # LCLS-I Rate Type
@@ -151,13 +151,14 @@ record( mbbo, "$(P)$(R)EvrV2:RateType" )
 	field( THVL, "3" ) field( THST, "INVALID" )
 	field( PINI, "YES" )
 	field( FLNK, "$(P)$(R)EvrV2:RateType_RBV" )
-#	info( autosaveFields, "VAL" )
+	info( autosaveFields, "VAL" )
 }
 
 # LCLS-I Rate Select
+# alias( "$(P)$(R)EvrV2:EventCode_RBV", "$(P)$(R)EvrV2:RateSel_RBV" )
 record( longin, "$(P)$(R)EvrV2:RateSel_RBV" )
 {
-	field( DESC, "LCLS-I Rate Select" )
+	field( DESC, "LCLS-I Event Code" )
 	field( INP,  "@B$(B) L$(L) ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TriggerEventManager.EvrV2CoreTriggers.EvrV2ChannelReg[0].RateSel" )
 	field( DTYP, "RogueLI" )
 #	field( DTYP, "RogueMBBI" )
@@ -172,23 +173,15 @@ record( longin, "$(P)$(R)EvrV2:RateSel_RBV" )
 	info( autosaveFields, "" )
 }
 
+# alias( "$(P)$(R)EvrV2:EventCode", "$(P)$(R)EvrV2:RateSel" )
 record( longout, "$(P)$(R)EvrV2:RateSel" )
 {
 	field( DESC, "LCLS-I Rate Select" )
 	field( OUT,  "@B$(B) L$(L) ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TriggerEventManager.EvrV2CoreTriggers.EvrV2ChannelReg[0].RateSel" )
 	field( DTYP, "RogueLO" )
-#	field( DTYP, "RogueMBBO" )
-#	field( ZRVL, "0" ) field( ZRST, "929 kHz" )
-#	field( ONVL, "1" ) field( ONST, " 71 kHz" )
-#	field( TWVL, "2" ) field( TWST, " 10 kHz" )
-#	field( THVL, "3" ) field( THST, "  1 kHz" )
-#	field( FRVL, "4" ) field( FRST, "100 Hz" )
-#	field( FVVL, "5" ) field( FVST, " 10 Hz" )
-#	field( SXVL, "6" ) field( SXST, "  1 Hz" )
-#	field( SVVL, "32768" ) field( SVST, "Undefined" )
 	field( PINI, "YES" )
 	field( FLNK, "$(P)$(R)EvrV2:RateSel_RBV" )
-#	info( autosaveFields, "VAL" )
+	info( autosaveFields, "VAL" )
 }
 
 # XpmMini LCLS-II Rate Select
@@ -223,5 +216,5 @@ record( mbbo, "$(P)$(R)XpmMini:Config_L0Select_RateSel" )
 	field( SXVL, "6" ) field( SXST, "  1 Hz" )
 	field( SVVL, "32768" ) field( SVST, "Undefined" )
 	field( FLNK, "$(P)$(R)XpmMini:Config_L0Select_RateSel_RBV" )
-#	info( autosaveFields, "VAL" )
+	info( autosaveFields, "VAL" )
 }

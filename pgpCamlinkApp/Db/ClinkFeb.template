@@ -34,12 +34,12 @@ record( longin, "$(P)$(R)Feb0:ClCh0:BaudRate_RBV" )
 {
 	field( DTYP, "RogueLI" )
 	field( INP,  "@B$(B) L$(L) ClinkDevRoot.ClinkFeb[0].ClinkTop.Ch[0].BaudRate" )
-	field( SCAN, "$(SCAN=1 second)" )
 	field( EGU,  "bps" )
 	info( autosaveFields, "" )
 }
 
 # TODO Use mbbo w/ enumerated baud rates
+# TODO Move DOL to camera model template
 record( longout, "$(P)$(R)Feb0:ClCh0:BaudRate" )
 {
 	field( DTYP, "RogueLO" )
@@ -47,46 +47,117 @@ record( longout, "$(P)$(R)Feb0:ClCh0:BaudRate" )
 	field( DOL,  "57600" )
 	field( EGU,  "bps" )
 	field( PINI, "YES" )
-	field( TPRO, "2" )
-	info( autosaveFields, "VAL" )
-}
-
-# TODO: Use mbbi
-# 0: 'Disable', 1: 'Base', 2: 'Medium', 3: 'Full', 4: 'Deca'
-record( longin, "$(P)$(R)Feb0:ClCh0:LinkMode_RBV" )
-{
-	field( DTYP, "RogueLI" )
-	field( INP,  "@B$(B) L$(L) ClinkDevRoot.ClinkFeb[0].ClinkTop.Ch[0].LinkMode" )
-	field( SCAN, "$(SCAN=1 second)" )
+	field( FLNK, "$(P)$(R)Feb0:ClCh0:BaudRate_RBV" )
 	info( autosaveFields, "" )
 }
 
-# TODO: Use mbbi
+# CameraLink Mode
+# 0: 'Disable', 1: 'Base', 2: 'Medium', 3: 'Full', 4: 'Deca'
+record( mbbi, "$(P)$(R)Feb0:ClCh0:LinkMode_RBV" )
+{
+	field( DTYP, "RogueMBBI" )
+	field( INP,  "@B$(B) L$(L) ClinkDevRoot.ClinkFeb[0].ClinkTop.Ch[0].LinkMode" )
+	field( ZRVL, "0" ) field( ZRST, "Disable" )
+	field( ONVL, "1" ) field( ONST, "Base" )
+	field( TWVL, "2" ) field( TWST, "Medium" )
+	field( THVL, "3" ) field( THST, "Full" )
+	field( FRVL, "4" ) field( FRST, "Deca" )
+}
+
+# CameraLink Mode
+# 0: 'Disable', 1: 'Base', 2: 'Medium', 3: 'Full', 4: 'Deca'
+record( mbbo, "$(P)$(R)Feb0:ClCh0:LinkMode" )
+{
+	field( DTYP, "RogueMBBO" )
+	field( OUT,  "@B$(B) L$(L) ClinkDevRoot.ClinkFeb[0].ClinkTop.Ch[0].LinkMode" )
+	field( PINI, "YES" )
+	field( ZRVL, "0" ) field( ZRST, "Disable" )
+	field( ONVL, "1" ) field( ONST, "Base" )
+	field( TWVL, "2" ) field( TWST, "Medium" )
+	field( THVL, "3" ) field( THST, "Full" )
+	field( FRVL, "4" ) field( FRST, "Deca" )
+	field( FLNK, "$(P)$(R)Feb0:ClCh0:LinkMode_RBV" )
+}
+# TODO: Move DOL to camera model template file
+record( mbbo, "$(P)$(R)Feb0:ClCh0:LinkMode" )
+{
+	field( DOL,  "Base" )
+}
+
+# Camlink Data Mode (# bits per pixel)
 # 0: 'None', 1: '8Bit', 2: '10Bit', 3: '12Bit',
 # 4: '14Bit', 5: '16Bit', 6: '24Bit', 7: '30Bit', 8: '36Bit' 
-record( longin, "$(P)$(R)Feb0:ClCh0:DataMode_RBV" )
+record( mbbi, "$(P)$(R)Feb0:ClCh0:DataMode_RBV" )
 {
-	field( DTYP, "RogueLI" )
+	field( DTYP, "RogueMBBI" )
 	field( INP,  "@B$(B) L$(L) ClinkDevRoot.ClinkFeb[0].ClinkTop.Ch[0].DataMode" )
-	field( SCAN, "$(SCAN=1 second)" )
-	info( autosaveFields, "" )
+	field( ZRVL, "0" ) field( ZRST, "None" )
+	field( ONVL, "1" ) field( ONST, "8 Bit" )
+	field( TWVL, "2" ) field( TWST, "10 Bit" )
+	field( THVL, "3" ) field( THST, "12 Bit" )
+	field( FRVL, "4" ) field( FRST, "14 Bit" )
+	field( FVVL, "5" ) field( FVST, "16 Bit" )
+	field( SXVL, "6" ) field( SXST, "24 Bit" )
+	field( SVVL, "7" ) field( SVST, "30 Bit" )
+	field( EIVL, "8" ) field( EIST, "36 Bit" )
 }
 
-# TODO: Use mbbi
-# 0: 'None', 1: 'Line', 2: 'Frame'
-record( longin, "$(P)$(R)Feb0:ClCh0:FrameMode_RBV" )
+# Camlink Data Mode (# bits per pixel)
+# 0: 'None', 1: '8Bit', 2: '10Bit', 3: '12Bit',
+# 4: '14Bit', 5: '16Bit', 6: '24Bit', 7: '30Bit', 8: '36Bit' 
+record( mbbo, "$(P)$(R)Feb0:ClCh0:DataMode" )
 {
-	field( DTYP, "RogueLI" )
+	field( DTYP, "RogueMBBO" )
+	field( OUT,  "@B$(B) L$(L) ClinkDevRoot.ClinkFeb[0].ClinkTop.Ch[0].DataMode" )
+	field( PINI, "YES" )
+	field( ZRVL, "0" ) field( ZRST, "None" )
+	field( ONVL, "1" ) field( ONST, "8 Bit" )
+	field( TWVL, "2" ) field( TWST, "10 Bit" )
+	field( THVL, "3" ) field( THST, "12 Bit" )
+	field( FRVL, "4" ) field( FRST, "14 Bit" )
+	field( FVVL, "5" ) field( FVST, "16 Bit" )
+	field( SXVL, "6" ) field( SXST, "24 Bit" )
+	field( SVVL, "7" ) field( SVST, "30 Bit" )
+	field( EIVL, "8" ) field( EIST, "36 Bit" )
+}
+# TODO: Move DOL to camera model template file
+record( mbbo, "$(P)$(R)Feb0:ClCh0:DataMode" )
+{
+	field( DOL,  "12 Bit" )
+}
+
+# Camlink Frame Mode
+# 0: 'None', 1: 'Line', 2: 'Frame'
+record( mbbi, "$(P)$(R)Feb0:ClCh0:FrameMode_RBV" )
+{
+	field( DTYP, "RogueMBBI" )
 	field( INP,  "@B$(B) L$(L) ClinkDevRoot.ClinkFeb[0].ClinkTop.Ch[0].FrameMode" )
-	field( SCAN, "$(SCAN=1 second)" )
-	info( autosaveFields, "" )
+	field( ZRVL, "0" ) field( ZRST, "None" )
+	field( ONVL, "1" ) field( ONST, "8 Bit" )
+	field( TWVL, "2" ) field( TWST, "10 Bit" )
+}
+
+# Camlink Frame Mode
+# 0: 'None', 1: 'Line', 2: 'Frame'
+record( mbbo, "$(P)$(R)Feb0:ClCh0:FrameMode" )
+{
+	field( DTYP, "RogueMBBO" )
+	field( PINI, "YES" )
+	field( OUT,  "@B$(B) L$(L) ClinkDevRoot.ClinkFeb[0].ClinkTop.Ch[0].FrameMode" )
+	field( ZRVL, "0" ) field( ZRST, "None" )
+	field( ONVL, "1" ) field( ONST, "Line" )
+	field( TWVL, "2" ) field( TWST, "Frame" )
+}
+# TODO: Move DOL to camera model template file
+record( mbbo, "$(P)$(R)Feb0:ClCh0:FrameMode" )
+{
+	field( DOL,  "Frame" )
 }
 
 record( longin, "$(P)$(R)Feb0:ClCh0:SerThrottle_RBV" )
 {
 	field( DTYP, "RogueLI" )
 	field( INP,  "@B$(B) L$(L) ClinkDevRoot.ClinkFeb[0].ClinkTop.Ch[0].SerThrottle" )
-	field( SCAN, "$(SCAN=1 second)" )
 	info( autosaveFields, "" )
 }
 
@@ -97,8 +168,24 @@ record( longout, "$(P)$(R)Feb0:ClCh0:SerThrottle" )
 	field( DOL,  "10000" )
 	field( EGU,  "usec" )
 	field( PINI, "YES" )
-	field( TPRO, "2" )
+	field( FLNK, "$(P)$(R)Feb0:ClCh0:SerThrottle_RBV" )
 	info( autosaveFields, "VAL" )
+}
+
+record( longin, "$(P)$(R)Feb0:ClCh0:TapCount_RBV" )
+{
+	field( DTYP, "RogueLI" )
+	field( INP,  "@B$(B) L$(L) ClinkDevRoot.ClinkFeb[0].ClinkTop.Ch[0].TapCount" )
+}
+
+# TODO: Move DOL to camera template
+record( longout, "$(P)$(R)Feb0:ClCh0:TapCount" )
+{
+	field( DTYP, "RogueLO" )
+	field( OUT,  "@B$(B) L$(L) ClinkDevRoot.ClinkFeb[0].ClinkTop.Ch[0].TapCount" )
+	field( DOL,  "2" )
+	field( PINI, "YES" )
+	field( FLNK, "$(P)$(R)Feb0:ClCh0:TapCount_RBV" )
 }
 
 record( longin, "$(P)$(R)Feb0:ClCh0:FrameCount" )
@@ -106,10 +193,9 @@ record( longin, "$(P)$(R)Feb0:ClCh0:FrameCount" )
 	field( DTYP, "RogueLI" )
 	field( INP,  "@B$(B) L$(L) ClinkDevRoot.ClinkFeb[0].ClinkTop.Ch[0].FrameCount" )
 	field( SCAN, "$(SCAN=1 second)" )
-	info( autosaveFields, "" )
 }
 
-record( longin, "$(P)$(R)Feb0:Trig0:Rate" )
+record( longin, "$(P)$(R)Feb0:Trig0:Rate_RBV" )
 {
 	field( DTYP, "RogueLI" )
 	field( INP,  "@B$(B) L$(L) ClinkDevRoot.ClinkFeb[0].TrigCtrl[0].TrigRate" )
@@ -117,92 +203,64 @@ record( longin, "$(P)$(R)Feb0:Trig0:Rate" )
 	info( autosaveFields, "" )
 }
 
-#Moved to roguePcie.substitutions using boolDevRogue.template
-#record( bi, "$(P)$(R)Feb0:Trig0:InvCC_RBV" )
-#{
-#	field( DTYP, "RogueBI" )
-#	field( INP,  "@B$(B) L$(L) ClinkDevRoot.ClinkFeb[0].TrigCtrl[0].InvCC" )
-#	field( SCAN, "$(SCAN=1 second)" )
-#	info( autosaveFields, "" )
-#}
-#
-#record( bo, "$(P)$(R)Feb0:Trig0:InvCC" )
-#{
-#	field( DTYP, "RogueBO" )
-#	field( OUT,  "@B$(B) L$(L) ClinkDevRoot.ClinkFeb[0].TrigCtrl[0].InvCC" )
-#	field( PINI, "YES" )
-#	field( FLNK, "$(P)$(R)Feb0:Trig0:InvCC_RBV" )
-#	field( TPRO, "2" )
-#}
-
-record( longin, "$(P)$(R)Feb0:Trig0:Map_RBV" )
+record( mbbi, "$(P)$(R)Feb0:Trig0:Map_RBV" )
 {
-	field( DTYP, "RogueLI" )
+	field( DTYP, "RogueMBBI" )
 	field( INP,  "@B$(B) L$(L) ClinkDevRoot.ClinkFeb[0].TrigCtrl[0].TrigMap" )
-	field( SCAN, "$(SCAN=1 second)" )
-	info( autosaveFields, "" )
+	field( ZRVL, "0" ) field( ZRST, "ChA" )
+	field( ONVL, "1" ) field( ONST, "ChB" )
 }
 
-record( longout, "$(P)$(R)Feb0:Trig0:Map" )
+record( mbbo, "$(P)$(R)Feb0:Trig0:Map" )
 {
-	field( DTYP, "RogueLO" )
+	field( DTYP, "RogueMBBO" )
 	field( OUT,  "@B$(B) L$(L) ClinkDevRoot.ClinkFeb[0].TrigCtrl[0].TrigMap" )
+	field( ZRVL, "0" ) field( ZRST, "ChA" )
+	field( ONVL, "1" ) field( ONST, "ChB" )
+	field( DOL,  "0" )
 	field( PINI, "YES" )
 	field( FLNK, "$(P)$(R)Feb0:Trig0:Map_RBV" )
-	field( TPRO, "2" )
 }
 
 record( longin, "$(P)$(R)Feb0:Trig0:Mask_RBV" )
 {
+	field( DESC, "Sets trigger mask on 4-bit camCtrl bus" )
 	field( DTYP, "RogueLI" )
 	field( INP,  "@B$(B) L$(L) ClinkDevRoot.ClinkFeb[0].TrigCtrl[0].TrigMask" )
-	field( SCAN, "$(SCAN=1 second)" )
-	info( autosaveFields, "" )
 }
 
 record( longout, "$(P)$(R)Feb0:Trig0:Mask" )
 {
+	field( DESC, "Sets trigger mask on 4-bit camCtrl bus" )
 	field( DTYP, "RogueLO" )
 	field( OUT,  "@B$(B) L$(L) ClinkDevRoot.ClinkFeb[0].TrigCtrl[0].TrigMask" )
+	field( DOL,  "1" )
 	field( PINI, "YES" )
 	field( FLNK, "$(P)$(R)Feb0:Trig0:Mask_RBV" )
-	field( TPRO, "2" )
 }
 
 record( longin, "$(P)$(R)Feb0:Trig0:PulseWidthRaw_RBV" )
 {
 	field( DTYP, "RogueLI" )
 	field( INP,  "@B$(B) L$(L) ClinkDevRoot.ClinkFeb[0].TrigCtrl[0].TrigPulseWidthRaw" )
-	field( SCAN, "$(SCAN=1 second)" )
-	info( autosaveFields, "" )
 }
 
 record( longout, "$(P)$(R)Feb0:Trig0:PulseWidthRaw" )
 {
 	field( DTYP, "RogueLO" )
 	field( OUT,  "@B$(B) L$(L) ClinkDevRoot.ClinkFeb[0].TrigCtrl[0].TrigPulseWidthRaw" )
+	field( DOL,  "4095" )
 #	field( EGU,  "usec?" )
-	field( PINI, "YES" )
 	field( FLNK, "$(P)$(R)Feb0:Trig0:PulseWidthRaw_RBV" )
-	field( TPRO, "2" )
 	info( autosaveFields, "VAL" )
 }
 
-record( longin, "$(P)$(R)Feb0:ClCh0:Trig1Rate" )
+record( longin, "$(P)$(R)Feb0:ClCh0:Trig1Rate_RBV" )
 {
 	field( DTYP, "RogueLI" )
 	field( INP,  "@B$(B) L$(L) ClinkDevRoot.ClinkFeb[0].TrigCtrl[1].TrigRate" )
 	field( SCAN, "$(SCAN=1 second)" )
-	info( autosaveFields, "" )
 }
-
-#record( longin, "$(P)$(R)Feb0:ClCh1:FrameCount" )
-#{
-#	field( DTYP, "RogueLI" )
-#	field( INP,  "@B$(B) L$(L) ClinkDevRoot.ClinkFeb[0].ClinkTop.Ch[1].FrameCount" )
-#	field( SCAN, "$(SCAN=1 second)" )
-#	info( autosaveFields, "" )
-#}
 
 record( bi, "$(P)$(R)Feb0:ClCh0:Running" )
 {
@@ -211,7 +269,6 @@ record( bi, "$(P)$(R)Feb0:ClCh0:Running" )
 	field( SCAN, "$(SCAN=1 second)" )
 	field( ZNAM, "Stopped" )
 	field( ONAM, "Running"  )
-	info( autosaveFields, "" )
 }
 
 #record( bi, "$(P)$(R)Feb0:ClCh1:Running" )
