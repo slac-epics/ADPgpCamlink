@@ -3,10 +3,10 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 22
-y 242
+x 26
+y 31
 w 1427
-h 838
+h 883
 font "helvetica-medium-r-8.0"
 ctlFont "helvetica-medium-r-8.0"
 btnFont "helvetica-medium-r-8.0"
@@ -1855,35 +1855,6 @@ objType "controls"
 noExecuteClipMask
 endObjectProperties
 
-# (Text Control)
-object activeXTextDspClass
-beginObjectProperties
-major 4
-minor 7
-release 0
-x 572
-y 428
-w 76
-h 18
-controlPv "$(P)$(R)Feb0:Trig0:InvCC"
-format "decimal"
-font "helvetica-medium-r-12.0"
-fontAlign "center"
-fgColor index 25
-fgAlarm
-bgColor index 5
-editable
-autoHeight
-limitsFromDb
-nullColor index 40
-smartRefresh
-fastUpdate
-useHexPrefix
-newPos
-objType "controls"
-noExecuteClipMask
-endObjectProperties
-
 # (Text Monitor)
 object activeXTextDspClass:noedit
 beginObjectProperties
@@ -2162,7 +2133,7 @@ release 0
 x 700
 y 564
 w 336
-h 248
+h 264
 lineColor index 3
 fill
 fillColor index 3
@@ -2229,35 +2200,6 @@ nullColor index 40
 smartRefresh
 newPos
 objType "monitors"
-noExecuteClipMask
-endObjectProperties
-
-# (Text Control)
-object activeXTextDspClass
-beginObjectProperties
-major 4
-minor 7
-release 0
-x 928
-y 584
-w 76
-h 18
-controlPv "$(P)$(R)Timing:UseMiniTpg"
-format "decimal"
-font "helvetica-medium-r-12.0"
-fontAlign "center"
-fgColor index 25
-fgAlarm
-bgColor index 5
-editable
-autoHeight
-limitsFromDb
-nullColor index 40
-smartRefresh
-fastUpdate
-useHexPrefix
-newPos
-objType "controls"
 noExecuteClipMask
 endObjectProperties
 
@@ -2333,8 +2275,8 @@ minor 7
 release 0
 x 928
 y 656
-w 76
-h 18
+w 96
+h 20
 controlPv "$(P)$(R)Timing:C_RxReset"
 format "decimal"
 font "helvetica-medium-r-12.0"
@@ -2452,8 +2394,8 @@ minor 7
 release 0
 x 928
 y 728
-w 76
-h 18
+w 96
+h 20
 controlPv "$(P)$(R)Timing:RxDown"
 format "decimal"
 font "helvetica-medium-r-12.0"
@@ -2527,8 +2469,8 @@ minor 7
 release 0
 x 928
 y 752
-w 76
-h 18
+w 96
+h 20
 controlPv "$(P)$(R)Timing:RxPllReset"
 format "decimal"
 font "helvetica-medium-r-12.0"
@@ -3060,6 +3002,7 @@ fgAlarm
 bgColor index 5
 editable
 autoHeight
+motifWidget
 limitsFromDb
 nullColor index 40
 smartRefresh
@@ -3171,8 +3114,8 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 16
-y 780
+x 12
+y 664
 w 120
 h 20
 font "helvetica-medium-r-12.0"
@@ -3181,7 +3124,7 @@ fgColor index 14
 bgColor index 0
 useDisplayBg
 value {
-  "TriggerDelay"
+  "EvrV2:DestSel"
 }
 endObjectProperties
 
@@ -3191,11 +3134,11 @@ beginObjectProperties
 major 4
 minor 7
 release 0
-x 144
-y 780
+x 140
+y 664
 w 80
 h 20
-controlPv "$(P)$(R)Trigger:TriggerDelay_RBV"
+controlPv "$(P)$(R)EvrV2:DestSel_RBV"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
 fgColor index 15
@@ -3204,39 +3147,8 @@ bgColor index 12
 limitsFromDb
 nullColor index 40
 smartRefresh
-showUnits
 newPos
 objType "monitors"
-noExecuteClipMask
-endObjectProperties
-
-# (Text Control)
-object activeXTextDspClass
-beginObjectProperties
-major 4
-minor 7
-release 0
-x 232
-y 780
-w 76
-h 18
-controlPv "$(P)$(R)Trigger:TriggerDelay"
-format "decimal"
-font "helvetica-medium-r-12.0"
-fontAlign "center"
-fgColor index 25
-fgAlarm
-bgColor index 5
-editable
-autoHeight
-motifWidget
-limitsFromDb
-nullColor index 40
-smartRefresh
-fastUpdate
-useHexPrefix
-newPos
-objType "controls"
 noExecuteClipMask
 endObjectProperties
 
@@ -3259,6 +3171,7 @@ fgAlarm
 bgColor index 5
 editable
 autoHeight
+motifWidget
 limitsFromDb
 nullColor index 40
 smartRefresh
@@ -3577,7 +3490,7 @@ beginObjectProperties
 major 4
 minor 1
 release 0
-x 12
+x 1120
 y 12
 w 160
 h 24
@@ -3600,7 +3513,7 @@ beginObjectProperties
 major 4
 minor 1
 release 0
-x 844
+x 352
 y 12
 w 72
 h 24
@@ -3623,7 +3536,7 @@ beginObjectProperties
 major 4
 minor 1
 release 0
-x 928
+x 436
 y 12
 w 72
 h 24
@@ -3692,8 +3605,8 @@ minor 0
 release 0
 x 928
 y 608
-w 76
-h 18
+w 96
+h 20
 fgColor index 14
 bgColor index 3
 inconsistentColor index 40
@@ -3712,8 +3625,8 @@ minor 0
 release 0
 x 928
 y 680
-w 76
-h 18
+w 96
+h 20
 fgColor index 14
 bgColor index 3
 inconsistentColor index 40
@@ -3732,8 +3645,8 @@ minor 0
 release 0
 x 928
 y 704
-w 76
-h 18
+w 96
+h 20
 fgColor index 14
 bgColor index 3
 inconsistentColor index 40
@@ -3794,7 +3707,7 @@ x 840
 y 632
 w 80
 h 20
-controlPv "$(P)$(R)Timing:TriggerCount_RBV"
+controlPv "$(P)$(R)EvrV2Channel:Count_RBV"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
 fgColor index 15
@@ -3824,7 +3737,7 @@ fgColor index 14
 bgColor index 0
 useDisplayBg
 value {
-  "TriggerCount"
+  "EvrV2Channel:Count"
 }
 endObjectProperties
 
@@ -4187,6 +4100,821 @@ smartRefresh
 useHexPrefix
 newPos
 objType "monitors"
+noExecuteClipMask
+endObjectProperties
+
+# (Message Button)
+object activeMessageButtonClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 8
+y 12
+w 160
+h 24
+fgColor index 14
+onColor index 5
+offColor index 3
+topShadowColor index 1
+botShadowColor index 11
+controlPv "$(P)$(R)SeqLcls1Timing.PROC"
+pressValue "1"
+onLabel "Select LCLS-I Timing"
+offLabel "Select LCLS-I Timing"
+3d
+font "helvetica-medium-r-14.0"
+endObjectProperties
+
+# (Message Button)
+object activeMessageButtonClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 180
+y 12
+w 160
+h 24
+fgColor index 14
+onColor index 5
+offColor index 3
+topShadowColor index 1
+botShadowColor index 11
+controlPv "$(P)$(R)SeqLcls2Timing.PROC"
+pressValue "1"
+onLabel "Select LCLS-II Timing"
+offLabel "Select LCLS-II Timing"
+3d
+font "helvetica-medium-r-14.0"
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 840
+y 776
+w 80
+h 20
+controlPv "$(P)$(R)EvrV2:EnableFebTrig_RBV"
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+fgColor index 15
+fgAlarm
+bgColor index 12
+limitsFromDb
+nullColor index 40
+smartRefresh
+newPos
+objType "monitors"
+noExecuteClipMask
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 712
+y 776
+w 120
+h 20
+font "helvetica-medium-r-12.0"
+fontAlign "right"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "EnableFebTrig"
+}
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 840
+y 800
+w 80
+h 20
+controlPv "$(P)$(R)EvrV2:RateType_RBV"
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+fgColor index 15
+fgAlarm
+bgColor index 12
+limitsFromDb
+nullColor index 40
+smartRefresh
+newPos
+objType "monitors"
+noExecuteClipMask
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 712
+y 800
+w 120
+h 20
+font "helvetica-medium-r-12.0"
+fontAlign "right"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "Timing:RateType"
+}
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 1268
+y 728
+w 96
+h 18
+controlPv "$(P)$(R)EvrV2:RateSel"
+format "decimal"
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+fgColor index 25
+fgAlarm
+bgColor index 5
+editable
+autoHeight
+motifWidget
+limitsFromDb
+nullColor index 40
+smartRefresh
+fastUpdate
+useHexPrefix
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 1180
+y 728
+w 80
+h 20
+controlPv "$(P)$(R)EvrV2:RateSel_RBV"
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+fgColor index 15
+fgAlarm
+bgColor index 12
+limitsFromDb
+nullColor index 40
+smartRefresh
+showUnits
+newPos
+objType "monitors"
+noExecuteClipMask
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 1052
+y 728
+w 120
+h 20
+font "helvetica-medium-r-12.0"
+fontAlign "right"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "EvrV2:RateSel"
+}
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 1180
+y 752
+w 80
+h 20
+controlPv "$(P)$(R)EvrV2:DestType_RBV"
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+fgColor index 15
+fgAlarm
+bgColor index 12
+limitsFromDb
+nullColor index 40
+smartRefresh
+newPos
+objType "monitors"
+noExecuteClipMask
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 1052
+y 752
+w 120
+h 20
+font "helvetica-medium-r-12.0"
+fontAlign "right"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "Timing:DestType"
+}
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 1268
+y 776
+w 96
+h 18
+controlPv "$(P)$(R)EvrV2:EventCode"
+format "decimal"
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+fgColor index 25
+fgAlarm
+bgColor index 5
+editable
+autoHeight
+motifWidget
+limitsFromDb
+nullColor index 40
+smartRefresh
+fastUpdate
+useHexPrefix
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 1180
+y 776
+w 80
+h 20
+controlPv "$(P)$(R)EvrV2:EventCode_RBV"
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+fgColor index 15
+fgAlarm
+bgColor index 12
+limitsFromDb
+nullColor index 40
+smartRefresh
+showUnits
+newPos
+objType "monitors"
+noExecuteClipMask
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 1052
+y 776
+w 120
+h 20
+font "helvetica-medium-r-12.0"
+fontAlign "right"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "EvrV2:EventCode"
+}
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 1268
+y 800
+w 96
+h 18
+controlPv "$(P)$(R)EvrV2:FebTrigWidth"
+format "decimal"
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+fgColor index 25
+fgAlarm
+bgColor index 5
+editable
+autoHeight
+motifWidget
+limitsFromDb
+nullColor index 40
+smartRefresh
+fastUpdate
+useHexPrefix
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 1180
+y 800
+w 80
+h 20
+controlPv "$(P)$(R)EvrV2:FebTrigWidth_RBV"
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+fgColor index 15
+fgAlarm
+bgColor index 12
+limitsFromDb
+nullColor index 40
+smartRefresh
+showUnits
+newPos
+objType "monitors"
+noExecuteClipMask
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 1052
+y 800
+w 120
+h 20
+font "helvetica-medium-r-12.0"
+fontAlign "right"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "EvrV2:FebTrigWidth"
+}
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 1176
+y 700
+w 80
+h 20
+controlPv "$(P)$(R)Timing:FidCount_RBV"
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+fgColor index 15
+fgAlarm
+bgColor index 12
+limitsFromDb
+nullColor index 40
+smartRefresh
+showUnits
+newPos
+objType "monitors"
+noExecuteClipMask
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 1048
+y 700
+w 120
+h 20
+font "helvetica-medium-r-12.0"
+fontAlign "right"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "Timing:FidCount"
+}
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 1176
+y 676
+w 80
+h 20
+controlPv "$(P)$(R)Timing:RxLinkUp_RBV"
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+fgColor index 15
+fgAlarm
+bgColor index 12
+limitsFromDb
+nullColor index 40
+smartRefresh
+showUnits
+newPos
+objType "monitors"
+noExecuteClipMask
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 1048
+y 676
+w 120
+h 20
+font "helvetica-medium-r-12.0"
+fontAlign "right"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "Timing:RxLinkUp"
+}
+endObjectProperties
+
+# (Menu Button)
+object activeMenuButtonClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 928
+y 584
+w 96
+h 20
+fgColor index 14
+bgColor index 3
+inconsistentColor index 40
+topShadowColor index 1
+botShadowColor index 11
+controlPv "$(P)$(R)Timing:UseMiniTpg"
+indicatorPv "$(P)$(R)Timing:UseMiniTpg_RBV"
+font "helvetica-medium-r-12.0"
+endObjectProperties
+
+# (Menu Button)
+object activeMenuButtonClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 928
+y 776
+w 96
+h 20
+fgColor index 14
+bgColor index 3
+inconsistentColor index 40
+topShadowColor index 1
+botShadowColor index 11
+controlPv "$(P)$(R)EvrV2:EnableFebTrig"
+indicatorPv "$(P)$(R)EvrV2:EnableFebTrig_RBV"
+font "helvetica-medium-r-12.0"
+endObjectProperties
+
+# (Menu Button)
+object activeMenuButtonClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 928
+y 800
+w 96
+h 20
+fgColor index 14
+bgColor index 3
+inconsistentColor index 40
+topShadowColor index 1
+botShadowColor index 11
+controlPv "$(P)$(R)EvrV2:RateType"
+indicatorPv "$(P)$(R)EvrV2:RateType_RBV"
+font "helvetica-medium-r-12.0"
+endObjectProperties
+
+# (Menu Button)
+object activeMenuButtonClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 1268
+y 752
+w 96
+h 20
+fgColor index 14
+bgColor index 3
+inconsistentColor index 40
+topShadowColor index 1
+botShadowColor index 11
+controlPv "$(P)$(R)EvrV2:DestType"
+indicatorPv "$(P)$(R)EvrV2:DestType_RBV"
+font "helvetica-medium-r-12.0"
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 1264
+y 700
+w 80
+h 20
+controlPv "$(P)$(R)Timing:sofCount_RBV"
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+fgColor index 15
+fgAlarm
+bgColor index 12
+limitsFromDb
+nullColor index 40
+smartRefresh
+showUnits
+newPos
+objType "monitors"
+noExecuteClipMask
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 1348
+y 700
+w 80
+h 20
+controlPv "$(P)$(R)Timing:eofCount_RBV"
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+fgColor index 15
+fgAlarm
+bgColor index 12
+limitsFromDb
+nullColor index 40
+smartRefresh
+showUnits
+newPos
+objType "monitors"
+noExecuteClipMask
+endObjectProperties
+
+# (Message Button)
+object activeMessageButtonClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 948
+y 12
+w 160
+h 24
+fgColor index 14
+onColor index 5
+offColor index 3
+topShadowColor index 1
+botShadowColor index 11
+controlPv "$(P)$(R)SeqTpgMiniTiming.PROC"
+pressValue "1"
+onLabel "Config TpgMini Lcls1"
+offLabel "Config TpgMini Lcls1"
+3d
+font "helvetica-medium-r-14.0"
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 144
+y 780
+w 80
+h 20
+controlPv "$(P)$(R)Timing:TriggerCount_RBV"
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+fgColor index 15
+fgAlarm
+bgColor index 12
+limitsFromDb
+nullColor index 40
+smartRefresh
+newPos
+objType "monitors"
+noExecuteClipMask
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 16
+y 780
+w 120
+h 20
+font "helvetica-medium-r-12.0"
+fontAlign "right"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "TriggerCount"
+}
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 1268
+y 824
+w 96
+h 18
+controlPv "$(P)$(R)EvrV2:Source"
+format "decimal"
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+fgColor index 25
+fgAlarm
+bgColor index 5
+editable
+autoHeight
+motifWidget
+limitsFromDb
+nullColor index 40
+smartRefresh
+fastUpdate
+useHexPrefix
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 1180
+y 824
+w 80
+h 20
+controlPv "$(P)$(R)EvrV2:Source_RBV"
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+fgColor index 15
+fgAlarm
+bgColor index 12
+limitsFromDb
+nullColor index 40
+smartRefresh
+showUnits
+newPos
+objType "monitors"
+noExecuteClipMask
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 1052
+y 824
+w 120
+h 20
+font "helvetica-medium-r-12.0"
+fontAlign "right"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "EvrV2:Source"
+}
+endObjectProperties
+
+# (Menu Button)
+object activeMenuButtonClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 572
+y 428
+w 76
+h 18
+fgColor index 14
+bgColor index 3
+inconsistentColor index 40
+topShadowColor index 1
+botShadowColor index 11
+controlPv "$(P)$(R)Feb0:Trig0:InvCC"
+indicatorPv "$(P)$(R)Feb0:Trig0:InvCC_RBV"
+font "helvetica-medium-r-12.0"
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 228
+y 664
+w 76
+h 18
+controlPv "$(P)$(R)EvrV2:DestSel"
+format "decimal"
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+fgColor index 25
+fgAlarm
+bgColor index 5
+editable
+autoHeight
+motifWidget
+limitsFromDb
+nullColor index 40
+smartRefresh
+fastUpdate
+useHexPrefix
+newPos
+objType "controls"
 noExecuteClipMask
 endObjectProperties
 
