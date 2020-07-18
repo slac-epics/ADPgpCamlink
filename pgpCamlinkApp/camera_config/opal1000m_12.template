@@ -11,7 +11,7 @@ record( seq, "$(P)$(R)CamReConfigSeq" )
 	field ( DLY2, 0.2 ) field( DOL2, "1" )	field( LNK2, "$(P)$(R)OpalTriggerMode_RBV.PROC CA NMS" )
 #	field ( DLY3, 0.5 ) field( DOL3, "1" )	field( LNK3, "$(P)$(R)OpalAcquireTime.PROC CA NMS" )
 
-#	field ( DLY4, 0.5 ) field( DOL4, "1" )	field( LNK4, "$(P)$(R)OpalCCE_RBV.PROC CA NMS" )
+#	field ( DLY4, 0.5 ) field( DOL4, "1" )	field( LNK4, "$(P)$(R)OpalTrigPol_RBV.PROC CA NMS" )
 #	field ( DLY5, 0.5 ) field( DOL5, "1" )	field( LNK5, "$(P)$(R)OpalCCFS_RBV.PROC CA NMS" )
 #	field ( DLY6, 0.5 ) field( DOL6, "1" )	field( LNK6, "$(P)$(R)OpalDefPixelCorr_RBV.PROC CA NMS" )
 #	field ( DLY7, 0.5 ) field( DOL7, "1" )	field( LNK7, "$(P)$(R)OpalDefPixelTest_RBV.PROC CA NMS" )
@@ -119,7 +119,7 @@ record( mbbo, "$(P)$(R)OpalTrigPol" )
     field( DTYP, "stream" )
 	field( DOL,  "0" )
     field( OUT,	 "@opal1000m_12.proto SetInt(CCE0;) $(PORT).SER" )
-	# or if we want to allow selection of CC1, CC2, CC3, or CC4   
+	# or if we want to allow selection of CC2, CC3, or CC4   
 	# add an OpalTrigInput mbbo record and change OUT to
 	#      OUT,	 "@opal1000m_12.proto SetCCE $(PORT).SER" )
 	# which would send CCE$OpalTrigInput;$OpalTrigPol
@@ -127,9 +127,8 @@ record( mbbo, "$(P)$(R)OpalTrigPol" )
     field( ONVL, 1 )
     field( ZRST, "Active Hi"	)
     field( ONST, "Active Low"	)
-    field( FLNK, "$(P)$(R)OpalCCE_RBV" )
-# Disabled to avoid accidental use
-	field( DISV, "0" )
+    field( FLNK, "$(P)$(R)OpalTrigPol_RBV" )
+	field( PINI, "YES" )
 	info( autosaveFields, "DESC" )
 }
 
@@ -1073,7 +1072,7 @@ include "rbvMonitor.template"
 
 # 10 second RBV monitors
 substitute "MON_SCAN=10 second"
-substitute "MON_PV=$(P)$(R)OpalCCE_RBV"
+substitute "MON_PV=$(P)$(R)OpalTrigPol_RBV"
 include "rbvMonitor.template"
 substitute "MON_PV=$(P)$(R)OpalCCFS_RBV"
 include "rbvMonitor.template"
