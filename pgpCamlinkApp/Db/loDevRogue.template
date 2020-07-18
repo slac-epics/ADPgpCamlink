@@ -4,6 +4,6 @@ record( longout, "$(P)$(R)$(NAME)" )
 	field( DESC, "$(DESC=?)" )
 	field( DTYP, "RogueLO" )
 	field( OUT,  "@B$(B) L$(L) $(PATH)" )
-	field( PINI, "YES" )
-	info( autosaveFields, "VAL" )
+	field( PINI, "$(PINI=NO)" )
+	info( autosaveFields, "$(SAVE=VAL)" )
 }
