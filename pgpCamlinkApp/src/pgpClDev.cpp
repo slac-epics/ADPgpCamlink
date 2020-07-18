@@ -288,9 +288,13 @@ pgpClDev::pgpClDev(
 	m_pRogueLib->parseMemMap( ROGUE_ADDR_MAP );
 	printf( "m_pRogueLib: ROGUE_ADDR_MAP parsed successfully\n" );
 #endif
-	const mapVarPtr_t &	mapVars		= getVariableList();
-	printf( "%s: %zu variables\n", functionName, mapVars.size() );
-	printf( "m_pRogueLib: %zu variables\n", (m_pRogueLib->getVariableList()).size() );
+	//const mapVarPtr_t &	mapVars		= getVariableList();
+	//printf( "%s: %zu variables\n", functionName, mapVars.size() );
+	//printf( "m_pRogueLib: %zu variables\n", (m_pRogueLib->getVariableList()).size() );
+
+	// Force an initial read of all variables
+	printf( "%s: Reading %zu variables\n", functionName, (m_pRogueLib->getVariableList()).size() );
+	m_pRogueLib->readAll();
 
 	//showVariableList( true );
 
