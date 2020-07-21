@@ -1482,7 +1482,7 @@ int pgpCamlink::ProcessImage(
 
 	if ( ! pImageData )
 	{
-		if ( DEBUG_PGP_CAMLINK >= 2 )
+		if ( DEBUG_PGP_CAMLINK >= 5 )
 		{
 			if ( ! pImageData )
 				printf(	"%s: Image Timeout: Failed to acquire image!\n", functionName );
