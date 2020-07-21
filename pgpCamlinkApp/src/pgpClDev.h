@@ -95,6 +95,14 @@ public:		//	Public member functions
 	void ProcessImage(	const epicsTimeStamp			&	tsImage,
 						rogue::protocols::batcher::DataPtr	pImageData );
 
+	/// Configure timing for LCLS-I
+	void ConfigureLclsTimingV1();
+
+	/// Load Config file
+	void LoadConfigFile( const char * pszFilePath );
+
+	void Feb0PllConfig();
+
 	void cancelImageCallbacks( )
 	{
 		m_pCallbackClient		= NULL;

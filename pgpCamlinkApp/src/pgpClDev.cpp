@@ -71,8 +71,10 @@ int ResetCounters( int fd )
 	//status = dmaWriteRegister( fd, CLINKDEV_FRAMECOUNT,	0 );
 	//status = dmaWriteRegister( fd, CLINKDEV_ERRORCOUNT,	0 );
 	//status = dmaWriteRegister( fd, CLINKDEV_BYTECOUNT,	0 );
+	// setVariable( "ClinkDevRoot.ClinkPcie.Hsio.PgpMon[0].CountReset", 1 );
 	status = dmaWriteRegister( fd, CLINKDEV_LANE0_COUNTRESET,	0 );
-	// This resets ClinkDevRoot.ClinkPcie.Application.AppLane[0].EventBuilder.DataCnt[0]
+	// This resets   ClinkDevRoot.ClinkPcie.Application.AppLane[0].EventBuilder.DataCnt[0]
+	// setVariable( "ClinkDevRoot.ClinkPcie.Application.AppLane[0].EventBuilder.CntRst", 1 );
 	status = dmaWriteRegister( fd, CLINKDEV_LANE0_EVENTBUILDER_CNTRST,	0 );
 
 	return status;
@@ -125,27 +127,6 @@ bool	pgpClDev::getTriggerEnable( unsigned int triggerNum )
 {
 	return false;
 }
-
-#if 0
-int StartRun( int fd )
-{
-	int		status;
-	status = ResetCounters( fd );
-
-	// Enable EVR trigger
-	status = dmaWriteRegister( fd, CLINKDEV_TRIG0_ENABLEREG, 1 );
-	return status;
-}
-
-int StopRun( int fd )
-{
-	int		status;
-
-	// Disable EVR trigger
-	status = dmaWriteRegister( fd, CLINKDEV_TRIG0_ENABLEREG, 0 );
-	return status;
-}
-#endif
 
 
 #include "pgpClAddrMap.h" 
@@ -296,6 +277,20 @@ pgpClDev::pgpClDev(
 	printf( "%s: Reading %zu variables\n", functionName, (m_pRogueLib->getVariableList()).size() );
 	m_pRogueLib->readAll();
 
+	// Dump variables preConfig
+	dumpVariables( "/reg/d/iocData/ioc-tst-pgp01/cfgdump-preConfig.txt", true, true, true );
+
+	// Hack: Configure for LCLS-I timing
+	ConfigureLclsTimingV1();
+	Feb0PllConfig();
+
+	// Hack: Read defaults
+	LoadConfigFile( "db/defaults_LCLS-I.txt" );
+	LoadConfigFile( "db/Opal1000.txt" );
+
+	// Dump variables postConfig
+	dumpVariables( "/reg/d/iocData/ioc-tst-pgp01/cfgdump-postConfig.txt", true, true, true );
+
 	//showVariableList( true );
 
 	std::string sFpgaVersionPath( "ClinkDevRoot.ClinkPcie.AxiPcieCore.AxiVersion.BuildStamp" );
@@ -322,6 +317,119 @@ pgpClDev::pgpClDev(
 pgpClDev::~pgpClDev()
 {
 	close( m_fd );
+}
+
+/// Configure timing for LCLS-I
+void pgpClDev::ConfigureLclsTimingV1()
+{
+	const uint64_t	lZero	= 0L;
+	const uint64_t	lOne	= 1L;
+	struct timespec delay	= { 1, 0 };
+
+	writeVarPath( "ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TimingPhyMonitor.UseMiniTpg",	lZero );
+	writeVarPath( "ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TimingFrameRx.ModeSelEn",		lZero	);
+	writeVarPath( "ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TimingFrameRx.RxPllReset",		lOne	);
+	nanosleep( &delay, NULL );
+
+	writeVarPath( "ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TimingFrameRx.RxPllReset",		lZero	);
+	writeVarPath( "ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TimingFrameRx.ClkSel",			lZero	);
+	writeVarPath( "ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TimingFrameRx.C_RxReset",		lOne	);
+	writeVarPath( "ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TimingFrameRx.C_RxReset",		lZero	);
+
+	delay.tv_sec = 0; delay.tv_nsec = 100000000L;
+	nanosleep( &delay, NULL );
+
+	// Reset latching RxDown flag
+	writeVarPath( "ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TimingFrameRx.RxDown",		lZero	);
+}
+
+void pgpClDev::Feb0PllConfig()
+{
+	const uint64_t	lZero	= 0L;
+	const uint64_t	lOne	= 1L;
+	// Hold Pll in reset
+	writeVarPath( "ClinkDevRoot.ClinkFeb[0].ClinkTop.RstPll",		lOne	);
+
+	// TODO: for ( iLane = 0; iLane < 4; iLane++ )
+	LoadConfigFile( "db/cfgFeb0Pll85MHz.txt" );
+#if 0
+	{
+		# PllConfig is internal python variable
+		# TODO: Will need to select clock via EPICS st.cmd or Opal config file
+		if (self.PllConfig[i].get() == '85MHz'):
+			self.Pll[i].Config85MHz()            # Check for 80 MHz configuration
+		if (self.PllConfig[i].get() == '80MHz'):
+			# Same config as 85 MHz
+			self.Pll[i].Config85MHz()            # Check for 25 MHz configuration
+		if (self.PllConfig[i].get() == '25MHz'):
+			self.Pll[i].Config25MHz()        # Release the reset after configuration
+	}
+#endif
+	
+	// Enable Pll
+	writeVarPath( "ClinkDevRoot.ClinkFeb[0].ClinkTop.RstPll",		lZero	);
+
+	// ResetFebCounters() same as python ClinkTop.CntRst()
+}
+
+#include <sys/stat.h>
+#include <fcntl.h>
+
+/// Load Config file
+void pgpClDev::LoadConfigFile( const char * pszFilePath )
+{
+	const char	*	functionName	= "pgpClDev::LoadConfigFile";
+	FILE		*	cfgFile			= fopen( pszFilePath, "r" );
+	if ( cfgFile == NULL )
+	{
+		fprintf( stderr, "LoadConfigFile error: Unable to open %s\n", pszFilePath );
+		return;
+	}
+
+	unsigned int	nValues	= 0;
+	try
+	{
+		int			nScan	= 0;
+		double		dValue;
+		int64_t		lValue;
+		char		varPath[256];
+
+		while( 1 )
+		{
+			strcpy( varPath, "unParsed" );
+			nScan = fscanf( cfgFile, "%s = %lf", varPath, &dValue );
+			if ( nScan == EOF )
+				break;
+			if( nScan != 2 )
+			{
+				nScan = fscanf( cfgFile, "%s = %ld", varPath, &lValue );
+				if( nScan == 2 )
+					dValue = static_cast<double>(lValue);
+			}
+			if( nScan != 2 )
+			{
+				nScan = fscanf( cfgFile, "%s = 0x%lx", varPath, &lValue );
+				if( nScan == 2 )
+					dValue = static_cast<double>(lValue);
+			}
+			if( nScan == 2 )
+			{
+				setVariable( varPath, dValue, false );
+				nValues++;
+			}
+			else
+			{
+				printf( "%s: Error parsing %s\n", functionName, pszFilePath );
+			}
+		}
+	}
+	catch ( rogue::GeneralError & e )
+	{
+		printf( "%s error: %s!\n", functionName, e.what() );
+	}
+
+	fclose( cfgFile );
+	printf( "%s: Read %u values from %s\n", functionName, nValues, pszFilePath );
 }
 
 template<class R> int pgpClDev::readVarPath( const char * pszVarPath, R & valueRet )
@@ -400,15 +508,19 @@ template<class R> int pgpClDev::writeVarPath( rim::VariablePtr pVar, const R & v
 		if ( 1 || value != valueRet )
 		{
 			std::cout	<< functionName	<< ": " << pVar->path()
-						<< ", setValue="	<< value
-						<< ", getValue="	<< valueRet << std::endl;
+						<< ", setValue="	<< value;
+			if ( value != valueRet )
+				std::cout	<< ", Error getValue="	<< valueRet << std::endl;
+			else
+				std::cout	<< ", getValue="	<< valueRet << std::endl;
 		}
 	}
 	catch ( rogue::GeneralError & e )
 	{
 		printf( "%s error: %s!\n", functionName, e.what() );
 	}
-	pVar->setLogLevel( rogue::Logging::Warning );
+	if ( pVar->modelId() == rim::Bool )
+		pVar->setLogLevel( rogue::Logging::Info );
 
 	return status;
 }
@@ -467,14 +579,40 @@ void pgpClDev::dumpVariables( const char * pszFilePath, bool fWritableOnly, bool
 		return;
 	}
 
+	size_t	nDumped	= 0;
+	printf( "%s: %s has %zu registers\n", functionName, pszFilePath, mapVars.size() );
 	//dumpFile << functionName << ": " << mapVars.size() << std::endl;
 	for ( mapVarPtr_t::const_iterator vit = mapVars.begin(); vit != mapVars.end(); ++vit )
 	{
-		if ( fWritableOnly and vit->second->mode() == std::string("RO") )
-			continue;
-		dumpFile << vit->second->getDumpValue( fForceRead );
+		rim::VariablePtr	pVar	= vit->second;
+		try
+		{
+			if ( not fWritableOnly or pVar->mode() != std::string("RO") )
+			{
+				//	pVar->setLogLevel( rogue::Logging::Debug );
+				dumpFile << pVar->getDumpValue( fForceRead );
+				//	pVar->setLogLevel( rogue::Logging::Warning );
+				nDumped++;
+			}
+		}
+		catch ( rogue::GeneralError & e )
+		{
+			// pVar->setLogLevel( rogue::Logging::Warning );
+			printf( "%s rogue error: %s!\n", functionName, e.what() );
+		}
+		catch ( exception & e )
+		{
+			// pVar->setLogLevel( rogue::Logging::Warning );
+			printf( "%s error: %s!\n", functionName, e.what() );
+		}
+		catch ( ... )
+		{
+			// pVar->setLogLevel( rogue::Logging::Warning );
+			printf( "%s unknown error!\n", functionName );
+		}
 	}
 
+	printf( "%s: Dumped %zu of %zu registers...\n", functionName, nDumped, mapVars.size() );
 	dumpFile.close();
 }
 
@@ -556,6 +694,7 @@ void pgpClDev::showVariable( const char * pszVarPath, bool verbose )
 			printf( "%s: %li\n", varPath.c_str(), pVar->getInt() );
 			break;
 		case rim::Bool:
+			printf( "%s: %s\n", varPath.c_str(), ( pVar->getBool() ? "True" : "False" ) );
 			break;
 		case rim::String:
 			printf( "%s: '%s'\n", varPath.c_str(), pVar->getString().c_str() );
