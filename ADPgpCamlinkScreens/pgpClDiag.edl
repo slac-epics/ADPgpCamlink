@@ -3,8 +3,8 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 8
-y 71
+x 1976
+y 35
 w 1400
 h 900
 font "helvetica-medium-r-8.0"
@@ -30,8 +30,8 @@ beginObjectProperties
 major 4
 minor 0
 release 0
-x 956
-y 56
+x 352
+y 52
 w 336
 h 156
 lineColor index 3
@@ -953,7 +953,6 @@ bgColor index 12
 limitsFromDb
 nullColor index 40
 smartRefresh
-showUnits
 newPos
 objType "monitors"
 noExecuteClipMask
@@ -968,9 +967,8 @@ release 0
 x 228
 y 476
 w 76
-h 18
+h 14
 controlPv "$(P)$(R)Feb0:Trig0:Map"
-format "decimal"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
 fgColor index 25
@@ -978,7 +976,6 @@ fgAlarm
 bgColor index 5
 editable
 autoHeight
-motifWidget
 limitsFromDb
 nullColor index 40
 smartRefresh
@@ -2777,8 +2774,8 @@ beginObjectProperties
 major 4
 minor 7
 release 0
-x 1088
-y 72
+x 484
+y 68
 w 80
 h 20
 controlPv "$(P)$(R)PgpRx:Bandwidth_RBV"
@@ -2802,8 +2799,8 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 960
-y 72
+x 356
+y 68
 w 120
 h 20
 font "helvetica-medium-r-12.0"
@@ -2822,8 +2819,8 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 960
-y 120
+x 356
+y 116
 w 120
 h 20
 font "helvetica-medium-r-12.0"
@@ -2842,8 +2839,8 @@ beginObjectProperties
 major 4
 minor 7
 release 0
-x 1088
-y 120
+x 484
+y 116
 w 80
 h 20
 controlPv "$(P)$(R)PgpRx:FrameRate_RBV"
@@ -2913,8 +2910,8 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 956
-y 56
+x 352
+y 52
 w 137
 h 14
 font "helvetica-bold-r-12.0"
@@ -2933,8 +2930,8 @@ beginObjectProperties
 major 4
 minor 7
 release 0
-x 1088
-y 144
+x 484
+y 140
 w 80
 h 20
 controlPv "$(P)$(R)PgpRx:FrameSize_RBV"
@@ -2958,8 +2955,8 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 960
-y 144
+x 356
+y 140
 w 120
 h 20
 font "helvetica-medium-r-12.0"
@@ -2978,8 +2975,8 @@ beginObjectProperties
 major 4
 minor 7
 release 0
-x 1088
-y 96
+x 484
+y 92
 w 80
 h 20
 controlPv "$(P)$(R)PgpRx:FrameCnt_RBV"
@@ -3003,8 +3000,8 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 960
-y 96
+x 356
+y 92
 w 120
 h 20
 font "helvetica-medium-r-12.0"
@@ -3023,8 +3020,8 @@ beginObjectProperties
 major 4
 minor 7
 release 0
-x 1176
-y 144
+x 572
+y 140
 w 80
 h 20
 controlPv "$(P)$(R)PgpRx:FrameSize_RBV"
@@ -3183,8 +3180,8 @@ beginObjectProperties
 major 4
 minor 7
 release 0
-x 1180
-y 220
+x 576
+y 216
 w 96
 h 18
 controlPv "$(P)$(R)EvrV2:RateSel"
@@ -3213,8 +3210,8 @@ beginObjectProperties
 major 4
 minor 7
 release 0
-x 1092
-y 220
+x 488
+y 216
 w 80
 h 20
 controlPv "$(P)$(R)EvrV2:RateSel_RBV"
@@ -3238,8 +3235,8 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 964
-y 220
+x 360
+y 216
 w 120
 h 20
 font "helvetica-medium-r-12.0"
@@ -3258,8 +3255,8 @@ beginObjectProperties
 major 4
 minor 7
 release 0
-x 1092
-y 244
+x 488
+y 240
 w 80
 h 20
 controlPv "$(P)$(R)EvrV2:DestType_RBV"
@@ -3282,8 +3279,8 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 964
-y 244
+x 360
+y 240
 w 120
 h 20
 font "helvetica-medium-r-12.0"
@@ -3302,8 +3299,8 @@ beginObjectProperties
 major 4
 minor 7
 release 0
-x 1180
-y 292
+x 576
+y 288
 w 96
 h 18
 controlPv "$(P)$(R)EvrV2:FebTrigWidth"
@@ -3332,8 +3329,8 @@ beginObjectProperties
 major 4
 minor 7
 release 0
-x 1092
-y 292
+x 488
+y 288
 w 80
 h 20
 controlPv "$(P)$(R)EvrV2:FebTrigWidth_RBV"
@@ -3357,8 +3354,8 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 964
-y 292
+x 360
+y 288
 w 120
 h 20
 font "helvetica-medium-r-12.0"
@@ -3377,8 +3374,8 @@ beginObjectProperties
 major 4
 minor 7
 release 0
-x 1088
-y 192
+x 484
+y 188
 w 80
 h 20
 controlPv "$(P)$(R)Timing:FidCount_RBV"
@@ -3402,8 +3399,8 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 960
-y 192
+x 356
+y 188
 w 120
 h 20
 font "helvetica-medium-r-12.0"
@@ -3422,8 +3419,8 @@ beginObjectProperties
 major 4
 minor 7
 release 0
-x 1088
-y 168
+x 484
+y 164
 w 80
 h 20
 controlPv "$(P)$(R)Timing:RxLinkUp_RBV"
@@ -3447,8 +3444,8 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 960
-y 168
+x 356
+y 164
 w 120
 h 20
 font "helvetica-medium-r-12.0"
@@ -3527,8 +3524,8 @@ beginObjectProperties
 major 4
 minor 0
 release 0
-x 1180
-y 244
+x 576
+y 240
 w 96
 h 20
 fgColor index 14
@@ -3547,8 +3544,8 @@ beginObjectProperties
 major 4
 minor 7
 release 0
-x 1176
-y 192
+x 572
+y 188
 w 80
 h 20
 controlPv "$(P)$(R)Timing:sofCount_RBV"
@@ -3572,8 +3569,8 @@ beginObjectProperties
 major 4
 minor 7
 release 0
-x 1260
-y 192
+x 656
+y 188
 w 80
 h 20
 controlPv "$(P)$(R)Timing:eofCount_RBV"
@@ -3664,8 +3661,8 @@ beginObjectProperties
 major 4
 minor 7
 release 0
-x 1180
-y 316
+x 576
+y 312
 w 96
 h 18
 controlPv "$(P)$(R)EvrV2:Source"
@@ -3694,8 +3691,8 @@ beginObjectProperties
 major 4
 minor 7
 release 0
-x 1092
-y 316
+x 488
+y 312
 w 80
 h 20
 controlPv "$(P)$(R)EvrV2:Source_RBV"
@@ -3719,8 +3716,8 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 964
-y 316
+x 360
+y 312
 w 120
 h 20
 font "helvetica-medium-r-12.0"
