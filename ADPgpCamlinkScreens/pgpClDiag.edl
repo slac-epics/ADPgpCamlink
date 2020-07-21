@@ -3,8 +3,8 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 1976
-y 35
+x 152
+y 99
 w 1400
 h 900
 font "helvetica-medium-r-8.0"
@@ -269,7 +269,7 @@ minor 0
 release 0
 x 8
 y 216
-w 336
+w 684
 h 364
 lineColor index 3
 fill
@@ -2482,7 +2482,7 @@ onColor index 5
 offColor index 3
 topShadowColor index 1
 botShadowColor index 11
-controlPv "$(P)$(R)SeqStartRun.PROC"
+controlPv "$(P)$(R)SeqStopRun.PROC"
 pressValue "1"
 onLabel "StopRun"
 offLabel "StopRun"
@@ -3092,8 +3092,8 @@ beginObjectProperties
 major 4
 minor 7
 release 0
-x 840
-y 776
+x 488
+y 276
 w 80
 h 20
 controlPv "$(P)$(R)EvrV2:EnableFebTrig_RBV"
@@ -3116,8 +3116,8 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 712
-y 776
+x 360
+y 276
 w 120
 h 20
 font "helvetica-medium-r-12.0"
@@ -3181,7 +3181,7 @@ major 4
 minor 7
 release 0
 x 576
-y 216
+y 228
 w 96
 h 18
 controlPv "$(P)$(R)EvrV2:RateSel"
@@ -3211,7 +3211,7 @@ major 4
 minor 7
 release 0
 x 488
-y 216
+y 228
 w 80
 h 20
 controlPv "$(P)$(R)EvrV2:RateSel_RBV"
@@ -3236,7 +3236,7 @@ major 4
 minor 1
 release 1
 x 360
-y 216
+y 228
 w 120
 h 20
 font "helvetica-medium-r-12.0"
@@ -3256,7 +3256,7 @@ major 4
 minor 7
 release 0
 x 488
-y 240
+y 252
 w 80
 h 20
 controlPv "$(P)$(R)EvrV2:DestType_RBV"
@@ -3280,7 +3280,7 @@ major 4
 minor 1
 release 1
 x 360
-y 240
+y 252
 w 120
 h 20
 font "helvetica-medium-r-12.0"
@@ -3300,7 +3300,7 @@ major 4
 minor 7
 release 0
 x 576
-y 288
+y 300
 w 96
 h 18
 controlPv "$(P)$(R)EvrV2:FebTrigWidth"
@@ -3330,7 +3330,7 @@ major 4
 minor 7
 release 0
 x 488
-y 288
+y 300
 w 80
 h 20
 controlPv "$(P)$(R)EvrV2:FebTrigWidth_RBV"
@@ -3355,7 +3355,7 @@ major 4
 minor 1
 release 1
 x 360
-y 288
+y 300
 w 120
 h 20
 font "helvetica-medium-r-12.0"
@@ -3484,8 +3484,8 @@ beginObjectProperties
 major 4
 minor 0
 release 0
-x 928
-y 776
+x 576
+y 276
 w 96
 h 20
 fgColor index 14
@@ -3525,7 +3525,7 @@ major 4
 minor 0
 release 0
 x 576
-y 240
+y 252
 w 96
 h 20
 fgColor index 14
@@ -3662,7 +3662,7 @@ major 4
 minor 7
 release 0
 x 576
-y 312
+y 324
 w 96
 h 18
 controlPv "$(P)$(R)EvrV2:Source"
@@ -3692,7 +3692,7 @@ major 4
 minor 7
 release 0
 x 488
-y 312
+y 324
 w 80
 h 20
 controlPv "$(P)$(R)EvrV2:Source_RBV"
@@ -3717,7 +3717,7 @@ major 4
 minor 1
 release 1
 x 360
-y 312
+y 324
 w 120
 h 20
 font "helvetica-medium-r-12.0"
@@ -3776,6 +3776,138 @@ fastUpdate
 useHexPrefix
 newPos
 objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 488
+y 428
+w 80
+h 20
+controlPv "$(P)$(R)Feb0:ClCh0:FrameMode_RBV"
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+fgColor index 15
+fgAlarm
+bgColor index 12
+limitsFromDb
+nullColor index 40
+smartRefresh
+newPos
+objType "monitors"
+noExecuteClipMask
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 360
+y 428
+w 120
+h 20
+font "helvetica-medium-r-12.0"
+fontAlign "right"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "Feb0:ClCh0:FrameMode"
+}
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 360
+y 452
+w 120
+h 20
+font "helvetica-medium-r-12.0"
+fontAlign "right"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "Feb0:DataMode"
+}
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 488
+y 452
+w 80
+h 20
+controlPv "$(P)$(R)Feb0:ClCh0:DataMode_RBV"
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+fgColor index 15
+fgAlarm
+bgColor index 12
+limitsFromDb
+nullColor index 40
+smartRefresh
+newPos
+objType "monitors"
+noExecuteClipMask
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 360
+y 476
+w 120
+h 20
+font "helvetica-medium-r-12.0"
+fontAlign "right"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "Feb0:LinkMode"
+}
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 488
+y 476
+w 80
+h 20
+controlPv "$(P)$(R)Feb0:ClCh0:LinkMode_RBV"
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+fgColor index 15
+fgAlarm
+bgColor index 12
+limitsFromDb
+nullColor index 40
+smartRefresh
+newPos
+objType "monitors"
 noExecuteClipMask
 endObjectProperties
 
