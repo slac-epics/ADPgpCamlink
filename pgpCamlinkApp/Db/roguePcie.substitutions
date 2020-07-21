@@ -43,7 +43,9 @@ file boolDevRogue.template
 		NAME	= "EvrV2:EnableFebTrig",
 		PATH	= "ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TriggerEventManager.EvrV2CoreTriggers.EvrV2TriggerReg[0].EnableTrig"
 		DESC	= "Enables the EvrV2 Trigger Output"
+		DOL		= "1"
 		PINI	= "YES"
+		SAVE	= ""
 		SCAN	= "\$(SCAN=1 second)"
 	}
 	{
@@ -82,6 +84,18 @@ file liDevRogue.template
 		PATH	= "ClinkDevRoot.ClinkPcie.AxiPcieCore.AxiVersion.FpgaVersion",
 		DESC	= "AxiPcieCore FPGA Version (show as hex)"
 		PINI	= "YES"
+	}
+	{
+		NAME	= "AxiPcieCore:DmaIb:FrameSize",
+		PATH	= "ClinkDevRoot.ClinkPcie.AxiPcieCore.DmaIbAxisMon.Ch[0].FrameSize",
+		DESC	= "AxiPcieCore Inbound DMA FrameSize"
+		SCAN	= "\$(SCAN=1 second)"
+	}
+	{
+		NAME	= "AxiPcieCore:DmaIb:FrameSizeMax",
+		PATH	= "ClinkDevRoot.ClinkPcie.AxiPcieCore.DmaIbAxisMon.Ch[0].FrameSizeMax",
+		DESC	= "AxiPcieCore Inbound DMA FrameSizeMax"
+		SCAN	= "\$(SCAN=1 second)"
 	}
 	{
 		NAME	= "AxiPcieCore:UpTime",
@@ -192,6 +206,9 @@ file longDevRogue.template
 		NAME	= "EvrV2:FebTrigWidth",
 		DESC	= "Must be non-zero, recommend set to 1"
 		PATH	= "ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TriggerEventManager.EvrV2CoreTriggers.EvrV2TriggerReg[0].Width"
+		DOL		= "1"
+		PINI	= "YES"
+		SAVE	= ""
 		SCAN	= "\$(SCAN=1 second)"
 	}
 	{
@@ -217,6 +234,12 @@ file longDevRogue.template
 		DESC	= "Lane A SW camera control bit enable mask"
 		DOL		= "0"
 		PINI	= "YES"
+	}
+	{
+		NAME	= "Feb0:RstPll",
+		PATH	= "ClinkDevRoot.ClinkFeb[0].ClinkTop.RstPll"
+		PINI	= ""
+		SAVE	= ""
 	}
 	{
 		NAME	= "Timing:RxDown",
