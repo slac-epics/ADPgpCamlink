@@ -63,6 +63,7 @@ file boolDevRogue.template
 		PATH	= "ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TriggerEventManager.TriggerEventBuffer[0].MasterEnable"
 		PINI	= "YES"
 		SAVE	= ""
+		SCAN	= "\$(SCAN=1 second)"
 	}
 	{
 		NAME	= "XpmMini:Config_L0Select_Enabled",
