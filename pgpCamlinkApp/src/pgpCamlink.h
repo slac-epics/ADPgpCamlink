@@ -184,15 +184,15 @@ public:		//	Public member functions
 		//return m_pSyncDataAcquirer->IsAcquiring();
 	}
 
-	bool	InAcquireMode()
-	{
-		return m_fAcquireMode;
-	}
+	//bool	InAcquireMode()
+	//{
+	//	return m_fAcquireMode;
+	//}
 	asynStatus	SetAcquireMode( int fAcquireMode );
-	bool	GetAcquireMode() const
-	{
-		return m_fAcquireMode;
-	}
+	//bool	GetAcquireMode() const
+	//{
+	//	return m_fAcquireMode;
+	//}
 
 //	Image		*	GetCurImageBuf( );
 //	Image		*	GetNextImageBuf(unsigned int &);
@@ -575,10 +575,12 @@ private:	//	Private class variables
 #define CamlinkTrigLevelString	"CLCAM_TRIG_LEVEL"
 #define CamlinkDebugLevelString	"CLCAM_DEBUG"
 #define CamlinkDebugSerString	"CLCAM_DEBUG_SER"
+
+// TODO: These don't look right.  Can we nuke them?
 #define PgpAxiVersionString			"ClinkDevRoot.ClinkPcie.AxiPcieCore.AxiVersion.BuildStamp"
 #define PgpCoreFpgaVersionString	"ClinkDevRoot.ClinkPcie.AxiPcieCore.AxiVersion.FpgaVersion"
 #define PgpFebFpgaVersionString		"ClinkDevRoot.ClinkFeb[0].AxiVersion.FpgaVersion"
-#define PgpAppDataCntString			"ClinkDevRoot.ClinkPcie.Application.AppLane[0].EventBuilder.DataCnt[0]" 
+#define PgpAppDataCntString			"ClinkDevRoot.ClinkPcie.Application.AppLane[0].EventBuilder.DataCnt[1]" 
 
 // This group provides a way to have serial readbacks get reflected in
 // their ADBase class equivalents, for example

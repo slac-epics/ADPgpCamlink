@@ -109,27 +109,30 @@ const char * TriggerModeToString( pgpCamlink::TriggerMode_t	tyTriggerMode )
 
 
 // ImageCallback function
-void ProcessImageCallback(
-	void							*	pCallbackClient,
-	const epicsTimeStamp			&	tsImage,
-	rogue::protocols::batcher::DataPtr	pImageData )
+extern "C"
+int ProcessImageCallback(
+	void				*	pClientContext,
+	const ImageCbInfo	*	pImageCbInfo  )
 {
-	pgpCamlink	*	pADCam = (pgpCamlink *) pCallbackClient;
-
+	pgpCamlink	*	pADCam = (pgpCamlink *) pClientContext;
+	rogue::protocols::batcher::DataPtr	pImageData;
+	rogue::interfaces::stream::FramePtr	pFrameData = pImageCbInfo->m_pFrame; 
     if ( DEBUG_PGP_CAMLINK >= 4 )
 	{
-		if ( pImageData )
-        	printf( "ProcessImageCallback: %u bytes, pulseID %d\n", pImageData->size(), tsImage.nsec & 0x1FFFF );
+		if ( pFrameData )
+        	printf( "ProcessImageCallback: %u bytes, pulseID %d\n",
+					/*pFrameData->size()*/ 5,
+					pImageCbInfo->m_tsImage.nsec & 0x1FFFF );
 		else
-        	printf( "ProcessImageCallback: Null Image, pulseID %d\n", tsImage.nsec & 0x1FFFF );
+        	printf( "ProcessImageCallback: Null Image, pulseID %d\n", pImageCbInfo->m_tsImage.nsec & 0x1FFFF );
 	}
 
 	if( pADCam )
 	{
-		pADCam->ProcessImage( tsImage, pImageData );
+		pADCam->ProcessImage( pImageCbInfo->m_tsImage, pImageCbInfo->m_ImageDataPtr );
 	}
 
-	return;
+	return( 0 );
 }
 
 
@@ -518,7 +521,6 @@ void pgpCamlink::Shutdown( )
 	if ( m_pDev != NULL )
 	{
 		m_pDev->disconnect();
-		m_pDev	= NULL;
 	}
 	epicsMutexUnlock(	m_reconfigLock );
 }
@@ -619,7 +621,6 @@ asynStatus pgpCamlink::DisconnectCamera( )
 	{
 		// Halt any image acquires in progress
 		m_pDev->disconnect();
-		m_pDev	= NULL;
 	}
 	epicsMutexUnlock(	m_reconfigLock );
  
@@ -817,8 +818,8 @@ int pgpCamlink::_Reconfigure( )
 	}
 
 	// Cancel Image Callbacks
-	m_pDev->cancelImageCallbacks( );
 	m_pDev->setTriggerEnable( 0, false );
+	m_pDev->cancelImageCallbacks( );
 
 	// Fetch the pgpCamlink driver and library versions
 	m_DrvVersion = m_pDev->GetDrvVersion();
@@ -1061,23 +1062,6 @@ int pgpCamlink::_Reopen( )
     char    fpga_name[128];
     printf( "board %d, Chan %d, Mode: %s\n",
 			m_board, m_lane, CamlinkModeToString( m_CamlinkMode ) );
-#if 0
-    printf( "Boot sector FPGA header: \"%s\"\n", get_pci_fpga_header( m_pDev , fpga_name));
-#endif
-	if ( m_CamlinkMode == CL_MODE_FULL && !strstr( fpga_name, "_fm" ) )
-	{
-	    printf( "\n\nERROR: Wrong firmware. You need to use full-mode FPGA version for this camera!\n\n" );
-		m_pDev->disconnect();
-		m_pDev	= NULL;
-        return -1;
-    }
-	if ( m_CamlinkMode != CL_MODE_FULL && strstr( fpga_name, "_fm" ) )
-	{
-	    printf( "\n\nERROR: Wrong firmware. You need to use a non-full-mode FPGA version for this camera!\n\n" );
-		m_pDev->disconnect();
-		m_pDev	= NULL;
-        return -1;
-    }
 
 	// Diagnostics
 	if ( DEBUG_PGP_CAMLINK >= 1 )
@@ -1223,6 +1207,7 @@ asynStatus	pgpCamlink::SetAcquireMode( int fAcquire )
 		m_pDev->cancelImageCallbacks( );
 
 		// Stop acquisition
+		m_pDev->setTriggerEnable( 0, false );
 		m_fAcquireMode = false;
 		m_acquireCount = 0;
 
@@ -1280,7 +1265,7 @@ asynStatus	pgpCamlink::SetAcquireMode( int fAcquire )
 					functionName, m_CameraName.c_str() );
 		// Enable Image Callbacks
 		m_pDev->requestImageCallbacks( this, ProcessImageCallback );
-		// Enable Image Callbacks
+		// Enable Triggers and PGP framegrabber
 		m_pDev->setTriggerEnable( 0, true );
 #if 0
 		if( m_pSyncDataAcquirer != NULL )
@@ -1292,6 +1277,8 @@ asynStatus	pgpCamlink::SetAcquireMode( int fAcquire )
 	return asynSuccess;
 }
 
+// TODO: Is this function still used?
+// Was being called in ADEdtPdv from syncDataAcq loop
 int pgpCamlink::StartAcquisition( )
 {
     static const char	*	functionName = "pgpCamlink::StartAcquisition";
@@ -1309,14 +1296,14 @@ int pgpCamlink::StartAcquisition( )
 		epicsThreadSleep( cameraStartDelay );
 	}
 
-	if ( m_fReconfig || !InAcquireMode() )
+	if ( m_fReconfig || !m_fAcquireMode )
 	{
 		if ( DEBUG_PGP_CAMLINK >= 1 )
 		{
 			if ( m_fReconfig )
 				printf( "%s: Reconfig requested\n", functionName );
 			else
-				printf( "%s: Not InAcquireMode\n", functionName );
+				printf( "%s: Not in AcquireMode\n", functionName );
 		}
     	return -1;
 	}
@@ -1325,6 +1312,7 @@ int pgpCamlink::StartAcquisition( )
 		printf(	"%s: Acquire image from %zu,%zu size %zux%zu\n", functionName,
 				GetMinX(), GetMinY(), GetSizeX(), GetSizeY()	);
 
+	// TODO: Where are these AD values set now?
 	// Clear NumImagesCounter and start acquisition
 	setIntegerParam( ADNumImagesCounter, 0 );
 	UpdateStatus( ADStatusAcquire );
@@ -1336,7 +1324,9 @@ int pgpCamlink::StartAcquisition( )
 
 		// Enable Image Callbacks
 		m_pDev->requestImageCallbacks( this, ProcessImageCallback );
-		// Enable Image Callbacks
+
+		// Enable triggers
+		// TODO: Need to emulate StartRun()
 		m_pDev->setTriggerEnable( 0, true );
 	}
 
@@ -1433,6 +1423,7 @@ int pgpCamlink::DeIntlvRoiOnly16( NDArray * pNDArray, void	*	pRawData )
 	return 0;
 }
 
+// TODO: Redo pgpCamlink::ProcessImage w/ one pImageCbInfo param
 int pgpCamlink::ProcessImage(
 	const epicsTimeStamp			&	tsImage,
 	rogue::protocols::batcher::DataPtr	pImageData )
@@ -1441,7 +1432,8 @@ int pgpCamlink::ProcessImage(
 	CONTEXT_TIMER( "ProcessImage" );
 	assert( m_pDev != NULL );
 
-	// Fetch and update DataCnt
+#if 0
+	// Fetch and update DataCnt.  Not sure this is needed
 	uint64_t		DataCnt = 0;
 	if ( m_pDev->readVarPath( PgpAppDataCntString, DataCnt ) == 0 )
 	{
@@ -1449,9 +1441,15 @@ int pgpCamlink::ProcessImage(
 		if( status == asynSuccess )
 			status = callParamCallbacks( 0, 0 );
 	}
+#endif
+#ifdef	USE_DIAG_TIMER
+	// Update diagnostic timers
+	m_ReArmTimer.StartTimer( );
+	m_ProcessImageTimer.StartTimer( );
+#endif	//	USE_DIAG_TIMER
 
 	// See if we exited acquire mode while waiting for an image
-	if ( 0 /*m_fReconfig*/ || !InAcquireMode() )
+	if ( 0 /*m_fReconfig || !m_fAcquireMode*/ )
 	{
 		if ( DEBUG_PGP_CAMLINK >= 1 )
 		{
@@ -1464,9 +1462,9 @@ int pgpCamlink::ProcessImage(
 		// Cancel Image Callbacks
 		if ( m_pDev )
 		{
-			m_pDev->cancelImageCallbacks( );
-			// Disable Image Callbacks
-			m_pDev->setTriggerEnable( 0, false );
+			//m_pDev->cancelImageCallbacks( );
+			// Disable triggers
+			//m_pDev->setTriggerEnable( 0, false );
 		}
 		return asynError;
 	}
@@ -1482,18 +1480,25 @@ int pgpCamlink::ProcessImage(
 
 	if ( ! pImageData )
 	{
-		if ( DEBUG_PGP_CAMLINK >= 5 )
+		if ( DEBUG_PGP_CAMLINK >= 4 )
 		{
 			if ( ! pImageData )
 				printf(	"%s: Image Timeout: Failed to acquire image!\n", functionName );
 			else
 				printf(	"%s: Image Timeout: Stale Image\n", functionName );
 		}
-		UpdateStatus( ADStatusError );
+		//UpdateStatus( ADStatusError );
 		return asynError;
 	}
 
-	UpdateStatus( ADStatusReadout );
+	if ( DEBUG_PGP_CAMLINK >= 3 )
+	{
+		printf(	"%s: Processing pulseID %d\n", functionName,
+				tsImage.nsec & 0x1FFFF );
+	}
+	else
+		return 0;
+	//UpdateStatus( ADStatusReadout );
 
 	// Lock NDArrayPool driver
 	lock();
@@ -1503,15 +1508,18 @@ int pgpCamlink::ProcessImage(
 	if ( pNDArray != NULL )
 	{
 		// Transfer the image from the frame buffer to the NDArray
-		int status = LoadNDArray( pNDArray, pImageData );
+		int status = -1;
+		status = LoadNDArray( pNDArray, pImageData );
 		if ( status != 0 )
 		{
+			printf(	"%s: LoadNDArray error for pulseID %d\n", functionName,
+					tsImage.nsec & 0x1FFFF );
 			pNDArray->release( );
 			pNDArray = NULL;
 		}
 		else
 		{
-			//pImage->SetNDArrayPtr( pNDArray );
+			pImage->SetNDArrayPtr( pNDArray );
 			if ( DEBUG_PGP_CAMLINK >= 5 && pNDArray != NULL )
 			{
 				// Write NDArray report to stdout

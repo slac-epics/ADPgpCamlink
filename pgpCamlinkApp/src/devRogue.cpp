@@ -24,7 +24,7 @@
 #include "pgpCamlink.h"
 
 
-int	DEBUG_ROGUE_DEV = 3;
+int	DEBUG_ROGUE_DEV = 2;
 epicsExportAddress( int,  DEBUG_ROGUE_DEV );
 
 

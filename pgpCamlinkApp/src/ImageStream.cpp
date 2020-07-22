@@ -8,8 +8,11 @@
 extern int	DEBUG_PGP_CAMLINK;
 
 // TDEST 0 is Timing Event
-// Offset 0:  4 byte nsec of timestamp
-// Offset 4:  4 byte sec  of timestamp
+// Offset 0:  4 byte ?
+// Offset 4:  4 byte ?
+// Offset 8:  4 byte nsec of timestamp
+// Offset 12: 4 byte sec  of timestamp
+// TODO: Fix offsets
 // Offset 8:  4 byte edefAvgDoneMask
 // Offset 12: 4 byte edefAvgMinorMask
 // Offset 16: 4 byte edefAvgMajorMask
@@ -68,60 +71,74 @@ void ImageStream::acceptFrame ( rogue::interfaces::stream::FramePtr frame )
 	epicsTimeStamp		ts;
 	epicsTimeGetCurrent( &ts );
 
-#if 1
 	// Process frame via CoreV1 protocol
 	m_FrameCore.processFrame(frame);
-	rogue::protocols::batcher::DataPtr	ImageDataPtr;
 	if ( DEBUG_PGP_CAMLINK >= 4 )
 		printf( "ImageStream::acceptFrame: core count=%u, seq=%u, hdrSize=%u, tailSize=%u\n",
 				m_FrameCore.count(), m_FrameCore.sequence(), m_FrameCore.headerSize(), m_FrameCore.tailSize() );
 	for ( uint32_t sf = 0; sf < m_FrameCore.count(); sf++ )
 	{
-		rogue::protocols::batcher::DataPtr	data;
-		data = m_FrameCore.record(sf);
+		rogue::protocols::batcher::DataPtr	data = m_FrameCore.record(sf);
 		// FUSER_BIT_1 = StartOfFrame
 		// LUSER_BIT_0 = FrameError
 		if ( DEBUG_PGP_CAMLINK >= 4 )
 			printf( "ImageStream::acceptFrame SubFrame %d: dest=%u, size=%u, fUser=0x%02x, lUser=0x%02x\n",
 					sf, data->dest(), data->size(), data->fUser(), data->lUser() );
 		if ( data->dest() == 0 )
-		{	// TDEST 0 is Timing Event
+		{	// TDEST 0 is Trigger (Timing Event)
 			it = data->begin();
+			it += 8;	// Skipping ?
 			fromFrame( it, 4, &ts.nsec );
 			fromFrame( it, 4, &ts.secPastEpoch );
 			epicsTimeToStrftime( acBuff, 40, "%H:%M:%S.%04f", &ts );
 			if ( DEBUG_PGP_CAMLINK >= 4 )
 			{
-				printf( "ts %s, pulseId 0x%X\n", acBuff, ts.nsec & 0x1FFFF );
-				if ( DEBUG_PGP_CAMLINK >= 5 )
+				printf( "%s TDEST 0 SubFrame %d, ts %s, pulseId 0x%X\n",
+						functionName, sf, acBuff, ts.nsec & 0x1FFFF );
+				if ( DEBUG_PGP_CAMLINK >= 6 )
 				{
 					//printf( "Invalid timing frame:" );
 					for ( uint32_t x=0; x < 24; x++)
-					{
-						printf( " 0x%02x", *it );
-						it++;
-					}
+					{ printf( " 0x%02x", *it ); it++; }
 					printf( "\n" );
 				}
 			}
 		}
 		else if ( data->dest() == 1 )
-		{	// TDEST 1 is framegrabber image data
+		{	// TDEST 1 is event
 			if ( DEBUG_PGP_CAMLINK >= 4 )
-				printf( "ImageStream::acceptFrame TDEST 1 SubFrame %d: ", sf );
+				printf( "ImageStream::acceptFrame TDEST 1 SubFrame %d, Event: \n", sf );
 			//it = data->begin();
 			//it = data->end();
-			ImageDataPtr	= data;
+		}
+		else if ( data->dest() == 2 )
+		{	// TDEST 2 is framegrabber image data
+			m_ImageInfo.m_ImageDataPtr = data;
+			uint32_t	size	= data->end() - data->begin();
+			//uint8_t	*	dataPtr	= data->begin().ptr();
+			if ( DEBUG_PGP_CAMLINK >= 4 )
+				printf( "ImageStream::acceptFrame TDEST 2 SubFrame %d: , size %u\n", sf, size );
 		}
 	}
 
 	// Process image
 	if ( m_pClDev )
 	{
-		if ( !ImageDataPtr && ( DEBUG_PGP_CAMLINK >= 4 ) )
+		m_ImageInfo.m_tsImage			= ts;
+		m_ImageInfo.m_pFrame			= frame;
+		if ( !m_ImageInfo.m_ImageDataPtr && ( DEBUG_PGP_CAMLINK >= 4 ) )
 			printf( "ts %s, pulseId 0x%X, no image!\n", acBuff, ts.nsec & 0x1FFFF );
-		m_pClDev->ProcessImage( ts, ImageDataPtr );
+		m_pClDev->ProcessImage( &m_ImageInfo );
+	}
+
+#if 0 // Not ready to enable
+	// Check for ImageCallback
+	if ( m_CallbackClientFunc )
+	{
+		m_ImageInfo.m_pClientContext	= m_pCallbackClient;
+		m_ImageInfo.m_tsImage			= ts;
+		m_ImageInfo.m_pFrame			= frame;
+		(*m_CallbackClientFunc)( &m_ImageInfo );
 	}
 #endif
-
 }

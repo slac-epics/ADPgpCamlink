@@ -36,6 +36,7 @@ namespace rim = rogue::interfaces::memory;
 typedef	std::map< std::string, rim::VariablePtr >	mapVarPtr_t;
 
 int		DEBUG_PGP_CAMLINK	= 2;
+extern int	DEBUG_ROGUE_DEV;
 
 // TODO Move to new file: src/rogue/memory/interfaces/memory/Constants.cpp
 // TODO Rename BlockProcessingType2String()?
@@ -80,11 +81,24 @@ int ResetCounters( int fd )
 	return status;
 }
 
-#define CLINKDEV_TRIG0_ENABLEREG	0x940000
 int		pgpClDev::setTriggerEnable( unsigned int triggerNum, bool fEnable )
 {
 	int		status	= 0;
 #if 1
+	// TODO: Replace this code w/ invoking cannedSequences StartRun and StopRun seq PVs
+	const char * varPathMasterEnable	= "ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TriggerEventManager.TriggerEventBuffer[0].MasterEnable";
+	const char * varPathBlowoff			= "ClinkDevRoot.ClinkPcie.Application.AppLane[0].EventBuilder.Blowoff";
+	if ( fEnable )
+	{
+		setVariable( varPathBlowoff,		0, false );
+		setVariable( varPathMasterEnable,	1, false );
+	}
+	else
+	{
+		setVariable( varPathMasterEnable,	0, false );
+		setVariable( varPathBlowoff,		1, false );
+	}
+#else
 	const char		*	functionName	= "pgpClDev::setTriggerEnable";
 	std::string	varPath = "ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TriggerEventManager.EvrV2CoreTriggers.EvrV2ChannelReg[0].EnableReg";
 	rogue::interfaces::memory::VariablePtr	pVar = getVariable( varPath );
@@ -98,12 +112,12 @@ int		pgpClDev::setTriggerEnable( unsigned int triggerNum, bool fEnable )
 		{
 			try
 			{
-				pVar->setLogLevel( rogue::Logging::Debug );
+				//pVar->setLogLevel( rogue::Logging::Debug );
 				pVar->setBool( fEnable );
-				pVar->setLogLevel( rogue::Logging::Warning );
-				printf( "%s type is %s, nBits %u, byteSize %u, fastCopy %u!\n",
-						varPath.c_str(), modelId2String( pVar->modelId() ), pVar->bitTotal(),
-						pVar->byteSize(), pVar->fastCopy() );
+				//pVar->setLogLevel( rogue::Logging::Warning );
+				//printf( "%s type is %s, nBits %u, byteSize %u, fastCopy %u!\n",
+				//		varPath.c_str(), modelId2String( pVar->modelId() ), pVar->bitTotal(),
+				//		pVar->byteSize(), pVar->fastCopy() );
 			}
 			catch ( rogue::GeneralError & e )
 			{
@@ -117,8 +131,6 @@ int		pgpClDev::setTriggerEnable( unsigned int triggerNum, bool fEnable )
 					varPath.c_str(), modelId2String( pVar->modelId() ) );
 		}
 	}
-#else
-	status = dmaWriteRegister( m_fd, CLINKDEV_TRIG0_ENABLEREG, fEnable );
 #endif
 	return status;
 }
@@ -341,6 +353,9 @@ void pgpClDev::ConfigureLclsTimingV1()
 
 	// Reset latching RxDown flag
 	writeVarPath( "ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TimingFrameRx.RxDown",		lZero	);
+
+	// TODO: How to make this configurable
+	writeVarPath( "ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TimingPhyMonitor.UseMiniTpg",	lOne );
 }
 
 void pgpClDev::Feb0PllConfig()
@@ -457,7 +472,7 @@ template<class R> int pgpClDev::readVarPath( const char * pszVarPath, R & valueR
 	}
 	//pVar->setLogLevel( rogue::Logging::Warning );
 
-	if ( DEBUG_PGP_CAMLINK >= 5 )
+	if ( DEBUG_PGP_CAMLINK >= 6 )
 	{
 		std::cout	<< functionName	<< ": " << varPath
 					<< ", typeid = "	<< typeid(R).name()
@@ -483,10 +498,10 @@ template<class R> int pgpClDev::writeVarPath( rim::VariablePtr pVar, const R & v
 		return -1;
 	}
 
-	if ( DEBUG_PGP_CAMLINK >= 3 )
+	if ( DEBUG_PGP_CAMLINK >= 6 )
 	{
-		if ( pVar->modelId() == rim::Bool )
-			pVar->setLogLevel( rogue::Logging::Debug );
+		//if ( pVar->modelId() == rim::Bool )
+		//	pVar->setLogLevel( rogue::Logging::Debug );
 		if ( typeid(value) == typeid(uint64_t) )
 			std::cout << functionName << ": " << pVar->path() << " is uint64_t" << std::endl;
 		std::cout	<< functionName	<< ": " << pVar->path()
@@ -505,7 +520,7 @@ template<class R> int pgpClDev::writeVarPath( rim::VariablePtr pVar, const R & v
 		status = 0;
 		R	valueRet;
 		pVar->getValue( valueRet );
-		if ( 1 || value != valueRet )
+		if ( DEBUG_ROGUE_DEV >= 3 || value != valueRet )
 		{
 			std::cout	<< functionName	<< ": " << pVar->path()
 						<< ", setValue="	<< value;
@@ -761,17 +776,40 @@ void pgpClDev::disconnect( )
 {
 }
 
+#if 0
+// ImageCallback function
+int	ProcessImage( const ImageCbInfo * pImageInfo )
+{
+	pgpClDev	*	pDev = (pgpClDev *) pImageInfo->m_pClientContext;
+	//pDev->ProcessImage( pImageInfo->m_tsImage, pImageInfo->m_pFrame );
+	pDev->ProcessImage( pImageInfo );
+	return 0;
+}
+#endif
 
 void pgpClDev::ProcessImage(
-	const epicsTimeStamp			&	tsImage,
-	rogue::protocols::batcher::DataPtr	pImageData )
+	const ImageCbInfo		* pImageInfo )
 {
 	const char		*	functionName	= "pgpClDev::ProcessImage";
-	if ( DEBUG_PGP_CAMLINK >= 3 ) printf( "%s\n", functionName );
+	if ( DEBUG_PGP_CAMLINK >= 5 ) printf( "%s\n", functionName );
+	//epicsTimeStamp		tsImage	= pImageInfo->m_tsImage;
+	//rogue::protocols::batcher::DataPtr	pImageData;
 
 	if  ( m_CallbackClientFunc != NULL )
-		(*m_CallbackClientFunc)( m_pCallbackClient, tsImage, pImageData );
+		(*m_CallbackClientFunc)( m_pCallbackClient, pImageInfo );
 
 	return;
 }
 
+void pgpClDev::cancelImageCallbacks( )
+{
+	m_pCallbackClient		= NULL;
+	m_CallbackClientFunc	= NULL;
+	m_pImageStream->cancelImageCallbacks( );
+}
+void pgpClDev::requestImageCallbacks( void * pClientContext, ImageCallback callbackFunction )
+{
+	m_pCallbackClient		= pClientContext;
+	m_CallbackClientFunc	= callbackFunction;
+	m_pImageStream->requestImageCallbacks( pClientContext, callbackFunction );
+}

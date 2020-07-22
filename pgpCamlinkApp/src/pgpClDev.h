@@ -47,10 +47,6 @@
 class pgpClAddrMap;
 typedef std::shared_ptr<pgpClAddrMap> pgpClAddrMapPtr;
 
-typedef void (* ImageCallback)(	void							*	pCallbackClient,
-								const epicsTimeStamp			&	tsImage,
-								rogue::protocols::batcher::DataPtr	pImageData );
-
 ///	pgpClDev class
 class pgpClDev :	public rogue::LibraryBase
 {
@@ -92,8 +88,7 @@ public:		//	Public member functions
 		return m_LibVersion;
 	}
 
-	void ProcessImage(	const epicsTimeStamp			&	tsImage,
-						rogue::protocols::batcher::DataPtr	pImageData );
+	void ProcessImage(	const ImageCbInfo				*	pCbInfo );
 
 	/// Configure timing for LCLS-I
 	void ConfigureLclsTimingV1();
@@ -103,18 +98,10 @@ public:		//	Public member functions
 
 	void Feb0PllConfig();
 
-	void cancelImageCallbacks( )
-	{
-		m_pCallbackClient		= NULL;
-		m_CallbackClientFunc	= NULL;
-	}
+	void cancelImageCallbacks( );
 
 	void requestImageCallbacks(	void			*	pCallbackClient,
-								ImageCallback		CallbackClientFunc )
-	{
-		m_pCallbackClient		= pCallbackClient;
-		m_CallbackClientFunc	= CallbackClientFunc;
-	}
+								ImageCallback		CallbackClientFunc );
 
 	int		setTriggerEnable( unsigned int triggerNum, bool fEnable );
 	bool	getTriggerEnable( unsigned int triggerNum );
