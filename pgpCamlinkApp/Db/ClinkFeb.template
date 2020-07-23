@@ -195,13 +195,6 @@ record( longout, "$(P)$(R)Feb0:ClCh0:TapCount" )
 	field( FLNK, "$(P)$(R)Feb0:ClCh0:TapCount_RBV" )
 }
 
-record( longin, "$(P)$(R)Feb0:ClCh0:FrameCount" )
-{
-	field( DTYP, "RogueLI" )
-	field( INP,  "@B$(B) L$(L) ClinkDevRoot.ClinkFeb[0].ClinkTop.Ch[0].FrameCount" )
-	field( SCAN, "$(SCAN=1 second)" )
-}
-
 record( longin, "$(P)$(R)Feb0:Trig0:Rate_RBV" )
 {
 	field( DTYP, "RogueLI" )
@@ -250,6 +243,24 @@ record( longin, "$(P)$(R)Feb0:Trig0:PulseWidthRaw_RBV" )
 {
 	field( DTYP, "RogueLI" )
 	field( INP,  "@B$(B) L$(L) ClinkDevRoot.ClinkFeb[0].TrigCtrl[0].TrigPulseWidthRaw" )
+	field( EGU,  "1/125MHz" )
+	field( FLNK, "$(P)$(R)Feb0:Trig0:PulseWidth_RBVCalc" )
+}
+
+record( calcout, "$(P)$(R)Feb0:Trig0:PulseWidth_RBVCalc" )
+{
+	field( INPA, "$(P)$(R)Feb0:Trig0:PulseWidthRaw_RBV" )
+	field( CALC, "(A + 1) * 0.008" )
+	field( OUT,  "$(P)$(R)Feb0:Trig0:PulseWidth_RBV CPP MS" )
+	field( EGU,  "1/125MHz" )
+	field( FLNK, "$(P)$(R)Feb0:Trig0:PulseWidth_RBV" )
+	info( autosaveFields, "" )
+}
+
+record( longin, "$(P)$(R)Feb0:Trig0:PulseWidth_RBV" )
+{
+	field( INP,  "$(P)$(R)Feb0:Trig0:PulseWidth_RBVCalc" )
+	field( EGU,  "usec" )
 }
 
 record( longout, "$(P)$(R)Feb0:Trig0:PulseWidthRaw" )
@@ -258,7 +269,25 @@ record( longout, "$(P)$(R)Feb0:Trig0:PulseWidthRaw" )
 	field( OUT,  "@B$(B) L$(L) ClinkDevRoot.ClinkFeb[0].TrigCtrl[0].TrigPulseWidthRaw" )
 	field( DOL,  "4095" )
 #	field( EGU,  "usec?" )
+	field( EGU,  "1/125MHz" )
 	field( FLNK, "$(P)$(R)Feb0:Trig0:PulseWidthRaw_RBV" )
+	info( autosaveFields, "" )
+}
+
+record( calcout, "$(P)$(R)Feb0:Trig0:PulseWidthCalc" )
+{
+	field( INPA, "$(P)$(R)Feb0:Trig0:PulseWidth" )
+	field( CALC, "(A/0.008)-1" )
+	field( OUT,  "$(P)$(R)Feb0:Trig0:PulseWidthRaw CPP MS" )
+	field( EGU,  "1/125MHz" )
+	field( FLNK, "$(P)$(R)Feb0:Trig0:PulseWidthRaw" )
+	info( autosaveFields, "" )
+}
+
+record( longout, "$(P)$(R)Feb0:Trig0:PulseWidth" )
+{
+	field( EGU,  "usec" )
+	field( FLNK, "$(P)$(R)Feb0:Trig0:PulseWidthCalc" )
 	info( autosaveFields, "VAL" )
 }
 
