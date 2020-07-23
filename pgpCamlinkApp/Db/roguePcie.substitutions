@@ -8,6 +8,11 @@ file biDevRogue.template
 		PATH	= "ClinkDevRoot.ClinkPcie.Hsio.PgpMon[0].RxRemLinkReady"
 		SCAN	= "\$(SCAN=1 second)"
 	}
+	{
+		NAME	= "Feb0:LinkLockedA",
+		PATH	= "ClinkDevRoot.ClinkFeb[0].ClinkTop.LinkLockedA",
+		SCAN	= "\$(SCAN=1 second)"
+	}
 }
 file boolDevRogue.template
 {
@@ -19,13 +24,14 @@ file boolDevRogue.template
 		DOL		= "1"
 		PINI	= "YES"
 		SAVE	= ""
+		SCAN	= "\$(SCAN=1 second)"
 	}
 	{
 		NAME	= "EventBuilder:Blowoff",
 		PATH	= "ClinkDevRoot.ClinkPcie.Application.AppLane[0].EventBuilder.Blowoff"
 		SAVE	= ""
 		DESC	= "Blow off data in EventBuilder pipeline"
-		ZNAM	= "Allow"
+		ZNAM	= "Disabled"
 		ONAM	= "Blowoff"
 		DOL		= "1"
 		PINI	= "YES"
@@ -38,6 +44,7 @@ file boolDevRogue.template
 		DOL		= "1"
 		PINI	= "YES"
 		SAVE	= ""
+		SCAN	= "\$(SCAN=1 second)"
 	}
 	{
 		NAME	= "EvrV2:EnableFebTrig",
@@ -57,6 +64,7 @@ file boolDevRogue.template
 		NAME	= "Timing:UseMiniTpg",
 		PATH	= "ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TimingPhyMonitor.UseMiniTpg"
 		PINI	= "YES"
+		SCAN	= "\$(SCAN=1 second)"
 	}
 	{
 		NAME	= "Trigger:MasterEnable",
@@ -105,6 +113,31 @@ file liDevRogue.template
 		SCAN	= "\$(SCAN=1 second)"
 	}
 	{
+		NAME	= "Feb0:ClinkClkFreq0",
+		PATH	= "ClinkDevRoot.ClinkFeb[0].ClinkTop.ClinkClkFreq[0]",
+		SCAN	= "\$(SCAN=1 second)"
+	}
+	{
+		NAME	= "Feb0:ClkInFreq0",
+		PATH	= "ClinkDevRoot.ClinkFeb[0].ClinkTop.ClkInFreq[0]",
+		SCAN	= "\$(SCAN=1 second)"
+	}
+	{
+		NAME	= "Feb0:ClCh0:DropCount",
+		PATH	= "ClinkDevRoot.ClinkFeb[0].ClinkTop.Ch[0].DropCount",
+		SCAN	= "\$(SCAN=1 second)"
+	}
+	{
+		NAME	= "Feb0:LinkLockedCntA",
+		PATH	= "ClinkDevRoot.ClinkFeb[0].ClinkTop.LinkLockedCntA",
+		SCAN	= "\$(SCAN=1 second)"
+	}
+	{
+		NAME	= "Feb0:ClCh0:FrameCount",
+		PATH	= "ClinkDevRoot.ClinkFeb[0].ClinkTop.Ch[0].FrameCount",
+		SCAN	= "\$(SCAN=1 second)"
+	}
+	{
 		NAME	= "EventBuilder:DataCnt0",
 		PATH	= "ClinkDevRoot.ClinkPcie.Application.AppLane[$(L)].EventBuilder.DataCnt[0]",
 		SCAN	= "\$(SCAN=1 second)"
@@ -136,6 +169,59 @@ file liDevRogue.template
 		PATH	= "ClinkDevRoot.ClinkPcie.Hsio.PgpRxAxisMon[0].Ch[1].FrameCnt"
 		SCAN	= "\$(SCAN=1 second)"
 	}
+
+	{
+		NAME	= "PgpMon:RxCellErrorCount"
+		PATH	= "ClinkDevRoot.ClinkPcie.Hsio.PgpMon[0].RxCellErrorCount"
+		SCAN	= "\$(SCAN=1 second)"
+	}
+	{
+		NAME	= "PgpMon:RxLinkDownCount"
+		PATH	= "ClinkDevRoot.ClinkPcie.Hsio.PgpMon[0].RxLinkDownCount"
+		SCAN	= "\$(SCAN=1 second)"
+	}
+	{
+		NAME	= "PgpMon:RxLinkErrorCount"
+		PATH	= "ClinkDevRoot.ClinkPcie.Hsio.PgpMon[0].RxLinkErrorCount"
+		SCAN	= "\$(SCAN=1 second)"
+	}
+	{
+		NAME	= "PgpMon:TxFrameErrorCount"
+		PATH	= "ClinkDevRoot.ClinkPcie.Hsio.PgpMon[0].TxFrameErrorCount"
+		SCAN	= "\$(SCAN=1 second)"
+	}
+	{
+		NAME	= "PgpMon:RxRemLinkReadyCount"
+		PATH	= "ClinkDevRoot.ClinkPcie.Hsio.PgpMon[0].RxRemLinkReadyCount"
+		SCAN	= "\$(SCAN=1 second)"
+	}
+	
+	{
+		NAME	= "Feb0:PgpMon:RxCellErrorCount"
+		PATH	= "ClinkDevRoot.ClinkFeb[0].PgpMon[0].RxCellErrorCount"
+		SCAN	= "\$(SCAN=1 second)"
+	}
+	{
+		NAME	= "Feb0:PgpMon:RxLinkDownCount"
+		PATH	= "ClinkDevRoot.ClinkFeb[0].PgpMon[0].RxLinkDownCount"
+		SCAN	= "\$(SCAN=1 second)"
+	}
+	{
+		NAME	= "Feb0:PgpMon:RxLinkErrorCount"
+		PATH	= "ClinkDevRoot.ClinkFeb[0].PgpMon[0].RxLinkErrorCount"
+		SCAN	= "\$(SCAN=1 second)"
+	}
+	{
+		NAME	= "Feb0:PgpMon:TxFrameErrorCount"
+		PATH	= "ClinkDevRoot.ClinkFeb[0].PgpMon[0].TxFrameErrorCount"
+		SCAN	= "\$(SCAN=1 second)"
+	}
+	{
+		NAME	= "Feb0:PgpMon:RxRemLinkReadyCount"
+		PATH	= "ClinkDevRoot.ClinkFeb[0].PgpMon[0].RxRemLinkReadyCount"
+		SCAN	= "\$(SCAN=1 second)"
+	}
+
 	{
 		NAME	= "PgpRx:FrameRate",
 		PATH	= "ClinkDevRoot.ClinkPcie.Hsio.PgpRxAxisMon[0].Ch[1].FrameRate"
