@@ -53,6 +53,8 @@
 #endif	//	USE_DIAG_TIMER
 
 using namespace		std;
+namespace rim = rogue::interfaces::memory;
+namespace ris = rogue::interfaces::stream;
 
 static	const char *		driverName	= "PgpCamlink";
 
@@ -147,6 +149,9 @@ pgpCamlink::pgpCamlink(
 	int						lane,					// channel
 	const char			*	modelName,
 	const char			*	clMode,
+	size_t					sizeX,
+	size_t					sizeY,
+	bool					fLcls2Timing,
 	int						maxBuffers,				// 0 = unlimited
 	size_t					maxMemory,				// 0 = unlimited
 	int						priority,				// 0 = default 50, high is 90
@@ -165,6 +170,7 @@ pgpCamlink::pgpCamlink(
 		m_pDev(				NULL				),
 		m_board(			board				),
 		m_lane(				lane				),
+		m_fLcls2Timing(		fLcls2Timing		),
 		m_CameraClass(							),
 		m_CameraInfo(							),
 		m_CameraModel(		modelName			),
@@ -174,13 +180,13 @@ pgpCamlink::pgpCamlink(
 		m_LibVersion(							),
 		m_ModelName(		modelName			),
 		m_SerialPort(							),
-		m_ClCurWidth(		0					),
-		m_ClCurHeight(		0					),
-		m_ClMaxWidth(		0					),
-		m_ClMaxHeight(		0					),
-		m_ClNumBits(		0					),
-		m_ClHTaps(			0					),
-		m_ClVTaps(			0					),
+		m_ClCurWidth(		sizeX				),
+		m_ClCurHeight(		sizeY				),
+		m_ClMaxWidth(		sizeX				),
+		m_ClMaxHeight(		sizeY				),
+		m_ClNumBits(		12					),
+		m_ClHTaps(			2					),
+		m_ClVTaps(			2					),
 		m_CamlinkMode(		CL_MODE_BASE		),
 		m_TriggerMode(		TRIGMODE_PULSE		),
 		m_TriggerModeReq(	TRIGMODE_PULSE		),
@@ -192,13 +198,13 @@ pgpCamlink::pgpCamlink(
 		m_MinXReq(			1					),
 		m_MinY(				0					),
 		m_MinYReq(			1					),
-		m_SizeX(			0					),
-		m_SizeXReq(			0					),
-		m_SizeY(			0					),
-		m_SizeYReq(			0					),
+		m_SizeX(			sizeX				),
+		m_SizeXReq(			sizeX				),
+		m_SizeY(			sizeY				),
+		m_SizeYReq(			sizeY				),
 		m_Gain(				0					),
-		m_HwHRoi(			0					),
-		m_HwVRoi(			0					),
+		m_HwHRoi(			sizeX				),
+		m_HwVRoi(			sizeY				),
 		
 		m_ArrayCounter(		0					),
 		m_acquireCount(		0					),
@@ -292,21 +298,6 @@ pgpCamlink::pgpCamlink(
 	int		paramValue	= static_cast<int>( m_CamlinkMode );
 	setIntegerParam( CamlinkMode,		paramValue );
 
-#if 0
-	// Create an Camlink Sync object
-	// TODO: Should we just make this a member object?
-	printf( "%s: Creating syncDataAcq object in thread %s\n", functionName, epicsThreadGetNameSelf() );
-	syncDataAcq<pgpCamlink, pgpImage>		*	pSyncDataAcquirer	= NULL;
-	pSyncDataAcquirer	= new syncDataAcq<pgpCamlink, pgpImage>( *this, m_CameraName );
-
-	// Make it available as a member variable
-	m_pSyncDataAcquirer	= pSyncDataAcquirer;
-
-	// Set default policies
-	m_pSyncDataAcquirer->SetPolicyUnsynced(		syncDataAcq<pgpCamlink, pgpImage>::SKIP_OBJECT );
-	m_pSyncDataAcquirer->SetPolicyBadTimeStamp(	syncDataAcq<pgpCamlink, pgpImage>::SKIP_OBJECT );
-#endif
-
     // Install exit hook for clean shutdown
     epicsAtExit( (EPICSTHREADFUNC)pgpCamlink::ExitHook, (void *) this );
 }
@@ -331,7 +322,14 @@ int pgpCamlink::CreateCamera(
 	int				board,
 	int				lane,
 	const char *	modelName,
-	const char *	clMode		)
+	const char *	clMode,
+	size_t			sizeX,
+	size_t			sizeY,
+	bool			fLcls2Timing,
+	int				maxBuffers,
+	size_t			maxMemory,
+	int				priority,
+	int				stackSize	)
 {
     static const char	*	functionName = "pgpCamlink::CreateCamera";
 
@@ -366,7 +364,9 @@ int pgpCamlink::CreateCamera(
 
     if ( DEBUG_PGP_CAMLINK >= 1 )
         cout << "Creating pgpCamlink: " << string(cameraName) << endl;
-    pgpCamlink	* pCamera = new pgpCamlink( cameraName, board, lane, modelName, clMode );
+    pgpCamlink	* pCamera = new pgpCamlink(	cameraName, board, lane, modelName,
+											clMode, sizeX, sizeY, fLcls2Timing ,
+											maxBuffers, maxMemory, priority, stackSize	);
     assert( pCamera != NULL );
 
     int	status	= pCamera->ConnectCamera( );
@@ -856,16 +856,13 @@ int pgpCamlink::_Reconfigure( )
     //m_CameraInfo	= pdv_get_camera_info(	m_pDev );
 
 	// Update asyn parameters
-	setStringParam( ADModel,		m_CameraModel.c_str()	);
 	setStringParam( ADManufacturer, m_CameraClass.c_str()	);
     setStringParam( CamlinkClass,	m_CameraClass.c_str()	);
     setStringParam( CamlinkInfo,	m_CameraInfo.c_str()	);
 	}
 #endif
+	setStringParam(	ADModel,		m_ModelName.c_str()	);
 
-	// Fetch the full image geometry parameters and write them to ADBase parameters
-    //m_ClMaxWidth	= pdv_get_width(	m_pDev );
-    //m_ClMaxHeight	= pdv_get_height(	m_pDev );
 	setIntegerParam( ADMaxSizeX,		m_ClMaxWidth	);
 	setIntegerParam( ADMaxSizeY,		m_ClMaxHeight	);
 
@@ -924,8 +921,6 @@ int pgpCamlink::_Reconfigure( )
 	setIntegerParam( SerMinY,			m_MinYReq	);
 	setIntegerParam( SerSizeX,			m_SizeXReq	);
 	setIntegerParam( SerSizeY,			m_SizeYReq	);
-
-	(void) ResetSyncCounters();
 
 #ifdef	SETUP_ROI_IN_RECONFIG
 	SetupROI();
@@ -1059,7 +1054,6 @@ int pgpCamlink::_Reopen( )
 	printf( "pgpCamlink Library version: %s\n", m_LibVersion.c_str() );
 	}
 
-    char    fpga_name[128];
     printf( "board %d, Chan %d, Mode: %s\n",
 			m_board, m_lane, CamlinkModeToString( m_CamlinkMode ) );
 
@@ -1086,7 +1080,7 @@ int pgpCamlink::UpdateADConfigParams( )
 		return -1;
 	}
 
-
+// TODO: Why are these commented out?
 //	setIntegerParam( NDArraySizeX,		GetSizeX()	);
 //	setIntegerParam( NDArraySizeY,		GetSizeY()	);
 //	setIntegerParam( NDArraySize,		GetSizeX() * GetSizeY() );
@@ -1115,46 +1109,6 @@ int pgpCamlink::UpdateADConfigParams( )
 //				, GetSizeX(), GetSizeY(), m_ClNumBits
 //				);
     return 0;
-}
-
-int pgpCamlink::ResetSyncCounters()
-{
-    m_SyncTotal = 0;
-    m_SyncBadTS = 0;
-    m_SyncBadSync = 0;
-
-	int		status;
-	status	= setIntegerParam( SyncTotal, m_SyncTotal );
-	status	= setIntegerParam( SyncBadTS, m_SyncBadTS );
-	status	= setIntegerParam( SyncBadSync, m_SyncBadSync );
-    return status;
-}
-
-int pgpCamlink::IncrSyncTotalCount()
-{
-    m_SyncTotal += 1;
-	asynStatus		status	= setIntegerParam( SyncTotal, m_SyncTotal );
-	if( status == asynSuccess )
-		status = callParamCallbacks( 0, 0 );
-	return status;
-}
-
-int pgpCamlink::IncrSyncBadTSCount()
-{
-    m_SyncBadTS += 1;
-	asynStatus		status	= setIntegerParam( SyncBadTS, m_SyncBadTS );
-	if( status == asynSuccess )
-		status = callParamCallbacks( 0, 0 );
-	return status;
-}
-
-int pgpCamlink::IncrSyncBadSyncCount()
-{
-    m_SyncBadSync += 1;
-	asynStatus		status	= setIntegerParam( SyncBadSync, m_SyncBadSync );
-	if( status == asynSuccess )
-		status = callParamCallbacks( 0, 0 );
-	return status;
 }
 
 asynStatus	pgpCamlink::UpdateStatus( int	newStatus	)
@@ -1219,25 +1173,7 @@ asynStatus	pgpCamlink::SetAcquireMode( int fAcquire )
 		if ( DEBUG_PGP_CAMLINK >= 1 )
 			printf(	"%s: Starting acquisition on camera %s\n", 
 					functionName, m_CameraName.c_str() );
-#if 0
-		if( m_pSyncDataAcquirer != NULL )
-		{
-			m_pSyncDataAcquirer->SetEnabled();
-			if ( m_TriggerModeReq == TRIGMODE_FREERUN )
-			{
-				// Use any images we can get
-				m_pSyncDataAcquirer->SetPolicyUnsynced( syncDataAcq<pgpCamlink, pgpImage>::USE_OBJECT	);
-				m_pSyncDataAcquirer->SetPolicyBadTimeStamp( syncDataAcq<pgpCamlink, pgpImage>::USE_OBJECT	);
-			}
-			else
-			{
-				// Skip images when unsynce or invalid timestamp
-				m_pSyncDataAcquirer->SetPolicyUnsynced( syncDataAcq<pgpCamlink, pgpImage>::SKIP_OBJECT	);
-				m_pSyncDataAcquirer->SetPolicyBadTimeStamp( syncDataAcq<pgpCamlink, pgpImage>::SKIP_OBJECT	);
-			}
-		}
-#endif
-		// UpdateAcquireCount()
+
 		{
 		// See how many images we need to acquire
 		int			imageMode;
@@ -1336,92 +1272,6 @@ int pgpCamlink::StartAcquisition( )
     return 0;
 }
 
-// Interleave function definitions
-
-///
-///	DeIntlvMidTopLine16( )
-/// Takes a full line from middle, then iterates to the top
-/// The next line is from the middle + 1, then iterates to the bottom.
-/// DMA Buffer has alternating rows from the middle of the image,
-///	iterating out to the top and bottom.
-/// Example for 400 line image
-///		dmaRow		imgRow
-///		398			0
-///		396			1
-///		394			2
-///		...			...
-///		2			198
-///		0			199
-///		1			200
-///		3			201
-///		...			...
-///		397			398
-///		399			399
-///
-int pgpCamlink::DeIntlvMidTopLine16( NDArray * pNDArray, void	*	pRawData )
-{
-	assert( pNDArray		!= NULL );
-	assert( pNDArray->pData	!= NULL );
-	assert( pRawData		!= NULL );
-    static const char	*	functionName	= "pgpCamlink::DeIntlvMidTopLine16";
-	if ( DEBUG_PGP_CAMLINK >= 4 )
-	{
-		printf( "%s: DMA   size %zu x %zu pixels, %u bits/pixel\n", functionName,
-				m_ClCurWidth, m_ClCurHeight, m_ClNumBits );
-		printf(	"%s: Image size %zu x %zu pixels, offset(%zu,%zu)\n", functionName,
-				GetSizeX(), GetSizeY(), GetMinX(), GetMinY()	);
-	}
-	CONTEXT_TIMER( "DeIntlvMidTopLine16" );
-
-	epicsUInt16	*	pDmaBuffer	= (epicsUInt16 *) pRawData;
-	epicsUInt16	*	pArrayData	= (epicsUInt16 *) pNDArray->pData;
-	size_t			halfHeight	= m_ClCurHeight / 2;
-
-	/* first copy upper half, middle to top */
-	for (	size_t	imgRow = 0;	imgRow < halfHeight;	imgRow++	)
-	{
-		size_t			dmaRow		= m_ClCurHeight - 2 - imgRow * 2;
-		epicsUInt16	*	pPixelSrc	= pDmaBuffer + dmaRow * m_ClCurWidth;
-		epicsUInt16	*	pPixelDst	= pArrayData + imgRow * GetSizeX();
-		memcpy( pPixelDst, pPixelSrc, GetSizeX() * 2 );
-	}
-
-	/* next copy lower half, middle to bottom */
-	for (	size_t	imgRow = halfHeight;	imgRow < m_ClCurHeight;	imgRow++	)
-	{
-		size_t			dmaRow		= (imgRow - halfHeight) * 2 + 1;
-		epicsUInt16	*	pPixelSrc	= pDmaBuffer + dmaRow * m_ClCurWidth;
-		epicsUInt16	*	pPixelDst	= pArrayData + imgRow * GetSizeX();
-		memcpy( pPixelDst, pPixelSrc, GetSizeX() * 2 );
-	}
-	return(0);
-}
-
-
-///
-///	DeIntlvRoiOnly16( )
-/// De-interleave as is from top to bottom, allowing only for HW ROI
-///
-/// TODO: Rework to get pixels via rogue::protocols::batcher::DataPtr
-int pgpCamlink::DeIntlvRoiOnly16( NDArray * pNDArray, void	*	pRawData )
-{
-	assert( pNDArray		!= NULL );
-	assert( pNDArray->pData	!= NULL );
-	assert( pRawData		!= NULL );
-    // static const char	*	functionName	= "pgpCamlink::DeIntlvRoiOnly16";
-	CONTEXT_TIMER( "DeIntlvRoiOnly16" );
-	// Image already de-interleaved in firmware, just memcpy it here.
-	// memcpy( pNDArray->pData, pRawData, nBytes );
-	epicsUInt16	*	pDmaBuffer	= (epicsUInt16 *) pRawData;
-	epicsUInt16	*	pArrayData	= (epicsUInt16 *) pNDArray->pData;
-	for (	size_t	row = 0;	row < m_ClCurHeight;	row ++	)
-	{
-		epicsUInt16	*	pPixelSrc	= pDmaBuffer + row * m_ClCurWidth;
-		epicsUInt16	*	pPixelDst	= pArrayData + row * m_SizeX;
-		memcpy( pPixelDst, pPixelSrc, m_SizeX * 2 );
-	}
-	return 0;
-}
 
 // TODO: Redo pgpCamlink::ProcessImage w/ one pImageCbInfo param
 int pgpCamlink::ProcessImage(
@@ -1429,8 +1279,10 @@ int pgpCamlink::ProcessImage(
 	rogue::protocols::batcher::DataPtr	pImageData )
 {
     static const char	*	functionName = "pgpCamlink::ProcessImage";
+	int						pulseID		 = tsImage.nsec & 0x1FFFF;
 	CONTEXT_TIMER( "ProcessImage" );
 	assert( m_pDev != NULL );
+	UpdateStatus( ADStatusSaving );
 
 #if 0
 	// Fetch and update DataCnt.  Not sure this is needed
@@ -1487,18 +1339,15 @@ int pgpCamlink::ProcessImage(
 			else
 				printf(	"%s: Image Timeout: Stale Image\n", functionName );
 		}
-		//UpdateStatus( ADStatusError );
+		UpdateStatus( ADStatusError );
 		return asynError;
 	}
 
 	if ( DEBUG_PGP_CAMLINK >= 3 )
 	{
-		printf(	"%s: Processing pulseID %d\n", functionName,
-				tsImage.nsec & 0x1FFFF );
+		printf(	"%s: Processing pulseID %d\n", functionName, pulseID );
 	}
-	else
-		return 0;
-	//UpdateStatus( ADStatusReadout );
+	UpdateStatus( ADStatusReadout );
 
 	// Lock NDArrayPool driver
 	lock();
@@ -1512,14 +1361,12 @@ int pgpCamlink::ProcessImage(
 		status = LoadNDArray( pNDArray, pImageData );
 		if ( status != 0 )
 		{
-			printf(	"%s: LoadNDArray error for pulseID %d\n", functionName,
-					tsImage.nsec & 0x1FFFF );
+			printf(	"%s: LoadNDArray error for pulseID %d\n", functionName, pulseID );
 			pNDArray->release( );
 			pNDArray = NULL;
 		}
 		else
 		{
-			pImage->SetNDArrayPtr( pNDArray );
 			if ( DEBUG_PGP_CAMLINK >= 5 && pNDArray != NULL )
 			{
 				// Write NDArray report to stdout
@@ -1534,6 +1381,7 @@ int pgpCamlink::ProcessImage(
 
 	{
 	CONTEXT_TIMER( "ProcessImage-wrapup" );
+	(void) SubmitNDArray( pNDArray, &tsImage, pulseID	);
 
 	// Increment NumImagesCounter
 	//	TODO: Replace this pattern w/ local m_numImagesCounter
@@ -1553,7 +1401,11 @@ int pgpCamlink::ProcessImage(
 		asynPrint(	this->pasynUserSelf, ASYN_TRACEIO_DRIVER,
 					"%s: Image acquisition completed in thread %s\n", functionName, epicsThreadGetNameSelf() );
 	}
+
+	//	Get image timestamp immediately after AcquireData()
+	(void) CkDupTimeStamp( &tsImage, &pulseID );
 	}
+	(void) callParamCallbacks( 0, 0 );
 	return 0;
 }
 
@@ -1577,6 +1429,16 @@ NDArray * pgpCamlink::AllocNDArray( )
     size_t			dims[ndims];
     dims[0]			= GetSizeX();
     dims[1]			= GetSizeY();
+	if ( dims[0] == 0 )
+	{
+		printf( "%s: Error GetSizeX() returned 0\n", functionName );
+		dims[0] = 1024;	// TODO: Remove this hack
+	}
+	if ( dims[1] == 0 )
+	{
+		printf( "%s: Error GetSizeY() returned 0\n", functionName );
+		dims[1] = 1024;	// TODO: Remove this hack
+	}
 	assert( dims[0] != 0 );
 	assert( dims[1] != 0 );
 
@@ -1610,7 +1472,7 @@ NDArray * pgpCamlink::AllocNDArray( )
 	pNDArray->dims[1].offset	= GetMinY();
 	pNDArray->dims[1].binning	= GetBinY();
 	if ( DEBUG_PGP_CAMLINK >= 4 )
-		printf(	"%s: NDArray %zux%zu pixels from offset (%zu,%zu)\n",	functionName,
+		printf(	"%s: %u bit pixels, %zux%zu from offset (%zu,%zu)\n",	functionName, m_ClNumBits,
 				pNDArray->dims[0].size,		pNDArray->dims[1].size,
 				pNDArray->dims[0].offset,	pNDArray->dims[1].offset	);
 	return pNDArray;
@@ -1626,28 +1488,75 @@ int pgpCamlink::LoadNDArray(
     static const char	*	functionName = "pgpCamlink::LoadNDArray";
 	int		status = 0;
 
-	printf(	"%s: \n", functionName );
+	assert( pNDArray		!= NULL );
+	assert( pNDArray->pData	!= NULL );
+	assert( pImageData );
+
+	if ( pImageData->size() < (m_ClCurWidth * m_ClCurHeight) )
+	{
+		printf( "%s Error: DMA size %zu < expected image size %zu\n",
+				functionName, (size_t) pImageData->size(),
+				(m_ClCurWidth * m_ClCurHeight) );
+		return -1;
+	}
+
+	if ( DEBUG_PGP_CAMLINK >= 4 )
+	{
+		printf( "%s: DMA   size %zu x %zu pixels, %u bits/pixel\n", functionName,
+				m_ClCurWidth, m_ClCurHeight, m_ClNumBits );
+		printf(	"%s: Image size %zu x %zu pixels, offset(%zu,%zu)\n", functionName,
+				GetSizeX(), GetSizeY(), GetMinX(), GetMinY()	);
+	}
+	CONTEXT_TIMER( "LoadNDArray" );
+
+
+#if 1
+	uint8_t			*	pRawData	= pImageData->begin().ptr();
+	//epicsUInt8		*	pDmaBuffer	= (epicsUInt8 *) pRawData;
+	epicsUInt8		*	pArrayData	= (epicsUInt8 *) pNDArray->pData;
+	ris::FrameIterator	pPixelSrc	= pImageData->begin();
+	//epicsUInt8		*	pPixelDst	= pArrayData;
+	size_t	nCopied	= 0;
+	while ( nCopied < (m_ClCurWidth * m_ClCurHeight) )
+	{
+		std::memcpy( pArrayData, pRawData, pImageData->size() );
+		pPixelSrc += pImageData->size();
+		nCopied += pImageData->size();
+	}
+#else
+	unsigned int	nBytesPerPx = m_ClNumBits > 8 ? 2 : 1;
+	ris::FrameIterator	pDmaBuffer	= pImageData->begin();
+	std::strstreambuf	pArrayData( (char *) pNDArrray->pData, pNDArray->dataSize );
+	/* copy pixels to buffer */
+	for (	size_t	imgRow = 0;	imgRow < m_ClCurHeight;	imgRow++	)
+	{
+#if 0
+		epicsUInt8	*	pPixelSrc	= pDmaBuffer + imgRow * m_ClCurWidth * nBytesPerPx;
+		epicsUInt8	*	pPixelDst	= pArrayData + imgRow * GetSizeX()   * nBytesPerPx;
+		memcpy( pPixelDst, pPixelSrc, GetSizeX() * nBytesPerPx );
+#else
+		ris::FrameIterator	pPixelSrc	= pDmaBuffer + imgRow * m_ClCurWidth * nBytesPerPx;
+		std::iterator		pPixelDst	= pArrayData + imgRow * GetSizeX()   * nBytesPerPx;
+		std::copy( pPixelDst, pPixelSrc, GetSizeX() * nBytesPerPx );
+#endif
+	}
+#endif
 
 	return status;
 }
 
 
-int	pgpCamlink::ProcessData(
-	pgpImage		*	pImage,
-	epicsTimeStamp	*	pTimeStamp,
-	int					pulseID	)
+int	pgpCamlink::SubmitNDArray(
+    NDArray				*	pNDArray,
+	const epicsTimeStamp*	pTimeStamp,
+	int						pulseID	)
 {
-    static const char	*	functionName = "pgpCamlink::ProcessData";
-	if ( pImage == NULL )
-		return -1;
-
+    static const char	*	functionName = "pgpCamlink::SubmitNDArray";
 	UpdateStatus( ADStatusSaving );
 	this->lock();
-    NDArray	*	pNDArray = NULL;
-    //pNDArray = pImage->GetNDArrayPtr( );
 	if ( pNDArray != NULL )
 	{
-		CONTEXT_TIMER( "pgpCamlink-ProcessData" );
+		CONTEXT_TIMER( "pgpCamlink-SubmitNDArray" );
 		// Set the NDArray EPICS timestamp and unique ID
 		if ( DEBUG_PGP_CAMLINK >= 4 )
 			printf(	"%s: Timestamp image w/ pulseID %d, 0x%X\n", functionName, pulseID, pulseID );
@@ -1707,103 +1616,46 @@ int	pgpCamlink::ProcessData(
 #ifndef	INVALID_PULSE
 #define	INVALID_PULSE	0x1FFFF
 #endif	//	INVALID_PULSE
-bool	 pgpCamlink::IsSynced(
-	pgpImage		*	pImage,
-	epicsTimeStamp	*	pTimeStamp,
-	int					pulseID		)
-{
-	CONTEXT_TIMER( "pgpCamlink-IsSynced" );
-	if ( pImage == NULL )
-		return false;
-	if ( m_TriggerMode == TRIGMODE_FREERUN )
-		return true;
-	if ( pTimeStamp == NULL )
-		return false;
-	if ( pulseID == INVALID_PULSE )
-		return false;
-	return true;
-}
 
-
-// CheckData returns 0 on OK, non-zero on error
-int	 pgpCamlink::CheckData(	pgpImage	*	pImage	)
+int	pgpCamlink::CkDupTimeStamp(
+	const epicsTimeStamp*	pTsImage,
+	int					*	pPulseNumRet )
 {
-	CONTEXT_TIMER( "pgpCamlink-CheckData" );
-	if ( pImage == NULL || m_pDev == NULL )
+    static const char	*	functionName = "pgpCamlink::CkDupTimeStamp";
+	if ( pTsImage == NULL )
 		return -1;
-
-	return 0;
-}
-
-void pgpCamlink::ReleaseData(	pgpImage	*	pImage	)
-{
-	CONTEXT_TIMER( "ReleaseData" );
-	// UpdateStatus( ADStatusIdle ); No need to set status to Idle after each image buffer released
-	if ( pImage == NULL )
-		return;
-	this->lock();
-	//pImage->ReleaseNDArray();
-	this->unlock();
-}
-
-int	pgpCamlink::TimeStampImage(
-	pgpImage		*	pImage,
-	epicsTimeStamp	*	pDest,
-	int				*	pPulseNumRet	)
-{
-    static const char	*	functionName = "pgpCamlink::TimeStampImage";
-	if ( pImage == NULL )
-		return -1;
-	if ( pDest == NULL )
-		return -1;
-	epicsTimeStamp		newEvrTime;
-
-	// This call to asynPortDriver::updateTimeStamp causes
-	// asyn to call the registered timeStampSource function.
-	// defaultTimeStampSource just calls epicsTimeGetCurrent.
-	// Use asyn's registerTimeStampSource to register a new
-	// timeStampSource function from code, or Kukhee's
-	// registerUserTimeStampSource function from areaDetectorSupp
-	// to register one from iocsh using the function's name.
-	{
-	CONTEXT_TIMER( "TimeStampImage-updateTimeStamp" );
-	updateTimeStamp( &newEvrTime );
-	}
 
 	//	TODO:	Create a subclass of epicsTime which knows how to get
 	//			and set pulseID's in an epicsTimeStamp, i.e. SLAC's pulseId=(ts.nSec & 0x1FFFF);
 	//	We can't construct an epicsTime directly from our epicsTimeStamp as we sometimes
 	//	set the nSec field > 1e9
-	epicsTimeStamp	newTimeStamp( newEvrTime );
-	if (	m_TriggerMode				!= TRIGMODE_FREERUN
-		&&	newTimeStamp.secPastEpoch	== m_priorTimeStamp.secPastEpoch
-		&&	newTimeStamp.nsec			== m_priorTimeStamp.nsec )
+	if (	m_TriggerMode			!= TRIGMODE_FREERUN
+		&&	pTsImage->secPastEpoch	== m_priorTimeStamp.secPastEpoch
+		&&	pTsImage->nsec			== m_priorTimeStamp.nsec )
 	{
 		char	acBuffer[32];
-		epicsTimeToStrftime( acBuffer, 32, "%02H:%02M:%02S.%3f", &newTimeStamp );
-		int	pulseId = newEvrTime.nsec & 0x1FFFF;
+		epicsTimeToStrftime( acBuffer, 32, "%02H:%02M:%02S.%3f", pTsImage );
+		int	pulseId = pTsImage->nsec & 0x1FFFF;
 		asynPrint(	pasynUserSelf,	ASYN_TRACE_FLOW,
 					"%s: Duplicate TimeStamp %s, pulseID %d\n", functionName, acBuffer, pulseId );
 		return -1;
 	}
-
-	m_priorTimeStamp	= newTimeStamp;
-	*pDest				= newTimeStamp;
+	m_priorTimeStamp	= *pTsImage;
 
 	// TODO: Is there any way to make this less SLAC specific?
 	// If not, maybe we just drop it, as no one really
 	// needs uniqueId to be the pulse number
 	if ( pPulseNumRet != NULL )
-		*pPulseNumRet = pDest->nsec & 0x1FFFF;
+		*pPulseNumRet = pTsImage->nsec & 0x1FFFF;
 
 	if ( m_TriggerMode != TRIGMODE_FREERUN )
 	{
-		if ( (pDest->nsec & 0x1FFFF) == 0x1FFFF )
+		if ( (pTsImage->nsec & 0x1FFFF) == 0x1FFFF )
 		{
 			char	acBuffer[32];
-			epicsTimeToStrftime( acBuffer, 32, "%H:%M:%S.%04f", pDest );
+			epicsTimeToStrftime( acBuffer, 32, "%H:%M:%S.%04f", pTsImage );
 			asynPrint(	pasynUserSelf,	ASYN_TRACE_FLOW,
-						"%s: TimeStamp %s, invalid pulseID 0x%X\n", functionName, acBuffer, pDest->nsec & 0x1FFFF );
+						"%s: TimeStamp %s, invalid pulseID 0x%X\n", functionName, acBuffer, pTsImage->nsec & 0x1FFFF );
 			return -1;
 		}
 	}
@@ -2441,7 +2293,10 @@ pgpCamlinkConfig(
 	int				board,
 	int				lane,
 	const char	*	modelName,
-	const char	*	clMode	)
+	const char	*	clMode,
+	size_t			sizeX,
+	size_t			sizeY,
+	bool			fLcls2Timing )
 {
     if (  cameraName == NULL || strlen(cameraName) == 0 )
     {
@@ -2458,7 +2313,8 @@ pgpCamlinkConfig(
         errlogPrintf( "NULL or zero length camlink mode.\nUsage: pgpCamlinkConfig(name,board,chan,config,mode)\n");
         return  -1;
     }
-    if ( pgpCamlink::CreateCamera( cameraName, board, lane, modelName, clMode ) != 0 )
+    if ( pgpCamlink::CreateCamera(	cameraName, board, lane, modelName, clMode,
+									sizeX, sizeY, fLcls2Timing ) != 0 )
     {
         errlogPrintf( "pgpCamlinkConfig failed for camera %s, config %s, mode %s!\n", cameraName, modelName, clMode );
 		if ( DEBUG_PGP_CAMLINK >= 4 )
@@ -2475,6 +2331,9 @@ pgpCamlinkConfigFull(
 	int				lane,
 	const char	*	modelName,
 	const char	*	clMode,
+	size_t			sizeX,
+	size_t			sizeY,
+	bool			fLcls2Timing,
 	int				maxBuffers,				// 0 = unlimited
 	size_t			maxMemory,				// 0 = unlimited
 	int				priority,				// 0 = default 50, high is 90
@@ -2496,7 +2355,8 @@ pgpCamlinkConfigFull(
         return  -1;
     }
 
-    if ( pgpCamlink::CreateCamera( cameraName, board, lane, modelName, clMode ) != 0 )
+    if ( pgpCamlink::CreateCamera(	cameraName, board, lane, modelName, clMode,
+									sizeX, sizeY, fLcls2Timing ) != 0 )
     {
         errlogPrintf( "pgpCamlinkConfig failed for camera %s!\n", cameraName );
 		if ( DEBUG_PGP_CAMLINK >= 4 )
@@ -2676,14 +2536,19 @@ static const iocshArg		pgpCamlinkConfigArg1	= { "board",		iocshArgInt };
 static const iocshArg		pgpCamlinkConfigArg2	= { "lane",			iocshArgInt };
 static const iocshArg		pgpCamlinkConfigArg3	= { "modelName",	iocshArgString };
 static const iocshArg		pgpCamlinkConfigArg4	= { "clMode",		iocshArgString };
-static const iocshArg	*	pgpCamlinkConfigArgs[5]	=
+static const iocshArg		pgpCamlinkConfigArg5	= { "sizeX",		iocshArgInt };
+static const iocshArg		pgpCamlinkConfigArg6	= { "sizeX",		iocshArgInt };
+static const iocshArg		pgpCamlinkConfigArg7	= { "fLcls2Timing",	iocshArgInt };
+static const iocshArg	*	pgpCamlinkConfigArgs[8]	=
 {
-	&pgpCamlinkConfigArg0, &pgpCamlinkConfigArg1, &pgpCamlinkConfigArg2, &pgpCamlinkConfigArg3, &pgpCamlinkConfigArg4
+	&pgpCamlinkConfigArg0, &pgpCamlinkConfigArg1, &pgpCamlinkConfigArg2, &pgpCamlinkConfigArg3,
+	&pgpCamlinkConfigArg4, &pgpCamlinkConfigArg5, &pgpCamlinkConfigArg6, &pgpCamlinkConfigArg7
 };
-static const iocshFuncDef   pgpCamlinkConfigFuncDef	= { "pgpCamlinkConfig", 5, pgpCamlinkConfigArgs };
+static const iocshFuncDef   pgpCamlinkConfigFuncDef	= { "pgpCamlinkConfig", 8, pgpCamlinkConfigArgs };
 static int  pgpCamlinkConfigCallFunc( const iocshArgBuf * args )
 {
-    return pgpCamlinkConfig( args[0].sval, args[1].ival, args[2].ival, args[3].sval, args[4].sval );
+    return pgpCamlinkConfig(	args[0].sval, args[1].ival, args[2].ival, args[3].sval,
+								args[4].sval, args[5].ival, args[6].ival, args[7].ival );
 }
 void pgpCamlinkConfigRegister(void)
 {
@@ -2697,26 +2562,31 @@ static const iocshArg		pgpCamlinkConfigFullArg1	= { "board",		iocshArgInt };
 static const iocshArg		pgpCamlinkConfigFullArg2	= { "lane",			iocshArgInt };
 static const iocshArg		pgpCamlinkConfigFullArg3	= { "cfgFile",		iocshArgString };
 static const iocshArg		pgpCamlinkConfigFullArg4	= { "clMode",		iocshArgString };
-static const iocshArg		pgpCamlinkConfigFullArg5	= { "maxBuffers",	iocshArgInt };
-static const iocshArg		pgpCamlinkConfigFullArg6	= { "maxMemory",	iocshArgInt };
-static const iocshArg		pgpCamlinkConfigFullArg7	= { "priority",		iocshArgInt };
-static const iocshArg		pgpCamlinkConfigFullArg8	= { "stackSize",	iocshArgInt };
+static const iocshArg		pgpCamlinkConfigFullArg5	= { "sizeX",		iocshArgInt };
+static const iocshArg		pgpCamlinkConfigFullArg6	= { "sizeX",		iocshArgInt };
+static const iocshArg		pgpCamlinkConfigFullArg7	= { "fLcls2Timing",	iocshArgInt };
+static const iocshArg		pgpCamlinkConfigFullArg8	= { "maxBuffers",	iocshArgInt };
+static const iocshArg		pgpCamlinkConfigFullArg9	= { "maxMemory",	iocshArgInt };
+static const iocshArg		pgpCamlinkConfigFullArg10	= { "priority",		iocshArgInt };
+static const iocshArg		pgpCamlinkConfigFullArg11	= { "stackSize",	iocshArgInt };
 // There has to be a better way to handle triggerPV, delayPV, and syncPV
 //static const iocshArg		pgpCamlinkConfigFullArgX	= { "triggerPV",	iocshArgString };
 //static const iocshArg		pgpCamlinkConfigFullArgX	= { "delayPV",		iocshArgString };
 //static const iocshArg		pgpCamlinkConfigFullArgX	= { "syncPV",		iocshArgString };
-static const iocshArg	*	pgpCamlinkConfigFullArgs[9]	=
+static const iocshArg	*	pgpCamlinkConfigFullArgs[12]	=
 {
-	&pgpCamlinkConfigFullArg0, &pgpCamlinkConfigFullArg1, &pgpCamlinkConfigFullArg2, &pgpCamlinkConfigFullArg3,
-	&pgpCamlinkConfigFullArg4, &pgpCamlinkConfigFullArg5, &pgpCamlinkConfigFullArg6, &pgpCamlinkConfigFullArg7,
-	&pgpCamlinkConfigFullArg8
+	&pgpCamlinkConfigFullArg0, &pgpCamlinkConfigFullArg1, &pgpCamlinkConfigFullArg2,
+	&pgpCamlinkConfigFullArg3, &pgpCamlinkConfigFullArg4, &pgpCamlinkConfigFullArg5,
+	&pgpCamlinkConfigFullArg6, &pgpCamlinkConfigFullArg7, &pgpCamlinkConfigFullArg8,
+	&pgpCamlinkConfigFullArg9, &pgpCamlinkConfigFullArg10, &pgpCamlinkConfigFullArg11
 };
-static const iocshFuncDef   pgpCamlinkConfigFullFuncDef	= { "pgpCamlinkConfigFull", 9, pgpCamlinkConfigFullArgs };
+static const iocshFuncDef   pgpCamlinkConfigFullFuncDef	= { "pgpCamlinkConfigFull", 12, pgpCamlinkConfigFullArgs };
 static int  pgpCamlinkConfigFullCallFunc( const iocshArgBuf * args )
 {
     return pgpCamlinkConfigFull(
 		args[0].sval, args[1].ival, args[2].ival, args[3].sval, args[4].sval,
-		args[5].ival, args[6].ival, args[7].ival, args[8].ival	);
+		args[5].ival, args[6].ival, args[7].ival, args[8].ival, args[9].ival,
+		args[10].ival, args[11].ival );
 }
 void pgpCamlinkConfigFullRegister(void)
 {

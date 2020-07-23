@@ -77,6 +77,9 @@ public:		//	Public member functions
 				int						lane,
 				const char			*	modelName,
 				const char			*	clMode,
+				size_t					sizeX,
+				size_t					sizeY,
+				bool					fLcls2Timing,
 				int						maxBuffers	= 0,	// 0 = unlimited
 				size_t					maxMemory	= 0,	// 0 = unlimited
 				int						priority	= 0,	// 0 = default 50, high is 90
@@ -320,9 +323,6 @@ public:		//	Public member functions
 	int						ProcessImage(	const epicsTimeStamp			&	ts,
 											rogue::protocols::batcher::DataPtr	pImageData );
 
-	///	Check for a valid image, returns 0 on success, error code on error
-	int						CheckData(		pgpImage	*	pImage	);
-
 	///	Returns true if device needs reconfiguring
 	bool					NeedsReconfigure(	)
 	{
@@ -338,19 +338,12 @@ public:		//	Public member functions
 	/// Takes the reconfigure lock to make it thread safe
 	int		Reopen(	);
 
-	bool	IsSynced(		pgpImage		*	pImage,
-							epicsTimeStamp	*	pTimeStamp,
-							int					pulseID		);
+	int		SubmitNDArray(	NDArray				*	pNDArray,
+							const epicsTimeStamp*	pTimeStamp,
+							int						pulseID		);
 
-	void	ReleaseData(	pgpImage		*	);
-
-	int		ProcessData(	pgpImage		*	pImage,
-							epicsTimeStamp	*	pTimeStamp,
-							int					pulseID		);
-
-	int		TimeStampImage(	pgpImage		*	pImage,
-							epicsTimeStamp	*	pDest,
-							int				*	pPulseNumRet	);
+	int		CkDupTimeStamp(	const epicsTimeStamp*	pDest,
+							int					*	pPulseNumRet );
 
 	//
 	//	De-interleave routines to handle copying raw image data from DMA buffers
@@ -366,12 +359,6 @@ public:		//	Public member functions
 
     /// SetSerDisable
     int SetSerDisable( int value );
-
-    /// Synchronized Data Acq Stats
-    int ResetSyncCounters();
-    int IncrSyncTotalCount();
-    int IncrSyncBadTSCount();
-    int IncrSyncBadSyncCount();
 
 	// Return shared_ptr to pgpClDev device
 	pgpClDevPtr				GetDevPtr( ) const
@@ -394,8 +381,19 @@ public:		//	Public member functions
 
 public:		//	Public class functions
 
-	static int				CreateCamera(	const char *	cameraName, int board, int lane,
-											const char *	modelName,	const char * clMode );
+	static int	CreateCamera(
+				const char			*	cameraName,
+				int						board,
+				int						lane,
+				const char			*	modelName,
+				const char			*	clMode,
+				size_t					sizeX,
+				size_t					sizeY,
+				bool					fLcls2Timing,
+				int						maxBuffers	= 0,	// 0 = unlimited
+				size_t					maxMemory	= 0,	// 0 = unlimited
+				int						priority	= 0,	// 0 = default 50, high is 90
+				int						stackSize	= 0	);	// 0 = default 1MB
 
 	static pgpCamlink	*	CameraFindByName( const std::string & name );
 
@@ -436,6 +434,7 @@ private:	//	Private member variables
 
 	unsigned int	m_board;		// index of Pgpcamlink card
 	unsigned int	m_lane;			// lane on  Pgpcamlink card
+	bool			m_fLcls2Timing;	// true to initialize w/ LCLS2 timing, false for LCLS1
 
 	epicsTimeStamp	m_priorTimeStamp;	// Last timestamp for this event number
 
@@ -610,13 +609,19 @@ extern "C" int	pgpCamlinkConfig(
 	int				board,
 	int				lane,
 	const char	*	modelName,
-	const char	*	clMode		);
+	const char	*	clMode,
+	size_t			sizeX,
+	size_t			sizeY,
+	bool			fLcls2Timing );
 extern "C" int	pgpCamlinkConfigFull(
 	const char	*	cameraName,
 	int				board,
 	int				lane,
 	const char	*	modelName,
 	const char	*	clMode,
+	size_t			sizeX,
+	size_t			sizeY,
+	bool			fLcls2Timing,
 	int				maxBuffers,		// 0 = unlimited
 	size_t			maxMemory,		// 0 = unlimited
 	int				priority,		// 0 = default 50, high is 90

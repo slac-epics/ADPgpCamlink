@@ -34,6 +34,12 @@ void ImageStream::acceptFrame ( rogue::interfaces::stream::FramePtr frame )
 			printf( "%s: No frame!\n", functionName );
 		return;
 	}
+	uint8_t	errNum = frame->getError();
+	if ( errNum ) {
+		if ( DEBUG_PGP_CAMLINK >= 2 )
+			printf( "%s: frame error 0x%X!\n", functionName, errNum );
+		return;
+	}
 	// Above test not sufficient to avoid:
 	// terminate called after throwing an instance of 'std::bad_weak_ptr'
 	//   what():  bad_weak_ptr
@@ -82,7 +88,7 @@ void ImageStream::acceptFrame ( rogue::interfaces::stream::FramePtr frame )
 		// FUSER_BIT_1 = StartOfFrame
 		// LUSER_BIT_0 = FrameError
 		if ( DEBUG_PGP_CAMLINK >= 4 )
-			printf( "ImageStream::acceptFrame SubFrame %d: dest=%u, size=%u, fUser=0x%02x, lUser=0x%02x\n",
+			printf( "ImageStream::acceptFrame SubFrame %d, dest=%u, size=%u, fUser=0x%02x, lUser=0x%02x\n",
 					sf, data->dest(), data->size(), data->fUser(), data->lUser() );
 		if ( data->dest() == 0 )
 		{	// TDEST 0 is Trigger (Timing Event)
@@ -117,7 +123,7 @@ void ImageStream::acceptFrame ( rogue::interfaces::stream::FramePtr frame )
 			uint32_t	size	= data->end() - data->begin();
 			//uint8_t	*	dataPtr	= data->begin().ptr();
 			if ( DEBUG_PGP_CAMLINK >= 4 )
-				printf( "ImageStream::acceptFrame TDEST 2 SubFrame %d: , size %u\n", sf, size );
+				printf( "ImageStream::acceptFrame TDEST 2 SubFrame %d, size %u\n", sf, size );
 		}
 	}
 
