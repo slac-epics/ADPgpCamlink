@@ -36,7 +36,9 @@ void ImageStream::acceptFrame ( rogue::interfaces::stream::FramePtr frame )
 	}
 	uint8_t	errNum = frame->getError();
 	if ( errNum ) {
-		if ( DEBUG_PGP_CAMLINK >= 2 )
+		// Error code 0x80 is expected when stopping acquisition as it indicates
+		// image data that arrived after we stopped.
+		if ( ( errNum != 0x80 ) || ( DEBUG_PGP_CAMLINK >= 3 ) )
 			printf( "%s: frame error 0x%X!\n", functionName, errNum );
 		return;
 	}
