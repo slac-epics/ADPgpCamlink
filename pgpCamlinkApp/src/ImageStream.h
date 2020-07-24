@@ -20,8 +20,6 @@ class pgpClDev;
 typedef struct _ImageCbInfo
 {
 	epicsTimeStamp						m_tsImage;
-	// TODO:  Do we need both FramePtr and DataPtr?
-	rogue::interfaces::stream::FramePtr	m_pFrame;
 	rogue::protocols::batcher::DataPtr	m_ImageDataPtr;
 
 #if 0

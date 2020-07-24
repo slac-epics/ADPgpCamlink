@@ -845,7 +845,6 @@ void pgpClDev::disconnect( )
 int	ProcessImage( const ImageCbInfo * pImageInfo )
 {
 	pgpClDev	*	pDev = (pgpClDev *) pImageInfo->m_pClientContext;
-	//pDev->ProcessImage( pImageInfo->m_tsImage, pImageInfo->m_pFrame );
 	pDev->ProcessImage( pImageInfo );
 	return 0;
 }
