@@ -840,23 +840,12 @@ void pgpClDev::disconnect( )
 {
 }
 
-#if 0
-// ImageCallback function
-int	ProcessImage( const ImageCbInfo * pImageInfo )
-{
-	pgpClDev	*	pDev = (pgpClDev *) pImageInfo->m_pClientContext;
-	pDev->ProcessImage( pImageInfo );
-	return 0;
-}
-#endif
-
 void pgpClDev::ProcessImage(
 	const ImageCbInfo		* pImageInfo )
 {
 	const char		*	functionName	= "pgpClDev::ProcessImage";
 	if ( DEBUG_PGP_CAMLINK >= 5 ) printf( "%s\n", functionName );
 	//epicsTimeStamp		tsImage	= pImageInfo->m_tsImage;
-	//rogue::protocols::batcher::DataPtr	pImageData;
 
 	if  ( m_CallbackClientFunc != NULL )
 		(*m_CallbackClientFunc)( m_pCallbackClient, pImageInfo );
