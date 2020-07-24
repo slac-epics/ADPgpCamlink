@@ -320,8 +320,7 @@ public:		//	Public member functions
 	int						StartAcquisition( );
 
 	///	Acquire next image from the camera
-	int						ProcessImage(	const epicsTimeStamp			&	ts,
-											rogue::protocols::batcher::DataPtr	pImageData );
+	int						ProcessImage(	const ImageCbInfo	*	pImageInfo );
 
 	///	Returns true if device needs reconfiguring
 	bool					NeedsReconfigure(	)
@@ -415,7 +414,7 @@ private:	//	Private member functions
 	//	NDArray routines
 	//	Don't call without holding driver lock!
 	NDArray *	AllocNDArray(	);
-	int			LoadNDArray( NDArray * pNDArray, rogue::protocols::batcher::DataPtr	pImageData );
+	int			LoadNDArray( NDArray * pNDArray, const ImageCbInfo	*	pImageInfo );
 
 private:	//	Private class functions
 	static	void			CameraAdd(		pgpCamlink * pCamera );

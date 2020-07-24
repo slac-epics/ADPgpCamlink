@@ -117,21 +117,20 @@ int ProcessImageCallback(
 	const ImageCbInfo	*	pImageCbInfo  )
 {
 	pgpCamlink	*	pADCam = (pgpCamlink *) pClientContext;
-	rogue::protocols::batcher::DataPtr	pImageData;
-	rogue::interfaces::stream::FramePtr	pFrameData = pImageCbInfo->m_pFrame; 
     if ( DEBUG_PGP_CAMLINK >= 4 )
 	{
-		if ( pFrameData )
+		if ( pImageCbInfo->m_ImageDataPtr )
         	printf( "ProcessImageCallback: %u bytes, pulseID %d\n",
-					/*pFrameData->size()*/ 5,
+					/*pImageCbInfo->m_ImageDataPtr->size()*/ 5,
 					pImageCbInfo->m_tsImage.nsec & 0x1FFFF );
 		else
-        	printf( "ProcessImageCallback: Null Image, pulseID %d\n", pImageCbInfo->m_tsImage.nsec & 0x1FFFF );
+        	printf( "ProcessImageCallback: Null Image, pulseID %d\n",
+					pImageCbInfo->m_tsImage.nsec & 0x1FFFF );
 	}
 
 	if( pADCam )
 	{
-		pADCam->ProcessImage( pImageCbInfo->m_tsImage, pImageCbInfo->m_ImageDataPtr );
+		pADCam->ProcessImage( pImageCbInfo );
 	}
 
 	return( 0 );
@@ -1275,11 +1274,10 @@ int pgpCamlink::StartAcquisition( )
 
 // TODO: Redo pgpCamlink::ProcessImage w/ one pImageCbInfo param
 int pgpCamlink::ProcessImage(
-	const epicsTimeStamp			&	tsImage,
-	rogue::protocols::batcher::DataPtr	pImageData )
+	const ImageCbInfo	*	pImageCbInfo )
 {
     static const char	*	functionName = "pgpCamlink::ProcessImage";
-	int						pulseID		 = tsImage.nsec & 0x1FFFF;
+	int						pulseID		 = pImageCbInfo->m_tsImage.nsec & 0x1FFFF;
 	CONTEXT_TIMER( "ProcessImage" );
 	assert( m_pDev != NULL );
 	UpdateStatus( ADStatusSaving );
@@ -1330,14 +1328,11 @@ int pgpCamlink::ProcessImage(
 	if( m_acquireCount > 0 )
 		m_acquireCount--;
 
-	if ( ! pImageData )
+	if ( ! pImageCbInfo->m_ImageDataPtr )
 	{
 		if ( DEBUG_PGP_CAMLINK >= 4 )
 		{
-			if ( ! pImageData )
-				printf(	"%s: Image Timeout: Failed to acquire image!\n", functionName );
-			else
-				printf(	"%s: Image Timeout: Stale Image\n", functionName );
+			printf(	"%s: Image Timeout: Failed to acquire image!\n", functionName );
 		}
 		UpdateStatus( ADStatusError );
 		return asynError;
@@ -1358,7 +1353,7 @@ int pgpCamlink::ProcessImage(
 	{
 		// Transfer the image from the frame buffer to the NDArray
 		int status = -1;
-		status = LoadNDArray( pNDArray, pImageData );
+		status = LoadNDArray( pNDArray, pImageCbInfo );
 		if ( status != 0 )
 		{
 			printf(	"%s: LoadNDArray error for pulseID %d\n", functionName, pulseID );
@@ -1381,7 +1376,7 @@ int pgpCamlink::ProcessImage(
 
 	{
 	CONTEXT_TIMER( "ProcessImage-wrapup" );
-	(void) SubmitNDArray( pNDArray, &tsImage, pulseID	);
+	(void) SubmitNDArray( pNDArray, &pImageCbInfo->m_tsImage, pulseID	);
 
 	// Increment NumImagesCounter
 	//	TODO: Replace this pattern w/ local m_numImagesCounter
@@ -1403,7 +1398,7 @@ int pgpCamlink::ProcessImage(
 	}
 
 	//	Get image timestamp immediately after AcquireData()
-	(void) CkDupTimeStamp( &tsImage, &pulseID );
+	(void) CkDupTimeStamp( &pImageCbInfo->m_tsImage, &pulseID );
 	}
 	(void) callParamCallbacks( 0, 0 );
 	return 0;
@@ -1482,20 +1477,19 @@ NDArray * pgpCamlink::AllocNDArray( )
 //	Load image from DMA buffer to NDArray
 //	Note: Driver must be locked before calling this routine
 int pgpCamlink::LoadNDArray(
-	NDArray							*	pNDArray,
-	rogue::protocols::batcher::DataPtr	pImageData )
+	NDArray				*	pNDArray,
+	const ImageCbInfo	*	pImageCbInfo )
 {
     static const char	*	functionName = "pgpCamlink::LoadNDArray";
 	int		status = 0;
-
 	assert( pNDArray		!= NULL );
 	assert( pNDArray->pData	!= NULL );
-	assert( pImageData );
+	assert( pImageCbInfo->m_ImageDataPtr );
 
-	if ( pImageData->size() < (m_ClCurWidth * m_ClCurHeight) )
+	if ( pImageCbInfo->m_ImageDataPtr->size() < (m_ClCurWidth * m_ClCurHeight) )
 	{
 		printf( "%s Error: DMA size %zu < expected image size %zu\n",
-				functionName, (size_t) pImageData->size(),
+				functionName, (size_t) pImageCbInfo->m_ImageDataPtr->size(),
 				(m_ClCurWidth * m_ClCurHeight) );
 		return -1;
 	}
@@ -1511,21 +1505,21 @@ int pgpCamlink::LoadNDArray(
 
 
 #if 1
-	uint8_t			*	pRawData	= pImageData->begin().ptr();
+	uint8_t			*	pRawData	= pImageCbInfo->m_ImageDataPtr->begin().ptr();
 	//epicsUInt8		*	pDmaBuffer	= (epicsUInt8 *) pRawData;
 	epicsUInt8		*	pArrayData	= (epicsUInt8 *) pNDArray->pData;
-	ris::FrameIterator	pPixelSrc	= pImageData->begin();
+	ris::FrameIterator	pPixelSrc	= pImageCbInfo->m_ImageDataPtr->begin();
 	//epicsUInt8		*	pPixelDst	= pArrayData;
 	size_t	nCopied	= 0;
 	while ( nCopied < (m_ClCurWidth * m_ClCurHeight) )
 	{
-		std::memcpy( pArrayData, pRawData, pImageData->size() );
-		pPixelSrc += pImageData->size();
-		nCopied += pImageData->size();
+		std::memcpy( pArrayData, pRawData, pImageCbInfo->m_ImageDataPtr->size() );
+		pPixelSrc += pImageCbInfo->m_ImageDataPtr->size();
+		nCopied += pImageCbInfo->m_ImageDataPtr->size();
 	}
 #else
 	unsigned int	nBytesPerPx = m_ClNumBits > 8 ? 2 : 1;
-	ris::FrameIterator	pDmaBuffer	= pImageData->begin();
+	ris::FrameIterator	pDmaBuffer	= pImageCbInfo->m_ImageDataPtr->begin();
 	std::strstreambuf	pArrayData( (char *) pNDArrray->pData, pNDArray->dataSize );
 	/* copy pixels to buffer */
 	for (	size_t	imgRow = 0;	imgRow < m_ClCurHeight;	imgRow++	)

@@ -137,6 +137,7 @@ void ImageStream::acceptFrame ( rogue::interfaces::stream::FramePtr frame )
 		if ( !m_ImageInfo.m_ImageDataPtr && ( DEBUG_PGP_CAMLINK >= 4 ) )
 			printf( "ts %s, pulseId 0x%X, no image!\n", acBuff, ts.nsec & 0x1FFFF );
 		m_pClDev->ProcessImage( &m_ImageInfo );
+		m_ImageInfo.m_ImageDataPtr.reset();
 	}
 
 #if 0 // Not ready to enable
