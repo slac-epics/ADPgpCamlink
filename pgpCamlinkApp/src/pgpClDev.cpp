@@ -96,9 +96,12 @@ int		pgpClDev::setTriggerEnable( unsigned int triggerNum, bool fEnable )
 	// TODO: Replace this code w/ invoking cannedSequences StartRun and StopRun seq PVs
 	const char * varPathMasterEnable	= "ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TriggerEventManager.TriggerEventBuffer[0].MasterEnable";
 	const char * varPathBlowoff			= "ClinkDevRoot.ClinkPcie.Application.AppLane[0].EventBuilder.Blowoff";
+	const char * varPathSoftRst			= "ClinkDevRoot.ClinkPcie.Application.AppLane[0].EventBuilder.SoftRst";
 	if ( fEnable )
 	{
 		setVariable( varPathBlowoff,		0, false );
+		setVariable( varPathSoftRst,		1, false );
+		setVariable( varPathSoftRst,		0, false );
 		setVariable( varPathMasterEnable,	1, false );
 	}
 	else
