@@ -47,33 +47,12 @@ void ImageStream::acceptFrame ( rogue::interfaces::stream::FramePtr frame )
 	//   what():  bad_weak_ptr
 	//   Aborted (core dumped)
 
-	// Acquire lock on frame. Will be release when lock class goes out of scope
+	// Acquire lock on frame. Will be released when lock class goes out of scope
 	rogue::interfaces::stream::FrameLockPtr lock = frame->lock();
 
 	// Here we get an iterator to the frame data
 	rogue::interfaces::stream::FrameIterator it;
 	it = frame->begin();
-
-	if ( DEBUG_PGP_CAMLINK >= 4 )
-	{
-		printf( "\n" );
-		// Print the values in the first 10 locations
-		printf( "ImageStream::acceptFrame: SuperFrameSize=%u bytes:", frame->getPayload() );
-#if 0
-		for ( uint32_t x=0; x < 20; x++)
-		{
-#if 0
-			uint16_t	pixelData;
-			fromFrame( it, 2, &pixelData );
-			printf( " 0x%04x", pixelData );
-#else
-			printf( " 0x%02x", *it );
-			it++;
-#endif
-		}
-#endif
-		printf( " ...\n" );
-	}
 
 	// Timestamp should default to TOD
 	epicsTimeStamp		ts;
@@ -81,9 +60,6 @@ void ImageStream::acceptFrame ( rogue::interfaces::stream::FramePtr frame )
 
 	// Process frame via CoreV1 protocol
 	m_FrameCore.processFrame(frame);
-	if ( DEBUG_PGP_CAMLINK >= 4 )
-		printf( "ImageStream::acceptFrame: core count=%u, seq=%u, hdrSize=%u, tailSize=%u\n",
-				m_FrameCore.count(), m_FrameCore.sequence(), m_FrameCore.headerSize(), m_FrameCore.tailSize() );
 	for ( uint32_t sf = 0; sf < m_FrameCore.count(); sf++ )
 	{
 		rogue::protocols::batcher::DataPtr	data = m_FrameCore.record(sf);
@@ -103,13 +79,6 @@ void ImageStream::acceptFrame ( rogue::interfaces::stream::FramePtr frame )
 			{
 				printf( "%s TDEST 0 SubFrame %d, ts %s, pulseId 0x%X\n",
 						functionName, sf, acBuff, ts.nsec & 0x1FFFF );
-				if ( DEBUG_PGP_CAMLINK >= 6 )
-				{
-					//printf( "Invalid timing frame:" );
-					for ( uint32_t x=0; x < 24; x++)
-					{ printf( " 0x%02x", *it ); it++; }
-					printf( "\n" );
-				}
 			}
 		}
 		else if ( data->dest() == 1 )
@@ -117,7 +86,6 @@ void ImageStream::acceptFrame ( rogue::interfaces::stream::FramePtr frame )
 			if ( DEBUG_PGP_CAMLINK >= 4 )
 				printf( "ImageStream::acceptFrame TDEST 1 SubFrame %d, Event: \n", sf );
 			//it = data->begin();
-			//it = data->end();
 		}
 		else if ( data->dest() == 2 )
 		{	// TDEST 2 is framegrabber image data
@@ -139,15 +107,4 @@ void ImageStream::acceptFrame ( rogue::interfaces::stream::FramePtr frame )
 		m_pClDev->ProcessImage( &m_ImageInfo );
 		m_ImageInfo.m_ImageDataPtr.reset();
 	}
-
-#if 0 // Not ready to enable
-	// Check for ImageCallback
-	if ( m_CallbackClientFunc )
-	{
-		m_ImageInfo.m_pClientContext	= m_pCallbackClient;
-		m_ImageInfo.m_tsImage			= ts;
-		m_ImageInfo.m_pFrame			= frame;
-		(*m_CallbackClientFunc)( &m_ImageInfo );
-	}
-#endif
 }
