@@ -435,6 +435,7 @@ private:	//	Private member variables
 	unsigned int	m_lane;			// lane on  Pgpcamlink card
 	bool			m_fLcls2Timing;	// true to initialize w/ LCLS2 timing, false for LCLS1
 
+	NDArray		*	m_pNDArray;
 	epicsTimeStamp	m_priorTimeStamp;	// Last timestamp for this event number
 
 	std::string		m_CameraClass;	// Manufacturer of camera

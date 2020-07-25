@@ -170,6 +170,8 @@ pgpCamlink::pgpCamlink(
 		m_board(			board				),
 		m_lane(				lane				),
 		m_fLcls2Timing(		fLcls2Timing		),
+		m_pNDArray(			NULL				),
+		m_priorTimeStamp(						),
 		m_CameraClass(							),
 		m_CameraInfo(							),
 		m_CameraModel(		modelName			),
@@ -1351,6 +1353,7 @@ int pgpCamlink::ProcessImage(
     NDArray		*	pNDArray = AllocNDArray();
 	if ( pNDArray != NULL )
 	{
+
 		// Transfer the image from the frame buffer to the NDArray
 		int status = -1;
 		status = LoadNDArray( pNDArray, pImageCbInfo );
@@ -1378,10 +1381,14 @@ int pgpCamlink::ProcessImage(
 	CONTEXT_TIMER( "ProcessImage-wrapup" );
 	if ( pNDArray )
 	{
+		if( m_pNDArray )
+		{
+			// Release NDArray to avoid memory leaks
+			m_pNDArray->release( );
+			m_pNDArray	= NULL;
+		}
 		(void) SubmitNDArray( pNDArray, &pImageCbInfo->m_tsImage, pulseID	);
-
-		// Release NDArray to avoid memory leaks
-		pNDArray->release( );
+		m_pNDArray	= pNDArray;
 	}
 
 	// Increment NumImagesCounter
