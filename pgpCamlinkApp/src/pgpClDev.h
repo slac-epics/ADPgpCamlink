@@ -47,7 +47,7 @@
 class pgpClAddrMap;
 typedef std::shared_ptr<pgpClAddrMap> pgpClAddrMapPtr;
 
-typedef int (* ImageCallback)( void * pClientContext, const ImageCbInfo * pCbInfo );
+typedef int (* ImageCallback)( void * pClientContext, ImageCbInfo * pCbInfo );
 
 
 ///	pgpClDev class
@@ -91,7 +91,7 @@ public:		//	Public member functions
 		return m_LibVersion;
 	}
 
-	void ProcessImage(	const ImageCbInfo				*	pCbInfo );
+	void ProcessImage(	ImageCbInfo				*	pCbInfo );
 
 	/// Configure timing for LCLS-I
 	void ConfigureLclsTimingV1();

@@ -114,7 +114,7 @@ const char * TriggerModeToString( pgpCamlink::TriggerMode_t	tyTriggerMode )
 extern "C"
 int ProcessImageCallback(
 	void				*	pClientContext,
-	const ImageCbInfo	*	pImageCbInfo  )
+	ImageCbInfo	*	pImageCbInfo  )
 {
 	pgpCamlink	*	pADCam = (pgpCamlink *) pClientContext;
     if ( DEBUG_PGP_CAMLINK >= 4 )
@@ -1274,7 +1274,7 @@ int pgpCamlink::StartAcquisition( )
 
 // TODO: Redo pgpCamlink::ProcessImage w/ one pImageCbInfo param
 int pgpCamlink::ProcessImage(
-	const ImageCbInfo	*	pImageCbInfo )
+	ImageCbInfo	*	pImageCbInfo )
 {
     static const char	*	functionName = "pgpCamlink::ProcessImage";
 	int						pulseID		 = pImageCbInfo->m_tsImage.nsec & 0x1FFFF;
@@ -1478,7 +1478,7 @@ NDArray * pgpCamlink::AllocNDArray( )
 //	Note: Driver must be locked before calling this routine
 int pgpCamlink::LoadNDArray(
 	NDArray				*	pNDArray,
-	const ImageCbInfo	*	pImageCbInfo )
+	ImageCbInfo			*	pImageCbInfo )
 {
     static const char	*	functionName = "pgpCamlink::LoadNDArray";
 	int		status = 0;

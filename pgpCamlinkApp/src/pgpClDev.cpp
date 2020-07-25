@@ -841,7 +841,7 @@ void pgpClDev::disconnect( )
 }
 
 void pgpClDev::ProcessImage(
-	const ImageCbInfo		* pImageInfo )
+	ImageCbInfo		* pImageInfo )
 {
 	const char		*	functionName	= "pgpClDev::ProcessImage";
 	if ( DEBUG_PGP_CAMLINK >= 5 ) printf( "%s\n", functionName );
