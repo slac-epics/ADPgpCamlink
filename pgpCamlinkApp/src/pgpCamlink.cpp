@@ -1376,7 +1376,13 @@ int pgpCamlink::ProcessImage(
 
 	{
 	CONTEXT_TIMER( "ProcessImage-wrapup" );
-	(void) SubmitNDArray( pNDArray, &pImageCbInfo->m_tsImage, pulseID	);
+	if ( pNDArray )
+	{
+		(void) SubmitNDArray( pNDArray, &pImageCbInfo->m_tsImage, pulseID	);
+
+		// Release NDArray to avoid memory leaks
+		pNDArray->release( );
+	}
 
 	// Increment NumImagesCounter
 	//	TODO: Replace this pattern w/ local m_numImagesCounter
