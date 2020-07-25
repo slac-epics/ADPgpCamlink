@@ -857,11 +857,10 @@ void pgpClDev::cancelImageCallbacks( )
 {
 	m_pCallbackClient		= NULL;
 	m_CallbackClientFunc	= NULL;
-	m_pImageStream->cancelImageCallbacks( );
 }
+
 void pgpClDev::requestImageCallbacks( void * pClientContext, ImageCallback callbackFunction )
 {
 	m_pCallbackClient		= pClientContext;
 	m_CallbackClientFunc	= callbackFunction;
-	m_pImageStream->requestImageCallbacks( pClientContext, callbackFunction );
 }

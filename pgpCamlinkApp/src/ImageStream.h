@@ -35,9 +35,6 @@ typedef struct _ImageCbInfo
 #endif
 }	ImageCbInfo;
 
-// TODO: Should this typedef move to pgpClDev.h
-typedef int (* ImageCallback)( void * pClientContext, const ImageCbInfo * pCbInfo );
-
 
 class ImageStream : public rogue::interfaces::stream::Slave
 {
@@ -62,25 +59,9 @@ public:
 
 	void frameCallback( CALLBACK * pCallbackPvt );
 
-	void cancelImageCallbacks( )
-	{
-		m_pCallbackClient		= NULL;
-		m_CallbackClientFunc	= NULL;
-	}
-
-	void requestImageCallbacks(	void			*	pCallbackClient,
-								// CALLBACKFUNC		CallbackClientFunc
-								ImageCallback		CallbackClientFunc )
-	{
-		m_pCallbackClient		= pCallbackClient;
-		m_CallbackClientFunc	= CallbackClientFunc;
-	}
-
 private:
 	pgpClDev		*	m_pClDev;
 	void			*	m_pCallbackClient;
-//	CALLBACKFUNC		m_CallbackClientFunc;
-	ImageCallback		m_CallbackClientFunc;
 	ImageCbInfo			m_ImageInfo;
 	rogue::protocols::batcher::CoreV1	m_FrameCore;
 };

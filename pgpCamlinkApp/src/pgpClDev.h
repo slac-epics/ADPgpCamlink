@@ -47,6 +47,9 @@
 class pgpClAddrMap;
 typedef std::shared_ptr<pgpClAddrMap> pgpClAddrMapPtr;
 
+typedef int (* ImageCallback)( void * pClientContext, const ImageCbInfo * pCbInfo );
+
+
 ///	pgpClDev class
 class pgpClDev :	public rogue::LibraryBase
 {
