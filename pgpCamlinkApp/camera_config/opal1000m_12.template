@@ -113,11 +113,12 @@ record( stringin, "$(P)$(R)OpalBuildState_RBV" )
 # Set Camera Control Exposure source
 #	We use source 0, CC1 for external trigger in Pulse mode.
 #	CCE source isn't used in FreeRun mode.
+# Note: Trigger polarity from testing is opposite of Opal documentation.
 record( mbbo, "$(P)$(R)OpalTrigPol" )
 {
+#	field( TPRO, "2" )
     field( DESC, "Set Exposure Source & Event" )
     field( DTYP, "stream" )
-	field( DOL,  "0" )
     field( OUT,	 "@opal1000m_12.proto SetInt(CCE0;) $(PORT).SER" )
 	# or if we want to allow selection of CC2, CC3, or CC4   
 	# add an OpalTrigInput mbbo record and change OUT to
@@ -125,11 +126,11 @@ record( mbbo, "$(P)$(R)OpalTrigPol" )
 	# which would send CCE$OpalTrigInput;$OpalTrigPol
     field( ZRVL, 0 )
     field( ONVL, 1 )
-    field( ZRST, "Active Hi"	)
-    field( ONST, "Active Low"	)
+    field( ZRST, "Active Low"	)
+    field( ONST, "Active Hi"	)
     field( FLNK, "$(P)$(R)OpalTrigPol_RBV" )
 	field( PINI, "YES" )
-	info( autosaveFields, "DESC" )
+	info( autosaveFields, "DESC VAL" )
 }
 
 # Read Camera Control Exposure source
@@ -461,20 +462,18 @@ record( bi, "$(P)$(R)OpalAutoGain_RBV" )
 
 record( ao, "$(P)$(R)Gain" )
 {
+#	field( TPRO, 2 )
     field( HOPR, 32 )
     field( LOPR, 1  )
-}
-record( ao, "$(P)$(R)CamGain" )
-{
-#	field( TPRO, 2 )
-	field( PREC, "2" )
 	field( FLNK, "$(P)$(R)OpalCalcGain" )
+	info( archiveFields,  "VAL" )
 }
+
 record( calcout, "$(P)$(R)OpalCalcGain" )
 {
 #	field( TPRO, 2 )
-	field( INPA, "$(P)$(R)CamGain NPP NMS" )
-	field( CALC, "MAX(100,MIN(A*100,3200))" )
+	field( INPA, "$(P)$(R)Gain NPP NMS" )
+	field( CALC, "MAX(100,MIN((A*31)+100,3200))" )
 	field( OUT,  "$(P)$(R)OpalGain PP MS" )
 	field( PREC, "2" )
 }
@@ -484,7 +483,7 @@ record( calcout, "$(P)$(R)OpalCalcGain" )
 # 3200 is the maximum gain, i.e. 32x signal amplification
 record( longout, "$(P)$(R)OpalGain" )
 {
-    field( DESC, "Set The Digital Gain" )
+    field( DESC, "Set Opal Digital Gain" )
     field( DTYP, "stream" )
     field( OUT,	 "@opal1000m_12.proto SetInt(GA) $(PORT).SER" )
     field( HOPR, 3200 )
@@ -492,36 +491,28 @@ record( longout, "$(P)$(R)OpalGain" )
     field( LOPR, 100  )
     field( DRVL, 100  )
     field( FLNK, "$(P)$(R)OpalGain_RBV" )
-	info( autosaveFields, "DESC VAL" )
-	info( archiveFields,  "DESC VAL" )
+	info( autosaveFields, "" )
+	info( archiveFields,  "VAL" )
 }
 
-# TODO: Need to convert the Opal 1000 gain from
-# integer units of 0.01 amplification
-# to ADCore floating point $(PORT).SERGain_RBV
-# 100 is the minimum gain, i.e. no signal amplification
 record( longin, "$(P)$(R)OpalGain_RBV" )
 {
-    field( DESC, "Digital Gain" )
+#	field( TPRO, 2 )
+    field( DESC, "Opal Digital Gain" )
     field( DTYP, "stream" )
     field( INP,	 "@opal1000m_12.proto GetInt(GA) $(PORT).SER" )
 	field( PINI, "YES" )
     field( FLNK, "$(P)$(R)OpalCalcGain_RBV" )
-	info( autosaveFields, "DESC" )
-	info( archiveFields,  "DESC VAL" )
+	info( autosaveFields, "" )
+	info( archiveFields,  "VAL" )
 }
 
 record( calcout, "$(P)$(R)OpalCalcGain_RBV" )
 {
 #	field( TPRO, 2 )
 	field( INPA, "$(P)$(R)OpalGain_RBV NPP NMS" )
-	field( CALC, "A==0?1.0:(A/100)" )
-	field( OUT,  "$(P)$(R)CamGain_RBV PP MS" )
-	field( PREC, "2" )
-}
-record( ao, "$(P)$(R)CamGain_RBV" )
-{
-#	field( TPRO, 2 )
+	field( CALC, "A<100?0:(A-100/31)" )
+	field( OUT,  "$(P)$(R)Gain_RBV PP MS" )
 	field( PREC, "2" )
 }
 
