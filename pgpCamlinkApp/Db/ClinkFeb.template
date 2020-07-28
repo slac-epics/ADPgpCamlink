@@ -278,7 +278,7 @@ record( longout, "$(P)$(R)Feb0:Trig0:PulseWidthRaw" )
 record( calcout, "$(P)$(R)Feb0:Trig0:PulseWidthCalc" )
 {
 	field( INPA, "$(P)$(R)Feb0:Trig0:PulseWidth" )
-	field( CALC, "(A/0.008)-1" )
+	field( CALC, "MAX(0,(A/0.008)-1)" )
 	field( OUT,  "$(P)$(R)Feb0:Trig0:PulseWidthRaw PP MS" )
 	field( EGU,  "1/125MHz" )
 	info( autosaveFields, "" )
