@@ -74,16 +74,6 @@ file boolDevRogue.template
 		SCAN	= "\$(SCAN=1 second)"
 	}
 	{
-		NAME	= "Timing:TriggerCount",
-		PATH	= "ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TriggerEventManager.TriggerEventBuffer[0].TriggerCount"
-		DESC	= "TriggerEventManager Trigger count"
-		SCAN	= "\$(SCAN=1 second)"
-	}
-	{
-		NAME	= "Timing:PauseThreshold",
-		PATH	= "ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TriggerEventManager.TriggerEventBuffer[0].PauseThreshold"
-	}
-	{
 		NAME	= "XpmMini:Config_L0Select_Enabled",
 		PATH	= "ClinkDevRoot.ClinkPcie.Hsio.TimingRx.XpmMiniWrapper.XpmMini.Config_L0Select_Enabled"
 		PINI	= "YES"
@@ -342,6 +332,16 @@ file longDevRogue.template
 		NAME	= "Timing:RxPllReset",
 		PATH	= "ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TimingFrameRx.RxPllReset"
 		SAVE	= ""
+		SCAN	= "\$(SCAN=1 second)"
+	}
+	{
+		NAME	= "Timing:PauseThreshold",
+		PATH	= "ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TriggerEventManager.TriggerEventBuffer[0].PauseThreshold"
+	}
+	{
+		NAME	= "Timing:TriggerCount",
+		PATH	= "ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TriggerEventManager.TriggerEventBuffer[0].TriggerCount"
+		DESC	= "TriggerEventManager Trigger count"
 		SCAN	= "\$(SCAN=1 second)"
 	}
 	{

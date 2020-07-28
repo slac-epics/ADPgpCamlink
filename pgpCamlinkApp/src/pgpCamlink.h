@@ -518,7 +518,6 @@ private:	//	Private member variables
 	int		PgpAxiVersion;
 	int		PgpCoreFpgaVersion;
 	int		PgpFebFpgaVersion;
-	int		PgpAppDataCnt;
 
 	// Serial front-end params for ADBase parameters
 	int		SerAcquireTime;
@@ -579,7 +578,6 @@ private:	//	Private class variables
 #define PgpAxiVersionString			"ClinkDevRoot.ClinkPcie.AxiPcieCore.AxiVersion.BuildStamp"
 #define PgpCoreFpgaVersionString	"ClinkDevRoot.ClinkPcie.AxiPcieCore.AxiVersion.FpgaVersion"
 #define PgpFebFpgaVersionString		"ClinkDevRoot.ClinkFeb[0].AxiVersion.FpgaVersion"
-#define PgpAppDataCntString			"ClinkDevRoot.ClinkPcie.Application.AppLane[0].EventBuilder.DataCnt[1]" 
 
 // This group provides a way to have serial readbacks get reflected in
 // their ADBase class equivalents, for example

@@ -68,24 +68,35 @@ record( ao, "$(P)$(R)AcquireTime" )
 # This record updates the asyn serial driver
 record( ao, "$(P)$(R)CamAcquireTime" )
 {
+	field( PREC, "5" )
+	field( EGU,  "sec" )
+}
+
+record( calcout, "$(P)$(R)CamAcquireTimeCalc" )
+{
 #	field( TPRO, 2 )
-	field( DTYP, "asynFloat64" )
-	field( OMSL, "closed_loop" )
+	field( INPA, "$(CAM):AcquireTime CP MS" )
+#	field( INPB, "$(CAM):CamDelayScale NPP MS" )
+	field( INPB, "1000000" )
+	field( CALC, "FLOOR(A*B)" )
 	field( PREC, "4" )
-	field( DOL,  "$(P)$(R)AcquireTime NPP MS" )
-	field( OUT,  "@asyn($(PORT),$(ADDR=0),$(TIMEOUT=1))CLCAM_ACQUIRE_TIME" )
+	field( EGU,  "us" )
+	field( OUT,  "$(PGP):Feb0:FCh$(PGP_LANE):PulseWidth PP MS" )
 	info( archiveFields,  "VAL" )
 }
 # CamAcquireTime_RBV (Exposure Time)
 # This record updates the asyn serial driver
 # which maps it to ADCore's ADAcquireTime parameter
-record( ao, "$(P)$(R)CamAcquireTime_RBV" )
+record( calc, "$(P)$(R)CamAcquireTime_RBV" )
 {
-	field( DTYP, "asynFloat64" )
-	field( OUT,  "@asyn($(PORT),$(ADDR=0),$(TIMEOUT=1))CLCAM_ACQUIRE_TIME" )
+	field( INPA, "$(PGP):Feb0:FCh$(PGP_LANE):PulseWidth_RBV CP MS" )
+#	field( INPB, "$(CAM):CamDelayScale NPP MS" )
+	field( INPB, "1000000" )
+	field( CALC, "A/B" )
 	field( EGU,  "sec" )
 	field( PREC, "4" )
 #	field( TPRO, "2" )
+	field( FLNK, "$(P)$(R)AcquireTime_RBV" )
 }
 
 # Update ADCore AcquireTime_RBV from CamAcquireTime_RBV
@@ -94,9 +105,8 @@ record( ao, "$(P)$(R)CamAcquireTime_RBV" )
 record( ai, "$(P)$(R)AcquireTime_RBV" )
 {
 	field( PREC, "5" )
-
 	field( DTYP, "Soft Channel" )
-	field( INP,  "$(P)$(R)CamAcquireTime_RBV CP MS" )
+	field( INP,  "$(P)$(R)CamAcquireTime_RBV NPP MS" )
 	field( SCAN, "Passive" )
 #	field( TPRO, "2" )
 }
@@ -462,34 +472,77 @@ record( mbbo, "$(P)$(R)CamTriggerMode_RBV" )
 # and monitor event code trigger timing, in which case be sure to set
 # the required macros listed at the top of this file
 #
-
-record( longout, "$(P)$(R)CamDelayScale" )
+record( ao, "$(CAM):CamTrigDelay" )
 {
-	field( DOL,  "$(TICK_DLY_SCALE=1000000000)" )
-	field( EGU,  "$(TICK_DLY_EGU=ns)" )
+#field( TPRO, "$(TPRO=2)" )
+	field( PREC, "4" )
+	field( EGU,  "sec" )
+	field( FLNK, "$(CAM):CamTrigDelayCalc" )
+	info( autosaveFields, "HHSV HIGH HIHI HSV LLSV LOLO LOW LSV     DESC HOPR LOPR PREC VAL" )
+	info( archiveFields,  "HHSV HIGH HIHI HSV LLSV LOLO LOW LSV EGU DESC HOPR LOPR PREC VAL" )
+}
+
+# This record calculates the trigger delay and writes it to the
+# appropriate EVR record via macro CAM_DLY
+record( calcout, "$(CAM):CamTrigDelayCalc" )
+{
+	field( INPA, "$(CAM):CamTrigDelay NPP MS" )
+#	field( INPB, "$(CAM):CamDelayScale NPP MS" )
+	field( INPB, "125000000" )
+	field( CALC, "MAX(0,MIN(A*B,0xFFFFFF))" )
+	field( OOPT, "On Change" )
+	field( OUT,  "$(PGP):EvrV2:Ch$(PGP_LANE):TriggerDelay CP MS" )
+	field( EGU,  "1/125MHz" )
+	field( PREC, "4" )
+	info( autosaveFields, "HHSV HIGH HIHI HSV LLSV LOLO LOW LSV     DESC PREC" )
+	info( archiveFields,  "HHSV HIGH HIHI HSV LLSV LOLO LOW LSV EGU DESC PREC VAL" )
+}
+
+record( longout, "$(CAM):CamDelayScale" )
+{
+	field( DOL,  "$(CAM_DLY_SCALE=1000000)" )
+	field( EGU,  "$(CAM_DLY_EGU=us)" )
 	field( PINI, "YES" )
-	info( autosaveFields, "HHSV HIGH HIHI HSV LLSV LOLO LOW LSV EGU DESC HOPR LOPR VAL" )
-	info( archiveFields,  "HHSV HIGH HIHI HSV LLSV LOLO LOW LSV EGU DESC HOPR LOPR VAL" )
+	field( FLNK, "$(CAM):CamTrigDelayCalc" )
+	info( autosaveFields, "" )
+	info( archiveFields,  "EGU DESC VAL" )
+}
+
+record( calcout, "$(CAM):CamTrigDelay_RBV" )
+{
+#field( TPRO, "$(TPRO=2)" )
+	field( INPA, "$(PGP):EvrV2:Ch$(PGP_LANE):TriggerDelay_RBV CP MS" )
+#	field( INPB, "$(CAM):CamDelayScale CP MS" )
+	field( INPB, "125000000" )
+	field( CALC, "B==0?A:(A/B)" )
+	field( EGU,  "sec" )
+	field( PREC, "4" )
+#	field( OOPT, "On Change" )
+#	field( IVOA, "Don't drive outputs" )
+#	field( OUT,  "$(CAM):CamTrigDelay PP MS" )
+#	field( PINI, "YES"
+	info( autosaveFields, "" )
+	info( archiveFields,  "EGU DESC VAL" )
 }
 
 record( longout, "$(P)$(R)CamEventCode" )
 {
 	field( VAL,  "40" )
-	field( OUT,  "$(CAM_EC=Unused) CPP NMS" )
+	field( OUT,  "$(PGP):EvrV2:Ch$(PGP_LANE):RateSel CPP NMS" )
 	field( PINI, "YES" )
 	info( autosaveFields, "HHSV HIGH HIHI HSV LLSV LOLO LOW LSV EGU DESC HOPR LOPR VAL" )
 	info( archiveFields,  "HHSV HIGH HIHI HSV LLSV LOLO LOW LSV EGU DESC HOPR LOPR VAL" )
 }
 record( longin, "$(P)$(R)CamEventCode_RBV" )
 {
-	field( INP,  "$(CAM_EC_RBV=Unused) CPP MS" )
+	field( INP,  "$(PGP):EvrV2:Ch$(PGP_LANE):RateSel_RBV CPP MS" )
 	info( autosaveFields, "HHSV HIGH HIHI HSV LLSV LOLO LOW LSV EGU DESC" )
 	info( archiveFields,  "HHSV HIGH HIHI HSV LLSV LOLO LOW LSV EGU DESC VAL" )
 }
 
 record( ai, "$(P)$(R)CamRepRate_RBV" )
 {
-	field( INP, "$(CAM_RATE_RBV=Unused) CPP MS" )
+	field( INP, "$(PGP):Feb0:FCh$(PGP_LANE):TrigRate_RBV CPP MS" )
 	field( EGU,  "Hz" )
 	field( PREC, "1" )
 	field( FLNK, "$(P)$(R)CamRepDur" )
@@ -555,24 +608,6 @@ record( calc, "$(P)$(R)BeamRepDur" )
 	info( archiveFields,  "HHSV HIGH HIHI HSV LLSV LOLO LOW LSV EGU DESC PREC VAL" )
 }
 
-
-record( ao, "$(P)$(R)XmitRate" )
-{
-    field( DOL,  "40.0e6" )
-    field( EGU,  "Bytes/Sec" )
-    field( PREC, "3" )
-    field( PINI, "YES" )
-    info( autosaveFields, "VAL" )
-}
-
-record( ao, "$(P)$(R)CamProcDelay" )
-{
-    field( DOL,  "1.0e-6" )
-    field( EGU,  "Sec" )
-    field( PREC, "3" ) 
-    field( PINI, "YES" )
-    info( autosaveFields, "VAL" )
-}
 
 record( calc, "$(P)$(R)CamlinkXmitTime" )
 {
@@ -666,11 +701,3 @@ record( longin, "$(P)$(R)PgpFebFpgaVersion" )
 	info( archiveFields,  "VAL" )
 }
 
-record( longin, "$(P)$(R)PgpAppDataCnt" )
-{
-	field( DTYP, "asynInt32" )
-	field( INP,  "@asyn($(PORT),$(ADDR=0),$(TIMEOUT=1))ClinkDevRoot.Application.AppLane[$(LANE=0)].EventBuilder.DataCnt[0]" )
-	field( SCAN, "I/O Intr" )
-	field( PINI, "YES" )
-	info( archiveFields,  "VAL" )
-}

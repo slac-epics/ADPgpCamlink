@@ -276,7 +276,6 @@ pgpCamlink::pgpCamlink(
 	createParam( PgpAxiVersionString,		asynParamOctet,		&PgpAxiVersion		);
 	createParam( PgpCoreFpgaVersionString,	asynParamInt32,		&PgpCoreFpgaVersion	);
 	createParam( PgpFebFpgaVersionString,	asynParamInt32,		&PgpFebFpgaVersion	);
-	createParam( PgpAppDataCntString,		asynParamInt32,		&PgpAppDataCnt	);
 
 	// This group provides a way to have serial readbacks get reflected in
 	// their ADBase class equivalents, for example
@@ -1284,16 +1283,6 @@ int pgpCamlink::ProcessImage(
 	assert( m_pDev != NULL );
 	UpdateStatus( ADStatusSaving );
 
-#if 0
-	// Fetch and update DataCnt.  Not sure this is needed
-	uint64_t		DataCnt = 0;
-	if ( m_pDev->readVarPath( PgpAppDataCntString, DataCnt ) == 0 )
-	{
-		asynStatus	status	= setIntegerParam( PgpAppDataCnt, static_cast<int>(DataCnt) );
-		if( status == asynSuccess )
-			status = callParamCallbacks( 0, 0 );
-	}
-#endif
 #ifdef	USE_DIAG_TIMER
 	// Update diagnostic timers
 	m_ReArmTimer.StartTimer( );

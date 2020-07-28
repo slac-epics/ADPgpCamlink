@@ -3,8 +3,8 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 507
-y 61
+x 2510
+y 129
 w 739
 h 782
 font "helvetica-medium-r-12.0"
@@ -481,49 +481,6 @@ bgColor index 12
 useDisplayBg
 value {
   "PgpFebFpgaVersion"
-}
-endObjectProperties
-
-# (Text Monitor)
-object activeXTextDspClass:noedit
-beginObjectProperties
-major 4
-minor 7
-release 0
-x 156
-y 128
-w 124
-h 24
-controlPv "$(CAM):PgpAppDataCnt"
-font "helvetica-medium-r-12.0"
-fontAlign "center"
-fgColor index 15
-fgAlarm
-bgColor index 12
-limitsFromDb
-nullColor index 0
-useHexPrefix
-newPos
-objType "monitors"
-noExecuteClipMask
-endObjectProperties
-
-# (Static Text)
-object activeXTextClass
-beginObjectProperties
-major 4
-minor 1
-release 1
-x 16
-y 128
-w 132
-h 24
-font "helvetica-medium-r-14.0"
-fgColor index 14
-bgColor index 12
-useDisplayBg
-value {
-  "PgpAppDataCnt"
 }
 endObjectProperties
 
