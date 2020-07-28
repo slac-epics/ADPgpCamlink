@@ -56,7 +56,7 @@ file boolDevRogue.template
 		SCAN	= "\$(SCAN=1 second)"
 	}
 	{
-		NAME	= "Feb0:Trig0:InvCC",
+		NAME	= "Feb0:FCh0:InvCC",
 		PATH	= "ClinkDevRoot.ClinkFeb[0].TrigCtrl[0].InvCC"
 		PINI	= "YES"
 	}
@@ -158,15 +158,15 @@ file liDevRogue.template
 		SCAN	= "\$(SCAN=1 second)"
 	}
 	{
-		NAME	= "Feb0:Trig0:TrigCnt",
+		NAME	= "Feb0:FCh0:TrigCnt",
 		PATH	= "ClinkDevRoot.ClinkFeb[0].TrigCtrl[0].TrigCnt"
-		DESC	= "Feb0 Trig0 TriggerCtrl count"
+		DESC	= "Feb0 FCh0 TriggerCtrl count"
 		SCAN	= "\$(SCAN=1 second)"
 	}
 	{
-		NAME	= "Feb0:Trig0:TrigRate",
+		NAME	= "Feb0:FCh0:TrigRate",
 		PATH	= "ClinkDevRoot.ClinkFeb[0].TrigCtrl[0].TrigRate"
-		DESC	= "Feb0 Trig0 TriggerCtrl rate"
+		DESC	= "Feb0 FCh0 TriggerCtrl rate"
 		SCAN	= "\$(SCAN=1 second)"
 	}
 	{
