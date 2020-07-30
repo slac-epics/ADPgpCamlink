@@ -1,4 +1,14 @@
 #
 # SLAC RELEASE_NOTES
 #
-R0.0.0	TODO
+R0.2.0	2020-07-30 Bruce Hill
+	Tweak db links and which PVs should be autosaved.
+	Update names for srpFeb interfaces to use v4.80 Unnamed_* names for 4 cameras.
+	Add pgpTiming.edl
+
+R0.1.0	2020-07-28 Bruce Hill
+	Fix linkages between CamTriggerDelay and CamAcquireTime and rogue reg PVs
+	Use FCh0 instead of Trig0 for Feb camera 0 PV names.
+	Fixed gain and added Ch0: to each EvrV2 register PV name.
+	Fix OpalGain and OpalTrigPol
+	Keep NDArray ptr in member var until next image before freeing.
