@@ -54,7 +54,7 @@ record( seq, "$(CAM):GoTo120HzMode" )
 #	field( LNK5, "$(CAM):CamEventCode CA NMS" )
 #	field( DLY5, "0.0" )
 
-#	field( DOL6, "140" )
+#	field( DOL6, "40" )
 #	field( LNK6, "$(CAM):BeamEventCode CA NMS" )
 #	field( DLY6, "0.0" )
 

@@ -124,6 +124,7 @@ record( mbbo, "$(P)$(R)OpalTrigPol" )
 	# add an OpalTrigInput mbbo record and change OUT to
 	#      OUT,	 "@opal1000m_12.proto SetCCE $(PORT).SER" )
 	# which would send CCE$OpalTrigInput;$OpalTrigPol
+	field( DOL,  1 )
     field( ZRVL, 0 )
     field( ONVL, 1 )
     field( ZRST, "Active Low"	)
