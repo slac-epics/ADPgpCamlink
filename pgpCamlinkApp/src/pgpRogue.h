@@ -7,9 +7,9 @@
 // may be copied, modified, propagated, or distributed except according to 
 // the terms contained in the LICENSE.txt file.
 //////////////////////////////////////////////////////////////////////////////
-#ifndef	PGP_CAMLINK_H
-#define	PGP_CAMLINK_H
-/** ADDriver for cameras using PgpCamlink framegrabbers via SLAC's Rogue software library **/
+#ifndef	PGP_ROGUE_H
+#define	PGP_ROGUE_H
+/** Rogue register I/O driver via SLAC's Rogue software library **/
 
 
 
@@ -21,7 +21,6 @@
 #include <epicsMutex.h>
 #include <epicsThread.h>
 #include <dbScan.h>
-#include "ADDriver.h"
 #include "pgpClDev.h"
 #include <rogue/protocols/batcher/Data.h>
 
@@ -31,99 +30,38 @@
 #include "ContextTimerMax.h"
 #endif	//	USE_DIAG_TIMER
 
-class pgpImage	// TODO: Do I need this class
-{
- public:
-	pgpImage( )
-		:	m_pNDArray(	NULL	)
-	{
-	}
-	virtual ~pgpImage( )
-	{
-	}
-
-	NDArray		*	GetNDArrayPtr(	)
-	{
-		return m_pNDArray;
-	}
-
-	void ReleaseNDArray( )
-	{
-		if( m_pNDArray != NULL )
-		{
-			m_pNDArray->release();
-			m_pNDArray	= NULL;
-		}
-	}
-
-	void SetNDArrayPtr( NDArray * pNDArray )
-	{
-		assert( m_pNDArray == NULL );
-		m_pNDArray	= pNDArray;
-	}
-
-private:
-	NDArray		*	m_pNDArray;
-};
-
-// Camera operation data structure definition
-class pgpCamlink : public ADDriver
+// Rogue operation data structure definition
+class pgpRogue
 {
 public:		//	Public member functions
 
 	///	Constructor
-	pgpCamlink(	const char			*	cameraName,
+	pgpRogue(	const char			*	cameraName,
 				int						board,
 				int						lane,
 				const char			*	modelName,
 				const char			*	clMode,
-				size_t					sizeX,
-				size_t					sizeY,
-				bool					fLcls2Timing,
-				int						maxBuffers	= 0,	// 0 = unlimited
-				size_t					maxMemory	= 0,	// 0 = unlimited
-				int						priority	= 0,	// 0 = default 50, high is 90
-				int						stackSize	= 0	);	// 0 = default 1MB
+				bool					fLcls2Timing
+				);
 
 	/// Destructor
-	virtual ~pgpCamlink();
-
-	enum TriggerMode_t { TRIGMODE_FREERUN, TRIGMODE_EXT, TRIGMODE_PULSE };
+	virtual ~pgpRogue();
 
 	enum CamlinkMode_t { CL_MODE_BASE, CL_MODE_MEDIUM, CL_MODE_FULL };
 
-	///	Update AreaDetector params related to camera configuration
-	int UpdateADConfigParams( );
-
-	/// Open a fresh connection to the camera
-    asynStatus ConnectCamera( );
+	/// Open a fresh connection to Rogue
+    int ConnectRogue( );
 
 	/// Close the camera connections
-    asynStatus DisconnectCamera( );
+    int DisconnectRogue( );
 
-	asynStatus		UpdateStatus( int	newStatus	);
-
-    asynUser	*	GetAsynUser()
-	{
-		return pasynUserSelf;	// TODO: Is this safe?
-	}
+	int		UpdateStatus( int	newStatus	);
 
     int	GetAcquireCount()
 	{
 		return m_acquireCount;
 	}
 
-    /// These methods are overwritten from asynPortDriver
-    virtual asynStatus connect(		asynUser	* pasynUser	);
-    virtual asynStatus disconnect(	asynUser	* pasynUser	);
-
-    /// These are the methods that we override from ADDriver
-#if 0
-    virtual asynStatus readFloat64(	asynUser	*	pasynUser,	epicsFloat64 *	value	);
-#endif
-    virtual asynStatus readInt32(	asynUser	*	pasynUser,	epicsInt32	 *	value	);
-    virtual asynStatus writeInt32(	asynUser	*	pasynUser,	epicsInt32		value	);
-    virtual asynStatus writeFloat64(asynUser	*	pasynUser,	epicsFloat64	value	);
     void	report(	FILE	*	fp,	int	details	);
 
 	/// Registered with epicsAtExit() for clean disconnect
@@ -133,21 +71,21 @@ public:		//	Public member functions
 	void Shutdown( );
 
 	///	Get camera class, typically the manufacturer
-	const std::string	&	GetCameraClass( ) const
+	const std::string	&	GetRogueClass( ) const
 	{
-		return m_CameraClass;
+		return m_RogueClass;
 	}
 
 	///	Get camera Model
-	const std::string	&	GetCameraModel( ) const
+	const std::string	&	GetRogueModel( ) const
 	{
-		return m_CameraModel;
+		return m_RogueModel;
 	}
 
 	///	Get camera name
-	const std::string	&	GetCameraName( ) const
+	const std::string	&	GetRogueName( ) const
 	{
-		return m_CameraName;
+		return m_RogueName;
 	}
 
 	///	Get camera serial port name
@@ -191,7 +129,7 @@ public:		//	Public member functions
 	//{
 	//	return m_fAcquireMode;
 	//}
-	asynStatus	SetAcquireMode( int fAcquireMode );
+	int	SetAcquireMode( int fAcquireMode );
 	//bool	GetAcquireMode() const
 	//{
 	//	return m_fAcquireMode;
@@ -248,33 +186,6 @@ public:		//	Public member functions
 		return m_SizeY;
 	}
 
-	CamlinkMode_t GetCamlinkMode( ) const
-	{
-		return m_CamlinkMode;
-	}
-
-	int				RequestTriggerMode(	int	value	);
-	int				SetTriggerMode(	int	value	);
-	TriggerMode_t	GetTriggerMode( ) const
-	{
-		return m_TriggerMode;
-	}
-
-	unsigned int	GetNumBits( ) const
-	{
-		return m_ClNumBits;
-	}
-
-	bool	HasHwHRoi() const
-	{
-		return( m_HwHRoi != 0 );
-	}
-
-	bool	HasHwVRoi() const
-	{
-		return( m_HwVRoi != 0 );
-	}
-
 	/// Get frame count
 	int		GetArrayCounter( ) const
 	{
@@ -282,10 +193,10 @@ public:		//	Public member functions
 	}
 
 	/// Increment frame count
-	asynStatus		IncrArrayCounter( );
+	int		IncrArrayCounter( );
 
 	/// Set frame count
-	asynStatus		SetArrayCounter( int value );
+	int		SetArrayCounter( int value );
 
 	/// Get last fiducial timestamp id
     int				GetFiducial( ) const
@@ -304,10 +215,19 @@ public:		//	Public member functions
 		return m_ioscan;
 	}
 
-	///	Show Camera info on stdout
-	int						CameraShow( int level );
+	///	Dump Rogue PGP variables
+	int						DumpPgpVars( const char * pszFilePath, bool fWriteOnly, bool fForceRead );
 
-	///	Start Camera image acquisition
+	///	Show Rogue info on stdout
+	int						ShowReport( int level );
+
+	///	Set Rogue PGP variable
+	int						SetPgpVariable( const char * pszVarPath, double value );
+
+	///	Show Rogue PGP variable on stdout
+	int						ShowPgpVariable( const char * pszVarPath, int level );
+
+	///	Start Rogue image acquisition
 	int						StartAcquisition( );
 
 	///	Acquire next image from the camera
@@ -328,24 +248,8 @@ public:		//	Public member functions
 	/// Takes the reconfigure lock to make it thread safe
 	int		Reopen(	);
 
-	int		SubmitNDArray(	NDArray				*	pNDArray,
-							const epicsTimeStamp*	pTimeStamp,
-							int						pulseID		);
-
 	int		CkDupTimeStamp(	const epicsTimeStamp*	pDest,
 							int					*	pPulseNumRet );
-
-	//
-	//	De-interleave routines to handle copying raw image data from DMA buffers
-	//  to NDArray's, cropping for HW ROI as needed.
-	//
-
-	/// De-interleave ROI line by line from the middle outwards to the top
-	/// and bottom lines w/ 16 bit pixels
-	int		DeIntlvMidTopLine16(	NDArray	*	pNDArray, void	*	pRawData	);
-
-	/// De-interleave as is from top to bottom, allowing only for HW ROI
-	int		DeIntlvRoiOnly16(		NDArray	*	pNDArray, void	*	pRawData	);
 
     /// SetSerDisable
     int SetSerDisable( int value );
@@ -371,7 +275,7 @@ public:		//	Public member functions
 
 public:		//	Public class functions
 
-	static int	CreateCamera(
+	static int	CreateRogue(
 				const char			*	cameraName,
 				int						board,
 				int						lane,
@@ -385,14 +289,14 @@ public:		//	Public class functions
 				int						priority	= 0,	// 0 = default 50, high is 90
 				int						stackSize	= 0	);	// 0 = default 1MB
 
-	static pgpCamlink	*	CameraFindByName( const std::string & name );
+	static pgpRogue	*	RogueFindByName( const std::string & name );
 
-	static pgpCamlink	*	CameraFindByBoardLane( unsigned int board, unsigned int lane );
+	static pgpRogue	*	RogueFindByBoardLane( unsigned int board, unsigned int lane );
 
 
-	static	int				ShowAllCameras( int level );
+	static	int				ShowAllRogue( int level );
 
-	static bool				IsCameraLaneUsed( unsigned int board,  unsigned int lane );
+	static bool				IsRogueLaneUsed( unsigned int board,  unsigned int lane );
 
 private:	//	Private member functions
 	//	Internal version of reconfigure
@@ -402,14 +306,9 @@ private:	//	Private member functions
 
 	int		SetupROI( );
 
-	//	NDArray routines
-	//	Don't call without holding driver lock!
-	NDArray *	AllocNDArray(	);
-	int			LoadNDArray( NDArray * pNDArray, ImageCbInfo	*	pImageInfo );
-
 private:	//	Private class functions
-	static	void			CameraAdd(		pgpCamlink * pCamera );
-	static	void			CameraRemove(	pgpCamlink * pCamera );
+	static	void			RogueAdd(		pgpRogue * pRogue );
+	static	void			RogueRemove(	pgpRogue * pRogue );
 
 public:		//	Public member variables	(Make these private!)
 
@@ -426,13 +325,12 @@ private:	//	Private member variables
 	unsigned int	m_lane;			// lane on  Pgpcamlink card
 	bool			m_fLcls2Timing;	// true to initialize w/ LCLS2 timing, false for LCLS1
 
-	NDArray		*	m_pNDArray;
 	epicsTimeStamp	m_priorTimeStamp;	// Last timestamp for this event number
 
-	std::string		m_CameraClass;	// Manufacturer of camera
-	std::string		m_CameraInfo;	// camera info string
-	std::string		m_CameraModel;	// model name as reported by camera
-	std::string		m_CameraName;	// name of this camera, must be unique
+	std::string		m_RogueClass;	// Manufacturer of camera
+	std::string		m_BuildStamp;	// camera info string
+	std::string		m_RogueModel;	// model name as reported by camera
+	std::string		m_RogueName;	// name of this camera, must be unique
 	std::string		m_ConfigFile;	// current configuration file for camera
 	std::string		m_DrvVersion;	// Driver Version
 	std::string		m_AxiVersion;	// PGP AxiVersion
@@ -448,10 +346,10 @@ private:	//	Private member variables
 	int				m_ClHTaps;		// CamLink connection horiz taps
 	int				m_ClVTaps;		// CamLink connection vert  taps
 
-	CamlinkMode_t	m_CamlinkMode;
+//	CamlinkMode_t	m_CamlinkMode;
 
-	TriggerMode_t	m_TriggerMode;
-	TriggerMode_t	m_TriggerModeReq;
+//	TriggerMode_t	m_TriggerMode;
+//	TriggerMode_t	m_TriggerModeReq;
 
 	unsigned int	m_ReConfigCount;// Reconfiguration counter
 
@@ -459,10 +357,6 @@ private:	//	Private member variables
 	size_t	m_BinX,		m_BinXReq,		m_BinY,		m_BinYReq;
 	size_t	m_MinX,		m_MinXReq,		m_MinY,		m_MinYReq;
 	size_t	m_SizeX,	m_SizeXReq,		m_SizeY,	m_SizeYReq;
-
-	// Holds currently alloc'd NDArray ptr
-	// Must hold NDArrayDriver lock() while != NULL
-    // NDArray		*	m_pNDArray;
 
 	// Gain value for camera
 	double			m_Gain;
@@ -477,7 +371,7 @@ private:	//	Private member variables
 
 	unsigned int	m_ReCfgCnt;			// Reconfigure counter (increments by 1 each reconfigure)
 	epicsMutexId	m_reconfigLock;		// Protect against more than one thread trying to reconfigure the device
-	//syncDataAcq<pgpCamlink, pgpImage>		*	m_pSyncDataAcquirer;
+	//syncDataAcq<pgpRogue, pgpImage>		*	m_pSyncDataAcquirer;
 
 	unsigned int	m_trigLevel;		// Ext. Trigger Mode (0=Edge,1=Level,2=Sync)
 
@@ -487,113 +381,20 @@ private:	//	Private member variables
     unsigned int    m_SyncBadTS;        // Images discarded by bad timestamp counter
     unsigned int    m_SyncBadSync;      // Images discarded by bad sync counter
 
-	// These variables hold the asyn parameter index numbers for each parameter
-	#define FIRST_CAMLINK_PARAM CamlinkClass
-	int		CamlinkClass;
-	int		CamlinkDrvVersion;
-	int		CamlinkHSkip;
-	int		CamlinkHSize;
-	int		CamlinkHTaps;
-	int		CamlinkHwHRoi;
-	int		CamlinkHwVRoi;
-	int		CamlinkMode;
-	int		CamlinkReCfgCnt;
-	int		CamlinkVSkip;
-	int		CamlinkVSize;
-	int		CamlinkVTaps;
-	int		CamlinkInfo;
-	int		CamlinkLibVersion;
-	int		CamlinkTrigLevel;
-	int		CamlinkDebugLevel;
-	int		CamlinkDebugSer;
-	int		PgpAxiVersion;
-	int		PgpCoreFpgaVersion;
-	int		PgpFebFpgaVersion;
-
-	// Serial front-end params for ADBase parameters
-	int		SerAcquireTime;
-	int		SerBinX;
-	int		SerBinY;
-	int		SerGain;
-	int		SerMinX;
-	int		SerMinY;
-	int		SerSizeX;
-	int		SerSizeY;
-	int		SerTriggerMode;
-
-    int     SerDisable;
-
-    int     SyncTotal;
-    int     SyncBadTS;
-    int     SyncBadSync;
-	#define LAST_CAMLINK_PARAM SyncBadSync 
-
-#ifdef	USE_DIAG_TIMER
-	ContextTimerMax			m_ReAcquireTimer;
-	ContextTimerMax			m_ReArmTimer;
-	ContextTimerMax			m_ProcessImageTimer;
-#endif	//	USE_DIAG_TIMER
-
 	IOSCANPVT				m_ioscan;
-	//asynPgpCamlinkSerial	*	m_pAsynSerial;
-	//	ttyController	*	m_ttyPort;
 
 private:	//	Private class variables
-	static	std::map<std::string, pgpCamlink *>	ms_cameraMap;
+	static	std::map<std::string, pgpRogue *>	ms_pgpRogueMap;
 };
-
-/* PgpCamlink Parameters, common to all PgpCamlink cameras */
-#define NUM_CAMLINK_PARAMS ((int)(&LAST_CAMLINK_PARAM - &FIRST_CAMLINK_PARAM + 1))
 
 #endif /* __cplusplus */
 
-#define CamlinkClassString		"CLCAM_CLASS"
-#define CamlinkDrvVersionString	"CLCAM_DRV_VERSION"
-#define CamlinkHSkipString		"CLCAM_HSKIP"
-#define CamlinkHSizeString		"CLCAM_HSIZE"
-#define CamlinkHTapsString		"CLCAM_HTAPS"
-#define CamlinkHwHRoiString		"CLCAM_HW_HROI"
-#define CamlinkHwVRoiString		"CLCAM_HW_VROI"
-#define CamlinkModeString		"CLCAM_MODE"
-#define CamlinkReCfgCntString	"CLCAM_RECFG_CNT"
-#define CamlinkVSkipString		"CLCAM_VSKIP"
-#define CamlinkVSizeString		"CLCAM_VSIZE"
-#define CamlinkVTapsString		"CLCAM_VTAPS"
-#define CamlinkInfoString		"CLCAM_INFO"
-#define CamlinkLibVersionString	"CLCAM_LIB_VERSION"
-#define CamlinkTrigLevelString	"CLCAM_TRIG_LEVEL"
-#define CamlinkDebugLevelString	"CLCAM_DEBUG"
-#define CamlinkDebugSerString	"CLCAM_DEBUG_SER"
-
-// TODO: These don't look right.  Can we nuke them?
-#define PgpAxiVersionString			"ClinkDevRoot.ClinkPcie.AxiPcieCore.AxiVersion.BuildStamp"
-#define PgpCoreFpgaVersionString	"ClinkDevRoot.ClinkPcie.AxiPcieCore.AxiVersion.FpgaVersion"
-#define PgpFebFpgaVersionString		"ClinkDevRoot.ClinkFeb[0].AxiVersion.FpgaVersion"
-
-// This group provides a way to have serial readbacks get reflected in
-// their ADBase class equivalents, for example
-// SerAcquireTime	=>	ADAcquireTime 
-#define CamlinkSerAcquireTimeString	"CLCAM_ACQUIRE_TIME"
-#define CamlinkSerBinXString		"CLCAM_BIN_X"
-#define CamlinkSerBinYString		"CLCAM_BIN_Y"
-#define CamlinkSerGainString		"CLCAM_GAIN"
-#define CamlinkSerMinXString		"CLCAM_MIN_X"
-#define CamlinkSerMinYString		"CLCAM_MIN_Y"
-#define CamlinkSerSizeXString		"CLCAM_SIZE_X"
-#define CamlinkSerSizeYString		"CLCAM_SIZE_Y"
-#define CamlinkSerTriggerModeString	"CLCAM_TRIGGER_MODE"
-
-#define CamlinkSyncTotalCntString   "SYNC_TOTAL"
-#define CamlinkSyncBadTSCntString   "SYNC_BAD_TS"
-#define CamlinkSyncBadSyncCntString "SYNC_BAD_SYNC"
-
 
 /*	Diagnostic variables	*/
-extern int				DEBUG_PGP_CAMLINK;
-extern unsigned long	imageCaptureCount;
+extern int				DEBUG_PGP_ROGUE;
 
 /* "C" linkage Configuration functions for iocsh */
-extern "C" int	pgpCamlinkConfig(
+extern "C" int	pgpRogueConfig(
 	const char	*	cameraName,
 	int				board,
 	int				lane,
@@ -602,7 +403,7 @@ extern "C" int	pgpCamlinkConfig(
 	size_t			sizeX,
 	size_t			sizeY,
 	bool			fLcls2Timing );
-extern "C" int	pgpCamlinkConfigFull(
+extern "C" int	pgpRogueConfigFull(
 	const char	*	cameraName,
 	int				board,
 	int				lane,
@@ -616,4 +417,4 @@ extern "C" int	pgpCamlinkConfigFull(
 	int				priority,		// 0 = default 50, high is 90
 	int				stackSize	);	// 0 = default 1 MB
 
-#endif	/*	PGP_CAMLINK_H	*/
+#endif	/*	PGP_ROGUE_H	*/

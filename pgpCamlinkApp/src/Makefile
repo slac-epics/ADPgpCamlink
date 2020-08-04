@@ -9,8 +9,10 @@ DBD += pgpCamlinkSupport.dbd
 DBD += pgpClSerialDev.dbd
 DBD += devRogue.dbd
 
+LIB_SRCS   		+= pgpRogue.cpp
+LIB_SRCS		+= devRogue.cpp
+
 LIB_SRCS   		+= pgpCamlink.cpp
-#LIB_SRCS		+= rogue_example_memory_master.cpp
 LIB_SRCS		+= ClSerialMaster.cpp
 LIB_SRCS		+= ClSerialSlave.cpp
 LIB_SRCS		+= ClStreamSlave.cpp
@@ -18,9 +20,7 @@ LIB_SRCS		+= ImageStream.cpp
 LIB_SRCS		+= pgpClDev.cpp
 LIB_SRCS		+= pgpClSerialDev.cpp
 LIB_SRCS		+= asynPgpClSerial.cpp
-#LIB_SRCS		+= drvRogue.cpp
-LIB_SRCS		+= devRogue.cpp
-#LIB_SRCS		+= rogueRecords.cpp
+
 #LIB_LIBS		+= asyn
 #LIB_LIBS		+= $(EPICS_BASE_IOC_LIBS)
 #pgpCamlink_LIBS		+= asyn

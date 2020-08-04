@@ -395,7 +395,8 @@ int pgpCamlink::ShowAllCameras( int level )
 	for ( it = ms_cameraMap.begin(); it != ms_cameraMap.end(); ++it )
 	{
 		pgpCamlink		*	pCamera	= it->second;
-		pCamera->CameraShow( level );
+		if( pCamera )
+			pCamera->CameraShow( level );
     }
 
     return 0;
@@ -468,42 +469,6 @@ int pgpCamlink::CameraShow( int level )
 		m_pDev->showVariableList( level >= 4 );
 	}
     return 0;
-}
-
-int	pgpCamlink::DumpPgpVars( const char * pszFilePath, bool fWriteOnly, bool fForceRead )
-{
-	const char	*	functionName = "pgpCamlink::DumpPgpVars";
-	if ( m_pDev == NULL )
-	{
-		printf( "%s error: %s PGP Dev not configured!\n", functionName, m_CameraName.c_str() );
-		return -1;
-	}
-	m_pDev->dumpVariables( pszFilePath, fWriteOnly, fForceRead, false );
-	return 0;
-}
-
-int pgpCamlink::SetPgpVariable( const char * pszVarPath, double value )
-{
-	const char	*	functionName = "pgpCamlink::SetPgpVariable";
-	if ( m_pDev == NULL )
-	{
-		printf( "%s error: %s PGP Dev not configured!\n", functionName, m_CameraName.c_str() );
-		return -1;
-	}
-	m_pDev->setVariable( pszVarPath, value, false );
-	return 0;
-}
-
-int pgpCamlink::ShowPgpVariable( const char * pszVarPath, int level )
-{
-	const char	*	functionName = "pgpCamlink::ShowPgpVariable";
-	if ( m_pDev == NULL )
-	{
-		printf( "%s error: %s PGP Dev not configured!\n", functionName, m_CameraName.c_str() );
-		return -1;
-	}
-	m_pDev->showVariable( pszVarPath, level != 0 );
-	return 0;
 }
 
 void pgpCamlink::ExitHook(void * arg)
@@ -2404,126 +2369,6 @@ void ShowAllCamerasRegister(void)
 	iocshRegister( &ShowAllCamerasFuncDef, reinterpret_cast<iocshCallFunc>(ShowAllCamerasCallFunc) );
 }
 
-extern "C"
-int DumpPgpVars( const char * pszCamName, const char * pszFilePath, int fWriteOnly, int fForceRead )
-{
-	const char	*	functionName = "DumpPgpVars";
-	if ( pszCamName == NULL || pszFilePath == NULL )
-	{
-		printf( "Usage: %s camPortName dumpPath fWriteOnly fForceRead\n", functionName );
-		printf( "Example: %s CAM dumpConfig.yml 1 1\n", functionName );
-		return -1;
-	}
-
-	pgpCamlink	*	pCamDev = pgpCamlink::CameraFindByName( std::string(pszCamName) );
-	if ( pCamDev == NULL )
-	{
-		printf( "%s error: Camera %s not found!\n", functionName, pszCamName );
-		return -1;
-	}
-
-	return pCamDev->DumpPgpVars( pszFilePath, fWriteOnly, fForceRead );
-}
-
-// Register function:
-//		int DumpPgpVars( camName, dumpFile, fWriteOnly, fForceRead )
-static const iocshArg		DumpPgpVarsArg0		= { "camName",		iocshArgString };
-static const iocshArg		DumpPgpVarsArg1		= { "dumpFile",		iocshArgString };
-static const iocshArg		DumpPgpVarsArg2		= { "fWriteOnly",	iocshArgInt };
-static const iocshArg		DumpPgpVarsArg3		= { "fForceRead",	iocshArgInt };
-static const iocshArg	*	DumpPgpVarsArgs[4]	=
-{
-	&DumpPgpVarsArg0, &DumpPgpVarsArg1, &DumpPgpVarsArg2, &DumpPgpVarsArg3
-};
-static const iocshFuncDef   DumpPgpVarsFuncDef	= { "DumpPgpVars", 4, DumpPgpVarsArgs };
-static int  DumpPgpVarsCallFunc( const iocshArgBuf * args )
-{
-	return static_cast<int>( DumpPgpVars( args[0].sval, args[1].sval, args[2].ival, args[3].ival ) );
-}
-void DumpPgpVarsRegister(void)
-{
-	iocshRegister( &DumpPgpVarsFuncDef, reinterpret_cast<iocshCallFunc>(DumpPgpVarsCallFunc) );
-}
-
-extern "C"
-int SetPgpVariable( const char * pszCamName, const char * pszVarPath, double value )
-{
-	const char	*	functionName = "SetPgpVariable";
-	if ( pszCamName == NULL || pszVarPath == NULL )
-	{
-		printf( "Usage: %s camPortName varPath\n", functionName );
-		printf( "Example: %s CAM ClinkDevRoot.ClinkPcie.AxiPcieCore.AxiVersion.BuildStamp\n", functionName );
-		return -1;
-	}
-
-	pgpCamlink	*	pCamDev = pgpCamlink::CameraFindByName( std::string(pszCamName) );
-	if ( pCamDev == NULL )
-	{
-		printf( "%s error: Camera %s not found!\n", functionName, pszCamName );
-		return -1;
-	}
-
-	return pCamDev->SetPgpVariable( pszVarPath, value );
-}
-
-// Register function:
-//		int SetPgpVar( camName, varName, value )
-static const iocshArg		SetPgpVarArg0		= { "camName",		iocshArgString };
-static const iocshArg		SetPgpVarArg1		= { "varName",		iocshArgString };
-static const iocshArg		SetPgpVarArg2		= { "value",		iocshArgDouble };
-static const iocshArg	*	SetPgpVarArgs[3]	=
-{
-	&SetPgpVarArg0, &SetPgpVarArg1, &SetPgpVarArg2
-};
-static const iocshFuncDef   SetPgpVarFuncDef	= { "SetPgpVar", 3, SetPgpVarArgs };
-static int  SetPgpVarCallFunc( const iocshArgBuf * args )
-{
-	return static_cast<int>( SetPgpVariable( args[0].sval, args[1].sval, args[2].dval ) );
-}
-void SetPgpVarRegister(void)
-{
-	iocshRegister( &SetPgpVarFuncDef, reinterpret_cast<iocshCallFunc>(SetPgpVarCallFunc) );
-}
-
-extern "C"
-int ShowPgpVariable( const char * pszCamName, const char * pszVarPath, int level )
-{
-	const char	*	functionName = "ShowPgpVariable";
-	if ( pszCamName == NULL || pszVarPath == NULL )
-	{
-		printf( "Usage: %s camPortName varPath\n", functionName );
-		printf( "Example: %s CAM ClinkDevRoot.ClinkPcie.AxiPcieCore.AxiVersion.BuildStamp\n", functionName );
-		return -1;
-	}
-
-	pgpCamlink	*	pCamDev = pgpCamlink::CameraFindByName( std::string(pszCamName) );
-	if ( pCamDev == NULL )
-	{
-		printf( "%s error: Camera %s not found!\n", functionName, pszCamName );
-		return -1;
-	}
-
-	return pCamDev->ShowPgpVariable( pszVarPath, level );
-}
-
-// Register function:
-//		int ShowPgpVar( camName, varName, level )
-static const iocshArg		ShowPgpVarArg0		= { "camName",		iocshArgString };
-static const iocshArg		ShowPgpVarArg1		= { "varName",		iocshArgString };
-static const iocshArg		ShowPgpVarArg2		= { "level",		iocshArgInt };
-static const iocshArg	*	ShowPgpVarArgs[3]	=
-{
-	&ShowPgpVarArg0, &ShowPgpVarArg1, &ShowPgpVarArg2
-};
-static const iocshFuncDef   ShowPgpVarFuncDef	= { "ShowPgpVar", 3, ShowPgpVarArgs };
-static int  ShowPgpVarCallFunc( const iocshArgBuf * args )
-{
-	return static_cast<int>( ShowPgpVariable( args[0].sval, args[1].sval, args[2].ival ) );
-}
-void ShowPgpVarRegister(void)
-{
-	iocshRegister( &ShowPgpVarFuncDef, reinterpret_cast<iocshCallFunc>(ShowPgpVarCallFunc) );
-}
 
 // Register Function:
 //	int pgpCamlinkConfig( const char * cameraName, int board, int lane, const char * modelName )
@@ -2593,11 +2438,8 @@ extern "C"
 {
 	epicsExportRegistrar( pgpCamlinkConfigRegister );
 	epicsExportRegistrar( pgpCamlinkConfigFullRegister );
-	epicsExportRegistrar( DumpPgpVarsRegister );
-	epicsExportRegistrar( SetPgpVarRegister );
 	epicsExportRegistrar( ShowImageTimingRegister );
 	epicsExportRegistrar( ResetImageTimingRegister );
 	epicsExportRegistrar( ShowAllCamerasRegister );
-	epicsExportRegistrar( ShowPgpVarRegister );
 	epicsExportAddress( int, DEBUG_PGP_CAMLINK );
 }
