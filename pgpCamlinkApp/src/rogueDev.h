@@ -29,12 +29,12 @@
 #endif	//	USE_DIAG_TIMER
 
 // Rogue operation data structure definition
-class pgpRogue
+class rogueDev
 {
 public:		//	Public member functions
 
 	///	Constructor
-	pgpRogue(	const char			*	cameraName,
+	rogueDev(	const char			*	cameraName,
 				int						board,
 				int						lane,
 				const char			*	modelName,
@@ -43,7 +43,7 @@ public:		//	Public member functions
 				);
 
 	/// Destructor
-	virtual ~pgpRogue();
+	virtual ~rogueDev();
 
 	enum CamlinkMode_t { CL_MODE_BASE, CL_MODE_MEDIUM, CL_MODE_FULL };
 
@@ -175,9 +175,9 @@ public:		//	Public class functions
 				int						priority	= 0,	// 0 = default 50, high is 90
 				int						stackSize	= 0	);	// 0 = default 1MB
 
-	static pgpRogue	*	RogueFindByName( const std::string & name );
+	static rogueDev	*	RogueFindByName( const std::string & name );
 
-	static pgpRogue	*	RogueFindByBoardLane( unsigned int board, unsigned int lane );
+	static rogueDev	*	RogueFindByBoardLane( unsigned int board, unsigned int lane );
 
 
 	static	int				ShowAllRogue( int level );
@@ -193,8 +193,8 @@ private:	//	Private member functions
 //	int		SetupROI( );
 
 private:	//	Private class functions
-	static	void			RogueAdd(		pgpRogue * pRogue );
-	static	void			RogueRemove(	pgpRogue * pRogue );
+	static	void			RogueAdd(		rogueDev * pRogue );
+	static	void			RogueRemove(	rogueDev * pRogue );
 
 public:		//	Public member variables	(Make these private!)
 
@@ -235,7 +235,7 @@ private:	//	Private member variables
 	IOSCANPVT				m_ioscan;
 
 private:	//	Private class variables
-	static	std::map<std::string, pgpRogue *>	ms_pgpRogueMap;
+	static	std::map<std::string, rogueDev *>	ms_rogueDevMap;
 };
 
 #endif /* __cplusplus */
@@ -245,7 +245,7 @@ private:	//	Private class variables
 extern int				DEBUG_PGP_ROGUE;
 
 /* "C" linkage Configuration functions for iocsh */
-extern "C" int	pgpRogueConfig(
+extern "C" int	rogueDevConfig(
 	const char	*	cameraName,
 	int				board,
 	int				lane,

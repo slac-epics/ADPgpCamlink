@@ -21,7 +21,7 @@
 
 //#include "drvRogue.h"
 #include "rogueRecords.h"
-#include "pgpRogue.h"
+#include "rogueDev.h"
 
 
 int	DEBUG_ROGUE_DEV = 2;
@@ -69,7 +69,7 @@ int rogue_init_record(
 		return rogue_bad_field( record, "cannot parse INP or OUT field!\n%s\n", sinp );
 	}
 
-	pgpRogue	*	pRogue = pgpRogue::RogueFindByBoardLane( board, lane );
+	rogueDev	*	pRogue = rogueDev::RogueFindByBoardLane( board, lane );
 
 	if ( DEBUG_ROGUE_DEV >= 4 )
 		printf( "%s Parse succeeded: Board %u, Lane %u, VarPath %s\n", functionName, board, lane, varPath );

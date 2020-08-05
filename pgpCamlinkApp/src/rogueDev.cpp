@@ -8,7 +8,7 @@
 // the terms contained in the LICENSE.txt file.
 //////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////
-// Filename: pgpRogue.cpp
+// Filename: rogueDev.cpp
 // Description: EPICS device support for camlink cameras using SLAC PGP framegrabbers
 //              via SLAC's Rogue software library
 // Author:
@@ -35,7 +35,7 @@
 #include <unistd.h>
 
 // ADPgpCamlink headers
-#include "pgpRogue.h"
+#include "rogueDev.h"
 #include "axiRogueLib.h"
 
 #include "rogue/Logging.h"
@@ -51,7 +51,7 @@ using namespace		std;
 namespace rim = rogue::interfaces::memory;
 //namespace ris = rogue::interfaces::stream;
 
-static	const char *		driverName	= "pgpRogue";
+static	const char *		driverName	= "rogueDev";
 
 // Diagnostic timers
 // View and reset via iocsh cmds.
@@ -59,16 +59,16 @@ static	const char *		driverName	= "pgpRogue";
 
 int		DEBUG_PGP_ROGUE	= 0;
 
-///	ppgRogue map - Stores ptr to all pgpRogue instances indexed by name
-map<string, pgpRogue *>	pgpRogue::ms_pgpRogueMap;
+///	ppgRogue map - Stores ptr to all rogueDev instances indexed by name
+map<string, rogueDev *>	rogueDev::ms_rogueDevMap;
 
 
 //
-// pgpRogue functions
+// rogueDev functions
 //
 
-///	pgpRogue constructor
-pgpRogue::pgpRogue(
+///	rogueDev constructor
+rogueDev::rogueDev(
 	const char			*	cameraName,
 	int						board,					// board
 	int						lane,					// channel
@@ -93,7 +93,7 @@ pgpRogue::pgpRogue(
 		
 		m_ioscan(			NULL				)
 {
-	static const char	*	functionName = "pgpRogue::pgpRogue";
+	static const char	*	functionName = "rogueDev::rogueDev";
 
 	// Create mutexes
     m_reconfigLock	= epicsMutexMustCreate();
@@ -104,11 +104,11 @@ pgpRogue::pgpRogue(
         errlogPrintf( "%s %s: ERROR, scanIoInit failed!\n", driverName, functionName );
 
     // Install exit hook for clean shutdown
-    epicsAtExit( (EPICSTHREADFUNC)pgpRogue::ExitHook, (void *) this );
+    epicsAtExit( (EPICSTHREADFUNC)rogueDev::ExitHook, (void *) this );
 }
 
-///	pgpRogue Destructor
-pgpRogue::~pgpRogue( )
+///	rogueDev Destructor
+rogueDev::~rogueDev( )
 {
 	Shutdown();
 
@@ -120,7 +120,7 @@ pgpRogue::~pgpRogue( )
 }
 
 
-int pgpRogue::CreateRogue(
+int rogueDev::CreateRogue(
 	const char *	cameraName,
 	int				board,
 	int				lane,
@@ -134,12 +134,12 @@ int pgpRogue::CreateRogue(
 	int				priority,
 	int				stackSize	)
 {
-    static const char	*	functionName = "pgpRogue::CreateRogue";
+    static const char	*	functionName = "rogueDev::CreateRogue";
 
     /* Parameters check */
     if (  cameraName == NULL || strlen(cameraName) == 0 )
     {
-        errlogPrintf(	"%s %s: ERROR, NULL or zero length camera name. Check parameters to pgpRogueConfig()!\n",
+        errlogPrintf(	"%s %s: ERROR, NULL or zero length camera name. Check parameters to rogueDevConfig()!\n",
             			driverName, functionName );
         return  -1;
     }
@@ -166,14 +166,14 @@ int pgpRogue::CreateRogue(
     }
 
     if ( DEBUG_PGP_ROGUE >= 1 )
-        cout << "Creating pgpRogue: " << string(cameraName) << endl;
-    pgpRogue	* pRogue = new pgpRogue(	cameraName, board, lane, modelName,
+        cout << "Creating rogueDev: " << string(cameraName) << endl;
+    rogueDev	* pRogue = new rogueDev(	cameraName, board, lane, modelName,
 											clMode, fLcls2Timing );
     assert( pRogue != NULL );
 
     int	status	= pRogue->ConnectRogue( );
 	if ( status != 0 )
-        errlogPrintf( "pgpRogueConfig failed for camera %s!\n", cameraName );
+        errlogPrintf( "rogueDevConfig failed for camera %s!\n", cameraName );
 
 	// TODO: This should be in the constructor and add call
 	//	to RogueRemove in the destructor
@@ -185,18 +185,18 @@ int pgpRogue::CreateRogue(
 extern "C"
 int ShowAllRogue( int level )
 {
-	return pgpRogue::ShowAllRogue( level );
+	return rogueDev::ShowAllRogue( level );
 }
 
-int pgpRogue::ShowAllRogue( int level )
+int rogueDev::ShowAllRogue( int level )
 {
 	if ( level < 0 )
 		return 0;
 
-	map<string, pgpRogue *>::iterator	it;
-	for ( it = ms_pgpRogueMap.begin(); it != ms_pgpRogueMap.end(); ++it )
+	map<string, rogueDev *>::iterator	it;
+	for ( it = ms_rogueDevMap.begin(); it != ms_rogueDevMap.end(); ++it )
 	{
-		pgpRogue	*	pRogue	= it->second;
+		rogueDev	*	pRogue	= it->second;
 		if( pRogue )
 			pRogue->ShowReport( level );
     }
@@ -205,12 +205,12 @@ int pgpRogue::ShowAllRogue( int level )
 }
 
 
-bool pgpRogue::IsRogueLaneUsed( unsigned int board,  unsigned int lane )
+bool rogueDev::IsRogueLaneUsed( unsigned int board,  unsigned int lane )
 {
-	map<string, pgpRogue *>::iterator	it;
-	for ( it = ms_pgpRogueMap.begin(); it != ms_pgpRogueMap.end(); ++it )
+	map<string, rogueDev *>::iterator	it;
+	for ( it = ms_rogueDevMap.begin(); it != ms_rogueDevMap.end(); ++it )
 	{
-		pgpRogue		*	pRogue	= it->second;
+		rogueDev		*	pRogue	= it->second;
         if ( board == pRogue->m_board && lane == pRogue->m_lane )
 			return true;
     }
@@ -219,40 +219,40 @@ bool pgpRogue::IsRogueLaneUsed( unsigned int board,  unsigned int lane )
 }
 
 
-pgpRogue	*	pgpRogue::RogueFindByName( const string & name )
+rogueDev	*	rogueDev::RogueFindByName( const string & name )
 {
-	map<string, pgpRogue *>::iterator	it	= ms_pgpRogueMap.find( name );
-	if ( it == ms_pgpRogueMap.end() )
+	map<string, rogueDev *>::iterator	it	= ms_rogueDevMap.find( name );
+	if ( it == ms_rogueDevMap.end() )
 		return NULL;
 	return it->second;
 }
 
-pgpRogue	*	pgpRogue::RogueFindByBoardLane( unsigned int board, unsigned int lane )
+rogueDev	*	rogueDev::RogueFindByBoardLane( unsigned int board, unsigned int lane )
 {
-	map<string, pgpRogue *>::iterator	it;
-	for ( it = ms_pgpRogueMap.begin(); it != ms_pgpRogueMap.end(); it++ )
+	map<string, rogueDev *>::iterator	it;
+	for ( it = ms_rogueDevMap.begin(); it != ms_rogueDevMap.end(); it++ )
 	{
-		pgpRogue	*	pCam	= it->second;
+		rogueDev	*	pCam	= it->second;
 		if ( pCam->GetBoard() == board && pCam->GetLane() == lane )
 			return pCam;
 	}
 	return NULL;
 }
 
-void pgpRogue::RogueAdd(		pgpRogue * pRogue )
+void rogueDev::RogueAdd(		rogueDev * pRogue )
 {
 	assert( RogueFindByName( pRogue->m_RogueName ) == NULL );
 	if ( DEBUG_PGP_ROGUE >= 3 )
 		cout << "RogueAdd: " << pRogue->m_RogueName << endl;
-	ms_pgpRogueMap[ pRogue->m_RogueName ]	= pRogue;
+	ms_rogueDevMap[ pRogue->m_RogueName ]	= pRogue;
 }
 
-void pgpRogue::RogueRemove(	pgpRogue * pRogue )
+void rogueDev::RogueRemove(	rogueDev * pRogue )
 {
-	ms_pgpRogueMap.erase( pRogue->m_RogueName );
+	ms_rogueDevMap.erase( pRogue->m_RogueName );
 }
 
-int pgpRogue::ShowReport( int level )
+int rogueDev::ShowReport( int level )
 {
     if ( level < 0 )
 		return 0;
@@ -273,9 +273,9 @@ int pgpRogue::ShowReport( int level )
     return 0;
 }
 
-int	pgpRogue::DumpPgpVars( const char * pszFilePath, bool fWriteOnly, bool fForceRead )
+int	rogueDev::DumpPgpVars( const char * pszFilePath, bool fWriteOnly, bool fForceRead )
 {
-	const char	*	functionName = "pgpRogue::DumpPgpVars";
+	const char	*	functionName = "rogueDev::DumpPgpVars";
 	if ( m_pDev == NULL )
 	{
 		printf( "%s error: %s PGP Dev not configured!\n", functionName, m_RogueName.c_str() );
@@ -285,9 +285,9 @@ int	pgpRogue::DumpPgpVars( const char * pszFilePath, bool fWriteOnly, bool fForc
 	return 0;
 }
 
-int pgpRogue::SetPgpVariable( const char * pszVarPath, double value )
+int rogueDev::SetPgpVariable( const char * pszVarPath, double value )
 {
-	const char	*	functionName = "pgpRogue::SetPgpVariable";
+	const char	*	functionName = "rogueDev::SetPgpVariable";
 	if ( m_pDev == NULL )
 	{
 		printf( "%s error: %s PGP Dev not configured!\n", functionName, m_RogueName.c_str() );
@@ -297,9 +297,9 @@ int pgpRogue::SetPgpVariable( const char * pszVarPath, double value )
 	return 0;
 }
 
-int pgpRogue::ShowPgpVariable( const char * pszVarPath, int level )
+int rogueDev::ShowPgpVariable( const char * pszVarPath, int level )
 {
-	const char	*	functionName = "pgpRogue::ShowPgpVariable";
+	const char	*	functionName = "rogueDev::ShowPgpVariable";
 	if ( m_pDev == NULL )
 	{
 		printf( "%s error: %s PGP Dev not configured!\n", functionName, m_RogueName.c_str() );
@@ -309,14 +309,14 @@ int pgpRogue::ShowPgpVariable( const char * pszVarPath, int level )
 	return 0;
 }
 
-void pgpRogue::ExitHook(void * arg)
+void rogueDev::ExitHook(void * arg)
 {
-	pgpRogue	*	pCam = static_cast<pgpRogue *>( arg );
+	rogueDev	*	pCam = static_cast<rogueDev *>( arg );
 	if( pCam != NULL )
 		pCam->Shutdown();
 }
 
-void pgpRogue::Shutdown( )
+void rogueDev::Shutdown( )
 {
 	epicsMutexLock(	m_reconfigLock );
 //	m_acquireCount = 0;
@@ -329,9 +329,9 @@ void pgpRogue::Shutdown( )
 }
 
 ///	Connects driver to device
-int pgpRogue::ConnectRogue( )
+int rogueDev::ConnectRogue( )
 {
-    static const char	*	functionName	= "pgpRogue::ConnectRogue";
+    static const char	*	functionName	= "rogueDev::ConnectRogue";
     int				status			= 0;
 
 	if ( DEBUG_PGP_ROGUE >= 1 )
@@ -360,9 +360,9 @@ int pgpRogue::ConnectRogue( )
 
 
 //	Disconnects driver from device
-int pgpRogue::DisconnectRogue( )
+int rogueDev::DisconnectRogue( )
 {
-    static const char	*	functionName	= "pgpRogue::DisconnectRogue";
+    static const char	*	functionName	= "rogueDev::DisconnectRogue";
     int						status			= 0;
 
 	if ( DEBUG_PGP_ROGUE >= 1 )
@@ -386,9 +386,9 @@ int pgpRogue::DisconnectRogue( )
 
 #if 0
 /// Overriding ADDriver::connect
-int pgpRogue::connect( void *	)
+int rogueDev::connect( void *	)
 {
-    static const char	*	functionName	= "pgpRogue::connect";
+    static const char	*	functionName	= "rogueDev::connect";
 
 	if ( DEBUG_PGP_ROGUE >= 1 )
 		printf( "%s: %s in thread %s ...\n", functionName, m_RogueName.c_str(), epicsThreadGetNameSelf() );
@@ -400,9 +400,9 @@ int pgpRogue::connect( void *	)
 
 /// Overriding ADDriver::disconnect
 ///	Disconnects driver from device
-int pgpRogue::disconnect( void *	)
+int rogueDev::disconnect( void *	)
 {
-    static const char	*	functionName	= "pgpRogue::disconnect";
+    static const char	*	functionName	= "rogueDev::disconnect";
 
 	// The guts are in DisconnectRogue()
 	int	status	= DisconnectRogue();
@@ -419,9 +419,9 @@ int pgpRogue::disconnect( void *	)
 #endif
 
 
-int pgpRogue::Reconfigure( )
+int rogueDev::Reconfigure( )
 {
-    static const char	*	functionName = "pgpRogue::Reconfigure";
+    static const char	*	functionName = "rogueDev::Reconfigure";
 	CONTEXT_TIMER( "Reconfigure" );
 
 	if ( DEBUG_PGP_ROGUE >= 1 )
@@ -437,12 +437,12 @@ int pgpRogue::Reconfigure( )
 	{
         // Clear reopen flag up front so it can be set again by another thread if needed
 		m_fReopen	= false;
-		status	= pgpRogue::_Reopen( );
+		status	= rogueDev::_Reopen( );
 	}
 
 	// Clear reconfig flag up front so it can be set again by another thread if needed
 	m_fReconfig = false;
-	status	= pgpRogue::_Reconfigure( );
+	status	= rogueDev::_Reconfigure( );
 	if ( status != 0 )
 	{
 		// Reconfigure failed, request another
@@ -481,9 +481,9 @@ int pgpRogue::Reconfigure( )
 }
 
 
-int pgpRogue::Reopen( )
+int rogueDev::Reopen( )
 {
-    static const char	*	functionName = "pgpRogue::Reopen";
+    static const char	*	functionName = "rogueDev::Reopen";
 	CONTEXT_TIMER( "Reopen" );
 
 	if ( DEBUG_PGP_ROGUE >= 1 )
@@ -498,7 +498,7 @@ int pgpRogue::Reopen( )
 
 	// Clear reopen flag up front so it can be set again by another thread if needed
 	m_fReopen	= false;
-	status	= pgpRogue::_Reopen( );
+	status	= rogueDev::_Reopen( );
 	if ( status != 0 )
 	{
 		if ( DEBUG_PGP_ROGUE >= 1 )
@@ -529,9 +529,9 @@ int pgpRogue::Reopen( )
 
 //	Internal version of reconfigure
 //	Don't call without holding m_reconfigLock!
-int pgpRogue::_Reconfigure( )
+int rogueDev::_Reconfigure( )
 {
-    static const char	*	functionName = "pgpRogue::_Reconfigure";
+    static const char	*	functionName = "rogueDev::_Reconfigure";
 	CONTEXT_TIMER( "_Reconfigure" );
 
     if ( m_pDev == NULL || m_fReopen )
@@ -549,7 +549,7 @@ int pgpRogue::_Reconfigure( )
 	m_pDev->setTriggerEnable( 0, false );
 //	m_pDev->cancelImageCallbacks( );
 
-	// Fetch the pgpRogue driver and library versions
+	// Fetch the rogueDev driver and library versions
 	m_DrvVersion = m_pDev->GetDrvVersion();
 #if 0
 	size_t end_of_vers = m_DrvVersion.find( " " );
@@ -574,8 +574,8 @@ int pgpRogue::_Reconfigure( )
 //	setStringParam(			PgpAxiVersion, m_AxiVersion.c_str()	);
 
 	// Already shown in _Reopen()
-	//printf( "pgpRogue Driver  version: %s\n", m_DrvVersion.c_str() ); 
-	//printf( "pgpRogue Library version: %s\n", m_LibVersion.c_str() );
+	//printf( "rogueDev Driver  version: %s\n", m_DrvVersion.c_str() ); 
+	//printf( "rogueDev Library version: %s\n", m_LibVersion.c_str() );
 #if 0
 	{
 	// Fetch the camera manufacturer and model and write them to ADBase parameters
@@ -646,9 +646,9 @@ int pgpRogue::_Reconfigure( )
 
 //	Internal version of reopen
 //	Don't call without holding m_reconfigLock!
-int pgpRogue::_Reopen( )
+int rogueDev::_Reopen( )
 {
-    static const char	*	functionName = "pgpRogue::_Reopen";
+    static const char	*	functionName = "rogueDev::_Reopen";
 	CONTEXT_TIMER( "_Reopen" );
 
 	// Close old Dev if needed
@@ -669,7 +669,7 @@ int pgpRogue::_Reopen( )
     m_pDev = axiRogueLib::create( m_board, m_lane );
     if ( m_pDev == NULL )
 	{
-        printf(	"%s %s: ERROR, Unable to open camera for pgpRogue card %u, lane %u\n",
+        printf(	"%s %s: ERROR, Unable to open camera for rogueDev card %u, lane %u\n",
 				driverName,		functionName, m_board, m_lane );
         return -1;
     }
@@ -680,7 +680,7 @@ int pgpRogue::_Reopen( )
     //m_RogueModel	= pdv_get_camera_model(	m_pDev );
     //m_BuildStamp	= pdv_get_camera_info(	m_pDev );
 
-	// Fetch the pgpRogue driver and library versions and make sure they match
+	// Fetch the rogueDev driver and library versions and make sure they match
     //char		buf[MAX_STRING_SIZE];
     //edt_get_driver_version(	m_pDev, buf, MAX_STRING_SIZE );
 	m_DrvVersion = m_pDev->GetDrvVersion();
@@ -702,13 +702,13 @@ int pgpRogue::_Reopen( )
 	if ( m_DrvVersion.find(m_LibVersion) == string::npos )
 	{
 		printf( 
-					"%s %s: ERROR, pgpRogue driver version %s does not match lib version %s!\n",
+					"%s %s: ERROR, rogueDev driver version %s does not match lib version %s!\n",
 					driverName, functionName, m_DrvVersion.c_str(), m_LibVersion.c_str() );
         return -1;
     }
 #endif
-	printf( "pgpRogue Driver  version: %s\n", m_DrvVersion.c_str() ); 
-	printf( "pgpRogue Library version: %s\n", m_LibVersion.c_str() );
+	printf( "rogueDev Driver  version: %s\n", m_DrvVersion.c_str() ); 
+	printf( "rogueDev Library version: %s\n", m_LibVersion.c_str() );
 	}
 
 //    printf( "board %d, Chan %d, Mode: %s\n",
@@ -723,9 +723,9 @@ int pgpRogue::_Reopen( )
 
 
 #if 0
-int pgpRogue::UpdateADConfigParams( )
+int rogueDev::UpdateADConfigParams( )
 {
-    static const char	*	functionName	= "pgpRogue::UpdateADConfigParams";
+    static const char	*	functionName	= "rogueDev::UpdateADConfigParams";
 	if ( DEBUG_PGP_ROGUE >= 2 )
 		printf( "%s: %s ...\n", functionName, m_RogueName.c_str() );
 
@@ -739,14 +739,14 @@ int pgpRogue::UpdateADConfigParams( )
 }
 #endif
 
-int	pgpRogue::UpdateStatus( int	newStatus	)
+int	rogueDev::UpdateStatus( int	newStatus	)
 {
 	if ( DEBUG_PGP_ROGUE >= 4 )
 	{
-    	static const char	*	functionName = "pgpRogue::UpdateStatus";
+    	static const char	*	functionName = "rogueDev::UpdateStatus";
 		printf( "%s: %s in thread %s ...\n", functionName, m_RogueName.c_str(), epicsThreadGetNameSelf() );
 	}
-	CONTEXT_TIMER( "pgpRogue-UpdateStatus" );
+	CONTEXT_TIMER( "rogueDev-UpdateStatus" );
 	//	Context timer shows these next two calls take about 20us
 	int		status	= 0;
 //	status	= setIntegerParam( ADStatus, newStatus );
@@ -762,7 +762,7 @@ int	pgpRogue::UpdateStatus( int	newStatus	)
   * \param[in] fp File pointed passed by caller where the output is written to.
   * \param[in] details If >0 then driver details are printed.
   */
-void pgpRogue::report( FILE * fp, int details )
+void rogueDev::report( FILE * fp, int details )
 {
     fprintf(	fp, "PGP Framegrabber port ?: %s\n",
 				m_pDev ? "Connected" : "Disconnected" );
@@ -794,14 +794,14 @@ void pgpRogue::report( FILE * fp, int details )
     }
 }
 
-unsigned int pgpRogue::GetTraceLevel()
+unsigned int rogueDev::GetTraceLevel()
 {
 	return DEBUG_PGP_ROGUE;
 }
 
 
 extern "C" int
-pgpRogueConfig(
+rogueDevConfig(
 	const char	*	cameraName,
 	int				board,
 	int				lane,
@@ -813,23 +813,23 @@ pgpRogueConfig(
 {
     if (  cameraName == NULL || strlen(cameraName) == 0 )
     {
-        errlogPrintf( "NULL or zero length camera name.\nUsage: pgpRogueConfig(name,board,chan,config)\n");
+        errlogPrintf( "NULL or zero length camera name.\nUsage: rogueDevConfig(name,board,chan,config)\n");
         return  -1;
     }
     if (  modelName == NULL || strlen(modelName) == 0 )
     {
-        errlogPrintf( "NULL or zero length config name.\nUsage: pgpRogueConfig(name,board,chan,config)\n");
+        errlogPrintf( "NULL or zero length config name.\nUsage: rogueDevConfig(name,board,chan,config)\n");
         return  -1;
     }
     if (  clMode == NULL || strlen(clMode) == 0 )
     {
-        errlogPrintf( "NULL or zero length camlink mode.\nUsage: pgpRogueConfig(name,board,chan,config,mode)\n");
+        errlogPrintf( "NULL or zero length camlink mode.\nUsage: rogueDevConfig(name,board,chan,config,mode)\n");
         return  -1;
     }
-    if ( pgpRogue::CreateRogue(	cameraName, board, lane, modelName, clMode,
+    if ( rogueDev::CreateRogue(	cameraName, board, lane, modelName, clMode,
 									sizeX, sizeY, fLcls2Timing ) != 0 )
     {
-        errlogPrintf( "pgpRogueConfig failed for camera %s, config %s, mode %s!\n", cameraName, modelName, clMode );
+        errlogPrintf( "rogueDevConfig failed for camera %s, config %s, mode %s!\n", cameraName, modelName, clMode );
 		if ( DEBUG_PGP_ROGUE >= 4 )
         	epicsThreadSuspendSelf();
         return -1;
@@ -866,7 +866,7 @@ int DumpPgpVars( const char * pszCamName, const char * pszFilePath, int fWriteOn
 		return -1;
 	}
 
-	pgpRogue	*	pCamDev = pgpRogue::RogueFindByName( std::string(pszCamName) );
+	rogueDev	*	pCamDev = rogueDev::RogueFindByName( std::string(pszCamName) );
 	if ( pCamDev == NULL )
 	{
 		printf( "%s error: Rogue %s not found!\n", functionName, pszCamName );
@@ -907,7 +907,7 @@ int SetPgpVariable( const char * pszCamName, const char * pszVarPath, double val
 		return -1;
 	}
 
-	pgpRogue	*	pCamDev = pgpRogue::RogueFindByName( std::string(pszCamName) );
+	rogueDev	*	pCamDev = rogueDev::RogueFindByName( std::string(pszCamName) );
 	if ( pCamDev == NULL )
 	{
 		printf( "%s error: Rogue %s not found!\n", functionName, pszCamName );
@@ -947,7 +947,7 @@ int ShowPgpVariable( const char * pszCamName, const char * pszVarPath, int level
 		return -1;
 	}
 
-	pgpRogue	*	pCamDev = pgpRogue::RogueFindByName( std::string(pszCamName) );
+	rogueDev	*	pCamDev = rogueDev::RogueFindByName( std::string(pszCamName) );
 	if ( pCamDev == NULL )
 	{
 		printf( "%s error: Rogue %s not found!\n", functionName, pszCamName );
@@ -977,34 +977,34 @@ void ShowPgpVarRegister(void)
 }
 
 // Register Function:
-//	int pgpRogueConfig( const char * cameraName, int board, int lane, const char * modelName )
-static const iocshArg		pgpRogueConfigArg0	= { "name",			iocshArgString };
-static const iocshArg		pgpRogueConfigArg1	= { "board",		iocshArgInt };
-static const iocshArg		pgpRogueConfigArg2	= { "lane",			iocshArgInt };
-static const iocshArg		pgpRogueConfigArg3	= { "modelName",	iocshArgString };
-static const iocshArg		pgpRogueConfigArg4	= { "clMode",		iocshArgString };
-static const iocshArg		pgpRogueConfigArg5	= { "sizeX",		iocshArgInt };
-static const iocshArg		pgpRogueConfigArg6	= { "sizeX",		iocshArgInt };
-static const iocshArg		pgpRogueConfigArg7	= { "fLcls2Timing",	iocshArgInt };
-static const iocshArg	*	pgpRogueConfigArgs[8]	=
+//	int rogueDevConfig( const char * cameraName, int board, int lane, const char * modelName )
+static const iocshArg		rogueDevConfigArg0	= { "name",			iocshArgString };
+static const iocshArg		rogueDevConfigArg1	= { "board",		iocshArgInt };
+static const iocshArg		rogueDevConfigArg2	= { "lane",			iocshArgInt };
+static const iocshArg		rogueDevConfigArg3	= { "modelName",	iocshArgString };
+static const iocshArg		rogueDevConfigArg4	= { "clMode",		iocshArgString };
+static const iocshArg		rogueDevConfigArg5	= { "sizeX",		iocshArgInt };
+static const iocshArg		rogueDevConfigArg6	= { "sizeX",		iocshArgInt };
+static const iocshArg		rogueDevConfigArg7	= { "fLcls2Timing",	iocshArgInt };
+static const iocshArg	*	rogueDevConfigArgs[8]	=
 {
-	&pgpRogueConfigArg0, &pgpRogueConfigArg1, &pgpRogueConfigArg2, &pgpRogueConfigArg3,
-	&pgpRogueConfigArg4, &pgpRogueConfigArg5, &pgpRogueConfigArg6, &pgpRogueConfigArg7
+	&rogueDevConfigArg0, &rogueDevConfigArg1, &rogueDevConfigArg2, &rogueDevConfigArg3,
+	&rogueDevConfigArg4, &rogueDevConfigArg5, &rogueDevConfigArg6, &rogueDevConfigArg7
 };
-static const iocshFuncDef   pgpRogueConfigFuncDef	= { "pgpRogueConfig", 8, pgpRogueConfigArgs };
-static int  pgpRogueConfigCallFunc( const iocshArgBuf * args )
+static const iocshFuncDef   rogueDevConfigFuncDef	= { "rogueDevConfig", 8, rogueDevConfigArgs };
+static int  rogueDevConfigCallFunc( const iocshArgBuf * args )
 {
-    return pgpRogueConfig(	args[0].sval, args[1].ival, args[2].ival, args[3].sval,
+    return rogueDevConfig(	args[0].sval, args[1].ival, args[2].ival, args[3].sval,
 								args[4].sval, args[5].ival, args[6].ival, args[7].ival );
 }
-void pgpRogueConfigRegister(void)
+void rogueDevConfigRegister(void)
 {
-	iocshRegister( &pgpRogueConfigFuncDef, reinterpret_cast<iocshCallFunc>(pgpRogueConfigCallFunc) );
+	iocshRegister( &rogueDevConfigFuncDef, reinterpret_cast<iocshCallFunc>(rogueDevConfigCallFunc) );
 }
 
 extern "C"
 {
-	epicsExportRegistrar( pgpRogueConfigRegister );
+	epicsExportRegistrar( rogueDevConfigRegister );
 	epicsExportRegistrar( DumpPgpVarsRegister );
 	epicsExportRegistrar( SetPgpVarRegister );
 	epicsExportRegistrar( ShowAllRogueRegister );
