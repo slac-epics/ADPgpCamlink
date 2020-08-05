@@ -44,8 +44,8 @@
 
 #define PGPCL_DATACHAN_FEB_REG_ACCESS	0
 #define PGPCL_DATACHAN_FEB_FRAME_ACCESS	1
-class pgpClAddrMap;
-typedef std::shared_ptr<pgpClAddrMap> pgpClAddrMapPtr;
+class rogueAddrMap;
+typedef std::shared_ptr<rogueAddrMap> rogueAddrMapPtr;
 
 
 ///	pgpRogueDev class
@@ -148,7 +148,7 @@ private:
 	FebMemoryMasterPtr				 			m_pFebMemMaster;
 	rogue::protocols::srp::SrpV3Ptr				m_pSrpFeb;
 	//rogue::LibraryBasePtr						m_pRogueLib;
-	pgpClAddrMapPtr								m_pRogueLib;
+	rogueAddrMapPtr								m_pRogueLib;
 };
 
 // Shared pointer alias

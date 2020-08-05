@@ -120,30 +120,30 @@ bool	pgpRogueDev::getTriggerEnable( unsigned int triggerNum )
 }
 
 
-#include "pgpClAddrMap.h" 
-class pgpClAddrMap : public rogue::LibraryBase
+#include "rogueAddrMap.h" 
+class rogueAddrMap : public rogue::LibraryBase
 {
 public:
 	// static class creator
-	static std::shared_ptr<pgpClAddrMap> create()
+	static std::shared_ptr<rogueAddrMap> create()
 	{
-		static std::shared_ptr<pgpClAddrMap> ret = std::make_shared<pgpClAddrMap>();
+		static std::shared_ptr<rogueAddrMap> ret = std::make_shared<rogueAddrMap>();
 		return(ret);
 	}
 
-	pgpClAddrMap();
+	rogueAddrMap();
 };
-typedef std::shared_ptr<pgpClAddrMap> pgpClAddrMapPtr;
+typedef std::shared_ptr<rogueAddrMap> rogueAddrMapPtr;
 
-pgpClAddrMap::pgpClAddrMap()
+rogueAddrMap::rogueAddrMap()
 	:	rogue::LibraryBase()
 {
 #if 1
 	//printf( "NOT Parsing ROGUE_ADDR_MAP!\n" );
 #else
-	printf( "pgpClAddrMap: Parsing ROGUE_ADDR_MAP\n" );
-	parseMemMap( ROGUE_ADDR_MAP ); // From generated pgpClAddrMap.h
-	printf( "pgpClAddrMap: ROGUE_ADDR_MAP parsed successfully\n" );
+	printf( "rogueAddrMap: Parsing ROGUE_ADDR_MAP\n" );
+	parseMemMap( ROGUE_ADDR_MAP ); // From generated rogueAddrMap.h
+	printf( "rogueAddrMap: ROGUE_ADDR_MAP parsed successfully\n" );
 #endif
 }
 
@@ -210,7 +210,7 @@ pgpRogueDev::pgpRogueDev(
 	// Connect Rogue Library
 	//
 	//m_pRogueLib = rogue::LibraryBase::create();
-	m_pRogueLib = pgpClAddrMap::create();
+	m_pRogueLib = rogueAddrMap::create();
 
 	//
 	// Create FEB Data Channels
@@ -257,7 +257,7 @@ pgpRogueDev::pgpRogueDev(
 	printf( "NOT Parsing ROGUE_ADDR_MAP!\n" );
 #else
 	printf( "Parsing ROGUE_ADDR_MAP\n" );
-	parseMemMap( ROGUE_ADDR_MAP ); // From generated pgpClAddrMap.h
+	parseMemMap( ROGUE_ADDR_MAP ); // From generated rogueAddrMap.h
 	printf( "ROGUE_ADDR_MAP parsed successfully\n" );
 	m_pRogueLib->parseMemMap( ROGUE_ADDR_MAP );
 	printf( "m_pRogueLib: ROGUE_ADDR_MAP parsed successfully\n" );
