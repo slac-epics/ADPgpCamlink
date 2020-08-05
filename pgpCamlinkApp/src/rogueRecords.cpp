@@ -76,7 +76,7 @@ int rogue_init_record(
 
 	rogue_info_t	*	pRogueInfo		= new rogue_info_t;
 	pRogueInfo->m_varPath		= varPath;
-	pRogueInfo->m_pRogueLib		= pRogue->GetDevPtr();
+	pRogueInfo->m_pRogueLib		= pRogue->GetRogueLib();
 	pRogueInfo->m_fSignedValue	= false;
 	rogue::interfaces::memory::VariablePtr	pVar;
 	pVar = pRogueInfo->m_pRogueLib->getVariable( pRogueInfo->m_varPath );

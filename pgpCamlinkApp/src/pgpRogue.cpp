@@ -62,36 +62,6 @@ int		DEBUG_PGP_ROGUE	= 0;
 ///	ppgRogue map - Stores ptr to all pgpRogue instances indexed by name
 map<string, pgpRogue *>	pgpRogue::ms_pgpRogueMap;
 
-#if 0
-const char * CamlinkModeToString( pgpRogue::CamlinkMode_t	clMode )
-{
-	const char	*	pstrCamlinkMode;
-	switch( clMode )
-	{
-	default:						pstrCamlinkMode	= "Invalid!";	break;
-	case pgpRogue::CL_MODE_BASE:	pstrCamlinkMode	= "Base";		break;
-	case pgpRogue::CL_MODE_MEDIUM:	pstrCamlinkMode	= "Medium";		break;
-	case pgpRogue::CL_MODE_FULL:	pstrCamlinkMode	= "Full";		break;
-	}
-	return pstrCamlinkMode;
-}
-#endif
-
-#if 0
-const char * TriggerModeToString( pgpRogue::TriggerMode_t	tyTriggerMode )
-{
-	const char	*	pstrTriggerMode;
-	switch( tyTriggerMode )
-	{
-	default:							pstrTriggerMode	= "Invalid!";	break;
-	case pgpRogue::TRIGMODE_FREERUN:	pstrTriggerMode	= "FreeRun";	break;
-	case pgpRogue::TRIGMODE_EXT:		pstrTriggerMode	= "External";	break;
-	case pgpRogue::TRIGMODE_PULSE:		pstrTriggerMode	= "Pulse";		break;
-	}
-	return pstrTriggerMode;
-}
-#endif
-
 
 //
 // pgpRogue functions
@@ -104,10 +74,8 @@ pgpRogue::pgpRogue(
 	int						lane,					// channel
 	const char			*	modelName,
 	const char			*	clMode,
-	bool					fLcls2Timing
-	)	// 0 = default 1 MB
+	bool					fLcls2Timing		)
 	:
-	//	m_fAcquireMode(		false			    ),
 		m_fExitApp(			false			    ),
 		m_fReconfig(		false			    ),
 		m_fReopen(			false			    ),
@@ -119,9 +87,6 @@ pgpRogue::pgpRogue(
 		m_DrvVersion(							),
 		m_LibVersion(							),
 		m_ModelName(		modelName			),
-		m_SerialPort(							),
-//		m_CamlinkMode(		CL_MODE_BASE		),
-	//	m_fiducial(			0					),
 
 		m_ReCfgCnt(			0					),
 		m_reconfigLock(		NULL				),
@@ -137,10 +102,6 @@ pgpRogue::pgpRogue(
     scanIoInit( &m_ioscan );
     if ( m_ioscan == NULL )
         errlogPrintf( "%s %s: ERROR, scanIoInit failed!\n", driverName, functionName );
-
-	// Get the Camlink mode from the mbbo PV
-//	int		paramValue	= static_cast<int>( m_CamlinkMode );
-//	setIntegerParam( CamlinkMode,		paramValue );
 
     // Install exit hook for clean shutdown
     epicsAtExit( (EPICSTHREADFUNC)pgpRogue::ExitHook, (void *) this );
@@ -876,48 +837,6 @@ pgpRogueConfig(
     return 0;
 }
 
-extern "C" int
-pgpRogueConfigFull(
-	const char	*	cameraName,
-	int				board,
-	int				lane,
-	const char	*	modelName,
-	const char	*	clMode,
-	size_t			sizeX,
-	size_t			sizeY,
-	bool			fLcls2Timing,
-	int				maxBuffers,				// 0 = unlimited
-	size_t			maxMemory,				// 0 = unlimited
-	int				priority,				// 0 = default 50, high is 90
-	int				stackSize			)	// 0 = default 1 MB
-{
-    if (  cameraName == NULL || strlen(cameraName) == 0 )
-    {
-        errlogPrintf( "NULL or zero length camera name.\nUsage: pgpRogueConfig(name,board,chan,config)\n");
-        return  -1;
-    }
-    if (  modelName == NULL || strlen(modelName) == 0 )
-    {
-        errlogPrintf( "NULL or zero length config name.\nUsage: pgpRogueConfig(name,board,chan,config)\n");
-        return  -1;
-    }
-    if (  clMode == NULL || strlen(clMode) == 0 )
-    {
-        errlogPrintf( "NULL or zero length camlink mode.\nUsage: pgpRogueConfig(name,board,chan,config,mode)\n");
-        return  -1;
-    }
-
-    if ( pgpRogue::CreateRogue(	cameraName, board, lane, modelName, clMode,
-									sizeX, sizeY, fLcls2Timing ) != 0 )
-    {
-        errlogPrintf( "pgpRogueConfig failed for camera %s!\n", cameraName );
-		if ( DEBUG_PGP_ROGUE >= 4 )
-        	epicsThreadSuspendSelf();
-        return -1;
-    }
-    return 0;
-}
-
 
 // Register function:
 //		int ShowAllRogue( int level )
@@ -1083,48 +1002,9 @@ void pgpRogueConfigRegister(void)
 	iocshRegister( &pgpRogueConfigFuncDef, reinterpret_cast<iocshCallFunc>(pgpRogueConfigCallFunc) );
 }
 
-// Register Function:
-//	int pgpRogueConfigFull( const char * cameraName, int board, int lane, const char * modelName, int, size_t, int, int  )
-static const iocshArg		pgpRogueConfigFullArg0	= { "name",			iocshArgString };
-static const iocshArg		pgpRogueConfigFullArg1	= { "board",		iocshArgInt };
-static const iocshArg		pgpRogueConfigFullArg2	= { "lane",			iocshArgInt };
-static const iocshArg		pgpRogueConfigFullArg3	= { "cfgFile",		iocshArgString };
-static const iocshArg		pgpRogueConfigFullArg4	= { "clMode",		iocshArgString };
-static const iocshArg		pgpRogueConfigFullArg5	= { "sizeX",		iocshArgInt };
-static const iocshArg		pgpRogueConfigFullArg6	= { "sizeX",		iocshArgInt };
-static const iocshArg		pgpRogueConfigFullArg7	= { "fLcls2Timing",	iocshArgInt };
-static const iocshArg		pgpRogueConfigFullArg8	= { "maxBuffers",	iocshArgInt };
-static const iocshArg		pgpRogueConfigFullArg9	= { "maxMemory",	iocshArgInt };
-static const iocshArg		pgpRogueConfigFullArg10	= { "priority",		iocshArgInt };
-static const iocshArg		pgpRogueConfigFullArg11	= { "stackSize",	iocshArgInt };
-// There has to be a better way to handle triggerPV, delayPV, and syncPV
-//static const iocshArg		pgpRogueConfigFullArgX	= { "triggerPV",	iocshArgString };
-//static const iocshArg		pgpRogueConfigFullArgX	= { "delayPV",		iocshArgString };
-//static const iocshArg		pgpRogueConfigFullArgX	= { "syncPV",		iocshArgString };
-static const iocshArg	*	pgpRogueConfigFullArgs[12]	=
-{
-	&pgpRogueConfigFullArg0, &pgpRogueConfigFullArg1, &pgpRogueConfigFullArg2,
-	&pgpRogueConfigFullArg3, &pgpRogueConfigFullArg4, &pgpRogueConfigFullArg5,
-	&pgpRogueConfigFullArg6, &pgpRogueConfigFullArg7, &pgpRogueConfigFullArg8,
-	&pgpRogueConfigFullArg9, &pgpRogueConfigFullArg10, &pgpRogueConfigFullArg11
-};
-static const iocshFuncDef   pgpRogueConfigFullFuncDef	= { "pgpRogueConfigFull", 12, pgpRogueConfigFullArgs };
-static int  pgpRogueConfigFullCallFunc( const iocshArgBuf * args )
-{
-    return pgpRogueConfigFull(
-		args[0].sval, args[1].ival, args[2].ival, args[3].sval, args[4].sval,
-		args[5].ival, args[6].ival, args[7].ival, args[8].ival, args[9].ival,
-		args[10].ival, args[11].ival );
-}
-void pgpRogueConfigFullRegister(void)
-{
-	iocshRegister( &pgpRogueConfigFullFuncDef, reinterpret_cast<iocshCallFunc>(pgpRogueConfigFullCallFunc) );
-}
-
 extern "C"
 {
 	epicsExportRegistrar( pgpRogueConfigRegister );
-	epicsExportRegistrar( pgpRogueConfigFullRegister );
 	epicsExportRegistrar( DumpPgpVarsRegister );
 	epicsExportRegistrar( SetPgpVarRegister );
 	epicsExportRegistrar( ShowAllRogueRegister );
