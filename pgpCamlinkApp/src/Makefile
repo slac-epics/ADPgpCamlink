@@ -7,12 +7,12 @@ include $(TOP)/configure/CONFIG
 LIBRARY_IOC = pgpCamlink
 DBD += pgpCamlinkSupport.dbd
 DBD += pgpClSerialDev.dbd
-DBD += devRogue.dbd
+DBD += rogueRecords.dbd
 
 # TODO: Rethink naming scheme for C++ classes
 LIB_SRCS   		+= pgpRogue.cpp
 LIB_SRCS   		+= pgpRogueDev.cpp
-LIB_SRCS		+= devRogue.cpp
+LIB_SRCS		+= rogueRecords.cpp
 
 LIB_SRCS   		+= pgpCamlink.cpp
 LIB_SRCS		+= ClSerialMaster.cpp
