@@ -1,14 +1,11 @@
 
 registrar(	pgpCamlinkConfigRegister		)
 registrar(	pgpCamlinkConfigFullRegister	)
-registrar(	DumpPgpVarsRegister		)
 registrar(	ResetImageTimingRegister		)
-registrar(	SetPgpVarRegister				)
 registrar(	ShowImageTimingRegister			)
 registrar(	ShowAllCamerasRegister			)
-registrar(	ShowPgpVarRegister				)
+
 variable(	DEBUG_PGP_CAMLINK,	int	)
 
 include "pgpClSerialDev.dbd"
-include "devRogue.dbd"
 

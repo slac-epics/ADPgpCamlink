@@ -21,7 +21,7 @@
 #include <epicsMutex.h>
 #include <epicsThread.h>
 #include <dbScan.h>
-#include "pgpClDev.h"
+#include "pgpRogueDev.h"
 #include <rogue/protocols/batcher/Data.h>
 
 
@@ -57,10 +57,10 @@ public:		//	Public member functions
 
 	int		UpdateStatus( int	newStatus	);
 
-    int	GetAcquireCount()
-	{
-		return m_acquireCount;
-	}
+//    int	GetAcquireCount()
+//	{
+//		return m_acquireCount;
+//	}
 
     void	report(	FILE	*	fp,	int	details	);
 
@@ -89,10 +89,10 @@ public:		//	Public member functions
 	}
 
 	///	Get camera serial port name
-	const std::string	&	GetSerialPortName( ) const
-	{
-		return m_SerialPort;
-	}
+//	const std::string	&	GetSerialPortName( ) const
+//	{
+//		return m_SerialPort;
+//	}
 
 	///	Get Driver Version
 	const std::string	&	GetDrvVersion( ) const
@@ -118,18 +118,18 @@ public:		//	Public member functions
 #endif
 	}
 
-	bool	IsAcquiring()
-	{
-		//if ( m_pSyncDataAcquirer == NULL )
-			return false;
-		//return m_pSyncDataAcquirer->IsAcquiring();
-	}
+//	bool	IsAcquiring()
+//	{
+//		//if ( m_pSyncDataAcquirer == NULL )
+//			return false;
+//		//return m_pSyncDataAcquirer->IsAcquiring();
+//	}
 
 	//bool	InAcquireMode()
 	//{
 	//	return m_fAcquireMode;
 	//}
-	int	SetAcquireMode( int fAcquireMode );
+//	int	SetAcquireMode( int fAcquireMode );
 	//bool	GetAcquireMode() const
 	//{
 	//	return m_fAcquireMode;
@@ -137,78 +137,78 @@ public:		//	Public member functions
 
 //	Image		*	GetCurImageBuf( );
 //	Image		*	GetNextImageBuf(unsigned int &);
+//
+//	int				SetGain( double gain );
+//	double			GetGain( ) const
+//	{
+//		return m_Gain;
+//	}
 
-	int				SetGain( double gain );
-	double			GetGain( ) const
-	{
-		return m_Gain;
-	}
-
-	int				RequestBinX(	unsigned int	value	);
-	int				SetBinX(		unsigned int	value	);
-	unsigned int	GetBinX( ) const
-	{
-		return m_BinX;
-	}
-
-	int				RequestBinY(	unsigned int	value	);
-	int				SetBinY(		unsigned int	value	);
-	unsigned int	GetBinY( ) const
-	{
-		return m_BinY;
-	}
-
-	int		RequestMinX(	size_t	value	);
-	int		SetMinX(		size_t	value	);
-	size_t	GetMinX( ) const
-	{
-		return m_MinX;
-	}
-
-	int		RequestMinY(	size_t	value	);
-	int		SetMinY(		size_t	value	);
-	size_t	GetMinY( ) const
-	{
-		return m_MinY;
-	}
-
-	int		RequestSizeX(	size_t	value	);
-	int		SetSizeX(		size_t	value	);
-	size_t	GetSizeX( ) const
-	{
-		return m_SizeX;
-	}
-
-	int		RequestSizeY(	size_t	value	);
-	int		SetSizeY(		size_t	value	);
-	size_t	GetSizeY( ) const
-	{
-		return m_SizeY;
-	}
-
-	/// Get frame count
-	int		GetArrayCounter( ) const
-	{
-		return m_ArrayCounter;
-	}
-
-	/// Increment frame count
-	int		IncrArrayCounter( );
-
-	/// Set frame count
-	int		SetArrayCounter( int value );
-
-	/// Get last fiducial timestamp id
-    int				GetFiducial( ) const
-	{
-		return m_fiducial;
-	}
-
-	/// Set fiducial timestamp id
-    void			SetFiducial( int fiducial )
-	{
-		m_fiducial	= fiducial;
-	}
+//	int				RequestBinX(	unsigned int	value	);
+//	int				SetBinX(		unsigned int	value	);
+//	unsigned int	GetBinX( ) const
+//	{
+//		return m_BinX;
+//	}
+//
+//	int				RequestBinY(	unsigned int	value	);
+//	int				SetBinY(		unsigned int	value	);
+//	unsigned int	GetBinY( ) const
+//	{
+//		return m_BinY;
+//	}
+//
+//	int		RequestMinX(	size_t	value	);
+//	int		SetMinX(		size_t	value	);
+//	size_t	GetMinX( ) const
+//	{
+//		return m_MinX;
+//	}
+//
+//	int		RequestMinY(	size_t	value	);
+//	int		SetMinY(		size_t	value	);
+//	size_t	GetMinY( ) const
+//	{
+//		return m_MinY;
+//	}
+//
+//	int		RequestSizeX(	size_t	value	);
+//	int		SetSizeX(		size_t	value	);
+//	size_t	GetSizeX( ) const
+//	{
+//		return m_SizeX;
+//	}
+//
+//	int		RequestSizeY(	size_t	value	);
+//	int		SetSizeY(		size_t	value	);
+//	size_t	GetSizeY( ) const
+//	{
+//		return m_SizeY;
+//	}
+//
+//	/// Get frame count
+//	int		GetArrayCounter( ) const
+//	{
+//		return m_ArrayCounter;
+//	}
+//
+//	/// Increment frame count
+//	int		IncrArrayCounter( );
+//
+//	/// Set frame count
+//	int		SetArrayCounter( int value );
+//
+//	/// Get last fiducial timestamp id
+ //   int				GetFiducial( ) const
+//	{
+//		return m_fiducial;
+//	}
+//
+//	/// Set fiducial timestamp id
+ //   void			SetFiducial( int fiducial )
+//	{
+//		m_fiducial	= fiducial;
+//	}
 
 	IOSCANPVT		GetIoScan( ) const
 	{
@@ -228,10 +228,10 @@ public:		//	Public member functions
 	int						ShowPgpVariable( const char * pszVarPath, int level );
 
 	///	Start Rogue image acquisition
-	int						StartAcquisition( );
+//	int						StartAcquisition( );
 
 	///	Acquire next image from the camera
-	int						ProcessImage(	ImageCbInfo	*	pImageInfo );
+//	int						ProcessImage(	ImageCbInfo	*	pImageInfo );
 
 	///	Returns true if device needs reconfiguring
 	bool					NeedsReconfigure(	)
@@ -248,14 +248,14 @@ public:		//	Public member functions
 	/// Takes the reconfigure lock to make it thread safe
 	int		Reopen(	);
 
-	int		CkDupTimeStamp(	const epicsTimeStamp*	pDest,
-							int					*	pPulseNumRet );
+//	int		CkDupTimeStamp(	const epicsTimeStamp*	pDest,
+//							int					*	pPulseNumRet );
 
     /// SetSerDisable
     int SetSerDisable( int value );
 
-	// Return shared_ptr to pgpClDev device
-	pgpClDevPtr				GetDevPtr( ) const
+	// Return shared_ptr to pgpRogueDev device
+	pgpRogueDevPtr				GetDevPtr( ) const
 	{
 		return m_pDev;
 	}
@@ -304,7 +304,7 @@ private:	//	Private member functions
 	int		_Reconfigure( );
 	int		_Reopen( );
 
-	int		SetupROI( );
+//	int		SetupROI( );
 
 private:	//	Private class functions
 	static	void			RogueAdd(		pgpRogue * pRogue );
@@ -313,19 +313,19 @@ private:	//	Private class functions
 public:		//	Public member variables	(Make these private!)
 
 protected:	//	Protected member variables
-	bool			m_fAcquireMode;		// Set true to start acquiring images, false to halt
+//	bool			m_fAcquireMode;		// Set true to start acquiring images, false to halt
 	bool			m_fExitApp;			// Set true to shutdown ioc
 	bool			m_fReconfig;		// True when we need to reconfigure the ROI or other camera parameters
 	bool			m_fReopen;			// True when we need to reread the configuration file
 
 private:	//	Private member variables
-	pgpClDevPtr 	m_pDev;			// shared_ptr to pgpClDev device
+	pgpRogueDevPtr 	m_pDev;			// shared_ptr to pgpRogueDev device
 
 	unsigned int	m_board;		// index of Pgpcamlink card
 	unsigned int	m_lane;			// lane on  Pgpcamlink card
 	bool			m_fLcls2Timing;	// true to initialize w/ LCLS2 timing, false for LCLS1
 
-	epicsTimeStamp	m_priorTimeStamp;	// Last timestamp for this event number
+//	epicsTimeStamp	m_priorTimeStamp;	// Last timestamp for this event number
 
 	std::string		m_RogueClass;	// Manufacturer of camera
 	std::string		m_BuildStamp;	// camera info string
@@ -342,9 +342,9 @@ private:	//	Private member variables
 	size_t			m_ClCurHeight;	// CamLink connection cur height in pixels
 	size_t			m_ClMaxWidth;	// CamLink connection max width  in pixels
 	size_t			m_ClMaxHeight;	// CamLink connection max height in pixels
-	unsigned int	m_ClNumBits;	// CamLink connection bits  per pixel
-	int				m_ClHTaps;		// CamLink connection horiz taps
-	int				m_ClVTaps;		// CamLink connection vert  taps
+//	unsigned int	m_ClNumBits;	// CamLink connection bits  per pixel
+//	int				m_ClHTaps;		// CamLink connection horiz taps
+//	int				m_ClVTaps;		// CamLink connection vert  taps
 
 //	CamlinkMode_t	m_CamlinkMode;
 
@@ -354,32 +354,32 @@ private:	//	Private member variables
 	unsigned int	m_ReConfigCount;// Reconfiguration counter
 
 	// HW ROI and binning parameters from ADBase
-	size_t	m_BinX,		m_BinXReq,		m_BinY,		m_BinYReq;
-	size_t	m_MinX,		m_MinXReq,		m_MinY,		m_MinYReq;
-	size_t	m_SizeX,	m_SizeXReq,		m_SizeY,	m_SizeYReq;
+//	size_t	m_BinX,		m_BinXReq,		m_BinY,		m_BinYReq;
+//	size_t	m_MinX,		m_MinXReq,		m_MinY,		m_MinYReq;
+//	size_t	m_SizeX,	m_SizeXReq,		m_SizeY,	m_SizeYReq;
 
 	// Gain value for camera
-	double			m_Gain;
+//	double			m_Gain;
 
 	// HW ROI support
-	unsigned int	m_HwHRoi;			// Zero if no HW ROI, Non-zero if camera supports Horiz ROI
-	unsigned int	m_HwVRoi;			// Zero if no HW ROI, Non-zero if camera supports Vert  ROI
+//	unsigned int	m_HwHRoi;			// Zero if no HW ROI, Non-zero if camera supports Horiz ROI
+//	unsigned int	m_HwVRoi;			// Zero if no HW ROI, Non-zero if camera supports Vert  ROI
 
-	int				m_ArrayCounter;		// Frame count
-	int				m_acquireCount;		// How many images to acquire
-	unsigned int	m_fiducial;			// Fiducial ID from last timestamped image
+//	int				m_ArrayCounter;		// Frame count
+//	int				m_acquireCount;		// How many images to acquire
+//	unsigned int	m_fiducial;			// Fiducial ID from last timestamped image
 
 	unsigned int	m_ReCfgCnt;			// Reconfigure counter (increments by 1 each reconfigure)
 	epicsMutexId	m_reconfigLock;		// Protect against more than one thread trying to reconfigure the device
 	//syncDataAcq<pgpRogue, pgpImage>		*	m_pSyncDataAcquirer;
 
-	unsigned int	m_trigLevel;		// Ext. Trigger Mode (0=Edge,1=Level,2=Sync)
+//	unsigned int	m_trigLevel;		// Ext. Trigger Mode (0=Edge,1=Level,2=Sync)
 
-    int             m_SerialDisable;    // Flag to enable or disable the serial communication
+//    int             m_SerialDisable;    // Flag to enable or disable the serial communication
 
-    unsigned int    m_SyncTotal;        // Total images counter
-    unsigned int    m_SyncBadTS;        // Images discarded by bad timestamp counter
-    unsigned int    m_SyncBadSync;      // Images discarded by bad sync counter
+//    unsigned int    m_SyncTotal;        // Total images counter
+//    unsigned int    m_SyncBadTS;        // Images discarded by bad timestamp counter
+//    unsigned int    m_SyncBadSync;      // Images discarded by bad sync counter
 
 	IOSCANPVT				m_ioscan;
 

@@ -464,10 +464,6 @@ int pgpCamlink::CameraShow( int level )
 		cout	<< "\t\tMax Res: "		<< m_ClMaxWidth << " x " << m_ClMaxHeight
 				<< ", "					<< m_ClNumBits	<< " bits/px" << endl;
 	}
-	if ( level >= 3 && m_pDev )
-	{
-		m_pDev->showVariableList( level >= 4 );
-	}
     return 0;
 }
 
@@ -802,13 +798,13 @@ int pgpCamlink::_Reconfigure( )
 	setStringParam( CamlinkLibVersion, m_LibVersion.c_str()	);
 
 //	int64_t		int64Value	= 0;
-	uint64_t	uint64Value	= 0;
-	m_pDev->readVarPath(	PgpCoreFpgaVersionString,	uint64Value );
-	setIntegerParam(		PgpCoreFpgaVersion,			uint64Value	);
-	m_pDev->readVarPath(	PgpFebFpgaVersionString,	uint64Value );
-	setIntegerParam(		PgpFebFpgaVersion,			uint64Value	);
-	m_pDev->readVarPath(	PgpAxiVersionString,		m_AxiVersion );
-	setStringParam(			PgpAxiVersion, m_AxiVersion.c_str()	);
+//	uint64_t	uint64Value	= 0;
+//	m_pDev->readVarPath(	PgpCoreFpgaVersionString,	uint64Value );
+//	setIntegerParam(		PgpCoreFpgaVersion,			uint64Value	);
+//	m_pDev->readVarPath(	PgpFebFpgaVersionString,	uint64Value );
+//	setIntegerParam(		PgpFebFpgaVersion,			uint64Value	);
+//	m_pDev->readVarPath(	PgpAxiVersionString,		m_AxiVersion );
+//	setStringParam(			PgpAxiVersion, m_AxiVersion.c_str()	);
 
 	// Already shown in _Reopen()
 	//printf( "pgpCamlink Driver  version: %s\n", m_DrvVersion.c_str() ); 

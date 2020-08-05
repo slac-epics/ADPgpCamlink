@@ -36,7 +36,7 @@
 
 // ADPgpCamlink headers
 #include "pgpRogue.h"
-#include "pgpClDev.h"
+#include "pgpRogueDev.h"
 
 #include "rogue/Logging.h"
 
@@ -107,7 +107,7 @@ pgpRogue::pgpRogue(
 	bool					fLcls2Timing
 	)	// 0 = default 1 MB
 	:
-		m_fAcquireMode(		false			    ),
+	//	m_fAcquireMode(		false			    ),
 		m_fExitApp(			false			    ),
 		m_fReconfig(		false			    ),
 		m_fReopen(			false			    ),
@@ -121,17 +121,11 @@ pgpRogue::pgpRogue(
 		m_ModelName(		modelName			),
 		m_SerialPort(							),
 //		m_CamlinkMode(		CL_MODE_BASE		),
-		m_fiducial(			0					),
+	//	m_fiducial(			0					),
 
 		m_ReCfgCnt(			0					),
 		m_reconfigLock(		NULL				),
 		
-		m_trigLevel(		0					),
-#ifdef	USE_DIAG_TIMER
-		m_ReAcquireTimer(	"ReAcquire"			),
-		m_ReArmTimer(		"ReArm"				),
-		m_ProcessImageTimer("ProcessImage"		),
-#endif	//	USE_DIAG_TIMER
 		m_ioscan(			NULL				)
 {
 	static const char	*	functionName = "pgpRogue::pgpRogue";
@@ -309,7 +303,7 @@ int pgpRogue::ShowReport( int level )
 				<< " "					<< m_RogueModel
 				<< ", configuration: " 	<< m_ConfigFile << endl;
 		cout	<< "\t\tMax Res: "		<< m_ClMaxWidth << " x " << m_ClMaxHeight
-				<< ", "					<< m_ClNumBits	<< " bits/px" << endl;
+				<< endl;
 	}
 	if ( level >= 3 && m_pDev )
 	{
@@ -364,7 +358,7 @@ void pgpRogue::ExitHook(void * arg)
 void pgpRogue::Shutdown( )
 {
 	epicsMutexLock(	m_reconfigLock );
-	m_acquireCount = 0;
+//	m_acquireCount = 0;
 //	setIntegerParam(ADAcquire, 0);
 	if ( m_pDev != NULL )
 	{
@@ -414,16 +408,7 @@ int pgpRogue::DisconnectRogue( )
 		printf(	"%s %s: disconnecting camera %s\n", 
 				driverName, functionName, m_RogueName.c_str() );
 
-	SetAcquireMode( false );
-
-#if 0
-	// Wait for acquire loop to terminate
-	// TODO: Make this safer
-	while ( m_pSyncDataAcquirer != NULL && m_pSyncDataAcquirer->IsAcquiring() )
-	{
-		epicsThreadSleep(0.1);
-	}
-#endif
+//	SetAcquireMode( false );
 
     // Block reconfigured until serial device is disconnected
 	epicsMutexLock(	m_reconfigLock );
@@ -698,52 +683,6 @@ int pgpRogue::_Reconfigure( )
 }
 
 
-int pgpRogue::SetupROI( )
-{
-    static const char	*	functionName = "pgpRogue::SetupROI";
-
-	if (	(	GetSizeX() < m_ClMaxWidth  )
-		||	(	GetSizeY() < m_ClMaxHeight ) )
-	{
-		// Setup ROI image transfer
-		// Note: If the camera has HW ROI, we set hskip and/or vskip to zero as
-		// it is assumed that serial commands are used to configure the camera HW ROI
-		int		hskip	= 0;	//HasHwHRoi() ? 0 : GetMinX();
-		int		vskip	= 0;	//HasHwVRoi() ? 0 : GetMinY();
-
-		// Camlink Horiz and Vert Active line count must be a multiple of the number of CamLink taps
-		// Pad up to next largest size 
-		int		hactv	= ( (GetSizeX()+m_ClHTaps-1) / m_ClHTaps ) * m_ClHTaps;
-		int		vactv	= ( (GetSizeY()+m_ClVTaps-1) / m_ClVTaps ) * m_ClVTaps;
-		if ( DEBUG_PGP_ROGUE >= 3 )
-			printf(	"%s: Setting ROI to hskip %d, hactv %d, vskip %d, vactv %d\n",
-					functionName,	hskip, hactv, vskip, vactv );
-		//pdv_set_roi(	m_pDev,	hskip, hactv, vskip, vactv );
-		//pdv_enable_roi(	m_pDev, 1	);
-		m_ClCurWidth	= hactv;
-		m_ClCurHeight	= vactv;
-	}
-	else
-	{
-		int		hskip	= 0;
-		int		vskip	= 0;
-		// Camlink Horiz and Vert Active line count must be a multiple of the number of CamLink taps
-		// Pad up to next largest size 
-		int		hactv	= ( (m_ClMaxWidth  + m_ClHTaps - 1) / m_ClHTaps ) * m_ClHTaps;
-		int		vactv	= ( (m_ClMaxHeight + m_ClVTaps - 1) / m_ClVTaps ) * m_ClVTaps;
-		assert(	hactv == (int) m_ClMaxWidth	);
-		assert(	vactv == (int) m_ClMaxHeight	);
-		if ( DEBUG_PGP_ROGUE >= 3 )
-			printf(	"%s: Disabling ROI, restoring hskip %d, hactv %d, vskip %d, vactv %d\n",
-					functionName,	hskip, hactv, vskip, vactv );
-		//pdv_set_roi(	m_pDev,	hskip, hactv, vskip, vactv );
-		//pdv_enable_roi(	m_pDev, 0	);
-		m_ClCurWidth	= hactv;
-		m_ClCurHeight	= vactv;
-	}
-	return 0;
-}
-
 //	Internal version of reopen
 //	Don't call without holding m_reconfigLock!
 int pgpRogue::_Reopen( )
@@ -766,7 +705,7 @@ int pgpRogue::_Reopen( )
 	// Open the camera lane
 	if ( DEBUG_PGP_ROGUE >= 1 )
 		printf( "%s: %s Reopening Dev ...\n", functionName, m_RogueName.c_str() );
-    m_pDev = pgpClDev::create( m_board, m_lane );
+    m_pDev = pgpRogueDev::create( m_board, m_lane );
     if ( m_pDev == NULL )
 	{
         printf(	"%s %s: ERROR, Unable to open camera for pgpRogue card %u, lane %u\n",
@@ -855,411 +794,6 @@ int	pgpRogue::UpdateStatus( int	newStatus	)
 	return status;
 }
 
-// Set ArrayCounter
-int pgpRogue::SetArrayCounter( int value )
-{
-	CONTEXT_TIMER( "pgpRogue-SetArrayCounter" );
-	m_ArrayCounter = value;
-	int status = 0;
-//	status	= setIntegerParam( NDArrayCounter,	m_ArrayCounter );
-//	if( status == 0 )
-//		status = callParamCallbacks( 0, 0 );
-	return status;
-}
-
-// Increment NDArrayCounter
-int pgpRogue::IncrArrayCounter()
-{
-	CONTEXT_TIMER( "pgpRogue-IncrArrayCounter" );
-	m_ArrayCounter++;
-	int status = 0;
-//	int	status	= setIntegerParam(	NDArrayCounter,	m_ArrayCounter	);
-//	if( status == 0 )
-//		status = callParamCallbacks( 0, 0 );
-	return status;
-}
-
-int	pgpRogue::SetAcquireMode( int fAcquire )
-{
-//    static const char	*	functionName = "pgpRogue::SetAcquireMode";
-//	setIntegerParam( ADAcquire, m_fAcquireMode );
-	return 0;
-}
-
-// TODO: Is this function still used?
-// Was being called in ADEdtPdv from syncDataAcq loop
-int pgpRogue::StartAcquisition( )
-{
-    static const char	*	functionName = "pgpRogue::StartAcquisition";
-	CONTEXT_TIMER( "StartAcquisition" );
-
-#ifndef	SETUP_ROI_IN_RECONFIG
-	SetupROI();
-#endif	//	SETUP_ROI_IN_RECONFIG
-
-	double		cameraStartDelay	= 0.25;
-	if ( cameraStartDelay > 0.0 )
-	{
-		if ( DEBUG_PGP_ROGUE >= 2 )
-			printf(	"%s: Delaying %f sec\n", functionName, cameraStartDelay );
-		epicsThreadSleep( cameraStartDelay );
-	}
-
-	if ( m_fReconfig || !m_fAcquireMode )
-	{
-		if ( DEBUG_PGP_ROGUE >= 1 )
-		{
-			if ( m_fReconfig )
-				printf( "%s: Reconfig requested\n", functionName );
-			else
-				printf( "%s: Not in AcquireMode\n", functionName );
-		}
-    	return -1;
-	}
-
-	if ( DEBUG_PGP_ROGUE >= 2 )
-		printf(	"%s: Acquire image from %zu,%zu size %zux%zu\n", functionName,
-				GetMinX(), GetMinY(), GetSizeX(), GetSizeY()	);
-
-	// TODO: Where are these AD values set now?
-	// Clear NumImagesCounter and start acquisition
-//	setIntegerParam( ADNumImagesCounter, 0 );
-//	UpdateStatus( ADStatusAcquire );
-
-	if ( m_pDev )
-	{
-		// Enable triggers
-		// TODO: Need to emulate StartRun()
-		m_pDev->setTriggerEnable( 0, true );
-	}
-
-	printf(	"%s: Start acquire, count = %d\n",
-			functionName, m_acquireCount );
-    return 0;
-}
-
-
-int	pgpRogue::RequestSizeX(	size_t	value	)
-{
-    static const char	*	functionName	= "pgpRogue::RequestSizeX";
-	if ( value == 0 )
-	{
-        errlogPrintf(	"%s: ERROR, HW ROI width cannot be set to 0!\n",
-        	    		functionName );
-		return -1;
-	}
-	if( m_SizeXReq != value )
-	{
-		m_SizeXReq	= value;
-		m_fReconfig	= true;
-		if ( DEBUG_PGP_ROGUE >= 2 )
-		{
-			printf(	"%s: Requesting SizeX %zu ...\n", functionName, value );
-		}
-	}
-	return 0;
-}
-
-int	pgpRogue::SetSizeX(	size_t	value	)
-{
-    static const char	*	functionName	= "pgpRogue::SetSizeX";
-	if ( value == 0 )
-	{
-        errlogPrintf(	"%s: ERROR, HW ROI width cannot be set to 0!\n",
-        	    		functionName );
-		// return -1;
-		value = m_SizeX > 0 ? m_SizeX : m_ClMaxWidth;
-	}
-	// Allow setting SizeX if m_ClMaxWidth hasn't been configured yet
-	// Will be clipped later if needed
-	if ( m_ClMaxWidth != 0 && value > m_ClMaxWidth )
-	{
-        errlogPrintf(	"%s: ERROR, HW ROI width %zu > max %zu!\n",
-        	    		functionName, value, m_ClMaxWidth );
-		// return -1;
-		value = m_ClMaxWidth;
-	}
-	if ( DEBUG_PGP_ROGUE >= 2 )
-	{
-		printf(	"%s: Set SizeX %zu ...\n", functionName, value );
-	}
-	if( m_SizeX != value )
-		m_fReconfig	= true;
-	m_SizeX	= value;
-
-	// Update the AreaDetector SizeX parameters
-//	setIntegerParam( ADSizeX,		m_SizeX	);
-//	setIntegerParam( NDArraySizeX,	m_SizeX	);
-//	setIntegerParam( NDArraySize,	m_SizeX * m_SizeY );
-
-//	int	status = (int) UpdateADConfigParams( );
-	return 0;
-}
-
-int	pgpRogue::RequestSizeY(	size_t	value	)
-{
-    static const char	*	functionName	= "pgpRogue::RequestSizeY";
-	if ( value == 0 )
-	{
-        errlogPrintf(	"%s: ERROR, HW ROI height cannot be set to 0!\n",
-        	    		functionName );
-		return -1;
-	}
-	if( m_SizeYReq != value )
-	{
-		m_SizeYReq	= value;
-		m_fReconfig	= true;
-		if ( DEBUG_PGP_ROGUE >= 2 )
-		{
-			printf(	"%s: Requesting SizeY %zu ...\n", functionName, value );
-		}
-	}
-	return 0;
-}
-
-int	pgpRogue::SetSizeY(	size_t	value	)
-{
-    static const char	*	functionName	= "pgpRogue::SetSizeY";
-	if ( value == 0 )
-	{
-        errlogPrintf(	"%s: ERROR, HW ROI height cannot be set to 0!\n",
-        	    		functionName );
-		//	return -1;
-		value = m_SizeY > 0 ? m_SizeY : m_ClMaxHeight;
-	}
-	// Allow setting SizeY if m_ClMaxHeight hasn't been configured yet
-	// Will be clipped later if needed
-	if ( m_ClMaxHeight != 0 && value > m_ClMaxHeight )
-	{
-        errlogPrintf(	"%s: ERROR, ROI height %zu > max %zu!\n",
-        	    		functionName, value, m_ClMaxHeight );
-		//	return -1;
-		value = m_ClMaxHeight;
-	}
-	if ( DEBUG_PGP_ROGUE >= 2 )
-	{
-		printf(	"%s: Set SizeY %zu ...\n", functionName, value );
-	}
-	if( m_SizeY != value )
-		m_fReconfig	= true;
-	m_SizeY		= value;
-
-	// Update the AreaDetector parameter
-//	setIntegerParam( ADSizeY,		m_SizeY	);
-//	setIntegerParam( NDArraySizeY,	m_SizeY	);
-//	setIntegerParam( NDArraySize,	m_SizeX * m_SizeY );
-
-//	int	status = (int) UpdateADConfigParams( );
-	return 0;
-}
-
-int	pgpRogue::RequestMinX(	size_t	value	)
-{
-	static const char	*	functionName	= "pgpRogue::RequestMinX";
-	if( m_MinXReq != value )
-	{
-		m_MinXReq	= value;
-		m_fReconfig	= true;
-		if ( DEBUG_PGP_ROGUE >= 2 )
-		{
-			printf(	"%s: Requesting MinX %zu ...\n", functionName, value );
-		}
-	}
-	return 0;
-}
-
-int	pgpRogue::SetMinX(	size_t	value	)
-{
-    static const char	*	functionName	= "pgpRogue::SetMinX";
-	if ( value > (m_ClMaxWidth - 1) )
-	{
-        errlogPrintf(	"%s: ERROR, ROI start %zu > max %zu!\n",
-        	    		functionName, value, (m_ClMaxWidth - 1) );
-		return -1;
-	}
-	if ( DEBUG_PGP_ROGUE >= 2 )
-	{
-		printf(	"%s: Set MinX %zu ...\n", functionName, value );
-	}
-	if( m_MinX != value )
-		m_fReconfig	= true;
-	m_MinX	= value;
-
-	// Update the AreaDetector parameter
-//	setIntegerParam( ADMinX,	m_MinX	);
-//	int	status = (int) UpdateADConfigParams( );
-	return 0;
-}
-
-int	pgpRogue::RequestMinY(	size_t	value	)
-{
-	static const char	*	functionName	= "pgpRogue::RequestMinY";
-	if( m_MinYReq != value )
-	{
-		m_MinYReq	= value;
-		m_fReconfig	= true;
-		if ( DEBUG_PGP_ROGUE >= 2 )
-		{
-			printf(	"%s: Requesting MinY %zu ...\n", functionName, value );
-		}
-	}
-	return 0;
-}
-
-int	pgpRogue::SetMinY(	size_t	value	)
-{
-    static const char	*	functionName	= "pgpRogue::SetMinY";
-	if ( value > (m_ClMaxHeight - 1) )
-	{
-        errlogPrintf(	"%s: ERROR, ROI start %zu > max %zu!\n",
-        	    		functionName, value, (m_ClMaxHeight - 1) );
-		return -1;
-	}
-	if ( DEBUG_PGP_ROGUE >= 2 )
-	{
-		printf(	"%s: Set MinY %zu ...\n", functionName, value );
-	}
-	if( m_MinY != value )
-		m_fReconfig	= true;
-	m_MinY		=  value;
-
-	// Update the AreaDetector parameter
-//	setIntegerParam( ADMinY,	m_MinY	);
-//	int	status = (int) UpdateADConfigParams( );
-	return 0;
-}
-
-int	pgpRogue::RequestBinX(	unsigned int	value	)
-{
-    static const char	*	functionName	= "pgpRogue::RequestBinX";
-	if ( value == 0 )
-	{
-        errlogPrintf(	"%s: ERROR, HW ROI binning %u == 0!\n",
-        	    		functionName, value );
-		return -1;
-	}
-	if( m_BinXReq != value )
-	{
-		m_BinXReq	= value;
-		m_fReconfig	= true;
-	}
-	return 0;
-}
-
-int	pgpRogue::SetBinX(	unsigned int	value	)
-{
-    static const char	*	functionName	= "pgpRogue::SetBinX";
-	if ( value == 0 )
-	{
-        errlogPrintf(	"%s: ERROR, ROI bin %u == 0!\n",
-        	    		functionName, value );
-		return -1;
-	}
-	m_BinX		= value;
-
-	// Update the AreaDetector parameter
-//	setIntegerParam( ADBinX,	m_BinX	);
-//	int	status = (int) UpdateADConfigParams( );
-	return 0;
-}
-
-int	pgpRogue::RequestBinY(	unsigned int	value	)
-{
-    static const char	*	functionName	= "pgpRogue::RequestBinY";
-	if ( value == 0 )
-	{
-        errlogPrintf(	"%s: ERROR, HW ROI binning %u == 0!\n",
-        	    		functionName, value );
-		return -1;
-	}
-	if( m_BinYReq != value )
-	{
-		m_BinYReq	= value;
-		m_fReconfig	= true;
-	}
-	return 0;
-}
-
-int	pgpRogue::SetBinY(	unsigned int	value	)
-{
-    static const char	*	functionName	= "pgpRogue::SetBinY";
-	if ( value == 0 )
-	{
-        errlogPrintf(	"%s: ERROR, ROI bin %u == 0!\n",
-        	    		functionName, value );
-		return -1;
-	}
-	m_BinY		= value;
-
-	// Update the AreaDetector parameter
-//	setIntegerParam( ADBinY,	m_BinY	);
-//	int	status = (int) UpdateADConfigParams( );
-	return 0;
-}
-
-#if 0
-int	pgpRogue::RequestTriggerMode(	int	value	)
-{
-	static const char	*	functionName	= "pgpRogue::RequestTriggerMode";
-	TriggerMode_t	tyTriggerMode	= static_cast<TriggerMode_t>( value );
-	if ( DEBUG_PGP_ROGUE >= 1 )
-		printf(	"%s: Requesting trigger mode %s ...\n",
-				functionName, TriggerModeToString( tyTriggerMode ) );
-	switch ( tyTriggerMode )
-	{
-	default:
-		m_TriggerModeReq = TRIGMODE_FREERUN;
-		break;
-	case TRIGMODE_FREERUN:
-	case TRIGMODE_EXT:
-	case TRIGMODE_PULSE:
-		m_TriggerModeReq = tyTriggerMode;
-		break;
-	}
-
-	// Make sure we enable the synchronous data acquisition
-	// This jump starts it after boot when autosave updates trigger mode
-#if 0
-	if( m_pSyncDataAcquirer != NULL )
-		m_pSyncDataAcquirer->SetEnabled();
-#endif
-	return 0;
-}
-
-int	pgpRogue::SetTriggerMode(	int	value	)
-{
-	static const char	*	functionName	= "pgpRogue::SetTriggerMode";
-	TriggerMode_t	tyTriggerMode	= static_cast<TriggerMode_t>( value );
-	if ( tyTriggerMode == m_TriggerMode )
-	{
-		if ( DEBUG_PGP_ROGUE >= 1 )
-			printf(	"%s: Trigger mode already %s.\n",
-					functionName, TriggerModeToString( tyTriggerMode ) );
-	}
-	else
-	{
-		if ( DEBUG_PGP_ROGUE >= 1 )
-			printf(	"%s: Setting trigger mode to %s ...\n",
-					functionName, TriggerModeToString( tyTriggerMode ) );
-		switch ( tyTriggerMode )
-		{
-		default:
-			m_TriggerMode = TRIGMODE_FREERUN;
-			break;
-		case TRIGMODE_FREERUN:
-		case TRIGMODE_EXT:
-		case TRIGMODE_PULSE:
-			m_TriggerMode = tyTriggerMode;
-			break;
-		}
-	}
-
-	// Update the AreaDetector parameter
-//	setIntegerParam( ADTriggerMode,	m_TriggerMode	);
-	return 0;
-}
-#endif
-
 
 /** Report status of the driver.
   * Prints details about the driver if details > 0.
@@ -1285,15 +819,15 @@ void pgpRogue::report( FILE * fp, int details )
 		fprintf( fp, "  board:              %u\n",   m_board );
 		fprintf( fp, "  Lane:              %u\n",   m_lane );
 
-		fprintf( fp, "  Sensor bits:       %u\n",   m_ClNumBits );
+//		fprintf( fp, "  Sensor bits:       %u\n",   m_ClNumBits );
 		fprintf( fp, "  Sensor width:      %zd\n",  m_ClMaxWidth );
 		fprintf( fp, "  Sensor height:     %zd\n",  m_ClMaxHeight );
-		fprintf( fp, "  Horiz taps:        %d\n",   m_ClHTaps );
-		fprintf( fp, "  Vert  taps:        %d\n",   m_ClVTaps );
+//		fprintf( fp, "  Horiz taps:        %d\n",   m_ClHTaps );
+//		fprintf( fp, "  Vert  taps:        %d\n",   m_ClVTaps );
 //		fprintf( fp, "  Mode:              %s\n",   CamlinkModeToString( m_CamlinkMode ) );
 	//      fprintf( fp, "  Trig Level:        %s\n",   TrigLevelToString( m_trigLevel ) );
 		fprintf( fp, "  TraceLevel:  	 %u\n",   GetTraceLevel() );
-		fprintf( fp, "  Frame Count:       %u\n",   m_ArrayCounter );
+//		fprintf( fp, "  Frame Count:       %u\n",   m_ArrayCounter );
 
         fprintf( fp, "\n" );
     }

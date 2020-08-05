@@ -3,12 +3,12 @@
 
 #include <dbScan.h>
 #include <link.h>
-#include "pgpClDev.h"
+#include "pgpRogueDev.h"
 
 typedef struct _rogue_info_t
 {
 	std::string		m_varPath;
-	pgpClDevPtr		m_pClDev;
+	pgpRogueDevPtr		m_pRogueDev;
 	bool			m_fSignedValue;
 }	rogue_info_t;
 

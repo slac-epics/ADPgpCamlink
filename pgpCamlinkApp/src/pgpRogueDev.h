@@ -9,17 +9,13 @@
 //////////////////////////////////////////////////////////////////////////////
 //
 //	pgpRogueDev.h
-//	pgpRogueDev.h
 //
-//	Header file for pgpRogueDev class.
 //	Header file for pgpRogueDev class.
 //	It provides a device class to encapsulate
 //	PglCl framegrabber based camlink cameras
 //	via the SLAC Rogue API
 //
 #ifndef	pgpRogueDev_H
-#ifndef	pgpRogueDev_H
-#define	pgpRogueDev_H
 #define	pgpRogueDev_H
 
 #include <memory>
@@ -40,30 +36,24 @@
 
 // ADPgpCamlink headers
 #include "ClMemoryMaster.h"
-#include "ImageStream.h"
+//#include "ImageStream.h"
 #include "FebMemoryMaster.h"
 
-#define	N_AXI_LANES	4
-#define	N_AXI_CHAN	4
+//#define	N_AXI_LANES	4
+//#define	N_AXI_CHAN	4
 
 #define PGPCL_DATACHAN_FEB_REG_ACCESS	0
 #define PGPCL_DATACHAN_FEB_FRAME_ACCESS	1
 class pgpClAddrMap;
 typedef std::shared_ptr<pgpClAddrMap> pgpClAddrMapPtr;
 
-typedef int (* ImageCallback)( void * pClientContext, ImageCbInfo * pCbInfo );
-
 
 ///	pgpRogueDev class
-///	pgpRogueDev class
-class pgpRogueDev :	public rogue::LibraryBase
 class pgpRogueDev :	public rogue::LibraryBase
 {
 public:		//	Public member functions
 	// Create a static class creator to return our custom class wrapped with a shared pointer
 	static std::shared_ptr<pgpRogueDev> create( unsigned int board, unsigned int lane ) {
-	static std::shared_ptr<pgpRogueDev> create( unsigned int board, unsigned int lane ) {
-		static std::shared_ptr<pgpRogueDev> ret = std::make_shared<pgpRogueDev>( board, lane );
 		static std::shared_ptr<pgpRogueDev> ret = std::make_shared<pgpRogueDev>( board, lane );
 
 		return(ret);
@@ -71,11 +61,9 @@ public:		//	Public member functions
 
 	///	Constructor
 	pgpRogueDev(	unsigned int				board,
-	pgpRogueDev(	unsigned int				board,
-				unsigned int				channel	);
+					unsigned int				channel	);
 
 	/// Destructor
-	virtual ~pgpRogueDev();
 	virtual ~pgpRogueDev();
 
 	void connect( );
@@ -101,8 +89,6 @@ public:		//	Public member functions
 		return m_LibVersion;
 	}
 
-	void ProcessImage(	ImageCbInfo				*	pCbInfo );
-
 	/// Configure timing for LCLS-I
 	void ConfigureLclsTimingV1();
 
@@ -112,11 +98,6 @@ public:		//	Public member functions
 	void Feb0PllConfig();
 
 	void ResetCounters();
-
-	void cancelImageCallbacks( );
-
-	void requestImageCallbacks(	void			*	pCallbackClient,
-								ImageCallback		CallbackClientFunc );
 
 	int		setTriggerEnable( unsigned int triggerNum, bool fEnable );
 	bool	getTriggerEnable( unsigned int triggerNum );
@@ -160,28 +141,22 @@ private:
 	///
 	rogue::hardware::axi::AxiMemMapPtr 			m_pAxiMemMap;
 	// For dataChan we only use dataChan[2]
-	rogue::hardware::axi::AxiStreamDmaPtr		m_pDataChan[N_AXI_CHAN];
+//	rogue::hardware::axi::AxiStreamDmaPtr		m_pDataChan[N_AXI_CHAN];
 	rogue::hardware::axi::AxiStreamDmaPtr		m_pFebRegChan;
-	rogue::hardware::axi::AxiStreamDmaPtr		m_pFebFrameChan;
+//	rogue::hardware::axi::AxiStreamDmaPtr		m_pFebFrameChan;
 	ClMemoryMasterPtr				 			m_pClMemMaster;	// not needed
-	FebMemoryMasterPtr				 			m_pFebMemMaster;	// not needed
-	ImageStreamPtr								m_pImageStream;
+	FebMemoryMasterPtr				 			m_pFebMemMaster;
 	rogue::protocols::srp::SrpV3Ptr				m_pSrpFeb;
 	//rogue::LibraryBasePtr						m_pRogueLib;
 	pgpClAddrMapPtr								m_pRogueLib;
-	
-	void									*	m_pCallbackClient;
-	ImageCallback								m_CallbackClientFunc;
 };
 
 // Shared pointer alias
 typedef std::shared_ptr<pgpRogueDev> pgpRogueDevPtr;
-typedef std::shared_ptr<pgpRogueDev> pgpRogueDevPtr;
 
-__inline__ unsigned dmaDest(unsigned lane, unsigned vc)
-{
-    return (lane<<8) | vc;
-}
+//__inline__ unsigned dmaDest(unsigned lane, unsigned vc)
+//{
+//    return (lane<<8) | vc;
+//}
 
-#endif	//	pgpRogueDev_H
 #endif	//	pgpRogueDev_H

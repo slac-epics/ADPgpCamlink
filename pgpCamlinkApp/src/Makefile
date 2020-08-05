@@ -9,7 +9,9 @@ DBD += pgpCamlinkSupport.dbd
 DBD += pgpClSerialDev.dbd
 DBD += devRogue.dbd
 
+# TODO: Rethink naming scheme for C++ classes
 LIB_SRCS   		+= pgpRogue.cpp
+LIB_SRCS   		+= pgpRogueDev.cpp
 LIB_SRCS		+= devRogue.cpp
 
 LIB_SRCS   		+= pgpCamlink.cpp
