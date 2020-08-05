@@ -1,3 +1,18 @@
+//////////////////////////////////////////////////////////////////////////////
+// This file is part of 'ADPgpCamlink'.
+// It is subject to the license terms in the LICENSE.txt file found in the 
+// top-level directory of this distribution and at: 
+//    https://confluence.slac.stanford.edu/display/ppareg/LICENSE.html. 
+// No part of 'ADPgpCamlink', including this file, 
+// may be copied, modified, propagated, or distributed except according to 
+// the terms contained in the LICENSE.txt file.
+//////////////////////////////////////////////////////////////////////////////
+//
+//	devRogue.h
+//
+//	Header file for devRogue class.
+//	It provides the EPICS record interface to a pgpRogueDev device.
+//
 #ifndef DEV_ROGUE_H
 #define DEV_ROGUE_H
 
@@ -7,9 +22,9 @@
 
 typedef struct _rogue_info_t
 {
-	std::string		m_varPath;
+	std::string			m_varPath;
 	pgpRogueDevPtr		m_pRogueDev;
-	bool			m_fSignedValue;
+	bool				m_fSignedValue;
 }	rogue_info_t;
 
 template<class R>		   int		 devRogue_init_record(	R * record, DBLINK link	);

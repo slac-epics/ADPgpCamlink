@@ -11,9 +11,8 @@
 //	pgpRogueDev.h
 //
 //	Header file for pgpRogueDev class.
-//	It provides a device class to encapsulate
-//	PglCl framegrabber based camlink cameras
-//	via the SLAC Rogue API
+//	It provides a templated interface to SLAC Generic AXI Hardware registers
+//	via the Rogue LibraryBase C++ API
 //
 #ifndef	pgpRogueDev_H
 #define	pgpRogueDev_H
@@ -21,8 +20,6 @@
 #include <memory>
 #include <string>
 #include <string.h>
-#include <epicsMutex.h>
-#include <epicsTime.h>
 
 // rogue headers 
 #include <rogue/Helpers.h>
@@ -36,11 +33,7 @@
 
 // ADPgpCamlink headers
 #include "ClMemoryMaster.h"
-//#include "ImageStream.h"
 #include "FebMemoryMaster.h"
-
-//#define	N_AXI_LANES	4
-//#define	N_AXI_CHAN	4
 
 #define PGPCL_DATACHAN_FEB_REG_ACCESS	0
 #define PGPCL_DATACHAN_FEB_FRAME_ACCESS	1
@@ -61,7 +54,7 @@ public:		//	Public member functions
 
 	///	Constructor
 	pgpRogueDev(	unsigned int				board,
-					unsigned int				channel	);
+					unsigned int				channel	); /// TODO: support all channels
 
 	/// Destructor
 	virtual ~pgpRogueDev();
@@ -115,7 +108,6 @@ private:
 	std::string			m_devName;
 	std::string			m_DrvVersion;	// Driver Version
 	std::string			m_LibVersion;	// Library Version
-	epicsMutexId		m_devLock;
 
 	///
 	// Firmware Lane assignments:
@@ -141,9 +133,7 @@ private:
 	///
 	rogue::hardware::axi::AxiMemMapPtr 			m_pAxiMemMap;
 	// For dataChan we only use dataChan[2]
-//	rogue::hardware::axi::AxiStreamDmaPtr		m_pDataChan[N_AXI_CHAN];
 	rogue::hardware::axi::AxiStreamDmaPtr		m_pFebRegChan;
-//	rogue::hardware::axi::AxiStreamDmaPtr		m_pFebFrameChan;
 	ClMemoryMasterPtr				 			m_pClMemMaster;	// not needed
 	FebMemoryMasterPtr				 			m_pFebMemMaster;
 	rogue::protocols::srp::SrpV3Ptr				m_pSrpFeb;
@@ -153,10 +143,5 @@ private:
 
 // Shared pointer alias
 typedef std::shared_ptr<pgpRogueDev> pgpRogueDevPtr;
-
-//__inline__ unsigned dmaDest(unsigned lane, unsigned vc)
-//{
-//    return (lane<<8) | vc;
-//}
 
 #endif	//	pgpRogueDev_H

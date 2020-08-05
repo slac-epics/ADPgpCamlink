@@ -44,8 +44,6 @@
 
 #define PGPCL_DATACHAN_FEB_REG_ACCESS	0
 #define PGPCL_DATACHAN_FEB_FRAME_ACCESS	1
-//class pgpClAddrMap;
-//typedef std::shared_ptr<pgpClAddrMap> pgpClAddrMapPtr;
 
 typedef int (* ImageCallback)( void * pClientContext, ImageCbInfo * pCbInfo );
 
@@ -132,17 +130,11 @@ private:
 	// DMA[lane].DEST[2] = Camera UART
 	// DMA[lane].DEST[255:3] = Unused
 	///
-//	rogue::hardware::axi::AxiMemMapPtr 			m_pAxiMemMap;
+
 	// For dataChan we only use dataChan[2]
 	rogue::hardware::axi::AxiStreamDmaPtr		m_pDataChan[N_AXI_CHAN];
-//	rogue::hardware::axi::AxiStreamDmaPtr		m_pFebRegChan;
 	rogue::hardware::axi::AxiStreamDmaPtr		m_pFebFrameChan;
-//	ClMemoryMasterPtr				 			m_pClMemMaster;	// not needed
-//	FebMemoryMasterPtr				 			m_pFebMemMaster;	// not needed
 	ImageStreamPtr								m_pImageStream;
-//	rogue::protocols::srp::SrpV3Ptr				m_pSrpFeb;
-	//rogue::LibraryBasePtr						m_pRogueLib;
-//	pgpClAddrMapPtr								m_pRogueLib;
 	
 	void									*	m_pCallbackClient;
 	ImageCallback								m_CallbackClientFunc;
@@ -150,10 +142,5 @@ private:
 
 // Shared pointer alias
 typedef std::shared_ptr<pgpClDev> pgpClDevPtr;
-
-//__inline__ unsigned dmaDest(unsigned lane, unsigned vc)
-//{
-//    return (lane<<8) | vc;
-//}
 
 #endif	//	pgpClDev_H

@@ -3,7 +3,7 @@
 #include <alarm.h>
 #include <link.h>
 
-#include <devSup.h>
+//#include <devSup.h>
 #include <dbCommon.h>
 #include <aiRecord.h>
 #include <aoRecord.h>

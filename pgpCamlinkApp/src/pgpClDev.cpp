@@ -142,7 +142,7 @@ pgpClDev::pgpClDev(
 	// Connect Rogue Library
 	//
 	//m_pRogueLib = rogue::LibraryBase::create();
-	//m_pRogueLib = pgpClAddrMap::create();
+	//m_pRogueLib = rogueAddrMap::create();
 
 	//
 	// Create FEB Data Channels

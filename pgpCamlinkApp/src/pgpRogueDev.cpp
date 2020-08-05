@@ -10,13 +10,18 @@
 //
 //	pgpRogueDev driver
 //
-//	device support using rogue LibraryBase API
+//	Header file for pgpRogueDev class.
+//	It provides a templated interface to SLAC Generic AXI Hardware registers
+//	via the Rogue LibraryBase C++ API
 //
 
 #include <stdio.h>
 #include <iostream>
 #include <fstream>
 #include <typeinfo>
+#include <sys/stat.h>
+#include <fcntl.h>
+
 
 // rogue headers
 #include "rogue/GeneralError.h"
@@ -157,14 +162,10 @@ pgpRogueDev::pgpRogueDev(
 	m_lane(			lane	),
 	m_fConnected(	0		),
 	m_devName(				),
-	m_devLock(				),
 	m_pAxiMemMap(			),
 	m_pSrpFeb(				)
 {
 	const char		*	functionName	= "pgpRogueDev::pgpRogueDev";
-
-	// Create mutexes
-    m_devLock	= epicsMutexMustCreate();
 
 	/*
 	 * Check arguments
@@ -173,14 +174,6 @@ pgpRogueDev::pgpRogueDev(
 	char	acDevName[60];
 	sprintf( acDevName, "/dev/datadev_%u", board );
 	m_devName = acDevName;
-
-#if 0
-	uint8_t mask[DMA_MASK_SIZE];
-	dmaInitMaskBytes(mask);
-	for (unsigned lane=0; lane<4; lane++) {
-		dmaAddMaskBytes((uint8_t*)mask, (lane<<8 | channel));
-	}
-#endif
 
 	m_LibVersion = rogue::Version::current();
 	// See if we can connect to the device
@@ -200,7 +193,7 @@ pgpRogueDev::pgpRogueDev(
 			//printf("deviceId        : %x\n", vsn.deviceId);
 			//printf("buildString     : %s\n", vsn.buildString);
 
-			// TODO: Need a better mapping of these version strings to EPICS PVs
+			// TODO: Need a better mapping of these version strings to PVs
 			m_DrvVersion = vsn.firmwareVersion;
 			//m_LibVersion = vsn.buildString;
 		}
@@ -213,14 +206,6 @@ pgpRogueDev::pgpRogueDev(
 	m_pRogueLib = rogueAddrMap::create();
 
 	//
-	// Create FEB Data Channels
-	// TODO: Make a function than encapsulates this
-	uint32_t	dest; dest = (0x100 * m_lane) + PGPCL_DATACHAN_FEB_REG_ACCESS;
-	m_pFebRegChan	= rogue::hardware::axi::AxiStreamDma::create( m_devName, dest, true);
-	dest = (0x100 * m_lane) + PGPCL_DATACHAN_FEB_FRAME_ACCESS;
-//	m_pFebFrameChan	= rogue::hardware::axi::AxiStreamDma::create( m_devName, dest, true);
-
-	//
 	// Connect DATACHAN 0 ClinkDev KCU1500 Register Access
 	//
 	m_pAxiMemMap		= rogue::hardware::axi::AxiMemMap::create( m_devName );
@@ -230,6 +215,13 @@ pgpRogueDev::pgpRogueDev(
 	addMemory( szMemName, m_pAxiMemMap );
 	m_pRogueLib->addMemory( szMemName, m_pAxiMemMap );
 	printf("pgpRogueDev: addMemory AxiMemMap interface %s\n", szMemName );
+
+	//
+	// Create FEB Data Channel
+	// TODO: Make a function than encapsulates this
+	uint32_t	dest;
+	dest = (0x100 * m_lane) + PGPCL_DATACHAN_FEB_REG_ACCESS;
+	m_pFebRegChan	= rogue::hardware::axi::AxiStreamDma::create( m_devName, dest, true);
 
 	//
 	// Connect DATACHAN 0 FEB Register Access
@@ -253,15 +245,12 @@ pgpRogueDev::pgpRogueDev(
 	m_pFebMemMaster = FebMemoryMaster::create( );
 	m_pFebMemMaster->setSlave( m_pSrpFeb );
 
-#if 0
-	printf( "NOT Parsing ROGUE_ADDR_MAP!\n" );
-#else
 	printf( "Parsing ROGUE_ADDR_MAP\n" );
 	parseMemMap( ROGUE_ADDR_MAP ); // From generated rogueAddrMap.h
 	printf( "ROGUE_ADDR_MAP parsed successfully\n" );
 	m_pRogueLib->parseMemMap( ROGUE_ADDR_MAP );
 	printf( "m_pRogueLib: ROGUE_ADDR_MAP parsed successfully\n" );
-#endif
+
 	//const mapVarPtr_t &	mapVars		= getVariableList();
 	//printf( "%s: %zu variables\n", functionName, mapVars.size() );
 	//printf( "m_pRogueLib: %zu variables\n", (m_pRogueLib->getVariableList()).size() );
@@ -297,14 +286,7 @@ pgpRogueDev::pgpRogueDev(
 	showVariable( "ClinkDevRoot.ClinkFeb[0].AxiVersion.FpgaVersion", true );
 	showVariable( "ClinkDevRoot.ClinkFeb[0].AxiVersion.UpTimeCnt", true );
 
-	//
-	// Connect DATACHAN 1 Camera Frames
-//	m_pImageStream	= ImageStream::create(this);
-//	m_pFebFrameChan->addSlave( m_pImageStream );
-	// or rogueStreamConnect( m_pFebFrameChan, m_pImageStream );
-
 	m_fConnected = 1;	// Do we need this?
-	//StartRun( m_fd );
 }
 
 /// virtual Destructor
@@ -398,7 +380,7 @@ void pgpRogueDev::Feb0PllConfig()
 #if 0
 	{
 		# PllConfig is internal python variable
-		# TODO: Will need to select clock via EPICS st.cmd or Opal config file
+		# TODO: Will need to select clock via st.cmd or Opal config file
 		if (self.PllConfig[i].get() == '85MHz'):
 			self.Pll[i].Config85MHz()            # Check for 80 MHz configuration
 		if (self.PllConfig[i].get() == '80MHz'):
@@ -414,9 +396,6 @@ void pgpRogueDev::Feb0PllConfig()
 
 	// ResetFebCounters() same as python ClinkTop.CntRst()
 }
-
-#include <sys/stat.h>
-#include <fcntl.h>
 
 /// Load Config file
 void pgpRogueDev::LoadConfigFile( const char * pszFilePath )
