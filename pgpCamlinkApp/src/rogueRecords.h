@@ -8,9 +8,9 @@
 // the terms contained in the LICENSE.txt file.
 //////////////////////////////////////////////////////////////////////////////
 //
-//	devRogue.h
+//	rogueRecords.h
 //
-//	Header file for devRogue class.
+//	Header file for rogueRecords class.
 //	It provides the EPICS record interface to a pgpRogueDev device.
 //
 #ifndef DEV_ROGUE_H
@@ -27,13 +27,13 @@ typedef struct _rogue_info_t
 	bool				m_fSignedValue;
 }	rogue_info_t;
 
-template<class R>		   int		 devRogue_init_record(	R * record, DBLINK link	);
-//template<class R, class EV, class RV> int devRogue_read_record( R * record, EV & epicsVal, RV &rogueVal );
-template<class R, class V> int		 devRogue_read_record(  R * record, V & valueRet );
-template<class R, class V> int		 devRogue_write_record(	R * record, const V & value );
-template<class R>		   int		 devRogue_init_record_specialized(	R * record	);
-template<class R>		   int		 devRogue_read_record_specialized(	R * record	);
-template<class R>		   int		 devRogue_write_record_specialized(	R * record	);
-template<class R>		   IOSCANPVT devRogue_getioscanpvt_specialized(	R * record	);
+template<class R>		   int		 rogue_init_record(	R * record, DBLINK link	);
+//template<class R, class EV, class RV> int rogue_read_record( R * record, EV & epicsVal, RV &rogueVal );
+template<class R, class V> int		 rogue_read_record(  R * record, V & valueRet );
+template<class R, class V> int		 rogue_write_record(	R * record, const V & value );
+template<class R>		   int		 rogue_init_record_specialized(	R * record	);
+template<class R>		   int		 rogue_read_record_specialized(	R * record	);
+template<class R>		   int		 rogue_write_record_specialized(	R * record	);
+template<class R>		   IOSCANPVT rogue_getioscanpvt_specialized(	R * record	);
 
 #endif	/* DEV_ROGUE_H */

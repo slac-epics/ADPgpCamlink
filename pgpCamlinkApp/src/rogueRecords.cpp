@@ -20,7 +20,7 @@
 #include <epicsExport.h>
 
 //#include "drvRogue.h"
-#include "devRogue.h"
+#include "rogueRecords.h"
 #include "pgpRogue.h"
 
 
@@ -29,32 +29,32 @@ epicsExportAddress( int,  DEBUG_ROGUE_DEV );
 
 
 static int
-devRogue_bad_field(
+rogue_bad_field(
 	void *record,
 	const char *message,
 	const char *fieldname )
 {
-	fprintf( stderr, "devRogue_init_record: %s %s\n", message, fieldname );
+	fprintf( stderr, "rogue_init_record: %s %s\n", message, fieldname );
 	//recGblRecordError( S_db_badField, record, message );
 	//return S_db_badField;
 	return 15;
 }
 
 template < class R >
-int devRogue_init_record(
+int rogue_init_record(
 	R		*	record,
 	DBLINK		link )
 {
-	const char * functionName = "template devRogue_init_record";
+	const char * functionName = "template rogue_init_record";
 	if ( link.type != INST_IO )
 	{
-		return devRogue_bad_field( record, "wrong link type", "" );
+		return rogue_bad_field( record, "wrong link type", "" );
 	}
 	struct instio      *pinstio = &link.value.instio;
 
 	if ( !pinstio->string )
 	{
-		return devRogue_bad_field( record, "invalid link", "" );
+		return rogue_bad_field( record, "invalid link", "" );
 	}
 
 	const char			*	sinp	= pinstio->string;
@@ -66,7 +66,7 @@ int devRogue_init_record(
 	status = sscanf( sinp, "B%u L%u %511s", &board, &lane, varPath );
 	if ( status != 3 )
 	{
-		return devRogue_bad_field( record, "cannot parse INP or OUT field!\n%s\n", sinp );
+		return rogue_bad_field( record, "cannot parse INP or OUT field!\n%s\n", sinp );
 	}
 
 	pgpRogue	*	pRogue = pgpRogue::RogueFindByBoardLane( board, lane );
@@ -95,14 +95,14 @@ int devRogue_init_record(
 }
 
 template < class R, class V >
-int devRogue_read_record( R * record, V & valueRet )
+int rogue_read_record( R * record, V & valueRet )
 {
 	int					status		= 1;
 	rogue_info_t	*	pRogueInfo	= reinterpret_cast < rogue_info_t * >( record->dpvt );
 	status = pRogueInfo->m_pRogueDev->readVarPath( pRogueInfo->m_varPath.c_str(), valueRet );
 
 #if 0
-	const char 		*	functionName = "devRogue_read_record<R>";
+	const char 		*	functionName = "rogue_read_record<R>";
 	rogue::interfaces::memory::VariablePtr	pVar;
 	pVar = pRogueInfo->m_pRogueDev->getVariable( pRogueInfo->m_varPath );
 	if ( !pVar )
@@ -124,15 +124,15 @@ int devRogue_read_record( R * record, V & valueRet )
 }
 
 template < class R, class V >
-int devRogue_write_record( R * record, const V & value )
+int rogue_write_record( R * record, const V & value )
 {
-//	const char 		*	functionName = "devRogue_write_record<R>";
+//	const char 		*	functionName = "rogue_write_record<R>";
 	int					status		= 1;
 	rogue_info_t	*	pRogueInfo	= reinterpret_cast < rogue_info_t * >( record->dpvt );
 	status = pRogueInfo->m_pRogueDev->writeVarPath( pRogueInfo->m_varPath.c_str(), value );
 
 #if 0
-	// TODO: Can pVar lookup be moved into devRogue_init_record?
+	// TODO: Can pVar lookup be moved into rogue_init_record?
 	rogue::interfaces::memory::VariablePtr	pVar;
 	pVar = pRogueInfo->m_pRogueDev->getVariable( pRogueInfo->m_varPath );
 	if ( !pVar )
@@ -158,25 +158,25 @@ int devRogue_write_record( R * record, const V & value )
 #include <mbbiRecord.h>
 #include <mbboRecord.h>
 #include <waveformRecord.h>
-template int        devRogue_init_record(	longoutRecord	*, DBLINK );
-template int        devRogue_init_record(	aiRecord		*, DBLINK );
-template int        devRogue_init_record(	aoRecord		*, DBLINK );
-template int        devRogue_init_record(	biRecord		*, DBLINK );
-template int        devRogue_init_record(	boRecord		*, DBLINK );
-template int        devRogue_init_record(	mbbiRecord		*, DBLINK );
-template int        devRogue_init_record(	mbboRecord		*, DBLINK );
-template int        devRogue_init_record(	waveformRecord	*, DBLINK );
+template int        rogue_init_record(	longoutRecord	*, DBLINK );
+template int        rogue_init_record(	aiRecord		*, DBLINK );
+template int        rogue_init_record(	aoRecord		*, DBLINK );
+template int        rogue_init_record(	biRecord		*, DBLINK );
+template int        rogue_init_record(	boRecord		*, DBLINK );
+template int        rogue_init_record(	mbbiRecord		*, DBLINK );
+template int        rogue_init_record(	mbboRecord		*, DBLINK );
+template int        rogue_init_record(	waveformRecord	*, DBLINK );
 #endif
 
 #if 0
-template int        devRogue_read_record(	aiRecord * );
-template int        devRogue_read_record(	aoRecord * );
-template int        devRogue_read_record(	mbbiRecord * );
-template int        devRogue_read_record(	mbboRecord * );
-template int        devRogue_read_record(	waveformRecord * );
+template int        rogue_read_record(	aiRecord * );
+template int        rogue_read_record(	aoRecord * );
+template int        rogue_read_record(	mbbiRecord * );
+template int        rogue_read_record(	mbboRecord * );
+template int        rogue_read_record(	waveformRecord * );
 
-template int        devRogue_write_record(	aoRecord	*, const double		& value );
-template int        devRogue_write_record(	mbbiRecord	*, const uint64_t	& value );
+template int        rogue_write_record(	aoRecord	*, const double		& value );
+template int        rogue_write_record(	mbbiRecord	*, const uint64_t	& value );
 #endif
 
 // longin record support
@@ -184,9 +184,9 @@ template int        devRogue_write_record(	mbbiRecord	*, const uint64_t	& value 
 extern "C"
 {
 #endif
-template int        devRogue_init_record(	longinRecord	*, DBLINK );
-template int        devRogue_read_record(	longinRecord *, int64_t  & rogueVal );
-template int        devRogue_read_record(	longinRecord *, uint64_t & rogueVal );
+template int        rogue_init_record(	longinRecord	*, DBLINK );
+template int        rogue_read_record(	longinRecord *, int64_t  & rogueVal );
+template int        rogue_read_record(	longinRecord *, uint64_t & rogueVal );
 
 #ifdef USE_TYPED_DSET
 static long init_li( struct dbCommon * pCommon )
@@ -195,20 +195,20 @@ static long init_li( void * pCommon )
 #endif
 {
 	longinRecord	*	pRecord		= reinterpret_cast < longinRecord * >( pCommon );
-	int             	status		= devRogue_init_record( pRecord, pRecord->inp );
+	int             	status		= rogue_init_record( pRecord, pRecord->inp );
 	rogue_info_t	*	pRogueInfo	= reinterpret_cast < rogue_info_t * >( pRecord->dpvt );
 	if ( status == 0 )
 	{
 		if ( pRogueInfo->m_fSignedValue )
 		{
 			int64_t		rogueValue;
-			devRogue_read_record( pRecord, rogueValue );
+			rogue_read_record( pRecord, rogueValue );
 			pRecord->val = static_cast<epicsInt32>( rogueValue );
 		}
 		else
 		{
 			uint64_t	rogueValue;
-			devRogue_read_record( pRecord, rogueValue );
+			rogue_read_record( pRecord, rogueValue );
 			pRecord->val = static_cast<epicsInt32>( rogueValue );
 		}
 		//pRecord->linr = 0;		// prevent conversions
@@ -224,13 +224,13 @@ static long read_li( longinRecord	*	pRecord )
 	if ( pRogueInfo->m_fSignedValue )
 	{
 		int64_t		rogueValue;
-		status = devRogue_read_record( pRecord, rogueValue );
+		status = rogue_read_record( pRecord, rogueValue );
 		pRecord->val = static_cast<epicsInt32>( rogueValue );
 	}
 	else
 	{
 		uint64_t	rogueValue;
-		status = devRogue_read_record( pRecord, rogueValue );
+		status = rogue_read_record( pRecord, rogueValue );
 		pRecord->val = static_cast<epicsInt32>( rogueValue );
 	}
 	//pRecord->linr = 0;		// prevent conversions
@@ -246,7 +246,7 @@ static long read_li( void	*	record )
 	if ( pRogueInfo->m_fSignedValue )
 	{
 		int64_t		rogueValue	= -1L;
-		status = devRogue_read_record( pRecord, rogueValue );
+		status = rogue_read_record( pRecord, rogueValue );
 		pRecord->val = static_cast<epicsInt32>( rogueValue );
 		if ( DEBUG_ROGUE_DEV >= 4 )
 			printf( "%s: status %ld, intValue %d\n", functionName, status, pRecord->val );
@@ -254,7 +254,7 @@ static long read_li( void	*	record )
 	else
 	{
 		uint64_t	rogueValue	= 0L;
-		status = devRogue_read_record( pRecord, rogueValue );
+		status = rogue_read_record( pRecord, rogueValue );
 		pRecord->val = static_cast<epicsInt32>( rogueValue );
 		if ( DEBUG_ROGUE_DEV >= 4 )
 			printf( "%s: status %ld, uintValue %u\n", functionName, status, pRecord->val );
@@ -292,8 +292,8 @@ epicsExportAddress( dset, dsetRogueLI );
 #endif
 
 // longout record support
-template int        devRogue_init_record(	longoutRecord	*, DBLINK );
-template int        devRogue_write_record(	longoutRecord *, const uint64_t & rogueVal );
+template int        rogue_init_record(	longoutRecord	*, DBLINK );
+template int        rogue_write_record(	longoutRecord *, const uint64_t & rogueVal );
 
 #ifdef __cplusplus
 extern "C"
@@ -307,7 +307,7 @@ static long init_lo( void * pCommon )
 #endif
 {
 	longoutRecord	*	pRecord	= reinterpret_cast < longoutRecord * >( pCommon );
-	int             	status	= devRogue_init_record( pRecord, pRecord->out );
+	int             	status	= rogue_init_record( pRecord, pRecord->out );
 	return status;
 }
 
@@ -328,14 +328,14 @@ static long write_lo( void	*	record )
 		if ( DEBUG_ROGUE_DEV >= 3 )
 			printf( "%s: status %ld, intValue %d\n", functionName, status, pRecord->val );
 		int64_t		rogueValue	= static_cast<int64_t>( pRecord->val );
-		status = devRogue_write_record( pRecord, rogueValue );
+		status = rogue_write_record( pRecord, rogueValue );
 	}
 	else
 	{
 		if ( DEBUG_ROGUE_DEV >= 3 )
 			printf( "%s: status %ld, uintValue %u\n", functionName, status, pRecord->val );
 		uint64_t	rogueValue	= static_cast<uint64_t>( pRecord->val );
-		status = devRogue_write_record( pRecord, rogueValue );
+		status = rogue_write_record( pRecord, rogueValue );
 	}
 	//pRecord->linr = 0;		// prevent conversions
 	return status;
@@ -378,8 +378,8 @@ extern "C"
 {
 #endif
 
-template int        devRogue_init_record(	aiRecord	*, DBLINK );
-template int        devRogue_read_record(	aiRecord	*, double  & rogueVal );
+template int        rogue_init_record(	aiRecord	*, DBLINK );
+template int        rogue_read_record(	aiRecord	*, double  & rogueVal );
 
 #ifdef USE_TYPED_DSET
 static long init_ai( struct dbCommon * pCommon )
@@ -388,10 +388,10 @@ static long init_ai( void * pCommon )
 #endif
 {
 	aiRecord	*	pRecord	= reinterpret_cast < aiRecord * >( pCommon );
-	int             status	= devRogue_init_record( pRecord, pRecord->inp );
+	int             status	= rogue_init_record( pRecord, pRecord->inp );
 	if ( status == 0 )
 	{
-		devRogue_read_record( pRecord, pRecord->val );
+		rogue_read_record( pRecord, pRecord->val );
 	}
 	return status;
 }
@@ -400,7 +400,7 @@ static long init_ai( void * pCommon )
 static long read_ai( aiRecord	*	pRecord )
 {
 	long	status = 0;
-	devRogue_read_record( pRecord, pRecord->val );
+	rogue_read_record( pRecord, pRecord->val );
 	return status;
 }
 #else
@@ -409,7 +409,7 @@ static long read_ai( void	*	record )
 	const char 		*	functionName = "read_ai";
 	long				status = 0;
 	aiRecord		*	pRecord	= reinterpret_cast <aiRecord *>( record );
-	devRogue_read_record( pRecord, pRecord->val );
+	rogue_read_record( pRecord, pRecord->val );
 	if ( DEBUG_ROGUE_DEV >= 4 )
 		printf( "%s: status %ld, aiValue %f\n", functionName, status, pRecord->val );
 	return status;
@@ -444,8 +444,8 @@ epicsExportAddress( dset, dsetRogueAI );
 #endif
 
 // ao record support
-template int        devRogue_init_record(	aoRecord *, DBLINK );
-template int        devRogue_write_record(	aoRecord *, const double & rogueVal );
+template int        rogue_init_record(	aoRecord *, DBLINK );
+template int        rogue_write_record(	aoRecord *, const double & rogueVal );
 
 #ifdef __cplusplus
 extern "C"
@@ -455,13 +455,13 @@ extern "C"
 static long init_ao( void * pCommon )
 {
 	aoRecord	*	pRecord	= reinterpret_cast < aoRecord * >( pCommon );
-	return devRogue_init_record( pRecord, pRecord->out );
+	return rogue_init_record( pRecord, pRecord->out );
 }
 
 static long write_ao( void	*	record )
 {
 	aoRecord	*	pRecord		= reinterpret_cast <aoRecord *>( record );
-	int				status		=  devRogue_write_record( pRecord, pRecord->val );
+	int				status		=  rogue_write_record( pRecord, pRecord->val );
 
 	const char 	*	functionName = "write_ao";
 	if ( DEBUG_ROGUE_DEV >= 3 )
@@ -492,8 +492,8 @@ extern "C"
 {
 #endif
 
-template int        devRogue_init_record(	biRecord	*, DBLINK );
-template int        devRogue_read_record(	biRecord	*, bool  & rogueVal );
+template int        rogue_init_record(	biRecord	*, DBLINK );
+template int        rogue_read_record(	biRecord	*, bool  & rogueVal );
 
 #ifdef USE_TYPED_DSET
 static long init_bi( struct dbCommon * pCommon )
@@ -502,11 +502,11 @@ static long init_bi( void * pCommon )
 #endif
 {
 	biRecord	*	pRecord	= reinterpret_cast < biRecord * >( pCommon );
-	int             status	= devRogue_init_record( pRecord, pRecord->inp );
+	int             status	= rogue_init_record( pRecord, pRecord->inp );
 	if ( status == 0 )
 	{
 		bool	rogueValue;
-		devRogue_read_record( pRecord, rogueValue );
+		rogue_read_record( pRecord, rogueValue );
 		pRecord->rval = static_cast<epicsEnum16>( rogueValue );
 
 		//pRecord->linr = 0;		// prevent conversions
@@ -519,7 +519,7 @@ static long read_bi( biRecord	*	pRecord )
 {
 	long	status = 0;
 	bool	rogueValue;
-	devRogue_read_record( pRecord, rogueValue );
+	rogue_read_record( pRecord, rogueValue );
 	pRecord->rval = static_cast<epicsEnum16>( rogueValue );
 	//pRecord->linr = 0;		// prevent conversions
 	return status;
@@ -531,7 +531,7 @@ static long read_bi( void	*	record )
 	long				status = 0;
 	biRecord		*	pRecord	= reinterpret_cast <biRecord *>( record );
 	bool				rogueValue;
-	devRogue_read_record( pRecord, rogueValue );
+	rogue_read_record( pRecord, rogueValue );
 	pRecord->rval = static_cast<epicsEnum16>( rogueValue );
 	if ( DEBUG_ROGUE_DEV >= 4 )
 		printf( "%s: status %ld, biValue %d\n", functionName, status, pRecord->val );
@@ -567,8 +567,8 @@ epicsExportAddress( dset, dsetRogueBI );
 #endif
 
 // bo record support
-template int        devRogue_init_record(	boRecord *, DBLINK );
-template int        devRogue_write_record(	boRecord *, const uint64_t & rogueVal );
+template int        rogue_init_record(	boRecord *, DBLINK );
+template int        rogue_write_record(	boRecord *, const uint64_t & rogueVal );
 
 #ifdef __cplusplus
 extern "C"
@@ -578,14 +578,14 @@ extern "C"
 static long init_bo( void * pCommon )
 {
 	boRecord	*	pRecord	= reinterpret_cast < boRecord * >( pCommon );
-	return devRogue_init_record( pRecord, pRecord->out );
+	return rogue_init_record( pRecord, pRecord->out );
 }
 
 static long write_bo( void	*	record )
 {
 	boRecord	*	pRecord		= reinterpret_cast <boRecord *>( record );
 	bool			rogueValue	= static_cast<bool>( pRecord->val );
-	int				status		=  devRogue_write_record( pRecord, rogueValue );
+	int				status		=  rogue_write_record( pRecord, rogueValue );
 
 	const char 	*	functionName = "write_bo";
 	if ( DEBUG_ROGUE_DEV >= 3 )
@@ -616,8 +616,8 @@ extern "C"
 {
 #endif
 
-template int        devRogue_init_record(	mbbiRecord	*, DBLINK );
-template int        devRogue_read_record(	mbbiRecord	*, uint64_t & rogueVal );
+template int        rogue_init_record(	mbbiRecord	*, DBLINK );
+template int        rogue_read_record(	mbbiRecord	*, uint64_t & rogueVal );
 
 #ifdef USE_TYPED_DSET
 static long init_mbbi( struct dbCommon * pCommon )
@@ -626,11 +626,11 @@ static long init_mbbi( void * pCommon )
 #endif
 {
 	mbbiRecord	*	pRecord	= reinterpret_cast < mbbiRecord * >( pCommon );
-	int             status	= devRogue_init_record( pRecord, pRecord->inp );
+	int             status	= rogue_init_record( pRecord, pRecord->inp );
 	if ( status == 0 )
 	{
 		uint64_t	rogueValue;
-		devRogue_read_record( pRecord, rogueValue );
+		rogue_read_record( pRecord, rogueValue );
 		pRecord->rval = static_cast<epicsEnum16>( rogueValue );
 	}
 	return status;
@@ -641,7 +641,7 @@ static long read_mbbi( mbbiRecord	*	pRecord )
 {
 	long		status = 0;
 	uint64_t	rogueValue;
-	devRogue_read_record( pRecord, rogueValue );
+	rogue_read_record( pRecord, rogueValue );
 	pRecord->rval = static_cast<epicsEnum16>( rogueValue );
 	return status;
 }
@@ -652,7 +652,7 @@ static long read_mbbi( void	*	record )
 	long				status = 0;
 	mbbiRecord		*	pRecord	= reinterpret_cast <mbbiRecord *>( record );
 	uint64_t			rogueValue;
-	devRogue_read_record( pRecord, rogueValue );
+	rogue_read_record( pRecord, rogueValue );
 	pRecord->rval = static_cast<epicsEnum16>( rogueValue );
 	if ( DEBUG_ROGUE_DEV >= 4 )
 		printf( "%s: status %ld, mbbiValue %d\n", functionName, status, pRecord->val );
@@ -688,8 +688,8 @@ epicsExportAddress( dset, dsetRogueMBBI );
 #endif
 
 // mbbo record support
-template int        devRogue_init_record(	mbboRecord *, DBLINK );
-template int        devRogue_write_record(	mbboRecord *, const uint64_t & rogueVal );
+template int        rogue_init_record(	mbboRecord *, DBLINK );
+template int        rogue_write_record(	mbboRecord *, const uint64_t & rogueVal );
 
 #ifdef __cplusplus
 extern "C"
@@ -699,14 +699,14 @@ extern "C"
 static long init_mbbo( void * pCommon )
 {
 	mbboRecord	*	pRecord	= reinterpret_cast < mbboRecord * >( pCommon );
-	return devRogue_init_record( pRecord, pRecord->out );
+	return rogue_init_record( pRecord, pRecord->out );
 }
 
 static long write_mbbo( void	*	record )
 {
 	mbboRecord	*	pRecord		= reinterpret_cast <mbboRecord *>( record );
 	uint64_t		rogueValue	= static_cast<uint64_t>( pRecord->val );
-	int				status		= devRogue_write_record( pRecord, rogueValue );
+	int				status		= rogue_write_record( pRecord, rogueValue );
 
 	const char 	*	functionName = "write_mbbo";
 	if ( DEBUG_ROGUE_DEV >= 3 )
