@@ -11,8 +11,6 @@
 #define	PGP_ROGUE_H
 /** Rogue register I/O driver via SLAC's Rogue software library **/
 
-
-
 #ifdef __cplusplus
 
 #include <map>
@@ -21,7 +19,7 @@
 #include <epicsMutex.h>
 #include <epicsThread.h>
 #include <dbScan.h>
-#include "pgpRogueDev.h"
+#include "axiRogueLib.h"
 #include <rogue/protocols/batcher/Data.h>
 
 
@@ -56,11 +54,6 @@ public:		//	Public member functions
     int DisconnectRogue( );
 
 	int		UpdateStatus( int	newStatus	);
-
-//    int	GetAcquireCount()
-//	{
-//		return m_acquireCount;
-//	}
 
     void	report(	FILE	*	fp,	int	details	);
 
@@ -248,14 +241,11 @@ public:		//	Public member functions
 	/// Takes the reconfigure lock to make it thread safe
 	int		Reopen(	);
 
-//	int		CkDupTimeStamp(	const epicsTimeStamp*	pDest,
-//							int					*	pPulseNumRet );
-
     /// SetSerDisable
     int SetSerDisable( int value );
 
-	// Return shared_ptr to pgpRogueDev device
-	pgpRogueDevPtr				GetDevPtr( ) const
+	// Return shared_ptr to axiRogueLib device
+	axiRogueLibPtr				GetDevPtr( ) const
 	{
 		return m_pDev;
 	}
@@ -319,13 +309,11 @@ protected:	//	Protected member variables
 	bool			m_fReopen;			// True when we need to reread the configuration file
 
 private:	//	Private member variables
-	pgpRogueDevPtr 	m_pDev;			// shared_ptr to pgpRogueDev device
+	axiRogueLibPtr 	m_pDev;			// shared_ptr to axiRogueLib device
 
 	unsigned int	m_board;		// index of Pgpcamlink card
 	unsigned int	m_lane;			// lane on  Pgpcamlink card
 	bool			m_fLcls2Timing;	// true to initialize w/ LCLS2 timing, false for LCLS1
-
-//	epicsTimeStamp	m_priorTimeStamp;	// Last timestamp for this event number
 
 	std::string		m_RogueClass;	// Manufacturer of camera
 	std::string		m_BuildStamp;	// camera info string

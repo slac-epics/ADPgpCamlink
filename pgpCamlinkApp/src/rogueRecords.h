@@ -11,19 +11,19 @@
 //	rogueRecords.h
 //
 //	Header file for rogueRecords class.
-//	It provides the EPICS record interface to a pgpRogueDev device.
+//	It provides the EPICS record interface to a axiRogueLib device.
 //
 #ifndef DEV_ROGUE_H
 #define DEV_ROGUE_H
 
 #include <dbScan.h>
 #include <link.h>
-#include "pgpRogueDev.h"
+#include "axiRogueLib.h"
 
 typedef struct _rogue_info_t
 {
 	std::string			m_varPath;
-	pgpRogueDevPtr		m_pRogueDev;
+	axiRogueLibPtr		m_pRogueLib;
 	bool				m_fSignedValue;
 }	rogue_info_t;
 

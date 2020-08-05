@@ -76,10 +76,10 @@ int rogue_init_record(
 
 	rogue_info_t	*	pRogueInfo		= new rogue_info_t;
 	pRogueInfo->m_varPath		= varPath;
-	pRogueInfo->m_pRogueDev		= pRogue->GetDevPtr();
+	pRogueInfo->m_pRogueLib		= pRogue->GetDevPtr();
 	pRogueInfo->m_fSignedValue	= false;
 	rogue::interfaces::memory::VariablePtr	pVar;
-	pVar = pRogueInfo->m_pRogueDev->getVariable( pRogueInfo->m_varPath );
+	pVar = pRogueInfo->m_pRogueLib->getVariable( pRogueInfo->m_varPath );
 	if ( !pVar )
 	{
 		printf( "%s error: %s not found!\n", functionName, pRogueInfo->m_varPath.c_str() );
@@ -99,12 +99,12 @@ int rogue_read_record( R * record, V & valueRet )
 {
 	int					status		= 1;
 	rogue_info_t	*	pRogueInfo	= reinterpret_cast < rogue_info_t * >( record->dpvt );
-	status = pRogueInfo->m_pRogueDev->readVarPath( pRogueInfo->m_varPath.c_str(), valueRet );
+	status = pRogueInfo->m_pRogueLib->readVarPath( pRogueInfo->m_varPath.c_str(), valueRet );
 
 #if 0
 	const char 		*	functionName = "rogue_read_record<R>";
 	rogue::interfaces::memory::VariablePtr	pVar;
-	pVar = pRogueInfo->m_pRogueDev->getVariable( pRogueInfo->m_varPath );
+	pVar = pRogueInfo->m_pRogueLib->getVariable( pRogueInfo->m_varPath );
 	if ( !pVar )
 	{
 		printf( "%s error: %s not found!\n", functionName, pRogueInfo->m_varPath.c_str() );
@@ -129,12 +129,12 @@ int rogue_write_record( R * record, const V & value )
 //	const char 		*	functionName = "rogue_write_record<R>";
 	int					status		= 1;
 	rogue_info_t	*	pRogueInfo	= reinterpret_cast < rogue_info_t * >( record->dpvt );
-	status = pRogueInfo->m_pRogueDev->writeVarPath( pRogueInfo->m_varPath.c_str(), value );
+	status = pRogueInfo->m_pRogueLib->writeVarPath( pRogueInfo->m_varPath.c_str(), value );
 
 #if 0
 	// TODO: Can pVar lookup be moved into rogue_init_record?
 	rogue::interfaces::memory::VariablePtr	pVar;
-	pVar = pRogueInfo->m_pRogueDev->getVariable( pRogueInfo->m_varPath );
+	pVar = pRogueInfo->m_pRogueLib->getVariable( pRogueInfo->m_varPath );
 	if ( !pVar )
 	{
 		printf( "%s error: %s not found!\n", functionName, pRogueInfo->m_varPath.c_str() );

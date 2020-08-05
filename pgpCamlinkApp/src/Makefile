@@ -11,7 +11,7 @@ DBD += rogueRecords.dbd
 
 # TODO: Rethink naming scheme for C++ classes
 LIB_SRCS   		+= pgpRogue.cpp
-LIB_SRCS   		+= pgpRogueDev.cpp
+LIB_SRCS   		+= axiRogueLib.cpp
 LIB_SRCS		+= rogueRecords.cpp
 
 LIB_SRCS   		+= pgpCamlink.cpp

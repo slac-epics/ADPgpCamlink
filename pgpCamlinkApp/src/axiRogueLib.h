@@ -8,14 +8,14 @@
 // the terms contained in the LICENSE.txt file.
 //////////////////////////////////////////////////////////////////////////////
 //
-//	pgpRogueDev.h
+//	axiRogueLib.h
 //
-//	Header file for pgpRogueDev class.
+//	Header file for axiRogueLib class.
 //	It provides a templated interface to SLAC Generic AXI Hardware registers
 //	via the Rogue LibraryBase C++ API
 //
-#ifndef	pgpRogueDev_H
-#define	pgpRogueDev_H
+#ifndef	axiRogueLib_H
+#define	axiRogueLib_H
 
 #include <memory>
 #include <string>
@@ -41,23 +41,23 @@ class rogueAddrMap;
 typedef std::shared_ptr<rogueAddrMap> rogueAddrMapPtr;
 
 
-///	pgpRogueDev class
-class pgpRogueDev :	public rogue::LibraryBase
+///	axiRogueLib class
+class axiRogueLib :	public rogue::LibraryBase
 {
 public:		//	Public member functions
 	// Create a static class creator to return our custom class wrapped with a shared pointer
-	static std::shared_ptr<pgpRogueDev> create( unsigned int board, unsigned int lane ) {
-		static std::shared_ptr<pgpRogueDev> ret = std::make_shared<pgpRogueDev>( board, lane );
+	static std::shared_ptr<axiRogueLib> create( unsigned int board, unsigned int lane ) {
+		static std::shared_ptr<axiRogueLib> ret = std::make_shared<axiRogueLib>( board, lane );
 
 		return(ret);
 	}
 
 	///	Constructor
-	pgpRogueDev(	unsigned int				board,
+	axiRogueLib(	unsigned int				board,
 					unsigned int				channel	); /// TODO: support all channels
 
 	/// Destructor
-	virtual ~pgpRogueDev();
+	virtual ~axiRogueLib();
 
 	void connect( );
 	void disconnect( );
@@ -142,6 +142,6 @@ private:
 };
 
 // Shared pointer alias
-typedef std::shared_ptr<pgpRogueDev> pgpRogueDevPtr;
+typedef std::shared_ptr<axiRogueLib> axiRogueLibPtr;
 
-#endif	//	pgpRogueDev_H
+#endif	//	axiRogueLib_H
