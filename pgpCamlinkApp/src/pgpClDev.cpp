@@ -10,7 +10,10 @@
 //
 //	pgpClDev driver
 //
-//	device support using rogue PgpCamlink serial interface via CamLink
+//	EPICS device support for the cameraLink-gateway firmware which
+//	implements a Camlink frame-grabber via a KCU1500 pciE card.
+//	Camer image stream and serial I/O streams are accessed via
+//	the SLAC Rogue streaming API.
 //
 
 #include <sys/types.h>
@@ -34,9 +37,6 @@
 #include "pgpClDev.h"
 
 using namespace	std;
-namespace rim = rogue::interfaces::memory;
-
-typedef	std::map< std::string, rim::VariablePtr >	mapVarPtr_t;
 
 int		DEBUG_PGP_CAMLINK	= 2;
 extern int	DEBUG_ROGUE_DEV;
@@ -80,7 +80,7 @@ bool	pgpClDev::getTriggerEnable( unsigned int triggerNum )
 pgpClDev::pgpClDev(
 	unsigned int				board,
 	unsigned int				lane )
-:	rogue::LibraryBase(),
+:
 	m_board(		board	),
 	m_lane(			lane	),
 	m_fConnected(	0		),
@@ -139,54 +139,11 @@ pgpClDev::pgpClDev(
 	}
 
 	//
-	// Connect Rogue Library
-	//
-	//m_pRogueLib = rogue::LibraryBase::create();
-	//m_pRogueLib = rogueAddrMap::create();
-
-	//
 	// Create FEB Data Channels
 	// TODO: Make a function than encapsulates this
-	uint32_t	dest; dest = (0x100 * m_lane) + PGPCL_DATACHAN_FEB_REG_ACCESS;
-//	m_pFebRegChan	= rogue::hardware::axi::AxiStreamDma::create( m_devName, dest, true);
+	uint32_t	dest;
 	dest = (0x100 * m_lane) + PGPCL_DATACHAN_FEB_FRAME_ACCESS;
 	m_pFebFrameChan	= rogue::hardware::axi::AxiStreamDma::create( m_devName, dest, true);
-
-	//
-	// Connect DATACHAN 0 ClinkDev KCU1500 Register Access
-	//
-//	m_pAxiMemMap		= rogue::hardware::axi::AxiMemMap::create( m_devName );
-//	m_pClMemMaster		= ClMemoryMaster::create( );
-//	m_pClMemMaster->setSlave( m_pAxiMemMap );
-//	const char	*	szMemName = "Unnamed_3";
-//	addMemory( szMemName, m_pAxiMemMap );
-//	m_pRogueLib->addMemory( szMemName, m_pAxiMemMap );
-//	printf("pgpClDev: addMemory AxiMemMap interface %s\n", szMemName );
-
-#if 0
-	//
-	// Connect DATACHAN 0 FEB Register Access
-	//
-	m_pSrpFeb = rogue::protocols::srp::SrpV3::create();	// Serial Rouge Protocol handler
-	// Create bidirectional links between SRP and FebRegChan 
-	m_pFebRegChan->addSlave( m_pSrpFeb );
-	m_pSrpFeb->addSlave( m_pFebRegChan );
-	switch ( m_lane )
-	{
-		default:
-		case 0:	szMemName = "Unnamed_186";	break;
-		case 1:	szMemName = "Unnamed_215";	break;
-		case 2:	szMemName = "Unnamed_244";	break;
-		case 3:	szMemName = "Unnamed_273";	break;
-	}
-	addMemory( szMemName, m_pSrpFeb );
-	m_pRogueLib->addMemory( szMemName, m_pSrpFeb );
-	printf("pgpClDev: addMemory srpFeb interface %s\n", szMemName );
-	// Create FebMemMaster and link it to SRP
-	m_pFebMemMaster = FebMemoryMaster::create( );
-	m_pFebMemMaster->setSlave( m_pSrpFeb );
-#endif
-
 
 	//
 	// Connect DATACHAN 1 Camera Frames

@@ -25,14 +25,11 @@
 #include <epicsTime.h>
 
 // rogue headers 
-#include <rogue/Helpers.h>
-#include <rogue/LibraryBase.h>
 #include <rogue/hardware/axi/AxiMemMap.h>
 #include <rogue/hardware/axi/AxiStreamDma.h>
 #include <rogue/interfaces/memory/Constants.h>
 #include <rogue/interfaces/stream/Slave.h>
 #include <rogue/interfaces/stream/Master.h>
-//#include <rogue/protocols/srp/SrpV3.h>
 
 // ADPgpCamlink headers
 //#include "ClMemoryMaster.h"
@@ -49,7 +46,7 @@ typedef int (* ImageCallback)( void * pClientContext, ImageCbInfo * pCbInfo );
 
 
 ///	pgpClDev class
-class pgpClDev :	public rogue::LibraryBase
+class pgpClDev
 {
 public:		//	Public member functions
 	// Create a static class creator to return our custom class wrapped with a shared pointer
@@ -92,10 +89,6 @@ public:		//	Public member functions
 
 	int		setTriggerEnable( unsigned int triggerNum, bool fEnable );
 	bool	getTriggerEnable( unsigned int triggerNum );
-
-	template<class R> int readVarPath(	const char * pVarPath, R & valueRet );
-	template<class R> int writeVarPath(	const char * pVarPath, const R & value );
-	template<class R> int writeVarPath( rogue::interfaces::memory::VariablePtr pVar, const R & value );
 
 private:
 	//	Private member variables
