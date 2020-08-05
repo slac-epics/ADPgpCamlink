@@ -85,9 +85,9 @@ public:		//	Public member functions
 	const std::string	&	GetDrvVersion( ) const
 	{
 #if 0
-		if ( ! m_pDev )
+		if ( ! m_pRogueLib )
 			return std::string( "Unknown Driver Version" );
-		return m_pDev->GetDrvVersion();
+		return m_pRogueLib->GetDrvVersion();
 #else
 		return m_DrvVersion;
 #endif
@@ -97,9 +97,9 @@ public:		//	Public member functions
 	const std::string	&	GetLibVersion( ) const
 	{
 #if 0
-		if ( ! m_pDev )
+		if ( ! m_pRogueLib )
 			return std::string( "Unknown Lib Version" );
-		return m_pDev->GetLibVersion();
+		return m_pRogueLib->GetLibVersion();
 #else
 		return m_LibVersion;
 #endif
@@ -143,7 +143,7 @@ public:		//	Public member functions
 	/// Return shared_ptr to axiRogueLib device
 	axiRogueLibPtr			GetRogueLib( ) const
 	{
-		return m_pDev;
+		return m_pRogueLib;
 	}
 	unsigned int			GetBoard( ) const
 	{
@@ -205,7 +205,7 @@ protected:	//	Protected member variables
 	bool			m_fReopen;			// True when we need to reread the configuration file
 
 private:	//	Private member variables
-	axiRogueLibPtr 	m_pDev;			// shared_ptr to axiRogueLib device
+	axiRogueLibPtr 	m_pRogueLib;			// shared_ptr to axiRogueLib device
 
 	unsigned int	m_board;		// index of Pgpcamlink card
 	unsigned int	m_lane;			// lane on  Pgpcamlink card

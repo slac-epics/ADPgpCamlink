@@ -79,7 +79,7 @@ rogueDev::rogueDev(
 		m_fExitApp(			false			    ),
 		m_fReconfig(		false			    ),
 		m_fReopen(			false			    ),
-		m_pDev(				NULL				),
+		m_pRogueLib(				NULL				),
 		m_board(			board				),
 		m_lane(				lane				),
 		m_fLcls2Timing(		fLcls2Timing		),
@@ -266,9 +266,9 @@ int rogueDev::ShowReport( int level )
 		cout	<< "\t\tMax Res: "		<< m_ClMaxWidth << " x " << m_ClMaxHeight
 				<< endl;
 	}
-	if ( level >= 3 && m_pDev )
+	if ( level >= 3 && m_pRogueLib )
 	{
-		m_pDev->showVariableList( level >= 4 );
+		m_pRogueLib->showVariableList( level >= 4 );
 	}
     return 0;
 }
@@ -276,36 +276,36 @@ int rogueDev::ShowReport( int level )
 int	rogueDev::DumpPgpVars( const char * pszFilePath, bool fWriteOnly, bool fForceRead )
 {
 	const char	*	functionName = "rogueDev::DumpPgpVars";
-	if ( m_pDev == NULL )
+	if ( m_pRogueLib == NULL )
 	{
 		printf( "%s error: %s PGP Dev not configured!\n", functionName, m_RogueName.c_str() );
 		return -1;
 	}
-	m_pDev->dumpVariables( pszFilePath, fWriteOnly, fForceRead, false );
+	m_pRogueLib->dumpVariables( pszFilePath, fWriteOnly, fForceRead, false );
 	return 0;
 }
 
 int rogueDev::SetPgpVariable( const char * pszVarPath, double value )
 {
 	const char	*	functionName = "rogueDev::SetPgpVariable";
-	if ( m_pDev == NULL )
+	if ( m_pRogueLib == NULL )
 	{
 		printf( "%s error: %s PGP Dev not configured!\n", functionName, m_RogueName.c_str() );
 		return -1;
 	}
-	m_pDev->setVariable( pszVarPath, value, false );
+	m_pRogueLib->setVariable( pszVarPath, value, false );
 	return 0;
 }
 
 int rogueDev::ShowPgpVariable( const char * pszVarPath, int level )
 {
 	const char	*	functionName = "rogueDev::ShowPgpVariable";
-	if ( m_pDev == NULL )
+	if ( m_pRogueLib == NULL )
 	{
 		printf( "%s error: %s PGP Dev not configured!\n", functionName, m_RogueName.c_str() );
 		return -1;
 	}
-	m_pDev->showVariable( pszVarPath, level != 0 );
+	m_pRogueLib->showVariable( pszVarPath, level != 0 );
 	return 0;
 }
 
@@ -321,9 +321,9 @@ void rogueDev::Shutdown( )
 	epicsMutexLock(	m_reconfigLock );
 //	m_acquireCount = 0;
 //	setIntegerParam(ADAcquire, 0);
-	if ( m_pDev != NULL )
+	if ( m_pRogueLib != NULL )
 	{
-		m_pDev->disconnect();
+		m_pRogueLib->disconnect();
 	}
 	epicsMutexUnlock(	m_reconfigLock );
 }
@@ -340,7 +340,7 @@ int rogueDev::ConnectRogue( )
 	// Initialize (or re-initialize) framegrabber connection
 	Reopen( );
 
-	if ( m_pDev == NULL )
+	if ( m_pRogueLib == NULL )
 	{
 		printf( "%s: %s failed to initialize camera!\n", functionName, m_RogueName.c_str() );
         return -1;
@@ -374,10 +374,10 @@ int rogueDev::DisconnectRogue( )
     // Block reconfigured until serial device is disconnected
 	epicsMutexLock(	m_reconfigLock );
 
-    if ( m_pDev )
+    if ( m_pRogueLib )
 	{
 		// Halt any image acquires in progress
-		m_pDev->disconnect();
+		m_pRogueLib->disconnect();
 	}
 	epicsMutexUnlock(	m_reconfigLock );
  
@@ -534,7 +534,7 @@ int rogueDev::_Reconfigure( )
     static const char	*	functionName = "rogueDev::_Reconfigure";
 	CONTEXT_TIMER( "_Reconfigure" );
 
-    if ( m_pDev == NULL || m_fReopen )
+    if ( m_pRogueLib == NULL || m_fReopen )
 	{
 		m_fReopen = true;
         return -1;
@@ -546,11 +546,11 @@ int rogueDev::_Reconfigure( )
 	}
 
 	// Cancel Image Callbacks
-	m_pDev->setTriggerEnable( 0, false );
-//	m_pDev->cancelImageCallbacks( );
+	m_pRogueLib->setTriggerEnable( 0, false );
+//	m_pRogueLib->cancelImageCallbacks( );
 
 	// Fetch the rogueDev driver and library versions
-	m_DrvVersion = m_pDev->GetDrvVersion();
+	m_DrvVersion = m_pRogueLib->GetDrvVersion();
 #if 0
 	size_t end_of_vers = m_DrvVersion.find( " " );
 	if ( end_of_vers != string::npos )
@@ -561,16 +561,16 @@ int rogueDev::_Reconfigure( )
 #endif
 //	setStringParam( CamlinkDrvVersion, m_DrvVersion.c_str()	);
 
-	m_LibVersion = m_pDev->GetLibVersion();
+	m_LibVersion = m_pRogueLib->GetLibVersion();
 //	setStringParam( CamlinkLibVersion, m_LibVersion.c_str()	);
 
 //	int64_t		int64Value	= 0;
 //	uint64_t	uint64Value	= 0;
-//	m_pDev->readVarPath(	PgpCoreFpgaVersionString,	uint64Value );
+//	m_pRogueLib->readVarPath(	PgpCoreFpgaVersionString,	uint64Value );
 //	setIntegerParam(		PgpCoreFpgaVersion,			uint64Value	);
-//	m_pDev->readVarPath(	PgpFebFpgaVersionString,	uint64Value );
+//	m_pRogueLib->readVarPath(	PgpFebFpgaVersionString,	uint64Value );
 //	setIntegerParam(		PgpFebFpgaVersion,			uint64Value	);
-//	m_pDev->readVarPath(	PgpAxiVersionString,		m_AxiVersion );
+//	m_pRogueLib->readVarPath(	PgpAxiVersionString,		m_AxiVersion );
 //	setStringParam(			PgpAxiVersion, m_AxiVersion.c_str()	);
 
 	// Already shown in _Reopen()
@@ -579,9 +579,9 @@ int rogueDev::_Reconfigure( )
 #if 0
 	{
 	// Fetch the camera manufacturer and model and write them to ADBase parameters
-    //m_RogueClass	= pdv_get_camera_class(	m_pDev );
-    //m_RogueModel	= pdv_get_camera_model(	m_pDev );
-    //m_BuildStamp	= pdv_get_camera_info(	m_pDev );
+    //m_RogueClass	= pdv_get_camera_class(	m_pRogueLib );
+    //m_RogueModel	= pdv_get_camera_model(	m_pRogueLib );
+    //m_BuildStamp	= pdv_get_camera_info(	m_pRogueLib );
 
 //	setStringParam( ADManufacturer, m_RogueClass.c_str()	);
 //    setStringParam( CamlinkClass,	m_RogueClass.c_str()	);
@@ -620,7 +620,7 @@ int rogueDev::_Reconfigure( )
 	}
 
 	// Fetch the pixel depth and update ADBase DataType and BitsPerPixel
-    //m_ClNumBits		= pdv_get_depth(	m_pDev );
+    //m_ClNumBits		= pdv_get_depth(	m_pRogueLib );
 	if ( m_ClNumBits <= 8 )
 	{
 //		setIntegerParam( NDDataType,		NDUInt8	);
@@ -652,10 +652,10 @@ int rogueDev::_Reopen( )
 	CONTEXT_TIMER( "_Reopen" );
 
 	// Close old Dev if needed
-	if ( m_pDev )
+	if ( m_pRogueLib )
 	{
-		m_pDev->disconnect();
-		m_pDev	= NULL;
+		m_pRogueLib->disconnect();
+		m_pRogueLib	= NULL;
 		if ( DEBUG_PGP_ROGUE >= 1 )
 			printf( "%s: %s old Dev closed.\n", functionName, m_RogueName.c_str() );
 	}
@@ -666,8 +666,8 @@ int rogueDev::_Reopen( )
 	// Open the camera lane
 	if ( DEBUG_PGP_ROGUE >= 1 )
 		printf( "%s: %s Reopening Dev ...\n", functionName, m_RogueName.c_str() );
-    m_pDev = axiRogueLib::create( m_board, m_lane );
-    if ( m_pDev == NULL )
+    m_pRogueLib = axiRogueLib::create( m_board, m_lane );
+    if ( m_pRogueLib == NULL )
 	{
         printf(	"%s %s: ERROR, Unable to open camera for rogueDev card %u, lane %u\n",
 				driverName,		functionName, m_board, m_lane );
@@ -676,14 +676,14 @@ int rogueDev::_Reopen( )
 
 	{
 	// Fetch the camera manufacturer and model and write them to ADBase parameters
-    //m_RogueClass	= pdv_get_camera_class(	m_pDev );
-    //m_RogueModel	= pdv_get_camera_model(	m_pDev );
-    //m_BuildStamp	= pdv_get_camera_info(	m_pDev );
+    //m_RogueClass	= pdv_get_camera_class(	m_pRogueLib );
+    //m_RogueModel	= pdv_get_camera_model(	m_pRogueLib );
+    //m_BuildStamp	= pdv_get_camera_info(	m_pRogueLib );
 
 	// Fetch the rogueDev driver and library versions and make sure they match
     //char		buf[MAX_STRING_SIZE];
-    //edt_get_driver_version(	m_pDev, buf, MAX_STRING_SIZE );
-	m_DrvVersion = m_pDev->GetDrvVersion();
+    //edt_get_driver_version(	m_pRogueLib, buf, MAX_STRING_SIZE );
+	m_DrvVersion = m_pRogueLib->GetDrvVersion();
 #if 0
 	size_t end_of_vers = m_DrvVersion.find( " " );
 	if ( end_of_vers != string::npos )
@@ -694,8 +694,8 @@ int rogueDev::_Reopen( )
 #endif
 //	setStringParam( CamlinkDrvVersion, m_DrvVersion.c_str()	);
 
-    //edt_get_library_version( m_pDev, buf, MAX_STRING_SIZE );
-	m_LibVersion = m_pDev->GetLibVersion();
+    //edt_get_library_version( m_pRogueLib, buf, MAX_STRING_SIZE );
+	m_LibVersion = m_pRogueLib->GetLibVersion();
 //	setStringParam( CamlinkLibVersion, m_LibVersion.c_str()	);
 
 #if 0
@@ -729,7 +729,7 @@ int rogueDev::UpdateADConfigParams( )
 	if ( DEBUG_PGP_ROGUE >= 2 )
 		printf( "%s: %s ...\n", functionName, m_RogueName.c_str() );
 
-	if ( m_pDev == NULL )
+	if ( m_pRogueLib == NULL )
 	{
 		printf( "%s Error: Framegrabber %s not connected!\n", functionName, m_RogueName.c_str() );
 		return -1;
@@ -765,7 +765,7 @@ int	rogueDev::UpdateStatus( int	newStatus	)
 void rogueDev::report( FILE * fp, int details )
 {
     fprintf(	fp, "PGP Framegrabber port ?: %s\n",
-				m_pDev ? "Connected" : "Disconnected" );
+				m_pRogueLib ? "Connected" : "Disconnected" );
 
 //	int			connected	= 1;
 
