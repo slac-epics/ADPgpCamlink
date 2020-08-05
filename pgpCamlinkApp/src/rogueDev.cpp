@@ -81,7 +81,7 @@ rogueDev::rogueDev(
 		m_fReopen(			false			    ),
 		m_pRogueLib(				NULL				),
 		m_board(			board				),
-		m_lane(				lane				),
+		m_lane(				lane				),	// TODO: Nuke
 		m_fLcls2Timing(		fLcls2Timing		),
 		m_ConfigFile(							),
 		m_DrvVersion(							),
@@ -666,7 +666,7 @@ int rogueDev::_Reopen( )
 	// Open the camera lane
 	if ( DEBUG_PGP_ROGUE >= 1 )
 		printf( "%s: %s Reopening Dev ...\n", functionName, m_RogueName.c_str() );
-    m_pRogueLib = axiRogueLib::create( m_board, m_lane );
+    m_pRogueLib = axiRogueLib::create( m_board );
     if ( m_pRogueLib == NULL )
 	{
         printf(	"%s %s: ERROR, Unable to open camera for rogueDev card %u, lane %u\n",

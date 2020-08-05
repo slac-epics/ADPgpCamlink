@@ -20,15 +20,11 @@
 
 #include <string>
 #include <string.h>
-#include <epicsMutex.h>
-#include <rogue/hardware/axi/AxiMemMap.h>
 #include <rogue/hardware/axi/AxiStreamDma.h>
 
 #include "ClSerialMaster.h"
 #include "ClSerialSlave.h"
-
-#define	N_AXI_LANES	4
-#define	N_AXI_CHAN	4
+#include <epicsMutex.h>
 
 ///	pgpClSerialDev class
 class pgpClSerialDev

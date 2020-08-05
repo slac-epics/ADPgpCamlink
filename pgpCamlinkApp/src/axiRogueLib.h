@@ -35,8 +35,12 @@
 #include "ClMemoryMaster.h"
 #include "FebMemoryMaster.h"
 
+#define	N_AXI_LANES	4
+#define	N_AXI_CHAN	4	// Needed?
+
 #define PGPCL_DATACHAN_FEB_REG_ACCESS	0
 #define PGPCL_DATACHAN_FEB_FRAME_ACCESS	1
+
 class rogueAddrMap;
 typedef std::shared_ptr<rogueAddrMap> rogueAddrMapPtr;
 
@@ -46,15 +50,14 @@ class axiRogueLib :	public rogue::LibraryBase
 {
 public:		//	Public member functions
 	// Create a static class creator to return our custom class wrapped with a shared pointer
-	static std::shared_ptr<axiRogueLib> create( unsigned int board, unsigned int lane ) {
-		static std::shared_ptr<axiRogueLib> ret = std::make_shared<axiRogueLib>( board, lane );
+	static std::shared_ptr<axiRogueLib> create( unsigned int board ) {
+		static std::shared_ptr<axiRogueLib> ret = std::make_shared<axiRogueLib>( board );
 
 		return(ret);
 	}
 
 	///	Constructor
-	axiRogueLib(	unsigned int				board,
-					unsigned int				channel	); /// TODO: support all channels
+	axiRogueLib(	unsigned int				board	);
 
 	/// Destructor
 	virtual ~axiRogueLib();
@@ -103,11 +106,16 @@ private:
 	//	Private member variables
 	unsigned int		m_fd;
 	unsigned int		m_board;
-	unsigned int		m_lane;
 	bool				m_fConnected;
 	std::string			m_devName;
 	std::string			m_DrvVersion;	// Driver Version
 	std::string			m_LibVersion;	// Library Version
+
+	//rogue::LibraryBasePtr				m_pRogueLib;
+	rogueAddrMapPtr						m_pRogueLib;
+	rogue::hardware::axi::AxiMemMapPtr 	m_pAxiMemMap;
+	ClMemoryMasterPtr		 			m_pClMemMaster;	// not needed?
+	//rim::MasterPtr		 			m_pAxiMemMaster;	// not needed?
 
 	///
 	// Firmware Lane assignments:
@@ -131,14 +139,11 @@ private:
 	// DMA[lane].DEST[2] = Camera UART
 	// DMA[lane].DEST[255:3] = Unused
 	///
-	rogue::hardware::axi::AxiMemMapPtr 			m_pAxiMemMap;
-	// For dataChan we only use dataChan[2]
-	rogue::hardware::axi::AxiStreamDmaPtr		m_pFebRegChan;
-	ClMemoryMasterPtr				 			m_pClMemMaster;	// not needed
-	FebMemoryMasterPtr				 			m_pFebMemMaster;
-	rogue::protocols::srp::SrpV3Ptr				m_pSrpFeb;
-	//rogue::LibraryBasePtr						m_pRogueLib;
-	rogueAddrMapPtr								m_pRogueLib;
+
+	//TODO: Move these to new axiFebDataLane class
+	rogue::hardware::axi::AxiStreamDmaPtr		m_pFebRegChan[N_AXI_LANES];
+	FebMemoryMasterPtr				 			m_pFebMemMaster[N_AXI_LANES];
+	rogue::protocols::srp::SrpV3Ptr				m_pSrpFeb[N_AXI_LANES];
 };
 
 // Shared pointer alias

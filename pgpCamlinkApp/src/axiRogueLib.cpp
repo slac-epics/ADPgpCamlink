@@ -155,11 +155,9 @@ rogueAddrMap::rogueAddrMap()
 
 ///	Constructor
 axiRogueLib::axiRogueLib(
-	unsigned int				board,
-	unsigned int				lane )
+	unsigned int				board	)
 :	rogue::LibraryBase(),
 	m_board(		board	),
-	m_lane(			lane	),
 	m_fConnected(	0		),
 	m_devName(				),
 	m_pAxiMemMap(			),
@@ -217,33 +215,36 @@ axiRogueLib::axiRogueLib(
 	printf("axiRogueLib: addMemory AxiMemMap interface %s\n", szMemName );
 
 	//
-	// Create FEB Data Channel
+	// Create FEB Data Channel for each lane
 	// TODO: Make a function than encapsulates this
 	uint32_t	dest;
-	dest = (0x100 * m_lane) + PGPCL_DATACHAN_FEB_REG_ACCESS;
-	m_pFebRegChan	= rogue::hardware::axi::AxiStreamDma::create( m_devName, dest, true);
-
-	//
-	// Connect DATACHAN 0 FEB Register Access
-	//
-	m_pSrpFeb = rogue::protocols::srp::SrpV3::create();	// Serial Rouge Protocol handler
-	// Create bidirectional links between SRP and FebRegChan 
-	m_pFebRegChan->addSlave( m_pSrpFeb );
-	m_pSrpFeb->addSlave( m_pFebRegChan );
-	switch ( m_lane )
+	for ( size_t	lane = 0; lane < N_AXI_LANES; lane++ )
 	{
-		default:
-		case 0:	szMemName = "Unnamed_186";	break;
-		case 1:	szMemName = "Unnamed_215";	break;
-		case 2:	szMemName = "Unnamed_244";	break;
-		case 3:	szMemName = "Unnamed_273";	break;
+		dest = (0x100 * lane) + PGPCL_DATACHAN_FEB_REG_ACCESS;
+		m_pFebRegChan[lane]	= rogue::hardware::axi::AxiStreamDma::create( m_devName, dest, true);
+
+		//
+		// Connect DATACHAN 0 FEB Register Access
+		//
+		m_pSrpFeb[lane] = rogue::protocols::srp::SrpV3::create();	// Serial Rouge Protocol handler
+		// Create bidirectional links between SRP and FebRegChan 
+		m_pFebRegChan[lane]->addSlave( m_pSrpFeb[lane] );
+		m_pSrpFeb[lane]->addSlave( m_pFebRegChan[lane] );
+		switch ( lane )
+		{
+			default:
+			case 0:	szMemName = "Unnamed_186";	break;
+			case 1:	szMemName = "Unnamed_215";	break;
+			case 2:	szMemName = "Unnamed_244";	break;
+			case 3:	szMemName = "Unnamed_273";	break;
+		}
+		addMemory( szMemName, m_pSrpFeb[lane] );
+		m_pRogueLib->addMemory( szMemName, m_pSrpFeb[lane] );
+		printf("axiRogueLib: addMemory srpFeb interface %s\n", szMemName );
+		// Create FebMemMaster and link it to SRP
+		m_pFebMemMaster[lane] = FebMemoryMaster::create( );
+		m_pFebMemMaster[lane]->setSlave( m_pSrpFeb[lane] );
 	}
-	addMemory( szMemName, m_pSrpFeb );
-	m_pRogueLib->addMemory( szMemName, m_pSrpFeb );
-	printf("axiRogueLib: addMemory srpFeb interface %s\n", szMemName );
-	// Create FebMemMaster and link it to SRP
-	m_pFebMemMaster = FebMemoryMaster::create( );
-	m_pFebMemMaster->setSlave( m_pSrpFeb );
 
 	printf( "Parsing ROGUE_ADDR_MAP\n" );
 	parseMemMap( ROGUE_ADDR_MAP ); // From generated rogueAddrMap.h

@@ -18,6 +18,7 @@
 #ifndef	asynPgpClSerial_H
 #define	asynPgpClSerial_H
 
+#include <map>
 #include "asynPortDriver.h"
 #include "pgpClSerialDev.h"
 
@@ -29,9 +30,6 @@
 #define	PGPCL_GENCP_TY_RESP_DOUBLE	5
 
 #define	PGPCL_GENCP_RESPONSE_MAX	128
-
-#define	N_AXI_LANES	4
-#define	N_AXI_CHAN	4
 
 class asynPgpClSerial;
 typedef std::shared_ptr<asynPgpClSerial> asynPgpClSerialPtr;

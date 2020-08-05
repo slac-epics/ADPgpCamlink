@@ -32,12 +32,7 @@
 #include <rogue/interfaces/stream/Master.h>
 
 // ADPgpCamlink headers
-//#include "ClMemoryMaster.h"
 #include "ImageStream.h"
-//#include "FebMemoryMaster.h"
-
-#define	N_AXI_LANES	4
-#define	N_AXI_CHAN	4
 
 #define PGPCL_DATACHAN_FEB_REG_ACCESS	0
 #define PGPCL_DATACHAN_FEB_FRAME_ACCESS	1
@@ -124,8 +119,6 @@ private:
 	// DMA[lane].DEST[255:3] = Unused
 	///
 
-	// For dataChan we only use dataChan[2]
-	rogue::hardware::axi::AxiStreamDmaPtr		m_pDataChan[N_AXI_CHAN];
 	rogue::hardware::axi::AxiStreamDmaPtr		m_pFebFrameChan;
 	ImageStreamPtr								m_pImageStream;
 	
