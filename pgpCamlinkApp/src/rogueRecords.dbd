@@ -10,12 +10,4 @@ device( mbbo,		INST_IO,	dsetRogueMBBO,	"RogueMBBO"	)
 #device( stringin,	INST_IO,	dsetRogueSI,	"RogueSI"	)
 #device( waveform,	INST_IO,	dsetRogueWF,	"RogueWF"	)
 
-registrar(	DumpPgpVarsRegister			)
-registrar(	rogueDevConfigFullRegister	)
-registrar(	rogueDevConfigRegister		)
-registrar(	SetPgpVarRegister			)
-registrar(	ShowAllRogueRegister		)
-registrar(	ShowPgpVarRegister			)
-
-variable(	DEBUG_PGP_ROGUE,	int		)
 variable(	DEBUG_ROGUE_DEV,	int		)

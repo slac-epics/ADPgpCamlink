@@ -8,6 +8,7 @@ LIBRARY_IOC = pgpCamlink
 DBD += pgpCamlinkSupport.dbd
 DBD += pgpClSerialDev.dbd
 DBD += rogueRecords.dbd
+DBD += rogueSupport.dbd
 
 # TODO: Rethink naming scheme for C++ classes
 LIB_SRCS   		+= rogueDev.cpp

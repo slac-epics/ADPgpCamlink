@@ -1,0 +1,11 @@
+
+registrar(	DumpPgpVarsRegister			)
+registrar(	rogueDevConfigRegister		)
+registrar(	SetPgpVarRegister			)
+registrar(	ShowAllRogueRegister		)
+registrar(	ShowPgpVarRegister			)
+
+variable(	DEBUG_PGP_ROGUE,	int		)
+
+include "rogueRecords.dbd"
+
