@@ -39,8 +39,6 @@
 using namespace	std;
 
 int		DEBUG_PGP_CAMLINK	= 2;
-extern int	DEBUG_ROGUE_DEV;
-
 
 
 int		pgpClDev::setTriggerEnable( unsigned int triggerNum, bool fEnable )

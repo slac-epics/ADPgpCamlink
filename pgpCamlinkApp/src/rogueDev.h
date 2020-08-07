@@ -34,7 +34,7 @@ class rogueDev
 public:		//	Public member functions
 
 	///	Constructor
-	rogueDev(	const char			*	cameraName,
+	rogueDev(	const char			*	rogueName,
 				int						board,
 				int						lane,
 				const char			*	modelName,
@@ -162,7 +162,7 @@ public:		//	Public member functions
 public:		//	Public class functions
 
 	static int	CreateRogue(
-				const char			*	cameraName,
+				const char			*	rogueName,
 				int						board,
 				int						lane,
 				const char			*	modelName,
@@ -242,17 +242,17 @@ private:	//	Private class variables
 
 
 /*	Diagnostic variables	*/
-extern int				DEBUG_PGP_ROGUE;
+extern int				DEBUG_AXI_ROGUE;
 
 /* "C" linkage Configuration functions for iocsh */
 extern "C" int	rogueDevConfig(
-	const char	*	cameraName,
+	const char	*	rogueName,
 	int				board,
-	int				lane,
-	const char	*	modelName,
-	const char	*	clMode,
-	size_t			sizeX,
-	size_t			sizeY,
+//	int				lane,
+//	const char	*	modelName,
+//	const char	*	clMode,
+//	size_t			sizeX,
+//	size_t			sizeY,
 	bool			fLcls2Timing );
 
 #endif	/*	PGP_ROGUE_H	*/

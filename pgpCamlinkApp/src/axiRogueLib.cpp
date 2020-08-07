@@ -41,8 +41,7 @@ namespace rim = rogue::interfaces::memory;
 
 typedef	std::map< std::string, rim::VariablePtr >	mapVarPtr_t;
 
-int		DEBUG_AX_ROGUE_LIB	= 2;
-extern int	DEBUG_ROGUE_DEV;
+extern	int		DEBUG_AXI_ROGUE;
 
 // TODO Move to new file: src/rogue/memory/interfaces/memory/Constants.cpp
 // TODO Rename BlockProcessingType2String()?
@@ -480,7 +479,7 @@ template<class R> int axiRogueLib::readVarPath( const char * pszVarPath, R & val
 	}
 	//pVar->setLogLevel( rogue::Logging::Warning );
 
-	if ( DEBUG_AX_ROGUE_LIB >= 6 )
+	if ( DEBUG_AXI_ROGUE >= 6 )
 	{
 		std::cout	<< functionName	<< ": " << varPath
 					<< ", typeid = "	<< typeid(R).name()
@@ -506,7 +505,7 @@ template<class R> int axiRogueLib::writeVarPath( rim::VariablePtr pVar, const R 
 		return -1;
 	}
 
-	if ( DEBUG_AX_ROGUE_LIB >= 6 )
+	if ( DEBUG_AXI_ROGUE >= 6 )
 	{
 		//if ( pVar->modelId() == rim::Bool )
 		//	pVar->setLogLevel( rogue::Logging::Debug );
@@ -528,7 +527,7 @@ template<class R> int axiRogueLib::writeVarPath( rim::VariablePtr pVar, const R 
 		status = 0;
 		R	valueRet;
 		pVar->getValue( valueRet );
-		if ( DEBUG_ROGUE_DEV >= 3 || value != valueRet )
+		if ( DEBUG_AXI_ROGUE >= 3 || value != valueRet )
 		{
 			std::cout	<< functionName	<< ": " << pVar->path()
 						<< ", setValue="	<< value;
