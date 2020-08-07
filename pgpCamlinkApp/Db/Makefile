@@ -16,6 +16,7 @@ DB += pgpCamlinkBase.template
 DB += ClinkPcie.template
 DB += TriggerEventManager.template
 DB += ClinkFeb.template
+DB += ClinkLane.db
 DB += roguePcie.db
 DB += putMonitor.template
 DB += rbvMonitor.template
