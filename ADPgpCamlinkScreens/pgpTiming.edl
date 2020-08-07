@@ -3,8 +3,8 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 1934
-y 196
+x 33
+y 452
 w 720
 h 640
 font "helvetica-medium-r-8.0"
@@ -1016,7 +1016,7 @@ fgColor index 14
 bgColor index 0
 useDisplayBg
 value {
-  "EvrV2:Ch0:TriggerDelay"
+  "EvrV2:TriggerDelay"
 }
 endObjectProperties
 
@@ -1030,7 +1030,7 @@ x 484
 y 204
 w 80
 h 20
-controlPv "$(P)$(R)EvrV2:Ch0:TriggerDelay_RBV"
+controlPv "$(P)$(R)EvrV2:TriggerDelay_RBV"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
 fgColor index 15
@@ -1055,7 +1055,7 @@ x 572
 y 204
 w 76
 h 18
-controlPv "$(P)$(R)EvrV2:Ch0:TriggerDelay"
+controlPv "$(P)$(R)EvrV2:TriggerDelay"
 format "decimal"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
@@ -1689,7 +1689,7 @@ x 572
 y 180
 w 96
 h 18
-controlPv "$(P)$(R)EvrV2:Ch0:RateSel"
+controlPv "$(P)$(R)EvrV2:RateSel"
 format "decimal"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
@@ -1719,7 +1719,7 @@ x 484
 y 180
 w 80
 h 20
-controlPv "$(P)$(R)EvrV2:Ch0:RateSel_RBV"
+controlPv "$(P)$(R)EvrV2:RateSel_RBV"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
 fgColor index 15
@@ -1750,7 +1750,7 @@ fgColor index 14
 bgColor index 0
 useDisplayBg
 value {
-  "EvrV2:Ch0:RateSel"
+  "EvrV2:RateSel"
 }
 endObjectProperties
 
