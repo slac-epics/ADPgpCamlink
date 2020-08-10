@@ -177,7 +177,7 @@ public:		//	Public class functions
 
 	static rogueDev	*	RogueFindByName( const std::string & name );
 
-	static rogueDev	*	RogueFindByBoardLane( unsigned int board, unsigned int lane );
+	static rogueDev	*	RogueFindByBoard( unsigned int board );
 
 
 	static	int				ShowAllRogue( int level );

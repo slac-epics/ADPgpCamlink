@@ -227,14 +227,14 @@ rogueDev	*	rogueDev::RogueFindByName( const string & name )
 	return it->second;
 }
 
-rogueDev	*	rogueDev::RogueFindByBoardLane( unsigned int board, unsigned int lane )
+rogueDev	*	rogueDev::RogueFindByBoard( unsigned int board )
 {
 	map<string, rogueDev *>::iterator	it;
 	for ( it = ms_rogueDevMap.begin(); it != ms_rogueDevMap.end(); it++ )
 	{
-		rogueDev	*	pCam	= it->second;
-		if ( pCam->GetBoard() == board && pCam->GetLane() == lane )
-			return pCam;
+		rogueDev	*	pRogue	= it->second;
+		if ( pRogue->GetBoard() == board )
+			return pRogue;
 	}
 	return NULL;
 }
@@ -311,9 +311,9 @@ int rogueDev::ShowPgpVariable( const char * pszVarPath, int level )
 
 void rogueDev::ExitHook(void * arg)
 {
-	rogueDev	*	pCam = static_cast<rogueDev *>( arg );
-	if( pCam != NULL )
-		pCam->Shutdown();
+	rogueDev	*	pRogue = static_cast<rogueDev *>( arg );
+	if( pRogue != NULL )
+		pRogue->Shutdown();
 }
 
 void rogueDev::Shutdown( )
@@ -856,14 +856,14 @@ int DumpPgpVars( const char * pszCamName, const char * pszFilePath, int fWriteOn
 		return -1;
 	}
 
-	rogueDev	*	pCamDev = rogueDev::RogueFindByName( std::string(pszCamName) );
-	if ( pCamDev == NULL )
+	rogueDev	*	pRogue = rogueDev::RogueFindByName( std::string(pszCamName) );
+	if ( pRogue == NULL )
 	{
 		printf( "%s error: Rogue %s not found!\n", functionName, pszCamName );
 		return -1;
 	}
 
-	return pCamDev->DumpPgpVars( pszFilePath, fWriteOnly, fForceRead );
+	return pRogue->DumpPgpVars( pszFilePath, fWriteOnly, fForceRead );
 }
 
 // Register function:
@@ -897,14 +897,14 @@ int SetPgpVariable( const char * pszCamName, const char * pszVarPath, double val
 		return -1;
 	}
 
-	rogueDev	*	pCamDev = rogueDev::RogueFindByName( std::string(pszCamName) );
-	if ( pCamDev == NULL )
+	rogueDev	*	pRogue = rogueDev::RogueFindByName( std::string(pszCamName) );
+	if ( pRogue == NULL )
 	{
 		printf( "%s error: Rogue %s not found!\n", functionName, pszCamName );
 		return -1;
 	}
 
-	return pCamDev->SetPgpVariable( pszVarPath, value );
+	return pRogue->SetPgpVariable( pszVarPath, value );
 }
 
 // Register function:
@@ -937,14 +937,14 @@ int ShowPgpVariable( const char * pszCamName, const char * pszVarPath, int level
 		return -1;
 	}
 
-	rogueDev	*	pCamDev = rogueDev::RogueFindByName( std::string(pszCamName) );
-	if ( pCamDev == NULL )
+	rogueDev	*	pRogue = rogueDev::RogueFindByName( std::string(pszCamName) );
+	if ( pRogue == NULL )
 	{
 		printf( "%s error: Rogue %s not found!\n", functionName, pszCamName );
 		return -1;
 	}
 
-	return pCamDev->ShowPgpVariable( pszVarPath, level );
+	return pRogue->ShowPgpVariable( pszVarPath, level );
 }
 
 // Register function:

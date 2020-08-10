@@ -71,7 +71,11 @@ int rogue_init_record(
 		return rogue_bad_field( record, "cannot parse INP or OUT field!\n%s\n", sinp );
 	}
 
-	rogueDev	*	pRogue = rogueDev::RogueFindByBoardLane( board, lane );
+	rogueDev	*	pRogue = rogueDev::RogueFindByBoard( board );
+	if ( pRogue == NULL )
+	{
+		return rogue_bad_field( record, "cannot find rogue device for INP or OUT field!\n%s\n", sinp );
+	}
 
 	if ( DEBUG_ROGUE_DEV >= 4 )
 		printf( "%s Parse succeeded: Board %u, Lane %u, VarPath %s\n", functionName, board, lane, varPath );
