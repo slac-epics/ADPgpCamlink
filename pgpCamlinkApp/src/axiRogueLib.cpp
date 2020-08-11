@@ -259,9 +259,6 @@ axiRogueLib::axiRogueLib(
 	printf( "%s: Reading %zu variables\n", functionName, (m_pRogueLib->getVariableList()).size() );
 	m_pRogueLib->readAll();
 
-	// Dump variables preConfig
-	dumpVariables( "/reg/d/iocData/ioc-tst-pgp01/cfgdump-preConfig.txt", true, true, true );
-
 	// Hack: Configure for LCLS-I timing
 	ConfigureLclsTimingV1();
 	FebPllConfig();
@@ -270,9 +267,6 @@ axiRogueLib::axiRogueLib(
 	m_pRogueLib->readAll();
 	LoadConfigFile( "db/defaults_LCLS-I.txt" );
 	LoadConfigFile( "db/Opal1000.txt" );
-
-	// Dump variables postConfig
-	dumpVariables( "/reg/d/iocData/ioc-tst-pgp01/cfgdump-postConfig.txt", true, true, true );
 
 	//showVariableList( true );
 
