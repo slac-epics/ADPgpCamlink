@@ -265,7 +265,7 @@ x 140
 y 404
 w 80
 h 20
-controlPv "$(P)$(R)Feb0:FCh0:DropCount_RBV"
+controlPv "$(P)$(R)Feb$(CH):FCh0:DropCount_RBV"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
 fgColor index 15
@@ -391,7 +391,7 @@ x 140
 y 584
 w 80
 h 20
-controlPv "$(P)$(R)Feb0:FCh0:InvCC_RBV"
+controlPv "$(P)$(R)Feb$(CH):FCh0:InvCC_RBV"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
 fgColor index 15
@@ -860,7 +860,7 @@ x 140
 y 704
 w 80
 h 20
-controlPv "$(P)$(R)Feb0:FCh0:TrigCnt_RBV"
+controlPv "$(P)$(R)Feb$(CH):FCh0:TrigCnt_RBV"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
 fgColor index 15
@@ -905,7 +905,7 @@ x 140
 y 728
 w 80
 h 20
-controlPv "$(P)$(R)Feb0:FCh0:TrigRate_RBV"
+controlPv "$(P)$(R)Feb$(CH):FCh0:TrigRate_RBV"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
 fgColor index 15
@@ -1271,8 +1271,8 @@ bgColor index 3
 inconsistentColor index 40
 topShadowColor index 1
 botShadowColor index 11
-controlPv "$(P)$(R)Feb0:FCh0:InvCC"
-indicatorPv "$(P)$(R)Feb0:FCh0:InvCC_RBV"
+controlPv "$(P)$(R)Feb$(CH):FCh0:InvCC"
+indicatorPv "$(P)$(R)Feb$(CH):FCh0:InvCC_RBV"
 font "helvetica-medium-r-12.0"
 endObjectProperties
 
@@ -2311,7 +2311,7 @@ x 892
 y 408
 w 80
 h 20
-controlPv "$(P)$(R)Feb0:PgpMon:RxCellErrorCount_RBV"
+controlPv "$(P)$(R)Feb$(CH):PgpMon:RxCellErrorCount_RBV"
 format "hex"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
@@ -2343,7 +2343,7 @@ fgColor index 14
 bgColor index 0
 useDisplayBg
 value {
-  "Feb0:PgpMon:RxCellErrorCount"
+  "Feb$(CH):PgpMon:RxCellErrorCount"
 }
 endObjectProperties
 
@@ -2363,7 +2363,7 @@ fgColor index 14
 bgColor index 0
 useDisplayBg
 value {
-  "Feb0:PgpMon:RxLinkDownCount"
+  "Feb$(CH):PgpMon:RxLinkDownCount"
 }
 endObjectProperties
 
@@ -2377,7 +2377,7 @@ x 892
 y 384
 w 80
 h 20
-controlPv "$(P)$(R)Feb0:PgpMon:RxLinkDownCount_RBV"
+controlPv "$(P)$(R)Feb$(CH):PgpMon:RxLinkDownCount_RBV"
 format "hex"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
@@ -2408,7 +2408,7 @@ fontAlign "center"
 fgColor index 14
 bgColor index 3
 value {
-  "Feb0:PgpMon"
+  "Feb$(CH):PgpMon"
 }
 autoSize
 endObjectProperties
@@ -2423,7 +2423,7 @@ x 892
 y 432
 w 80
 h 20
-controlPv "$(P)$(R)Feb0:PgpMon:RxLinkErrorCount_RBV"
+controlPv "$(P)$(R)Feb$(CH):PgpMon:RxLinkErrorCount_RBV"
 format "hex"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
@@ -2455,7 +2455,7 @@ fgColor index 14
 bgColor index 0
 useDisplayBg
 value {
-  "Feb0:PgpMon:RxLinkErrorCount"
+  "Feb$(CH):PgpMon:RxLinkErrorCount"
 }
 endObjectProperties
 
@@ -2469,7 +2469,7 @@ x 892
 y 456
 w 80
 h 20
-controlPv "$(P)$(R)Feb0:PgpMon:TxFrameErrorCount_RBV"
+controlPv "$(P)$(R)Feb$(CH):PgpMon:TxFrameErrorCount_RBV"
 format "hex"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
@@ -2501,7 +2501,7 @@ fgColor index 14
 bgColor index 0
 useDisplayBg
 value {
-  "Feb0:PgpMon:TxFrameErrorCount"
+  "Feb$(CH):PgpMon:TxFrameErrorCount"
 }
 endObjectProperties
 
@@ -2515,7 +2515,7 @@ x 892
 y 480
 w 80
 h 20
-controlPv "$(P)$(R)Feb0:PgpMon:RxRemLinkReadyCount_RBV"
+controlPv "$(P)$(R)Feb$(CH):PgpMon:RxRemLinkReadyCount_RBV"
 format "hex"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
@@ -2547,7 +2547,7 @@ fgColor index 14
 bgColor index 0
 useDisplayBg
 value {
-  "Feb0:PgpMon:RxRemLinkReadyCount"
+  "Feb$(CH):PgpMon:RxRemLinkReadyCount"
 }
 endObjectProperties
 
@@ -2561,7 +2561,7 @@ x 140
 y 428
 w 80
 h 20
-controlPv "$(P)$(R)Feb0:FCh0:FrameCount_RBV"
+controlPv "$(P)$(R)Feb$(CH):FCh0:FrameCount_RBV"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
 fgColor index 15

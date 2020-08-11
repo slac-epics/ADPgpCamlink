@@ -265,7 +265,7 @@ x 140
 y 232
 w 80
 h 20
-controlPv "$(P)$(R)Feb0:FpgaVersion"
+controlPv "$(P)$(R)Feb$(CH):FpgaVersion"
 format "hex"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
@@ -311,7 +311,7 @@ x 140
 y 256
 w 80
 h 20
-controlPv "$(P)$(R)Feb0:UpTime"
+controlPv "$(P)$(R)Feb$(CH):UpTime"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
 fgColor index 15
@@ -376,7 +376,7 @@ x 140
 y 380
 w 80
 h 20
-controlPv "$(P)$(R)Feb0:FCh0:Running"
+controlPv "$(P)$(R)Feb$(CH):FCh0:Running"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
 fgColor index 15
@@ -400,7 +400,7 @@ x 140
 y 284
 w 80
 h 20
-controlPv "$(P)$(R)Feb0:FCh0:BaudRate_RBV"
+controlPv "$(P)$(R)Feb$(CH):FCh0:BaudRate_RBV"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
 fgColor index 15
@@ -445,7 +445,7 @@ x 140
 y 308
 w 80
 h 20
-controlPv "$(P)$(R)Feb0:FCh0:LinkMode_RBV"
+controlPv "$(P)$(R)Feb$(CH):FCh0:LinkMode_RBV"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
 fgColor index 15
@@ -489,7 +489,7 @@ x 140
 y 332
 w 80
 h 20
-controlPv "$(P)$(R)Feb0:FCh0:DataMode_RBV"
+controlPv "$(P)$(R)Feb$(CH):FCh0:DataMode_RBV"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
 fgColor index 15
@@ -533,7 +533,7 @@ x 140
 y 356
 w 80
 h 20
-controlPv "$(P)$(R)Feb0:FCh0:SerThrottle_RBV"
+controlPv "$(P)$(R)Feb$(CH):FCh0:SerThrottle_RBV"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
 fgColor index 15
@@ -578,7 +578,7 @@ x 228
 y 284
 w 76
 h 18
-controlPv "$(P)$(R)Feb0:FCh0:BaudRate"
+controlPv "$(P)$(R)Feb$(CH):FCh0:BaudRate"
 format "decimal"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
@@ -608,7 +608,7 @@ x 228
 y 356
 w 76
 h 18
-controlPv "$(P)$(R)Feb0:FCh0:SerThrottle"
+controlPv "$(P)$(R)Feb$(CH):FCh0:SerThrottle"
 format "decimal"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
@@ -658,7 +658,7 @@ x 140
 y 608
 w 80
 h 20
-controlPv "$(P)$(R)Feb0:FCh0:Mask_RBV"
+controlPv "$(P)$(R)Feb$(CH):FCh0:Mask_RBV"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
 fgColor index 15
@@ -683,7 +683,7 @@ x 228
 y 608
 w 76
 h 18
-controlPv "$(P)$(R)Feb0:FCh0:Mask"
+controlPv "$(P)$(R)Feb$(CH):FCh0:Mask"
 format "decimal"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
@@ -733,7 +733,7 @@ x 140
 y 632
 w 80
 h 20
-controlPv "$(P)$(R)Feb0:FCh0:Map_RBV"
+controlPv "$(P)$(R)Feb$(CH):FCh0:Map_RBV"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
 fgColor index 15
@@ -757,7 +757,7 @@ x 228
 y 632
 w 76
 h 14
-controlPv "$(P)$(R)Feb0:FCh0:Map"
+controlPv "$(P)$(R)Feb$(CH):FCh0:Map"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
 fgColor index 25
@@ -805,7 +805,7 @@ x 140
 y 680
 w 80
 h 20
-controlPv "$(P)$(R)Feb0:FCh0:PulseWidthRaw_RBV"
+controlPv "$(P)$(R)Feb$(CH):FCh0:PulseWidthRaw_RBV"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
 fgColor index 15
@@ -829,7 +829,7 @@ x 228
 y 680
 w 76
 h 18
-controlPv "$(P)$(R)Feb0:FCh0:PulseWidthRaw"
+controlPv "$(P)$(R)Feb$(CH):FCh0:PulseWidthRaw"
 format "decimal"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
@@ -1953,7 +1953,7 @@ x 140
 y 452
 w 80
 h 20
-controlPv "$(P)$(R)Feb0:FCh0:FrameMode_RBV"
+controlPv "$(P)$(R)Feb$(CH):FCh0:FrameMode_RBV"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
 fgColor index 15
@@ -2017,7 +2017,7 @@ x 140
 y 476
 w 80
 h 20
-controlPv "$(P)$(R)Feb0:FCh0:DataMode_RBV"
+controlPv "$(P)$(R)Feb$(CH):FCh0:DataMode_RBV"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
 fgColor index 15
@@ -2061,7 +2061,7 @@ x 140
 y 500
 w 80
 h 20
-controlPv "$(P)$(R)Feb0:FCh0:LinkMode_RBV"
+controlPv "$(P)$(R)Feb$(CH):FCh0:LinkMode_RBV"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
 fgColor index 15
@@ -2085,7 +2085,7 @@ x 228
 y 656
 w 76
 h 18
-controlPv "$(P)$(R)Feb0:FCh0:PulseWidth"
+controlPv "$(P)$(R)Feb$(CH):FCh0:PulseWidth"
 format "decimal"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
@@ -2115,7 +2115,7 @@ x 140
 y 656
 w 80
 h 20
-controlPv "$(P)$(R)Feb0:FCh0:PulseWidth_RBV"
+controlPv "$(P)$(R)Feb$(CH):FCh0:PulseWidth_RBV"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
 fgColor index 15
@@ -2160,7 +2160,7 @@ x 140
 y 524
 w 80
 h 20
-controlPv "$(P)$(R)Feb0:LinkLockedCntA_RBV"
+controlPv "$(P)$(R)Feb$(CH):LinkLockedCntA_RBV"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
 fgColor index 15
@@ -2190,7 +2190,7 @@ fgColor index 14
 bgColor index 0
 useDisplayBg
 value {
-  "Feb0:LinkLockedCntA"
+  "Feb$(CH):LinkLockedCntA"
 }
 endObjectProperties
 
@@ -2210,7 +2210,7 @@ fgColor index 14
 bgColor index 0
 useDisplayBg
 value {
-  "Feb0:LinkLockedA"
+  "Feb$(CH):LinkLockedA"
 }
 endObjectProperties
 
@@ -2224,7 +2224,7 @@ x 140
 y 548
 w 80
 h 20
-controlPv "$(P)$(R)Feb0:LinkLockedA_RBV"
+controlPv "$(P)$(R)Feb$(CH):LinkLockedA_RBV"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
 fgColor index 15
@@ -2248,7 +2248,7 @@ x 484
 y 220
 w 80
 h 20
-controlPv "$(P)$(R)Feb0:ClinkClkFreq0_RBV"
+controlPv "$(P)$(R)Feb$(CH):ClinkClkFreq0_RBV"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
 fgColor index 15
@@ -2278,7 +2278,7 @@ fgColor index 14
 bgColor index 0
 useDisplayBg
 value {
-  "Feb0:ClinkClkFreq0"
+  "Feb$(CH):ClinkClkFreq0"
 }
 endObjectProperties
 
@@ -2292,7 +2292,7 @@ x 484
 y 244
 w 80
 h 20
-controlPv "$(P)$(R)Feb0:ClkInFreq0_RBV"
+controlPv "$(P)$(R)Feb$(CH):ClkInFreq0_RBV"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
 fgColor index 15
@@ -2322,7 +2322,7 @@ fgColor index 14
 bgColor index 0
 useDisplayBg
 value {
-  "Feb0:ClkInFreq0"
+  "Feb$(CH):ClkInFreq0"
 }
 endObjectProperties
 

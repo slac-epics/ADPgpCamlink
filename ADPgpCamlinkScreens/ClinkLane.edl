@@ -194,7 +194,7 @@ x 140
 y 180
 w 80
 h 20
-controlPv "$(P)$(R)Feb0:FCh0:InvCC_RBV"
+controlPv "$(P)$(R)Feb$(CH):FCh0:InvCC_RBV"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
 fgColor index 15
@@ -663,7 +663,7 @@ x 140
 y 228
 w 80
 h 20
-controlPv "$(P)$(R)Feb0:FCh0:TrigCnt_RBV"
+controlPv "$(P)$(R)Feb$(CH):FCh0:TrigCnt_RBV"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
 fgColor index 15
@@ -708,7 +708,7 @@ x 140
 y 252
 w 80
 h 20
-controlPv "$(P)$(R)Feb0:FCh0:TrigRate_RBV"
+controlPv "$(P)$(R)Feb$(CH):FCh0:TrigRate_RBV"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
 fgColor index 15
@@ -848,8 +848,8 @@ bgColor index 3
 inconsistentColor index 40
 topShadowColor index 1
 botShadowColor index 11
-controlPv "$(P)$(R)Feb0:FCh0:InvCC"
-indicatorPv "$(P)$(R)Feb0:FCh0:InvCC_RBV"
+controlPv "$(P)$(R)Feb$(CH):FCh0:InvCC"
+indicatorPv "$(P)$(R)Feb$(CH):FCh0:InvCC_RBV"
 font "helvetica-medium-r-12.0"
 endObjectProperties
 
