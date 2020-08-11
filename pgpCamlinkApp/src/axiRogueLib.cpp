@@ -233,9 +233,9 @@ axiRogueLib::axiRogueLib(
 		{
 			default:
 			case 0:	szMemName = "Unnamed_186";	break;
-			case 1:	szMemName = "Unnamed_215";	break;
-			case 2:	szMemName = "Unnamed_244";	break;
-			case 3:	szMemName = "Unnamed_273";	break;
+			case 1:	szMemName = "Unnamed_217";	break;
+			case 2:	szMemName = "Unnamed_248";	break;
+			case 3:	szMemName = "Unnamed_279";	break;
 		}
 		addMemory( szMemName, m_pSrpFeb[lane] );
 		m_pRogueLib->addMemory( szMemName, m_pSrpFeb[lane] );
@@ -264,7 +264,7 @@ axiRogueLib::axiRogueLib(
 
 	// Hack: Configure for LCLS-I timing
 	ConfigureLclsTimingV1();
-	Feb0PllConfig();
+	FebPllConfig();
 
 	// Hack: Read defaults
 	m_pRogueLib->readAll();
@@ -368,7 +368,7 @@ void axiRogueLib::ConfigureLclsTimingV1()
 	printf( "Configured for LCLS-I timing\n" );
 }
 
-void axiRogueLib::Feb0PllConfig()
+void axiRogueLib::FebPllConfig()
 {
 	const uint64_t	lZero	= 0L;
 	const uint64_t	lOne	= 1L;
@@ -395,6 +395,21 @@ void axiRogueLib::Feb0PllConfig()
 	writeVarPath( "ClinkDevRoot.ClinkFeb[0].ClinkTop.RstPll",		lZero	);
 
 	// ResetFebCounters() same as python ClinkTop.CntRst()
+
+	// Feb1 Pll Config:
+	writeVarPath( "ClinkDevRoot.ClinkFeb[1].ClinkTop.RstPll",		lOne	);
+	LoadConfigFile( "db/cfgFeb1Pll85MHz.txt" );
+	writeVarPath( "ClinkDevRoot.ClinkFeb[1].ClinkTop.RstPll",		lZero	);
+
+	// Feb2 Pll Config:
+	writeVarPath( "ClinkDevRoot.ClinkFeb[2].ClinkTop.RstPll",		lOne	);
+	LoadConfigFile( "db/cfgFeb2Pll85MHz.txt" );
+	writeVarPath( "ClinkDevRoot.ClinkFeb[2].ClinkTop.RstPll",		lZero	);
+
+	// Feb3 Pll Config:
+	writeVarPath( "ClinkDevRoot.ClinkFeb[3].ClinkTop.RstPll",		lOne	);
+	LoadConfigFile( "db/cfgFeb3Pll85MHz.txt" );
+	writeVarPath( "ClinkDevRoot.ClinkFeb[3].ClinkTop.RstPll",		lZero	);
 }
 
 /// Load Config file

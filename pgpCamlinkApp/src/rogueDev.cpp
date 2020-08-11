@@ -87,6 +87,7 @@ rogueDev::rogueDev(
 		m_DrvVersion(							),
 		m_LibVersion(							),
 		m_ModelName(		modelName			),
+		m_RogueName(		rogueName			),
 
 		m_ReCfgCnt(			0					),
 		m_reconfigLock(		NULL				),

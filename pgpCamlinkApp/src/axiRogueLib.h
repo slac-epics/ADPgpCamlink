@@ -91,7 +91,7 @@ public:		//	Public member functions
 	/// Load Config file
 	void LoadConfigFile( const char * pszFilePath );
 
-	void Feb0PllConfig();
+	void FebPllConfig();
 
 	void ResetCounters();
 
