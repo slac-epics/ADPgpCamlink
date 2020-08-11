@@ -5,6 +5,7 @@
 #	P				- Prefix
 #	R				- Region, common camera PV prefix is $(P)$(R)
 #	PORT			- Asyn port name
+#	PGP_LANE		- Camera lane number on PGP framegrabber
 # Optional macros
 #	TIMEOUT			- Defaults to 1 sec
 #	CAM_MODE		- Base, Medium, or Full. Defaults to Base
@@ -83,7 +84,7 @@ record( calcout, "$(P)$(R)CamAcquireTimeCalc" )
 	field( CALC, "FLOOR(A*B)" )
 	field( PREC, "4" )
 	field( EGU,  "us" )
-	field( OUT,  "$(P)$(R)Feb0:FCh$(PGP_LANE):PulseWidth PP MS" )
+	field( OUT,  "$(P)$(R)Feb$(PGP_LANE):FCh0:PulseWidth PP MS" )
 	info( archiveFields,  "VAL" )
 }
 # CamAcquireTime_RBV (Exposure Time)
@@ -91,7 +92,7 @@ record( calcout, "$(P)$(R)CamAcquireTimeCalc" )
 # which maps it to ADCore's ADAcquireTime parameter
 record( calc, "$(P)$(R)CamAcquireTime_RBV" )
 {
-	field( INPA, "$(P)$(R)Feb0:FCh$(PGP_LANE):PulseWidth_RBV CP MS" )
+	field( INPA, "$(P)$(R)Feb$(PGP_LANE):FCh0:PulseWidth_RBV CP MS" )
 #	field( INPB, "$(CAM):CamDelayScale NPP MS" )
 	field( INPB, "1000000" )
 	field( CALC, "A/B" )
@@ -547,7 +548,7 @@ record( longin, "$(P)$(R)CamEventCode_RBV" )
 
 record( ai, "$(P)$(R)CamRepRate_RBV" )
 {
-	field( INP, "$(P)$(R)Feb0:FCh$(PGP_LANE):TrigRate_RBV CPP MS" )
+	field( INP, "$(P)$(R)Feb$(PGP_LANE):FCh0:TrigRate_RBV CPP MS" )
 	field( EGU,  "Hz" )
 	field( PREC, "1" )
 	field( FLNK, "$(P)$(R)CamRepDur" )
