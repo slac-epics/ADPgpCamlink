@@ -208,7 +208,7 @@ axiRogueLib::axiRogueLib(
 	m_pAxiMemMap		= rogue::hardware::axi::AxiMemMap::create( m_devName );
 	m_pClMemMaster		= ClMemoryMaster::create( );
 	m_pClMemMaster->setSlave( m_pAxiMemMap );
-	const char	*	szMemName = "Unnamed_3";
+	const char	*	szMemName = "PCIe_Bar0";
 	addMemory( szMemName, m_pAxiMemMap );
 	m_pRogueLib->addMemory( szMemName, m_pAxiMemMap );
 	printf("axiRogueLib: addMemory AxiMemMap interface %s\n", szMemName );
@@ -232,10 +232,10 @@ axiRogueLib::axiRogueLib(
 		switch ( lane )
 		{
 			default:
-			case 0:	szMemName = "Unnamed_186";	break;
-			case 1:	szMemName = "Unnamed_217";	break;
-			case 2:	szMemName = "Unnamed_248";	break;
-			case 3:	szMemName = "Unnamed_279";	break;
+			case 0:	szMemName = "SRPv3[0]";	break;
+			case 1:	szMemName = "SRPv3[1]";	break;
+			case 2:	szMemName = "SRPv3[2]";	break;
+			case 3:	szMemName = "SRPv3[3]";	break;
 		}
 		addMemory( szMemName, m_pSrpFeb[lane] );
 		m_pRogueLib->addMemory( szMemName, m_pSrpFeb[lane] );
