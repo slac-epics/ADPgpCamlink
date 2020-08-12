@@ -21,7 +21,9 @@ DB += roguePcie.db
 DB += putMonitor.template
 DB += rbvMonitor.template
 DB += serialMonitor.template
-DB += cannedSequences.db
+DB += AxiCannedSequences.db
+DB += AxiChCannedSequences.db
+DB += CamCannedSequences.db
 
 # Install archive files
 #ARCHIVE += foo.tpl-arch
