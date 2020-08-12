@@ -534,16 +534,22 @@ template<class R> int axiRogueLib::writeVarPath( rim::VariablePtr pVar, const R 
 	{
 		pVar->setValue( value );
 		status = 0;
-		R	valueRet;
-		pVar->getValue( valueRet );
-		if ( DEBUG_AXI_ROGUE >= 3 || value != valueRet )
+		if ( pVar->mode() != std::string("WO") )
 		{
-			std::cout	<< functionName	<< ": " << pVar->path()
-						<< ", setValue="	<< value;
-			if ( value != valueRet )
-				std::cout	<< ", Error getValue="	<< valueRet << std::endl;
-			else
-				std::cout	<< ", getValue="	<< valueRet << std::endl;
+			R	valueRet;
+			pVar->getValue( valueRet );
+			if ( DEBUG_AXI_ROGUE >= 3 || value != valueRet )
+			{
+				std::cout	<< functionName	<< ": " << pVar->path()
+							<< ", setValue="	<< value;
+				if ( value != valueRet )
+				{
+					std::cout	<< ", Error getValue="	<< valueRet << std::endl;
+					status	= -2;
+				}
+				else
+					std::cout	<< ", getValue="	<< valueRet << std::endl;
+			}
 		}
 	}
 	catch ( rogue::GeneralError & e )
