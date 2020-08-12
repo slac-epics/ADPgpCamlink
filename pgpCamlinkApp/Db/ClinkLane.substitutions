@@ -194,9 +194,17 @@ file liDevRogue.template
 	}
 }
 
-#file loDevRogue.template
-#{
-#}
+file loDevRogue.template
+{
+	{
+		NAME	= "EventBuilder:SoftRst",
+		PATH	= "ClinkDevRoot.ClinkPcie.Application.AppLane[$(L)].EventBuilder.SoftRst"
+		SAVE	= ""
+		DESC	= "Reset EventBuilder pipeline"
+		DOL		= "0"
+		PINI	= "YES"
+	}
+}
 
 file longDevRogue.template
 {
@@ -212,6 +220,8 @@ file longDevRogue.template
 	{
 		NAME	= "EvrV2:Polarity",
 		PATH	= "ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TriggerEventManager.EvrV2CoreTriggers.EvrV2TriggerReg[$(L)].Polarity"
+		DOL		= "1"
+		PINI	= "YES"
 		SCAN	= "\$(SCAN=1 second)"
 	}
 	{
@@ -238,18 +248,6 @@ file longDevRogue.template
 		PATH	= "ClinkDevRoot.ClinkFeb[$(F)].ClinkTop.RstPll"
 		PINI	= ""
 		SAVE	= ""
-	}
-	{
-		NAME	= "Timing:RxDown",
-		PATH	= "ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TimingFrameRx.RxDown"
-		SAVE	= ""
-		SCAN	= "\$(SCAN=1 second)"
-	}
-	{
-		NAME	= "Timing:RxPllReset",
-		PATH	= "ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TimingFrameRx.RxPllReset"
-		SAVE	= ""
-		SCAN	= "\$(SCAN=1 second)"
 	}
 	{
 		NAME	= "Timing:PauseThreshold",
