@@ -5,6 +5,7 @@
 #	P				- Prefix
 #	R				- Region, common camera PV prefix is $(P)$(R)
 #	PORT			- Asyn port name
+#	AXI				- Prefix for AXI PGP Rogue register IOC
 #	PGP_LANE		- Camera lane number on PGP framegrabber
 # Optional macros
 #	TIMEOUT			- Defaults to 1 sec
@@ -71,6 +72,8 @@ record( ao, "$(P)$(R)AcquireTime" )
 # This record updates the asyn serial driver
 record( ao, "$(P)$(R)CamAcquireTime" )
 {
+	field( DOL,  "$(P)$(R)AcquireTime NPP MS" )
+	field( OMSL, "closed_loop" )
 	field( PREC, "5" )
 	field( EGU,  "sec" )
 }
@@ -78,13 +81,13 @@ record( ao, "$(P)$(R)CamAcquireTime" )
 record( calcout, "$(P)$(R)CamAcquireTimeCalc" )
 {
 #	field( TPRO, 2 )
-	field( INPA, "$(CAM):AcquireTime CP MS" )
+	field( INPA, "$(CAM):AcquireTime CPP MS" )
 #	field( INPB, "$(CAM):CamDelayScale NPP MS" )
 	field( INPB, "1000000" )
 	field( CALC, "FLOOR(A*B)" )
 	field( PREC, "4" )
 	field( EGU,  "us" )
-	field( OUT,  "$(P)$(R)Feb$(PGP_LANE):FCh0:PulseWidth CA NMS" )
+	field( OUT,  "$(AXI):Ch$(PGP_LANE):Feb$(PGP_LANE):FCh0:PulseWidth CA NMS" )
 	info( archiveFields,  "VAL" )
 }
 # CamAcquireTime_RBV (Exposure Time)
@@ -92,7 +95,7 @@ record( calcout, "$(P)$(R)CamAcquireTimeCalc" )
 # which maps it to ADCore's ADAcquireTime parameter
 record( calc, "$(P)$(R)CamAcquireTime_RBV" )
 {
-	field( INPA, "$(P)$(R)Feb$(PGP_LANE):FCh0:PulseWidth_RBV CP MS" )
+	field( INPA, "$(AXI):Ch$(PGP_LANE):Feb$(PGP_LANE):FCh0:PulseWidth_RBV CPP MS" )
 #	field( INPB, "$(CAM):CamDelayScale NPP MS" )
 	field( INPB, "1000000" )
 	field( CALC, "A/B" )
@@ -497,7 +500,7 @@ record( calcout, "$(CAM):CamTrigDelayCalc" )
 	field( INPB, "125000000" )
 	field( CALC, "MAX(0,MIN(A*B,0xFFFFFF))" )
 #	field( OOPT, "On Change" )
-	field( OUT,  "$(P)$(R)EvrV2:Ch$(PGP_LANE):TriggerDelay CA NMS" )
+	field( OUT,  "$(AXI):EvrV2:Ch$(PGP_LANE):TriggerDelay CA NMS" )
 	field( EGU,  "1/125MHz" )
 	field( PREC, "4" )
 	info( autosaveFields, "HHSV HIGH HIHI HSV LLSV LOLO LOW LSV     DESC PREC" )
@@ -517,7 +520,7 @@ record( longout, "$(CAM):CamDelayScale" )
 record( calcout, "$(CAM):CamTrigDelay_RBV" )
 {
 #field( TPRO, "$(TPRO=2)" )
-	field( INPA, "$(P)$(R)EvrV2:Ch$(PGP_LANE):TriggerDelay_RBV CP MS" )
+	field( INPA, "$(AXI):EvrV2:Ch$(PGP_LANE):TriggerDelay_RBV CPP MS" )
 #	field( INPB, "$(CAM):CamDelayScale CP MS" )
 	field( INPB, "125000000" )
 	field( CALC, "B==0?A:(A/B)" )
@@ -534,21 +537,21 @@ record( calcout, "$(CAM):CamTrigDelay_RBV" )
 record( longout, "$(P)$(R)CamEventCode" )
 {
 	field( DOL,  "40" )
-	field( OUT,  "$(P)$(R)EvrV2:Ch$(PGP_LANE):RateSel CA NMS" )
+	field( OUT,  "$(AXI):EvrV2:Ch$(PGP_LANE):RateSel CA NMS" )
 	field( PINI, "YES" )
 	info( autosaveFields, "HHSV HIGH HIHI HSV LLSV LOLO LOW LSV EGU DESC HOPR LOPR VAL" )
 	info( archiveFields,  "HHSV HIGH HIHI HSV LLSV LOLO LOW LSV EGU DESC HOPR LOPR VAL" )
 }
 record( longin, "$(P)$(R)CamEventCode_RBV" )
 {
-	field( INP,  "$(P)$(R)EvrV2:Ch$(PGP_LANE):RateSel_RBV CP MS" )
+	field( INP,  "$(AXI):Ch$(PGP_LANE):EvrV2:RateSel_RBV CPP MS" )
 	info( autosaveFields, "HHSV HIGH HIHI HSV LLSV LOLO LOW LSV EGU DESC" )
 	info( archiveFields,  "HHSV HIGH HIHI HSV LLSV LOLO LOW LSV EGU DESC VAL" )
 }
 
 record( ai, "$(P)$(R)CamRepRate_RBV" )
 {
-	field( INP, "$(P)$(R)Feb$(PGP_LANE):FCh0:TrigRate_RBV CP MS" )
+	field( INP,  "$(AXI):Ch$(PGP_LANE):Feb$(PGP_LANE):FCh0:TrigRate_RBV CPP MS" )
 	field( EGU,  "Hz" )
 	field( PREC, "1" )
 	field( FLNK, "$(P)$(R)CamRepDur" )
@@ -617,7 +620,7 @@ record( calc, "$(P)$(R)BeamRepDur" )
 
 record( calc, "$(P)$(R)CamlinkXmitTime" )
 {
-    field( INPA, "$(P)$(R)ArraySize_RBV CP MS" )
+    field( INPA, "$(P)$(R)ArraySize_RBV CPP MS" )
     field( INPB, "$(P)$(R)XmitRate CPP MS" )
     field( INPC, "$(P)$(R)HTaps_RBV CPP MS" )
     field( INPD, "$(P)$(R)VTaps_RBV CPP MS" )
@@ -653,7 +656,7 @@ record( ao, "$(P)$(R)DriverProcDelay" )
 #	C	- Estimated driver processing delay before requesting timestamp
 record( calc, "$(P)$(R)TrigToTS_Calc" )
 {
-    field( INPA, "$(P)$(R)AcquireTime_RBV CP MS" )
+    field( INPA, "$(P)$(R)AcquireTime_RBV CPP MS" )
     field( INPB, "$(P)$(R)XmitDelay CP MS" )
     field( INPC, "$(P)$(R)DriverProcDelay CP MS" )
     field( CALC, "A+B+C" )

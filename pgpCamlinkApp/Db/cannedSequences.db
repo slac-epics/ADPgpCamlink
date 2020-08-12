@@ -6,7 +6,8 @@
 #
 # Required macros:
 #	CAM				- Prefix for camera
-#
+#	AXI				- Prefix for axiRogue IOC
+#	CH				- Camera channel number 0..3 (lane number)
 
 record( ao, "$(CAM):Def120HzTrigDelay" )
 {
@@ -121,170 +122,187 @@ record( seq, "$(CAM):GoToFullMode" )
 }
 
 # Select LCLS-I Timing
-record( seq, "$(CAM):SeqLcls1Timing" )
+record( seq, "$(AXI):Ch$(CH):SeqLcls1Timing" )
 {
 	field( DESC, "Select LCLS-I Timing" )
 
 	# Disable MiniTpg and set ModeSelEn to UseClkSel
-	field( DLY0, "0" ) field( DOL0, "0" ) field( LNK0, "$(CAM):Timing:UseMiniTpg    PP NMS" )
-	field( DLY2, "0" ) field( DOL2, "0" ) field( LNK2, "$(CAM):Timing:ModeSelEn     PP NMS" )
+	field( DLY0, "0" ) field( DOL0, "0" ) field( LNK0, "$(AXI):Timing:UseMiniTpg    PP NMS" )
+	field( DLY2, "0" ) field( DOL2, "0" ) field( LNK2, "$(AXI):Timing:ModeSelEn     PP NMS" )
 
 	# Assert RxPllReset for 1 sec 
-	field( DLY3, "0" ) field( DOL3, "1" ) field( LNK3, "$(CAM):Timing:RxPllReset    PP NMS" )
-	field( DLY4, "1" ) field( DOL4, "0" ) field( LNK4, "$(CAM):Timing:RxPllReset    PP NMS" )
+	field( DLY3, "0" ) field( DOL3, "1" ) field( LNK3, "$(AXI):Timing:RxPllReset    PP NMS" )
+	field( DLY4, "1" ) field( DOL4, "0" ) field( LNK4, "$(AXI):Timing:RxPllReset    PP NMS" )
 
 	# Select LCLS-I Clock
-	field( DLY5, "0" ) field( DOL5, "0" ) field( LNK5, "$(CAM):Timing:ClkSel        PP NMS" )
+	field( DLY5, "0" ) field( DOL5, "0" ) field( LNK5, "$(AXI):Timing:ClkSel        PP NMS" )
 
 	# Assert C_RxReset for 1 sec 
-	field( DLY6, "0" ) field( DOL6, "1" ) field( LNK6, "$(CAM):Timing:C_RxReset     PP NMS" )
-	field( DLY7, "1" ) field( DOL7, "0" ) field( LNK7, "$(CAM):Timing:C_RxReset     PP NMS" )
+	field( DLY6, "0" ) field( DOL6, "1" ) field( LNK6, "$(AXI):Timing:C_RxReset     PP NMS" )
+	field( DLY7, "1" ) field( DOL7, "0" ) field( LNK7, "$(AXI):Timing:C_RxReset     PP NMS" )
 
 	# Reset the latching register
-	field( DLY8, ".1") field( DOL8, "0" ) field( LNK8, "$(CAM):Timing:RxDown        PP NMS" )
+	field( DLY8, ".1") field( DOL8, "0" ) field( LNK8, "$(AXI):Timing:RxDown        PP NMS" )
 
 	# Configure EvrV2 registers
-	field( DLY9, "1.0" ) field( DOL9, "1" ) field( LNK9, "$(CAM):EvrV2:FebTrigWidth   PP NMS" )
-	field( DLYA, "0.0" ) field( DOLA, "2" ) field( LNKA, "$(CAM):EvrV2:RateType       PP NMS" )
-	field( DLYB, "0.0" ) field( DOLB, "2" ) field( LNKB, "$(CAM):EvrV2:DestType       PP NMS" )
-	field( DLYC, "0.1" ) field( DOLC, "1" ) field( LNKC, "$(CAM):EvrV2:EnableReg      PP NMS" )
-	field( DLYD, "0.1" ) field( DOLD, "1" ) field( LNKD, "$(CAM):EvrV2:FebTrigWidth   PP NMS" )
-	field( DLYE, "0.1" ) field( DOLE, "1" ) field( LNKE, "$(CAM):EvrV2:EnableFebTrig  PP NMS" )
-	field( DLYF, "0.1" ) field( DOLF, "1" ) field( LNKF, "$(CAM):EvrV2:EnableTrig     PP NMS" )
+	field( DLY9, "1.0" ) field( DOL9, "1" ) field( LNK9, "$(AXI):Ch$(CH):EvrV2:FebTrigWidth   PP NMS" )
+	field( DLYA, "0.0" ) field( DOLA, "2" ) field( LNKA, "$(AXI):Ch$(CH):EvrV2:RateType       PP NMS" )
+	field( DLYB, "0.0" ) field( DOLB, "2" ) field( LNKB, "$(AXI):Ch$(CH):EvrV2:DestType       PP NMS" )
+	field( DLYC, "0.1" ) field( DOLC, "1" ) field( LNKC, "$(AXI):Ch$(CH):EvrV2:EnableReg      PP NMS" )
+	field( DLYD, "0.1" ) field( DOLD, "1" ) field( LNKD, "$(AXI):Ch$(CH):EvrV2:FebTrigWidth   PP NMS" )
+	field( DLYE, "0.1" ) field( DOLE, "1" ) field( LNKE, "$(AXI):Ch$(CH):EvrV2:EnableFebTrig  PP NMS" )
+	field( DLYF, "0.1" ) field( DOLF, "1" ) field( LNKF, "$(AXI):Ch$(CH):EvrV2:EnableTrig     PP NMS" )
 
 	info( autosaveFields, "DESC" )
 	#	info( autosaveFields, "DESC DOL1 DLY1 DOL2 DLY2 DOL3 DLY3 DOL4 DLY4 DOL5 DLY5 DOL6 DLY6 DOL7 DLY7 DOL8 DLY8 DOL9 DLY9 DOLA DLYA" )
 }
 
 # Select TpgMini Internally generated LCLS-I Clock
-record( seq, "$(CAM):SeqTpgMiniTiming" )
+record( seq, "$(AXI):Ch$(CH):SeqTpgMiniTiming" )
 {
 	field( DESC, "Select TpgMini Internal LCLS-I Clock" )
 
 	# Disable MiniTpg and set ModeSelEn to UseClkSel
-	field( DLY1, "0" ) field( DOL1, "0" ) field( LNK1, "$(CAM):Timing:UseMiniTpg    PP NMS" )
-	field( DLY2, "0" ) field( DOL2, "0" ) field( LNK2, "$(CAM):Timing:ModeSelEn     PP NMS" )
+	field( DLY1, "0" ) field( DOL1, "0" ) field( LNK1, "$(AXI):Timing:UseMiniTpg    PP NMS" )
+	field( DLY2, "0" ) field( DOL2, "0" ) field( LNK2, "$(AXI):Timing:ModeSelEn     PP NMS" )
 
 	# Assert RxPllReset for 1 sec 
-	field( DLY3, "0" ) field( DOL3, "1" ) field( LNK3, "$(CAM):Timing:RxPllReset    PP NMS" )
-	field( DLY4, "1" ) field( DOL4, "0" ) field( LNK4, "$(CAM):Timing:RxPllReset    PP NMS" )
+	field( DLY3, "0" ) field( DOL3, "1" ) field( LNK3, "$(AXI):Timing:RxPllReset    PP NMS" )
+	field( DLY4, "1" ) field( DOL4, "0" ) field( LNK4, "$(AXI):Timing:RxPllReset    PP NMS" )
 
 	# Select LCLS-I Clock
-	field( DLY5, "0" ) field( DOL5, "0" ) field( LNK5, "$(CAM):Timing:ClkSel        PP NMS" )
+	field( DLY5, "0" ) field( DOL5, "0" ) field( LNK5, "$(AXI):Timing:ClkSel        PP NMS" )
 
 	# Assert C_RxReset for 1 sec 
-	field( DLY6, "0" ) field( DOL6, "1" ) field( LNK6, "$(CAM):Timing:C_RxReset     PP NMS" )
-	field( DLY7, "1" ) field( DOL7, "0" ) field( LNK7, "$(CAM):Timing:C_RxReset     PP NMS" )
+	field( DLY6, "0" ) field( DOL6, "1" ) field( LNK6, "$(AXI):Timing:C_RxReset     PP NMS" )
+	field( DLY7, "1" ) field( DOL7, "0" ) field( LNK7, "$(AXI):Timing:C_RxReset     PP NMS" )
 
 	# Reset the latching register
-	field( DLY8, ".1") field( DOL8, "0" ) field( LNK8, "$(CAM):Timing:RxDown        PP NMS" )
+	field( DLY8, ".1") field( DOL8, "0" ) field( LNK8, "$(AXI):Timing:RxDown        PP NMS" )
 
 	# Configure EvrV2 registers
-	field( DLY9, "1" ) field( DOL9, "1" ) field( LNK9, "$(CAM):EvrV2:FebTrigWidth   PP NMS" )
-	field( DLYA, "0" ) field( DOLA, "2" ) field( LNKA, "$(CAM):EvrV2:RateType       PP NMS" )
-	field( DLYB, "0" ) field( DOLB, "2" ) field( LNKB, "$(CAM):EvrV2:DestType       PP NMS" )
-	field( DLYC, "0.1" ) field( DOLC, "1" ) field( LNKC, "$(CAM):EvrV2:EnableTrig     PP NMS" )
-	field( DLYD, "0.1" ) field( DOLD, "1" ) field( LNKD, "$(CAM):EvrV2:EnableReg      PP NMS" )
-	field( DLYE, "0.1" ) field( DOLE, "1" ) field( LNKE, "$(CAM):EvrV2:FebTrigWidth   PP NMS" )
+	field( DLY9, "1" ) field( DOL9, "1" ) field( LNK9, "$(AXI):Ch$(CH):EvrV2:FebTrigWidth   PP NMS" )
+	field( DLYA, "0" ) field( DOLA, "2" ) field( LNKA, "$(AXI):Ch$(CH):EvrV2:RateType       PP NMS" )
+	field( DLYB, "0" ) field( DOLB, "2" ) field( LNKB, "$(AXI):Ch$(CH):EvrV2:DestType       PP NMS" )
+	field( DLYC, "0.1" ) field( DOLC, "1" ) field( LNKC, "$(AXI):Ch$(CH):EvrV2:EnableTrig     PP NMS" )
+	field( DLYD, "0.1" ) field( DOLD, "1" ) field( LNKD, "$(AXI):Ch$(CH):EvrV2:EnableReg      PP NMS" )
+	field( DLYE, "0.1" ) field( DOLE, "1" ) field( LNKE, "$(AXI):Ch$(CH):EvrV2:FebTrigWidth   PP NMS" )
 # TODO: Use DLY0 and shift up or create a chain of seq
-#	field( DLYF, "0.1" ) field( DOLF, "1" ) field( LNKF, "$(CAM):EvrV2:EnableFebTrig  PP NMS" )
+#	field( DLYF, "0.1" ) field( DOLF, "1" ) field( LNKF, "$(AXI):Ch$(CH):EvrV2:EnableFebTrig  PP NMS" )
 
 	# Enable MiniTpg
-	field( DLYF, "0" ) field( DOLF, "1" ) field( LNKF, "$(CAM):Timing:UseMiniTpg    PP NMS" )
+	field( DLYF, "0" ) field( DOLF, "1" ) field( LNKF, "$(AXI):Timing:UseMiniTpg    PP NMS" )
 
 	info( autosaveFields, "DESC" )
 	#	info( autosaveFields, "DESC DOL1 DLY1 DOL2 DLY2 DOL3 DLY3 DOL4 DLY4 DOL5 DLY5 DOL6 DLY6 DOL7 DLY7 DOL8 DLY8 DOL9 DLY9 DOLA DLYA" )
 }
 
 # Select LCLS-II Timing
-record( seq, "$(CAM):SeqLcls2Timing" )
+record( seq, "$(AXI):Ch$(CH):SeqLcls2Timing" )
 {
 	field( DESC, "Select LCLS-II Timing" )
 
 	# Disable MiniTpg and set ModeSelEn to UseClkSel
-	field( DLY1, "0" ) field( DOL1, "0" ) field( LNK1, "$(CAM):Timing:UseMiniTpg    PP NMS" )
-	field( DLY2, "0" ) field( DOL2, "0" ) field( LNK2, "$(CAM):Timing:ModeSelEn     PP NMS" )
+	field( DLY1, "0" ) field( DOL1, "0" ) field( LNK1, "$(AXI):Timing:UseMiniTpg    PP NMS" )
+	field( DLY2, "0" ) field( DOL2, "0" ) field( LNK2, "$(AXI):Timing:ModeSelEn     PP NMS" )
 
 	# Assert RxPllReset for 1 sec 
-	field( DLY3, "0" ) field( DOL3, "1" ) field( LNK3, "$(CAM):Timing:RxPllReset    PP NMS" )
-	field( DLY4, "1" ) field( DOL4, "0" ) field( LNK4, "$(CAM):Timing:RxPllReset    PP NMS" )
+	field( DLY3, "0" ) field( DOL3, "1" ) field( LNK3, "$(AXI):Timing:RxPllReset    PP NMS" )
+	field( DLY4, "1" ) field( DOL4, "0" ) field( LNK4, "$(AXI):Timing:RxPllReset    PP NMS" )
 
 	# Select LCLS-II Clock
-	field( DLY5, "1" ) field( DOL5, "1" ) field( LNK5, "$(CAM):Timing:ClkSel        PP NMS" )
+	field( DLY5, "1" ) field( DOL5, "1" ) field( LNK5, "$(AXI):Timing:ClkSel        PP NMS" )
 
 	# Assert C_RxReset for 1 sec 
-	field( DLY6, "0" ) field( DOL6, "1" ) field( LNK6, "$(CAM):Timing:C_RxReset     PP NMS" )
-	field( DLY7, "1" ) field( DOL7, "0" ) field( LNK7, "$(CAM):Timing:C_RxReset     PP NMS" )
+	field( DLY6, "0" ) field( DOL6, "1" ) field( LNK6, "$(AXI):Timing:C_RxReset     PP NMS" )
+	field( DLY7, "1" ) field( DOL7, "0" ) field( LNK7, "$(AXI):Timing:C_RxReset     PP NMS" )
 
 	# Reset the latching register
-	field( DLY8, ".1") field( DOL8, "0" ) field( LNK8, "$(CAM):Timing:RxDown        PP NMS" )
+	field( DLY8, ".1") field( DOL8, "0" ) field( LNK8, "$(AXI):Timing:RxDown        PP NMS" )
 
 	info( autosaveFields, "DESC" )
 	#	info( autosaveFields, "DESC DOL1 DLY1 DOL2 DLY2 DOL3 DLY3 DOL4 DLY4 DOL5 DLY5 DOL6 DLY6 DOL7 DLY7 DOL8 DLY8 DOL9 DLY9 DOLA DLYA" )
 }
 
 # Select XpmMini Internally generated LCLS-II Clock
-record( seq, "$(CAM):SeqXpmMiniTiming" )
+record( seq, "$(AXI):Ch$(CH):SeqXpmMiniTiming" )
 {
 	field( DESC, "Select XpmMini Internal LCLS-II Clock" )
 
 	# Disable MiniTpg and set ModeSelEn to UseClkSel
-	field( DLY1, "0" ) field( DOL1, "0" ) field( LNK1, "$(CAM):Timing:UseMiniTpg    PP NMS" )
-	field( DLY2, "0" ) field( DOL2, "0" ) field( LNK2, "$(CAM):Timing:ModeSelEn     PP NMS" )
+	field( DLY1, "0" ) field( DOL1, "0" ) field( LNK1, "$(AXI):Timing:UseMiniTpg    PP NMS" )
+	field( DLY2, "0" ) field( DOL2, "0" ) field( LNK2, "$(AXI):Timing:ModeSelEn     PP NMS" )
 
 	# Assert RxPllReset for 1 sec 
-	field( DLY3, "0" ) field( DOL3, "1" ) field( LNK3, "$(CAM):Timing:RxPllReset    PP NMS" )
-	field( DLY4, "1" ) field( DOL4, "0" ) field( LNK4, "$(CAM):Timing:RxPllReset    PP NMS" )
+	field( DLY3, "0" ) field( DOL3, "1" ) field( LNK3, "$(AXI):Timing:RxPllReset    PP NMS" )
+	field( DLY4, "1" ) field( DOL4, "0" ) field( LNK4, "$(AXI):Timing:RxPllReset    PP NMS" )
 
 	# Select LCLS-II Clock
-	field( DLY5, "1" ) field( DOL5, "1" ) field( LNK5, "$(CAM):Timing:ClkSel        PP NMS" )
+	field( DLY5, "1" ) field( DOL5, "1" ) field( LNK5, "$(AXI):Timing:ClkSel        PP NMS" )
 
 	# Assert C_RxReset for 1 sec 
-	field( DLY6, "0" ) field( DOL6, "1" ) field( LNK6, "$(CAM):Timing:C_RxReset     PP NMS" )
-	field( DLY7, "1" ) field( DOL7, "0" ) field( LNK7, "$(CAM):Timing:C_RxReset     PP NMS" )
+	field( DLY6, "0" ) field( DOL6, "1" ) field( LNK6, "$(AXI):Timing:C_RxReset     PP NMS" )
+	field( DLY7, "1" ) field( DOL7, "0" ) field( LNK7, "$(AXI):Timing:C_RxReset     PP NMS" )
 
 	# Reset the latching register
-	field( DLY8, ".1") field( DOL8, "0" ) field( LNK8, "$(CAM):Timing:RxDown        PP NMS" )
+	field( DLY8, ".1") field( DOL8, "0" ) field( LNK8, "$(AXI):Timing:RxDown        PP NMS" )
 
 	# Enable MiniTpg
-	field( DLY9, "1" ) field( DOL9, "1" ) field( LNK9, "$(CAM):Timing:UseMiniTpg    PP NMS" )
-	field( DLYA, "0" ) field( DOLA, "1" ) field( LNKA, "$(CAM):XpmMini:HwEnable     PP NMS" )
-	field( DLYB, "0" ) field( DOLB, "0" ) field( LNKB, "$(CAM):XpmMini:Link         PP NMS" )
+	field( DLY9, "1" ) field( DOL9, "1" ) field( LNK9, "$(AXI):Timing:UseMiniTpg    PP NMS" )
+	field( DLYA, "0" ) field( DOLA, "1" ) field( LNKA, "$(AXI):XpmMini:HwEnable     PP NMS" )
+	field( DLYB, "0" ) field( DOLB, "0" ) field( LNKB, "$(AXI):XpmMini:Link         PP NMS" )
 
 	# Configure rate and enable
 	# 4: 100Hz, 5: 10Hz, 6: 1Hz
-	field( DLYC, "0" ) field( DOLC, "6" ) field( LNKC, "$(CAM):XpmMini:Config_L0Select_RateSel PP NMS" )
-	field( DLYD, "0" ) field( DOLD, "1" ) field( LNKD, "$(CAM):XpmMini:Config_L0Select_Enabled PP NMS" )
+	field( DLYC, "0" ) field( DOLC, "6" ) field( LNKC, "$(AXI):XpmMini:Config_L0Select_RateSel PP NMS" )
+	field( DLYD, "0" ) field( DOLD, "1" ) field( LNKD, "$(AXI):XpmMini:Config_L0Select_Enabled PP NMS" )
 
-#	field( DLYE, "0" ) field( DOLE, "1" ) field( LNKE, "$(CAM):Trigger:MasterEnable PP NMS" )
-#	field( DLYF, "0" ) field( DOLF, "0" ) field( LNKF, "$(CAM):?    PP NMS" )
+#	field( DLYE, "0" ) field( DOLE, "1" ) field( LNKE, "$(AXI):Trigger:MasterEnable PP NMS" )
+#	field( DLYF, "0" ) field( DOLF, "0" ) field( LNKF, "$(AXI):?    PP NMS" )
 
 	info( autosaveFields, "DESC" )
 	#	info( autosaveFields, "DESC DOL1 DLY1 DOL2 DLY2 DOL3 DLY3 DOL4 DLY4 DOL5 DLY5 DOL6 DLY6 DOL7 DLY7 DOL8 DLY8 DOL9 DLY9 DOLA DLYA" )
+}
+
+record( calcout, "$(CAM):Acquire:StartRun" )
+{
+	field( INPA, "$(CAM):Acquire CPP NMS" )
+	field( CALC, "A" )
+	field( OOPT, "Transition To Non-zero" )
+	field( OUT,  "$(AXI):Ch$(CH):SeqStartRun.PROC NPP NMS" )
+}
+
+record( calcout, "$(CAM):Acquire:StopRun" )
+{
+	field( INPA, "$(CAM):Acquire CPP NMS" )
+	field( CALC, "!A" )
+	field( OOPT, "When Non-zero" )
+	field( OUT,  "$(AXI):Ch$(CH):SeqStopRun.PROC NPP NMS" )
 }
 
 # StartRun
-record( seq, "$(CAM):SeqStartRun" )
+record( seq, "$(AXI):Ch$(CH):SeqStartRun" )
 {
 	field( DESC, "Arm EventBuilder and enable triggers" )
 	# Arm EventBuilder for data stream
-	field( DLY1, "0" ) field( DOL1, "0" ) field( LNK1, "$(CAM):EventBuilder:Blowoff PP NMS" )
+	field( DLY1, "0" ) field( DOL1, "0" ) field( LNK1, "$(AXI):Ch$(CH):EventBuilder:Blowoff PP NMS" )
+	# Reset EventBuilder Pipeline
+	field( DLY2, "0" ) field( DOL2, "1" ) field( LNK2, "$(AXI):Ch$(CH):EventBuilder:SoftRst PP NMS" )
+	field( DLY3, "0" ) field( DOL3, "1" ) field( LNK3, "$(AXI):Ch$(CH):EventBuilder:SoftRst PP NMS" )
 	# Enable triggering
-	field( DLY2, "0" ) field( DOL2, "1" ) field( LNK2, "$(CAM):Trigger:MasterEnable PP NMS" )
+	field( DLY4, "0" ) field( DOL4, "1" ) field( LNK4, "$(AXI):Ch$(CH):Trigger:MasterEnable PP NMS" )
 
 	info( autosaveFields, "DESC" )
-	#	info( autosaveFields, "DESC DOL1 DLY1 DOL2 DLY2 DOL3 DLY3 DOL4 DLY4 DOL5 DLY5 DOL6 DLY6 DOL7 DLY7 DOL8 DLY8 DOL9 DLY9 DOLA DLYA" )
 }
 
 # StopRun
-record( seq, "$(CAM):SeqStopRun" )
+record( seq, "$(AXI):Ch$(CH):SeqStopRun" )
 {
 	field( DESC, "Stop triggers & blow off pipeline data" )
 	# Disable triggering
-	field( DLY1, "0" ) field( DOL1, "0" ) field( LNK1, "$(CAM):Trigger:MasterEnable PP NMS" )
+	field( DLY1, "0" ) field( DOL1, "0" ) field( LNK1, "$(AXI):Ch$(CH):Trigger:MasterEnable PP NMS" )
 	# Blow off data in EventBuilder pipeline
-	field( DLY2, "0" ) field( DOL2, "1" ) field( LNK2, "$(CAM):EventBuilder:Blowoff PP NMS" )
+	field( DLY2, "0" ) field( DOL2, "1" ) field( LNK2, "$(AXI):Ch$(CH):EventBuilder:Blowoff PP NMS" )
 
 	info( autosaveFields, "DESC" )
-	#	info( autosaveFields, "DESC DOL1 DLY1 DOL2 DLY2 DOL3 DLY3 DOL4 DLY4 DOL5 DLY5 DOL6 DLY6 DOL7 DLY7 DOL8 DLY8 DOL9 DLY9 DOLA DLYA" )
 }
