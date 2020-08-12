@@ -83,7 +83,6 @@ public:		//	Public member functions
 								ImageCallback		CallbackClientFunc );
 
 	int		setTriggerEnable( unsigned int triggerNum, bool fEnable );
-	bool	getTriggerEnable( unsigned int triggerNum );
 
 private:
 	//	Private member variables

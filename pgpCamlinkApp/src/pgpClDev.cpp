@@ -44,34 +44,8 @@ int		DEBUG_PGP_CAMLINK	= 2;
 int		pgpClDev::setTriggerEnable( unsigned int triggerNum, bool fEnable )
 {
 	int		status	= 0;
-#if 0
-	// TODO: Replace this code w/ invoking cannedSequences StartRun and StopRun seq PVs
-	const char * varPathMasterEnable	= "ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TriggerEventManager.TriggerEventBuffer[0].MasterEnable";
-	const char * varPathBlowoff			= "ClinkDevRoot.ClinkPcie.Application.AppLane[0].EventBuilder.Blowoff";
-	const char * varPathSoftRst			= "ClinkDevRoot.ClinkPcie.Application.AppLane[0].EventBuilder.SoftRst";
-	if ( fEnable )
-	{
-		setVariable( varPathBlowoff,		0, false );
-		setVariable( varPathSoftRst,		1, false );
-		setVariable( varPathSoftRst,		0, false );
-		setVariable( varPathMasterEnable,	1, false );
-	}
-	else
-	{
-		setVariable( varPathMasterEnable,	0, false );
-		setVariable( varPathBlowoff,		1, false );
-	}
-#endif
 	return status;
 }
-
-bool	pgpClDev::getTriggerEnable( unsigned int triggerNum )
-{
-	return false;
-}
-
-
-
 
 
 ///	Constructor
@@ -84,10 +58,7 @@ pgpClDev::pgpClDev(
 	m_fConnected(	0		),
 	m_devName(				),
 	m_devLock(				),
-//	m_pAxiMemMap(			),
-//	m_pFebRegChan(			),
 	m_pFebFrameChan(		),
-//	m_pClMemMaster(			),	// Not needed
 //	m_pFebMemMaster(		),	// not needed
 	m_pImageStream(			)
 {
