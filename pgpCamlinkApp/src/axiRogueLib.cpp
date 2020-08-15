@@ -42,6 +42,7 @@ namespace rim = rogue::interfaces::memory;
 typedef	std::map< std::string, rim::VariablePtr >	mapVarPtr_t;
 
 extern	int		DEBUG_AXI_ROGUE;
+int	doFebFpgaReload	= 1;
 
 // TODO Move to new file: src/rogue/memory/interfaces/memory/Constants.cpp
 // TODO Rename BlockProcessingType2String()?
@@ -251,6 +252,9 @@ axiRogueLib::axiRogueLib(
 	m_pRogueLib->parseMemMap( ROGUE_ADDR_MAP );
 	printf( "m_pRogueLib: ROGUE_ADDR_MAP parsed successfully\n" );
 
+	if ( doFebFpgaReload )
+		FebFpgaReload();
+
 	//const mapVarPtr_t &	mapVars		= getVariableList();
 	//printf( "%s: %zu variables\n", functionName, mapVars.size() );
 	//printf( "m_pRogueLib: %zu variables\n", (m_pRogueLib->getVariableList()).size() );
@@ -279,6 +283,9 @@ axiRogueLib::axiRogueLib(
 	showVariable( "ClinkDevRoot.ClinkPcie.AxiPcieCore.AxiVersion.UpTimeCnt", true );
 	showVariable( "ClinkDevRoot.ClinkFeb[0].AxiVersion.FpgaVersion", true );
 	showVariable( "ClinkDevRoot.ClinkFeb[0].AxiVersion.UpTimeCnt", true );
+	showVariable( "ClinkDevRoot.ClinkFeb[1].AxiVersion.UpTimeCnt", true );
+	showVariable( "ClinkDevRoot.ClinkFeb[2].AxiVersion.UpTimeCnt", true );
+	showVariable( "ClinkDevRoot.ClinkFeb[3].AxiVersion.UpTimeCnt", true );
 
 	m_fConnected = 1;	// Do we need this?
 }
@@ -289,18 +296,20 @@ axiRogueLib::~axiRogueLib()
 	close( m_fd );
 }
 
+bool	bUseMiniTpg	= 0;
+
 /// Configure timing for LCLS-I
 void axiRogueLib::ConfigureLclsTimingV1()
 {
 	const char * functionName = "ConfigureLclsTimingV1";
-	const uint64_t	lZero	= 0L;
+//	const bool		bOne	= 1;
+	const bool		bZero	= 0;
 	const uint64_t	lOne	= 1L;
+	const uint64_t	lZero	= 0L;
 	struct timespec delay	= { 1, 0 };
 
-	printf( "Configuring for LCLS-I timing ...\n" );
-	const bool	bOne	= 1;
-	const bool	bZero	= 1;
 	writeVarPath( "ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TimingPhyMonitor.UseMiniTpg",	bZero );
+	printf( "Configuring for LCLS-I timing ...\n" );
 	writeVarPath( "ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TimingFrameRx.ModeSelEn",		lZero	);
 	writeVarPath( "ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TimingFrameRx.RxPllReset",		lOne	);
 	nanosleep( &delay, NULL );
@@ -337,8 +346,8 @@ void axiRogueLib::ConfigureLclsTimingV1()
 	// Reset latching RxDown flag
 	writeVarPath( "ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TimingFrameRx.RxDown",		lZero	);
 
-	// TODO: How to make this configurable
-	writeVarPath( "ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TimingPhyMonitor.UseMiniTpg",	bOne );
+	// TODO: Export bUseMiniTpg as iocsh variable
+	writeVarPath( "ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TimingPhyMonitor.UseMiniTpg",	bUseMiniTpg );
 	nanosleep( &delay, NULL );
 	
 	// TODO: Push this into a function
@@ -362,10 +371,54 @@ void axiRogueLib::ConfigureLclsTimingV1()
 	printf( "Configured for LCLS-I timing\n" );
 }
 
+void axiRogueLib::FebFpgaReload()
+{
+	const uint64_t	lOne	= 1L;
+	const char * pszVarPathFpgaReload		= "ClinkDevRoot.ClinkFeb[%1u].AxiVersion.FpgaReload";
+	const char * pszVarPathRxRemLinkReady	= "ClinkDevRoot.ClinkPcie.Hsio.PgpMon[%1u].RxRemLinkReady";
+
+	for ( size_t lane = 0; lane < N_AXI_LANES; lane++ )
+	{
+		char		febVarPath[256];
+		printf( "Initiating Feb[%zu] FpgaReload\n", lane );
+		snprintf( febVarPath, 256, pszVarPathFpgaReload, lane );
+		writeVarPath( febVarPath, lOne );
+	}
+
+	bool	febReady[N_AXI_LANES] = { false, false, false, false };
+	for ( size_t i = 0; i < 5; i++ )
+	{
+		for ( size_t lane = 0; lane < N_AXI_LANES; lane++ )
+		{
+			char		febVarPath[256];
+			bool		febWasReady = febReady[lane];
+			snprintf( febVarPath, 256, pszVarPathRxRemLinkReady, lane );
+			readVarPath( febVarPath, febReady[lane] );
+			if ( ! febWasReady )
+			{
+				if ( febReady[lane] )
+					printf( "Feb[%zu] Ready.\n", lane );
+				else
+					printf( "Feb[%zu] not ready.\n", lane );
+			}
+		}
+		if ( febReady[0] && febReady[1] && febReady[2] && febReady[3] )
+			break;
+		sleep(1);
+	}
+	for ( size_t lane = 0; lane < N_AXI_LANES; lane++ )
+	{
+		if ( !febReady[lane] )
+			printf( "Timeout waiting for Feb[%zu]!\n", lane );
+	}
+	sleep(5);
+}
+
 void axiRogueLib::FebPllConfig()
 {
 	const uint64_t	lZero	= 0L;
 	const uint64_t	lOne	= 1L;
+	printf( "Configuring Feb[0] Pll...\n" );
 	// Hold Pll in reset
 	writeVarPath( "ClinkDevRoot.ClinkFeb[0].ClinkTop.RstPll",		lOne	);
 
@@ -391,16 +444,19 @@ void axiRogueLib::FebPllConfig()
 	// ResetFebCounters() same as python ClinkTop.CntRst()
 
 	// Feb1 Pll Config:
+	printf( "Configuring Feb[1] Pll...\n" );
 	writeVarPath( "ClinkDevRoot.ClinkFeb[1].ClinkTop.RstPll",		lOne	);
 	LoadConfigFile( "db/cfgFeb1Pll85MHz.txt" );
 	writeVarPath( "ClinkDevRoot.ClinkFeb[1].ClinkTop.RstPll",		lZero	);
 
 	// Feb2 Pll Config:
+	printf( "Configuring Feb[2] Pll...\n" );
 	writeVarPath( "ClinkDevRoot.ClinkFeb[2].ClinkTop.RstPll",		lOne	);
 	LoadConfigFile( "db/cfgFeb2Pll85MHz.txt" );
 	writeVarPath( "ClinkDevRoot.ClinkFeb[2].ClinkTop.RstPll",		lZero	);
 
 	// Feb3 Pll Config:
+	printf( "Configuring Feb[3] Pll...\n" );
 	writeVarPath( "ClinkDevRoot.ClinkFeb[3].ClinkTop.RstPll",		lOne	);
 	LoadConfigFile( "db/cfgFeb3Pll85MHz.txt" );
 	writeVarPath( "ClinkDevRoot.ClinkFeb[3].ClinkTop.RstPll",		lZero	);
@@ -416,6 +472,7 @@ void axiRogueLib::LoadConfigFile( const char * pszFilePath )
 		fprintf( stderr, "LoadConfigFile error: Unable to open %s\n", pszFilePath );
 		return;
 	}
+	printf( "%s: Reading values from %s ...\n", functionName, pszFilePath );
 
 	unsigned int	nValues	= 0;
 	try

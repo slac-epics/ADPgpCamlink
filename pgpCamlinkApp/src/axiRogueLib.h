@@ -91,6 +91,8 @@ public:		//	Public member functions
 	/// Load Config file
 	void LoadConfigFile( const char * pszFilePath );
 
+	void FebFpgaReload();
+
 	void FebPllConfig();
 
 	void ResetCounters();
@@ -104,7 +106,7 @@ public:		//	Public member functions
 
 private:
 	//	Private member variables
-	unsigned int		m_fd;
+	int					m_fd;
 	unsigned int		m_board;
 	bool				m_fConnected;
 	std::string			m_devName;
