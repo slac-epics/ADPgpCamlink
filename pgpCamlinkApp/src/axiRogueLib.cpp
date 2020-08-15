@@ -263,6 +263,23 @@ axiRogueLib::axiRogueLib(
 	printf( "%s: Reading %zu variables\n", functionName, (m_pRogueLib->getVariableList()).size() );
 	m_pRogueLib->readAll();
 
+	// Power up FEB Pll's
+	setVariable( "ClinkDevRoot.ClinkFeb[0].ClinkTop.Pll[0].POWER", 65535 );
+	setVariable( "ClinkDevRoot.ClinkFeb[0].ClinkTop.Pll[1].POWER", 65535 );
+	setVariable( "ClinkDevRoot.ClinkFeb[0].ClinkTop.Pll[2].POWER", 65535 );
+
+	setVariable( "ClinkDevRoot.ClinkFeb[1].ClinkTop.Pll[0].POWER", 65535 );
+	setVariable( "ClinkDevRoot.ClinkFeb[1].ClinkTop.Pll[1].POWER", 65535 );
+	setVariable( "ClinkDevRoot.ClinkFeb[1].ClinkTop.Pll[2].POWER", 65535 );
+
+	setVariable( "ClinkDevRoot.ClinkFeb[2].ClinkTop.Pll[0].POWER", 65535 );
+	setVariable( "ClinkDevRoot.ClinkFeb[2].ClinkTop.Pll[1].POWER", 65535 );
+	setVariable( "ClinkDevRoot.ClinkFeb[2].ClinkTop.Pll[2].POWER", 65535 );
+
+	setVariable( "ClinkDevRoot.ClinkFeb[3].ClinkTop.Pll[0].POWER", 65535 );
+	setVariable( "ClinkDevRoot.ClinkFeb[3].ClinkTop.Pll[1].POWER", 65535 );
+	setVariable( "ClinkDevRoot.ClinkFeb[3].ClinkTop.Pll[2].POWER", 65535 );
+
 	// Hack: Configure for LCLS-I timing
 	ConfigureLclsTimingV1();
 	FebPllConfig();
