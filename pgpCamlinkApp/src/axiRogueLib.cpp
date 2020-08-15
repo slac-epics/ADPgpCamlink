@@ -859,5 +859,23 @@ void axiRogueLib::connect( )
 
 void axiRogueLib::disconnect( )
 {
+	printf( "axiRogueLib::disconnect\n" );
+	if ( m_fd > 0 )
+	{
+		close( m_fd );
+		m_fd = -1;
+	}
+	m_pClMemMaster.reset();
+	//rmMemory( m_pAxiMemMap );
+	//m_pRogueLib->rmMemory( m_pAxiMemMap );
+	m_pAxiMemMap.reset();
+	for ( size_t	lane = 0; lane < N_AXI_LANES; lane++ )
+	{
+		m_pFebRegChan[lane].reset();
+		m_pSrpFeb[lane].reset();
+		//rmMemory( m_pSrpFeb[lane] );
+		//m_pRogueLib->rmMemory( m_pSrpFeb[lane] );
+		m_pFebMemMaster[lane].reset();
+	}
 }
 
