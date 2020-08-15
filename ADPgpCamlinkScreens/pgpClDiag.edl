@@ -3,8 +3,8 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 22
-y 66
+x 980
+y 98
 w 900
 h 800
 font "helvetica-medium-r-8.0"
@@ -1539,7 +1539,7 @@ onColor index 5
 offColor index 3
 topShadowColor index 1
 botShadowColor index 11
-controlPv "$(P)$(R)SeqStartRun.PROC"
+controlPv "$(AXI):Ch$(CH):SeqStartRun.PROC"
 pressValue "1"
 onLabel "StartRun"
 offLabel "StartRun"
@@ -1562,7 +1562,7 @@ onColor index 5
 offColor index 3
 topShadowColor index 1
 botShadowColor index 11
-controlPv "$(P)$(R)SeqStopRun.PROC"
+controlPv "$(AXI):Ch$(CH):SeqStopRun.PROC"
 pressValue "1"
 onLabel "StopRun"
 offLabel "StopRun"
@@ -2324,5 +2324,79 @@ useDisplayBg
 value {
   "Feb$(CH):ClkInFreq0"
 }
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 496
+y 376
+w 80
+h 20
+controlPv "$(P)$(R)Timing:RxDown_RBV"
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+fgColor index 15
+fgAlarm
+bgColor index 12
+limitsFromDb
+nullColor index 40
+smartRefresh
+newPos
+objType "monitors"
+noExecuteClipMask
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 368
+y 376
+w 120
+h 20
+font "helvetica-medium-r-12.0"
+fontAlign "right"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "Timing:RxDown"
+}
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 584
+y 376
+w 96
+h 18
+controlPv "$(P)$(R)Timing:RxDown"
+format "decimal"
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+fgColor index 25
+fgAlarm
+bgColor index 5
+editable
+autoHeight
+motifWidget
+limitsFromDb
+nullColor index 40
+smartRefresh
+fastUpdate
+useHexPrefix
+newPos
+objType "controls"
+noExecuteClipMask
 endObjectProperties
 

@@ -4,7 +4,7 @@
 file biDevRogue.template
 {
 	{
-		NAME	= "Feb$(F):LinkLockedA",
+		NAME	= "Ch$(F):Feb$(F):LinkLockedA",
 		PATH	= "ClinkDevRoot.ClinkFeb[$(F)].ClinkTop.LinkLockedA",
 		SCAN	= "\$(SCAN=1 second)"
 	}
@@ -45,17 +45,17 @@ file liDevRogue.template
 		SCAN	= "\$(SCAN=1 second)"
 	}
 	{
-		NAME	= "Feb$(F):ClinkClkFreq0",
+		NAME	= "Ch$(F):Feb$(F):ClinkClkFreq0",
 		PATH	= "ClinkDevRoot.ClinkFeb[$(F)].ClinkTop.ClinkClkFreq[0]",
 		SCAN	= "\$(SCAN=1 second)"
 	}
 	{
-		NAME	= "Feb$(F):ClkInFreq0",
+		NAME	= "Ch$(F):Feb$(F):ClkInFreq0",
 		PATH	= "ClinkDevRoot.ClinkFeb[$(F)].ClinkTop.ClkInFreq[0]",
 		SCAN	= "\$(SCAN=1 second)"
 	}
 	{
-		NAME	= "Feb$(F):LinkLockedCntA",
+		NAME	= "Ch$(F):Feb$(F):LinkLockedCntA",
 		PATH	= "ClinkDevRoot.ClinkFeb[$(F)].ClinkTop.LinkLockedCntA",
 		SCAN	= "\$(SCAN=1 second)"
 	}
@@ -104,6 +104,7 @@ file longDevRogue.template
 	}
 	{
 		NAME	= "XpmMini:Config_L0Select_DestSel",
+		DOL		= "32768"
 		PATH	= "ClinkDevRoot.ClinkPcie.Hsio.TimingRx.XpmMiniWrapper.XpmMini.Config_L0Select_DestSel"
 	}
 	{

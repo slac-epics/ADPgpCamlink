@@ -287,6 +287,7 @@ record( calcout, "$(P)$(R)Feb$(F):FCh$(FL):PulseWidthCalc" )
 record( longout, "$(P)$(R)Feb$(F):FCh$(FL):PulseWidth" )
 {
 	field( EGU,  "usec" )
+	field( DOL,  "1000" )
 	field( PINI, "YES" )
 	field( FLNK, "$(P)$(R)Feb$(F):FCh$(FL):PulseWidthCalc" )
 	info( autosaveFields, "VAL" )
