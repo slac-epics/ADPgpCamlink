@@ -312,19 +312,26 @@ int rogueDev::ShowPgpVariable( const char * pszVarPath, int level )
 
 void rogueDev::ExitHook(void * arg)
 {
+	printf( "rogueDev::ExitHook\n" );
 	rogueDev	*	pRogue = static_cast<rogueDev *>( arg );
 	if( pRogue != NULL )
+	{
 		pRogue->Shutdown();
+	}
 }
 
 void rogueDev::Shutdown( )
 {
+	printf( "rogueDev::Shutdown\n" );
 	epicsMutexLock(	m_reconfigLock );
 //	m_acquireCount = 0;
 //	setIntegerParam(ADAcquire, 0);
 	if ( m_pRogueLib != NULL )
 	{
 		m_pRogueLib->disconnect();
+		m_pRogueLib->disconnect();
+		m_pRogueLib.reset();
+		printf( "rogueLib disconnected\n" );
 	}
 	epicsMutexUnlock(	m_reconfigLock );
 }
@@ -656,7 +663,7 @@ int rogueDev::_Reopen( )
 	if ( m_pRogueLib )
 	{
 		m_pRogueLib->disconnect();
-		m_pRogueLib	= NULL;
+		m_pRogueLib.reset();
 		if ( DEBUG_PGP_ROGUE >= 1 )
 			printf( "%s: %s old Dev closed.\n", functionName, m_RogueName.c_str() );
 	}
