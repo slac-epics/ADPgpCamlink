@@ -42,7 +42,8 @@ namespace rim = rogue::interfaces::memory;
 typedef	std::map< std::string, rim::VariablePtr >	mapVarPtr_t;
 
 extern	int		DEBUG_AXI_ROGUE;
-int	doFebFpgaReload	= 1;
+int	doFebFpgaReload	= 0;
+int	doFebConfig	= 1;
 
 // TODO Move to new file: src/rogue/memory/interfaces/memory/Constants.cpp
 // TODO Rename BlockProcessingType2String()?
@@ -97,25 +98,36 @@ void axiRogueLib::ResetCounters( )
 
 int		axiRogueLib::setTriggerEnable( unsigned int triggerNum, bool fEnable )
 {
-	int		status	= 0;
-#if 1
-	// TODO: Replace this code w/ invoking cannedSequences StartRun and StopRun seq PVs
-	const char * varPathMasterEnable	= "ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TriggerEventManager.TriggerEventBuffer[0].MasterEnable";
-	const char * varPathBlowoff			= "ClinkDevRoot.ClinkPcie.Application.AppLane[0].EventBuilder.Blowoff";
-	const char * varPathSoftRst			= "ClinkDevRoot.ClinkPcie.Application.AppLane[0].EventBuilder.SoftRst";
+	int			status	= 0;
+	char		varPath[256];
+	const char * pszMasterEnable = "ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TriggerEventManager.TriggerEventBuffer[%u].MasterEnable";
+	const char * pszBlowoff		 = "ClinkDevRoot.ClinkPcie.Application.AppLane[%u].EventBuilder.Blowoff";
+	const char * pszSoftRst		 = "ClinkDevRoot.ClinkPcie.Application.AppLane[%u].EventBuilder.SoftRst";
 	if ( fEnable )
 	{
-		setVariable( varPathBlowoff,		0, false );
-		setVariable( varPathSoftRst,		1, false );
-		setVariable( varPathSoftRst,		0, false );
-		setVariable( varPathMasterEnable,	1, false );
+		// Clear Blowoff
+		snprintf( varPath, 256, pszBlowoff, triggerNum );
+		setVariable( varPath,	0 );
+		
+		// Toggle SoftRst
+		snprintf( varPath, 256, pszSoftRst, triggerNum );
+		setVariable( varPath,	1 );
+		setVariable( varPath,	0 );
+
+		// Set Trigger MasterEnable
+		snprintf( varPath, 256, pszMasterEnable, triggerNum );
+		setVariable( varPath,	1 );
 	}
 	else
 	{
-		setVariable( varPathMasterEnable,	0, false );
-		setVariable( varPathBlowoff,		1, false );
+		// Clear Trigger MasterEnable
+		snprintf( varPath, 256, pszMasterEnable, triggerNum );
+		setVariable( varPath,	0 );
+
+		// Set Blowoff
+		snprintf( varPath, 256, pszBlowoff, triggerNum );
+		setVariable( varPath,	1 );
 	}
-#endif
 	return status;
 }
 
@@ -261,33 +273,88 @@ axiRogueLib::axiRogueLib(
 
 	// Force an initial read of all variables
 	printf( "%s: Reading %zu variables\n", functionName, (m_pRogueLib->getVariableList()).size() );
-	m_pRogueLib->readAll();
+	try
+	{
+		m_pRogueLib->readAll();
+	}
+	catch ( rogue::GeneralError & e )
+	{
+		printf( "%s error: %s!\n", functionName, e.what() );
+	}
 
-	// Power up FEB Pll's
-	setVariable( "ClinkDevRoot.ClinkFeb[0].ClinkTop.Pll[0].POWER", 65535 );
-	setVariable( "ClinkDevRoot.ClinkFeb[0].ClinkTop.Pll[1].POWER", 65535 );
-	setVariable( "ClinkDevRoot.ClinkFeb[0].ClinkTop.Pll[2].POWER", 65535 );
+	if ( doFebConfig )
+	{
+		// Set FEB BaudRate
+		setVariable( "ClinkDevRoot.ClinkFeb[0].ClinkTop.Ch[0].BaudRate", 57600 );
+		setVariable( "ClinkDevRoot.ClinkFeb[0].ClinkTop.Ch[1].BaudRate", 9600 );
 
-	setVariable( "ClinkDevRoot.ClinkFeb[1].ClinkTop.Pll[0].POWER", 65535 );
-	setVariable( "ClinkDevRoot.ClinkFeb[1].ClinkTop.Pll[1].POWER", 65535 );
-	setVariable( "ClinkDevRoot.ClinkFeb[1].ClinkTop.Pll[2].POWER", 65535 );
+		// Power up FEB Pll's
+		setVariable( "ClinkDevRoot.ClinkFeb[0].ClinkTop.Pll[0].POWER", 65535 );
+		setVariable( "ClinkDevRoot.ClinkFeb[0].ClinkTop.Pll[1].POWER", 65535 );
+		setVariable( "ClinkDevRoot.ClinkFeb[0].ClinkTop.Pll[2].POWER", 65535 );
 
-	setVariable( "ClinkDevRoot.ClinkFeb[2].ClinkTop.Pll[0].POWER", 65535 );
-	setVariable( "ClinkDevRoot.ClinkFeb[2].ClinkTop.Pll[1].POWER", 65535 );
-	setVariable( "ClinkDevRoot.ClinkFeb[2].ClinkTop.Pll[2].POWER", 65535 );
+		setVariable( "ClinkDevRoot.ClinkFeb[1].ClinkTop.Ch[0].BaudRate", 57600 );
+		setVariable( "ClinkDevRoot.ClinkFeb[1].ClinkTop.Ch[1].BaudRate", 9600 );
+		setVariable( "ClinkDevRoot.ClinkFeb[1].ClinkTop.Pll[0].POWER", 65535 );
+		setVariable( "ClinkDevRoot.ClinkFeb[1].ClinkTop.Pll[1].POWER", 65535 );
+		setVariable( "ClinkDevRoot.ClinkFeb[1].ClinkTop.Pll[2].POWER", 65535 );
 
-	setVariable( "ClinkDevRoot.ClinkFeb[3].ClinkTop.Pll[0].POWER", 65535 );
-	setVariable( "ClinkDevRoot.ClinkFeb[3].ClinkTop.Pll[1].POWER", 65535 );
-	setVariable( "ClinkDevRoot.ClinkFeb[3].ClinkTop.Pll[2].POWER", 65535 );
+		setVariable( "ClinkDevRoot.ClinkFeb[2].ClinkTop.Ch[0].BaudRate", 57600 );
+		setVariable( "ClinkDevRoot.ClinkFeb[2].ClinkTop.Ch[1].BaudRate", 9600 );
+		setVariable( "ClinkDevRoot.ClinkFeb[2].ClinkTop.Pll[0].POWER", 65535 );
+		setVariable( "ClinkDevRoot.ClinkFeb[2].ClinkTop.Pll[1].POWER", 65535 );
+		setVariable( "ClinkDevRoot.ClinkFeb[2].ClinkTop.Pll[2].POWER", 65535 );
+
+		setVariable( "ClinkDevRoot.ClinkFeb[3].ClinkTop.Ch[0].BaudRate", 57600 );
+		setVariable( "ClinkDevRoot.ClinkFeb[3].ClinkTop.Ch[1].BaudRate", 9600 );
+		setVariable( "ClinkDevRoot.ClinkFeb[3].ClinkTop.Pll[0].POWER", 65535 );
+		setVariable( "ClinkDevRoot.ClinkFeb[3].ClinkTop.Pll[1].POWER", 65535 );
+		setVariable( "ClinkDevRoot.ClinkFeb[3].ClinkTop.Pll[2].POWER", 65535 );
+	}
 
 	// Hack: Configure for LCLS-I timing
 	ConfigureLclsTimingV1();
-	FebPllConfig();
 
-	// Hack: Read defaults
-	m_pRogueLib->readAll();
 	LoadConfigFile( "db/defaults_LCLS-I.txt" );
 	LoadConfigFile( "db/Opal1000.txt" );
+
+	// Misc python resets, etc
+#if 1
+	setVariable( "ClinkDevRoot.ClinkPcie.AxiPcieCore.DmaIbAxisMon.CntRst", 1 );
+	setVariable( "ClinkDevRoot.ClinkPcie.AxiPcieCore.DmaObAxisMon.CntRst", 1 );
+	setVariable( "ClinkDevRoot.ClinkPcie.Application.AppLane[0].EventBuilder.SoftRst", 1 );
+	setVariable( "ClinkDevRoot.ClinkPcie.Application.AppLane[0].EventBuilder.SoftRst", 0 );
+	setVariable( "ClinkDevRoot.ClinkPcie.Application.AppLane[1].EventBuilder.SoftRst", 1 );
+	setVariable( "ClinkDevRoot.ClinkPcie.Application.AppLane[1].EventBuilder.SoftRst", 0 );
+	setVariable( "ClinkDevRoot.ClinkPcie.Application.AppLane[2].EventBuilder.SoftRst", 1 );
+	setVariable( "ClinkDevRoot.ClinkPcie.Application.AppLane[2].EventBuilder.SoftRst", 0 );
+	setVariable( "ClinkDevRoot.ClinkPcie.Application.AppLane[3].EventBuilder.SoftRst", 1 );
+	setVariable( "ClinkDevRoot.ClinkPcie.Application.AppLane[3].EventBuilder.SoftRst", 0 );
+	setVariable( "ClinkDevRoot.ClinkPcie.Hsio.PgpMon[0].Flush", 1 );
+	setVariable( "ClinkDevRoot.ClinkPcie.Hsio.PgpMon[0].Flush", 0 );
+	setVariable( "ClinkDevRoot.ClinkPcie.Hsio.PgpTxAxisMon[0].CntRst", 1 );
+	setVariable( "ClinkDevRoot.ClinkPcie.Hsio.PgpRxAxisMon[0].CntRst", 1 );
+	setVariable( "ClinkDevRoot.ClinkPcie.Hsio.PgpMon[1].Flush", 1 );
+	setVariable( "ClinkDevRoot.ClinkPcie.Hsio.PgpMon[1].Flush", 0 );
+	setVariable( "ClinkDevRoot.ClinkPcie.Hsio.PgpTxAxisMon[1].CntRst", 1 );
+	setVariable( "ClinkDevRoot.ClinkPcie.Hsio.PgpRxAxisMon[1].CntRst", 1 );
+	setVariable( "ClinkDevRoot.ClinkPcie.Hsio.PgpMon[2].Flush", 1 );
+	setVariable( "ClinkDevRoot.ClinkPcie.Hsio.PgpMon[2].Flush", 0 );
+	setVariable( "ClinkDevRoot.ClinkPcie.Hsio.PgpTxAxisMon[2].CntRst", 1 );
+	setVariable( "ClinkDevRoot.ClinkPcie.Hsio.PgpRxAxisMon[2].CntRst", 1 );
+	setVariable( "ClinkDevRoot.ClinkPcie.Hsio.PgpMon[3].Flush", 1 );
+	setVariable( "ClinkDevRoot.ClinkPcie.Hsio.PgpMon[3].Flush", 0 );
+	setVariable( "ClinkDevRoot.ClinkPcie.Hsio.PgpTxAxisMon[3].CntRst", 1 );
+	setVariable( "ClinkDevRoot.ClinkPcie.Hsio.PgpRxAxisMon[3].CntRst", 1 );
+	setVariable( "ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TimingPhyMonitor.CntRst", 1 );
+#endif
+	if ( doFebConfig )
+		FebPllConfig();
+
+	setTriggerEnable( 0, false );
+	setTriggerEnable( 1, false );
+	setTriggerEnable( 2, false );
+	setTriggerEnable( 3, false );
 
 	//showVariableList( true );
 
@@ -318,7 +385,7 @@ bool	bUseMiniTpg	= 0;
 /// Configure timing for LCLS-I
 void axiRogueLib::ConfigureLclsTimingV1()
 {
-	const char * functionName = "ConfigureLclsTimingV1";
+//	const char * functionName = "ConfigureLclsTimingV1";
 //	const bool		bOne	= 1;
 	const bool		bZero	= 0;
 	const uint64_t	lOne	= 1L;
@@ -337,10 +404,8 @@ void axiRogueLib::ConfigureLclsTimingV1()
 	writeVarPath( "ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TimingFrameRx.C_RxReset",		lOne	);
 	writeVarPath( "ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TimingFrameRx.C_RxReset",		lZero	);
 
-#if 0
-	// TODO: Wait for RxLinkUp
-	delay.tv_sec = 0; delay.tv_nsec = 2000000000L;
-	nanosleep( &delay, NULL );
+#if 1
+	WaitForRxLinkUp();
 #else
 	uint64_t		rxLinkUp	= 0;
 	size_t			nTries		= 0;
@@ -366,25 +431,9 @@ void axiRogueLib::ConfigureLclsTimingV1()
 	// TODO: Export bUseMiniTpg as iocsh variable
 	writeVarPath( "ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TimingPhyMonitor.UseMiniTpg",	bUseMiniTpg );
 	nanosleep( &delay, NULL );
-	
-	// TODO: Push this into a function
-	rxLinkUp	= 0;
-	nTries		= 0;
-	delay.tv_sec = 0; delay.tv_nsec = 10000000L;
-	while ( rxLinkUp == 0 )
-	{
-		readVarPath( "ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TimingFrameRx.RxLinkUp", rxLinkUp );
-		if ( rxLinkUp )
-			break;
-		if ( nTries > 200 )
-		{
-			printf( "%s: Timeout waiting for RxLinkUp 2\n", functionName );
-			break;
-		}
-		nTries++;
-		nanosleep( &delay, NULL );
-	}
-	ResetCounters();
+
+	WaitForRxLinkUp();
+	//ResetCounters();
 	printf( "Configured for LCLS-I timing\n" );
 }
 
@@ -433,11 +482,13 @@ void axiRogueLib::FebFpgaReload()
 
 void axiRogueLib::FebPllConfig()
 {
-	const uint64_t	lZero	= 0L;
-	const uint64_t	lOne	= 1L;
 	printf( "Configuring Feb[0] Pll...\n" );
+	setVariable( "ClinkDevRoot.ClinkFeb[0].ClinkTop.Ch[0].CntRst",	1 );
+	setVariable( "ClinkDevRoot.ClinkFeb[0].ClinkTop.Ch[0].CntRst",	0 );
+	setVariable( "ClinkDevRoot.ClinkFeb[0].ClinkTop.Ch[1].CntRst",	1 );
+	setVariable( "ClinkDevRoot.ClinkFeb[0].ClinkTop.Ch[1].CntRst",	0 );
 	// Hold Pll in reset
-	writeVarPath( "ClinkDevRoot.ClinkFeb[0].ClinkTop.RstPll",		lOne	);
+	setVariable( "ClinkDevRoot.ClinkFeb[0].ClinkTop.RstPll",		1 );
 
 	// TODO: for ( iLane = 0; iLane < 4; iLane++ )
 	LoadConfigFile( "db/cfgFeb0Pll85MHz.txt" );
@@ -456,27 +507,80 @@ void axiRogueLib::FebPllConfig()
 #endif
 	
 	// Enable Pll
-	writeVarPath( "ClinkDevRoot.ClinkFeb[0].ClinkTop.RstPll",		lZero	);
+	setVariable( "ClinkDevRoot.ClinkFeb[0].ClinkTop.RstPll",		0 );
+	setVariable( "ClinkDevRoot.ClinkFeb[0].ClinkTop.CntRst",		1 );
+	setVariable( "ClinkDevRoot.ClinkFeb[0].ClinkTop.CntRst",		0 );
+	setVariable( "ClinkDevRoot.ClinkFeb[0].TrigCtrl[0].CntRst",		1 );
+	setVariable( "ClinkDevRoot.ClinkFeb[0].TrigCtrl[1].CntRst",		1 );
 
 	// ResetFebCounters() same as python ClinkTop.CntRst()
 
 	// Feb1 Pll Config:
 	printf( "Configuring Feb[1] Pll...\n" );
-	writeVarPath( "ClinkDevRoot.ClinkFeb[1].ClinkTop.RstPll",		lOne	);
+	setVariable( "ClinkDevRoot.ClinkFeb[1].ClinkTop.Ch[0].CntRst",	1 );
+	setVariable( "ClinkDevRoot.ClinkFeb[1].ClinkTop.Ch[0].CntRst",	0 );
+	setVariable( "ClinkDevRoot.ClinkFeb[1].ClinkTop.Ch[1].CntRst",	1 );
+	setVariable( "ClinkDevRoot.ClinkFeb[1].ClinkTop.Ch[1].CntRst",	0 );
+	setVariable( "ClinkDevRoot.ClinkFeb[1].ClinkTop.RstPll",		1 );
 	LoadConfigFile( "db/cfgFeb1Pll85MHz.txt" );
-	writeVarPath( "ClinkDevRoot.ClinkFeb[1].ClinkTop.RstPll",		lZero	);
+	setVariable( "ClinkDevRoot.ClinkFeb[1].ClinkTop.RstPll",		0 );
+	setVariable( "ClinkDevRoot.ClinkFeb[1].ClinkTop.CntRst",		1 );
+	setVariable( "ClinkDevRoot.ClinkFeb[1].ClinkTop.CntRst",		0 );
+	setVariable( "ClinkDevRoot.ClinkFeb[1].TrigCtrl[0].CntRst",		1 );
+	setVariable( "ClinkDevRoot.ClinkFeb[1].TrigCtrl[1].CntRst",		1 );
 
 	// Feb2 Pll Config:
 	printf( "Configuring Feb[2] Pll...\n" );
-	writeVarPath( "ClinkDevRoot.ClinkFeb[2].ClinkTop.RstPll",		lOne	);
+	setVariable( "ClinkDevRoot.ClinkFeb[2].ClinkTop.Ch[0].CntRst",	1 );
+	setVariable( "ClinkDevRoot.ClinkFeb[2].ClinkTop.Ch[0].CntRst",	0 );
+	setVariable( "ClinkDevRoot.ClinkFeb[2].ClinkTop.Ch[1].CntRst",	1 );
+	setVariable( "ClinkDevRoot.ClinkFeb[2].ClinkTop.Ch[1].CntRst",	0 );
+	setVariable( "ClinkDevRoot.ClinkFeb[2].ClinkTop.RstPll",		1 );
 	LoadConfigFile( "db/cfgFeb2Pll85MHz.txt" );
-	writeVarPath( "ClinkDevRoot.ClinkFeb[2].ClinkTop.RstPll",		lZero	);
+	setVariable( "ClinkDevRoot.ClinkFeb[2].ClinkTop.RstPll",		0 );
+	setVariable( "ClinkDevRoot.ClinkFeb[2].ClinkTop.CntRst",		1 );
+	setVariable( "ClinkDevRoot.ClinkFeb[2].ClinkTop.CntRst",		0 );
+	setVariable( "ClinkDevRoot.ClinkFeb[2].TrigCtrl[0].CntRst",		1 );
+	setVariable( "ClinkDevRoot.ClinkFeb[2].TrigCtrl[1].CntRst",		1 );
 
 	// Feb3 Pll Config:
 	printf( "Configuring Feb[3] Pll...\n" );
-	writeVarPath( "ClinkDevRoot.ClinkFeb[3].ClinkTop.RstPll",		lOne	);
+	setVariable( "ClinkDevRoot.ClinkFeb[3].ClinkTop.Ch[0].CntRst",	1 );
+	setVariable( "ClinkDevRoot.ClinkFeb[3].ClinkTop.Ch[0].CntRst",	0 );
+	setVariable( "ClinkDevRoot.ClinkFeb[3].ClinkTop.Ch[1].CntRst",	1 );
+	setVariable( "ClinkDevRoot.ClinkFeb[3].ClinkTop.Ch[1].CntRst",	0 );
+	setVariable( "ClinkDevRoot.ClinkFeb[3].ClinkTop.RstPll",		1 );
 	LoadConfigFile( "db/cfgFeb3Pll85MHz.txt" );
-	writeVarPath( "ClinkDevRoot.ClinkFeb[3].ClinkTop.RstPll",		lZero	);
+	setVariable( "ClinkDevRoot.ClinkFeb[3].ClinkTop.RstPll",		0 );
+	setVariable( "ClinkDevRoot.ClinkFeb[3].ClinkTop.CntRst",		1 );
+	setVariable( "ClinkDevRoot.ClinkFeb[3].ClinkTop.CntRst",		0 );
+	setVariable( "ClinkDevRoot.ClinkFeb[3].TrigCtrl[0].CntRst",		1 );
+	setVariable( "ClinkDevRoot.ClinkFeb[3].TrigCtrl[1].CntRst",		1 );
+}
+
+
+/// Wait for RxLinkUp
+void axiRogueLib::WaitForRxLinkUp()
+{
+	struct timespec delay	= { 1, 0 };
+	const char * functionName = "WaitForRxLinkUp";
+	// TODO: Push this into a function
+	uint64_t	rxLinkUp	= 0;
+	size_t		nTries		= 0;
+	delay.tv_sec = 0; delay.tv_nsec = 10000000L;
+	while ( rxLinkUp == 0 )
+	{
+		readVarPath( "ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TimingFrameRx.RxLinkUp", rxLinkUp );
+		if ( rxLinkUp )
+			break;
+		if ( nTries > 200 )
+		{
+			printf( "%s: Timeout waiting for RxLinkUp 2\n", functionName );
+			break;
+		}
+		nTries++;
+		nanosleep( &delay, NULL );
+	}
 }
 
 /// Load Config file

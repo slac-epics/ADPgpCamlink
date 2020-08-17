@@ -97,6 +97,8 @@ public:		//	Public member functions
 
 	void ResetCounters();
 
+	void WaitForRxLinkUp();
+
 	int		setTriggerEnable( unsigned int triggerNum, bool fEnable );
 	bool	getTriggerEnable( unsigned int triggerNum );
 
