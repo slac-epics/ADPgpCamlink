@@ -3,8 +3,8 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 3
-y 220
+x 19
+y 210
 w 1100
 h 900
 font "helvetica-medium-r-8.0"
@@ -48,7 +48,7 @@ release 0
 x 352
 y 216
 w 336
-h 324
+h 408
 lineColor index 3
 fill
 fillColor index 3
@@ -1857,8 +1857,8 @@ beginObjectProperties
 major 4
 minor 7
 release 0
-x 892
-y 256
+x 932
+y 264
 w 80
 h 20
 controlPv "$(P)$(R)PgpMon:RxCellErrorCount_RBV"
@@ -1884,8 +1884,8 @@ major 4
 minor 1
 release 1
 x 708
-y 256
-w 176
+y 264
+w 216
 h 20
 font "helvetica-medium-r-12.0"
 fontAlign "right"
@@ -1904,8 +1904,8 @@ major 4
 minor 1
 release 1
 x 708
-y 232
-w 176
+y 240
+w 216
 h 20
 font "helvetica-medium-r-12.0"
 fontAlign "right"
@@ -1923,8 +1923,8 @@ beginObjectProperties
 major 4
 minor 7
 release 0
-x 892
-y 232
+x 932
+y 240
 w 80
 h 20
 controlPv "$(P)$(R)PgpMon:RxLinkDownCount_RBV"
@@ -1969,8 +1969,8 @@ beginObjectProperties
 major 4
 minor 7
 release 0
-x 892
-y 280
+x 932
+y 288
 w 80
 h 20
 controlPv "$(P)$(R)PgpMon:RxLinkErrorCount_RBV"
@@ -1996,8 +1996,8 @@ major 4
 minor 1
 release 1
 x 708
-y 280
-w 176
+y 288
+w 216
 h 20
 font "helvetica-medium-r-12.0"
 fontAlign "right"
@@ -2015,8 +2015,8 @@ beginObjectProperties
 major 4
 minor 7
 release 0
-x 892
-y 304
+x 932
+y 312
 w 80
 h 20
 controlPv "$(P)$(R)PgpMon:TxFrameErrorCount_RBV"
@@ -2042,8 +2042,8 @@ major 4
 minor 1
 release 1
 x 708
-y 304
-w 176
+y 312
+w 216
 h 20
 font "helvetica-medium-r-12.0"
 fontAlign "right"
@@ -2061,8 +2061,8 @@ beginObjectProperties
 major 4
 minor 7
 release 0
-x 892
-y 328
+x 932
+y 336
 w 80
 h 20
 controlPv "$(P)$(R)PgpMon:RxRemLinkReadyCount_RBV"
@@ -2088,8 +2088,8 @@ major 4
 minor 1
 release 1
 x 708
-y 328
-w 176
+y 336
+w 216
 h 20
 font "helvetica-medium-r-12.0"
 fontAlign "right"
@@ -2122,8 +2122,8 @@ beginObjectProperties
 major 4
 minor 7
 release 0
-x 892
-y 408
+x 932
+y 416
 w 80
 h 20
 controlPv "$(P)$(R)Feb$(CH):PgpMon:RxCellErrorCount_RBV"
@@ -2149,8 +2149,8 @@ major 4
 minor 1
 release 1
 x 708
-y 408
-w 176
+y 416
+w 216
 h 20
 font "helvetica-medium-r-12.0"
 fontAlign "right"
@@ -2169,8 +2169,8 @@ major 4
 minor 1
 release 1
 x 708
-y 384
-w 176
+y 392
+w 216
 h 20
 font "helvetica-medium-r-12.0"
 fontAlign "right"
@@ -2188,8 +2188,8 @@ beginObjectProperties
 major 4
 minor 7
 release 0
-x 892
-y 384
+x 932
+y 392
 w 80
 h 20
 controlPv "$(P)$(R)Feb$(CH):PgpMon:RxLinkDownCount_RBV"
@@ -2234,8 +2234,8 @@ beginObjectProperties
 major 4
 minor 7
 release 0
-x 892
-y 432
+x 932
+y 440
 w 80
 h 20
 controlPv "$(P)$(R)Feb$(CH):PgpMon:RxLinkErrorCount_RBV"
@@ -2261,8 +2261,8 @@ major 4
 minor 1
 release 1
 x 708
-y 432
-w 176
+y 440
+w 216
 h 20
 font "helvetica-medium-r-12.0"
 fontAlign "right"
@@ -2280,8 +2280,8 @@ beginObjectProperties
 major 4
 minor 7
 release 0
-x 892
-y 456
+x 932
+y 464
 w 80
 h 20
 controlPv "$(P)$(R)Feb$(CH):PgpMon:TxFrameErrorCount_RBV"
@@ -2307,8 +2307,8 @@ major 4
 minor 1
 release 1
 x 708
-y 456
-w 176
+y 464
+w 216
 h 20
 font "helvetica-medium-r-12.0"
 fontAlign "right"
@@ -2326,8 +2326,8 @@ beginObjectProperties
 major 4
 minor 7
 release 0
-x 892
-y 480
+x 932
+y 488
 w 80
 h 20
 controlPv "$(P)$(R)Feb$(CH):PgpMon:RxRemLinkReadyCount_RBV"
@@ -2353,8 +2353,8 @@ major 4
 minor 1
 release 1
 x 708
-y 480
-w 176
+y 488
+w 216
 h 20
 font "helvetica-medium-r-12.0"
 fontAlign "right"
@@ -2409,5 +2409,325 @@ useDisplayBg
 value {
   "FCh0:FrameCount"
 }
+endObjectProperties
+
+# (Menu Button)
+object activeMenuButtonClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 572
+y 520
+w 96
+h 20
+fgColor index 14
+bgColor index 3
+inconsistentColor index 40
+topShadowColor index 1
+botShadowColor index 11
+controlPv "$(AXI):Timing:UseMiniTpg"
+indicatorPv "$(AXI):Timing:UseMiniTpg_RBV"
+font "helvetica-medium-r-12.0"
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 484
+y 520
+w 80
+h 20
+controlPv "$(AXI):Timing:UseMiniTpg_RBV"
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+fgColor index 15
+fgAlarm
+bgColor index 12
+limitsFromDb
+nullColor index 40
+smartRefresh
+newPos
+objType "monitors"
+noExecuteClipMask
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 356
+y 520
+w 120
+h 20
+font "helvetica-medium-r-12.0"
+fontAlign "right"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "Timing:UseMiniTpg"
+}
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 572
+y 544
+w 96
+h 18
+controlPv "$(AXI):Timing:RxDown"
+format "decimal"
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+fgColor index 25
+fgAlarm
+bgColor index 5
+editable
+autoHeight
+motifWidget
+limitsFromDb
+nullColor index 40
+smartRefresh
+fastUpdate
+useHexPrefix
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 484
+y 544
+w 80
+h 20
+controlPv "$(AXI):Timing:RxDown_RBV"
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+fgColor index 15
+fgAlarm
+bgColor index 12
+limitsFromDb
+nullColor index 40
+smartRefresh
+newPos
+objType "monitors"
+noExecuteClipMask
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 356
+y 544
+w 120
+h 20
+font "helvetica-medium-r-12.0"
+fontAlign "right"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "Timing:RxDown"
+}
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 484
+y 592
+w 80
+h 20
+controlPv "$(AXI):Timing:FidCount_RBV"
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+fgColor index 15
+fgAlarm
+bgColor index 12
+limitsFromDb
+nullColor index 40
+smartRefresh
+showUnits
+newPos
+objType "monitors"
+noExecuteClipMask
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 356
+y 592
+w 120
+h 20
+font "helvetica-medium-r-12.0"
+fontAlign "right"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "Timing:FidCount"
+}
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 484
+y 568
+w 80
+h 20
+controlPv "$(AXI):Timing:RxLinkUp_RBV"
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+fgColor index 15
+fgAlarm
+bgColor index 12
+limitsFromDb
+nullColor index 40
+smartRefresh
+showUnits
+newPos
+objType "monitors"
+noExecuteClipMask
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 356
+y 568
+w 120
+h 20
+font "helvetica-medium-r-12.0"
+fontAlign "right"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "Timing:RxLinkUp"
+}
+endObjectProperties
+
+# (Message Button)
+object activeMessageButtonClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 788
+y 56
+w 72
+h 24
+fgColor index 14
+onColor index 5
+offColor index 3
+topShadowColor index 1
+botShadowColor index 11
+controlPv "$(AXI):Ch$(CH):SeqStopRun.PROC"
+pressValue "1"
+onLabel "StopRun"
+offLabel "StopRun"
+3d
+font "helvetica-medium-r-14.0"
+endObjectProperties
+
+# (Message Button)
+object activeMessageButtonClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 704
+y 56
+w 72
+h 24
+fgColor index 14
+onColor index 5
+offColor index 3
+topShadowColor index 1
+botShadowColor index 11
+controlPv "$(AXI):Ch$(CH):SeqStartRun.PROC"
+pressValue "1"
+onLabel "StartRun"
+offLabel "StartRun"
+3d
+font "helvetica-medium-r-14.0"
+endObjectProperties
+
+# (Message Button)
+object activeMessageButtonClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 872
+y 216
+w 140
+h 20
+fgColor index 14
+onColor index 6
+offColor index 3
+topShadowColor index 1
+botShadowColor index 11
+controlPv "$(AXI):Ch$(CH):PgpMon:CountReset"
+pressValue "1"
+onLabel "Resetting"
+offLabel "Reset Counts"
+3d
+font "helvetica-medium-r-12.0"
+endObjectProperties
+
+# (Message Button)
+object activeMessageButtonClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 872
+y 368
+w 140
+h 20
+fgColor index 14
+onColor index 6
+offColor index 3
+topShadowColor index 1
+botShadowColor index 11
+controlPv "$(AXI):Ch$(CH):Feb$(CH):PgpMon:CountReset"
+pressValue "1"
+onLabel "Resetting"
+offLabel "Reset Counts"
+3d
+font "helvetica-medium-r-12.0"
 endObjectProperties
 

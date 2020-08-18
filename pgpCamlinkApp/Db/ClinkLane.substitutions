@@ -204,6 +204,18 @@ file loDevRogue.template
 		DOL		= "0"
 		PINI	= "YES"
 	}
+	{
+		NAME	= "PgpMon:CountReset"
+		PATH	= "ClinkDevRoot.ClinkPcie.Hsio.PgpMon[$(L)].CountReset"
+		SAVE	= ""
+		DESC	= "Reset PgpMon counts"
+	}
+	{
+		NAME	= "Feb$(F):PgpMon:CountReset"
+		PATH	= "ClinkDevRoot.ClinkFeb[$(F)].PgpMon[$(FL)].CountReset"
+		SAVE	= ""
+		DESC	= "Reset Feb$(F) PgpMon counts"
+	}
 }
 
 file longDevRogue.template
