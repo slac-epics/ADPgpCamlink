@@ -83,11 +83,11 @@ rogueDev::rogueDev(
 		m_board(			board				),
 		m_lane(				lane				),	// TODO: Nuke
 		m_fLcls2Timing(		fLcls2Timing		),
+		m_RogueName(		rogueName			),
 		m_ConfigFile(							),
 		m_DrvVersion(							),
 		m_LibVersion(							),
 		m_ModelName(		modelName			),
-		m_RogueName(		rogueName			),
 
 		m_ReCfgCnt(			0					),
 		m_reconfigLock(		NULL				),

@@ -21,6 +21,7 @@
 #include <typeinfo>
 #include <sys/stat.h>
 #include <fcntl.h>
+#include <math.h>
 
 
 // rogue headers
@@ -42,8 +43,8 @@ namespace rim = rogue::interfaces::memory;
 typedef	std::map< std::string, rim::VariablePtr >	mapVarPtr_t;
 
 extern	int		DEBUG_AXI_ROGUE;
-int	doFebFpgaReload	= 0;
-int	doFebConfig	= 1;
+int	doFebFpgaReload	= 1;
+int	doFebConfig	= 0;
 
 // TODO Move to new file: src/rogue/memory/interfaces/memory/Constants.cpp
 // TODO Rename BlockProcessingType2String()?
@@ -282,7 +283,7 @@ axiRogueLib::axiRogueLib(
 		printf( "%s error: %s!\n", functionName, e.what() );
 	}
 
-	if ( doFebConfig )
+	if ( doFebConfig or true )
 	{
 		// Set FEB BaudRate
 		setVariable( "ClinkDevRoot.ClinkFeb[0].ClinkTop.Ch[0].BaudRate", 57600 );
@@ -315,8 +316,8 @@ axiRogueLib::axiRogueLib(
 	// Hack: Configure for LCLS-I timing
 	ConfigureLclsTimingV1();
 
-	LoadConfigFile( "db/defaults_LCLS-I.txt" );
-	LoadConfigFile( "db/Opal1000.txt" );
+	LoadConfigFile( "db/defaults_LCLS-I.txt", 0 );
+	LoadConfigFile( "db/Opal1000.txt", 0 );
 
 	// Misc python resets, etc
 #if 1
@@ -397,7 +398,6 @@ void axiRogueLib::ConfigureLclsTimingV1()
 	writeVarPath( "ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TimingFrameRx.ModeSelEn",		lZero	);
 	writeVarPath( "ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TimingFrameRx.RxPllReset",		lOne	);
 	nanosleep( &delay, NULL );
-
 
 	writeVarPath( "ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TimingFrameRx.RxPllReset",		lZero	);
 	writeVarPath( "ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TimingFrameRx.ClkSel",			lZero	);
@@ -491,7 +491,9 @@ void axiRogueLib::FebPllConfig()
 	setVariable( "ClinkDevRoot.ClinkFeb[0].ClinkTop.RstPll",		1 );
 
 	// TODO: for ( iLane = 0; iLane < 4; iLane++ )
-	LoadConfigFile( "db/cfgFeb0Pll85MHz.txt" );
+	sleep(1);
+	LoadConfigFile( "db/cfgFeb0Pll85MHz.txt", 0.001 );
+	sleep(1);
 #if 0
 	{
 		# PllConfig is internal python variable
@@ -505,7 +507,7 @@ void axiRogueLib::FebPllConfig()
 			self.Pll[i].Config25MHz()        # Release the reset after configuration
 	}
 #endif
-	
+
 	// Enable Pll
 	setVariable( "ClinkDevRoot.ClinkFeb[0].ClinkTop.RstPll",		0 );
 	setVariable( "ClinkDevRoot.ClinkFeb[0].ClinkTop.CntRst",		1 );
@@ -522,7 +524,9 @@ void axiRogueLib::FebPllConfig()
 	setVariable( "ClinkDevRoot.ClinkFeb[1].ClinkTop.Ch[1].CntRst",	1 );
 	setVariable( "ClinkDevRoot.ClinkFeb[1].ClinkTop.Ch[1].CntRst",	0 );
 	setVariable( "ClinkDevRoot.ClinkFeb[1].ClinkTop.RstPll",		1 );
-	LoadConfigFile( "db/cfgFeb1Pll85MHz.txt" );
+	sleep(1);
+	LoadConfigFile( "db/cfgFeb1Pll85MHz.txt" , 0.001);
+	sleep(1);
 	setVariable( "ClinkDevRoot.ClinkFeb[1].ClinkTop.RstPll",		0 );
 	setVariable( "ClinkDevRoot.ClinkFeb[1].ClinkTop.CntRst",		1 );
 	setVariable( "ClinkDevRoot.ClinkFeb[1].ClinkTop.CntRst",		0 );
@@ -536,7 +540,9 @@ void axiRogueLib::FebPllConfig()
 	setVariable( "ClinkDevRoot.ClinkFeb[2].ClinkTop.Ch[1].CntRst",	1 );
 	setVariable( "ClinkDevRoot.ClinkFeb[2].ClinkTop.Ch[1].CntRst",	0 );
 	setVariable( "ClinkDevRoot.ClinkFeb[2].ClinkTop.RstPll",		1 );
-	LoadConfigFile( "db/cfgFeb2Pll85MHz.txt" );
+	sleep(1);
+	LoadConfigFile( "db/cfgFeb2Pll85MHz.txt", 0.001 );
+	sleep(1);
 	setVariable( "ClinkDevRoot.ClinkFeb[2].ClinkTop.RstPll",		0 );
 	setVariable( "ClinkDevRoot.ClinkFeb[2].ClinkTop.CntRst",		1 );
 	setVariable( "ClinkDevRoot.ClinkFeb[2].ClinkTop.CntRst",		0 );
@@ -550,7 +556,9 @@ void axiRogueLib::FebPllConfig()
 	setVariable( "ClinkDevRoot.ClinkFeb[3].ClinkTop.Ch[1].CntRst",	1 );
 	setVariable( "ClinkDevRoot.ClinkFeb[3].ClinkTop.Ch[1].CntRst",	0 );
 	setVariable( "ClinkDevRoot.ClinkFeb[3].ClinkTop.RstPll",		1 );
-	LoadConfigFile( "db/cfgFeb3Pll85MHz.txt" );
+	sleep(1);
+	LoadConfigFile( "db/cfgFeb3Pll85MHz.txt", 0.001 );
+	sleep(1);
 	setVariable( "ClinkDevRoot.ClinkFeb[3].ClinkTop.RstPll",		0 );
 	setVariable( "ClinkDevRoot.ClinkFeb[3].ClinkTop.CntRst",		1 );
 	setVariable( "ClinkDevRoot.ClinkFeb[3].ClinkTop.CntRst",		0 );
@@ -584,10 +592,11 @@ void axiRogueLib::WaitForRxLinkUp()
 }
 
 /// Load Config file
-void axiRogueLib::LoadConfigFile( const char * pszFilePath )
+void axiRogueLib::LoadConfigFile( const char * pszFilePath, double stepDelay )
 {
 	const char	*	functionName	= "axiRogueLib::LoadConfigFile";
 	FILE		*	cfgFile			= fopen( pszFilePath, "r" );
+	struct timespec delay	= { (long int) floor(stepDelay), (long int) ((stepDelay - floor(stepDelay)) * 1e9) };
 	if ( cfgFile == NULL )
 	{
 		fprintf( stderr, "LoadConfigFile error: Unable to open %s\n", pszFilePath );
@@ -624,6 +633,7 @@ void axiRogueLib::LoadConfigFile( const char * pszFilePath )
 			if( nScan == 2 )
 			{
 				setVariable( varPath, dValue, false );
+				nanosleep( &delay, NULL );
 				nValues++;
 			}
 			else

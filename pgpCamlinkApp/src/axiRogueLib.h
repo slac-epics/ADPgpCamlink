@@ -89,7 +89,7 @@ public:		//	Public member functions
 	void ConfigureLclsTimingV1();
 
 	/// Load Config file
-	void LoadConfigFile( const char * pszFilePath );
+	void LoadConfigFile( const char * pszFilePath, double stepDelay );
 
 	void FebFpgaReload();
 
