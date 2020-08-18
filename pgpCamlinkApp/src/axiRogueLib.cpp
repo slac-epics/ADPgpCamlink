@@ -327,8 +327,8 @@ axiRogueLib::axiRogueLib(
 	// Hack: Configure for LCLS-I timing
 	ConfigureLclsTimingV1();
 
-	LoadConfigFile( "db/defaults_LCLS-I.txt", 0 );
-	LoadConfigFile( "db/Opal1000.txt", 0 );
+	LoadConfigFile( "db/defaults_LCLS-I.txt", 0.002 );
+	LoadConfigFile( "db/Opal1000.txt", 0.002 );
 
 	// Misc python resets, etc
 #if 1
@@ -503,7 +503,7 @@ void axiRogueLib::FebPllConfig()
 
 	// TODO: for ( iLane = 0; iLane < 4; iLane++ )
 	sleep(1);
-	LoadConfigFile( "db/cfgFeb0Pll85MHz.txt", 0.002 );
+	LoadConfigFile( "db/cfgFeb0Pll85MHz.txt", 0.003 );
 	sleep(1);
 #if 0
 	{
@@ -536,7 +536,7 @@ void axiRogueLib::FebPllConfig()
 	setVariable( "ClinkDevRoot.ClinkFeb[1].ClinkTop.Ch[1].CntRst",	0 );
 	setVariable( "ClinkDevRoot.ClinkFeb[1].ClinkTop.RstPll",		1 );
 	sleep(1);
-	LoadConfigFile( "db/cfgFeb1Pll85MHz.txt", 0.002 );
+	LoadConfigFile( "db/cfgFeb1Pll85MHz.txt", 0.003 );
 	sleep(1);
 	setVariable( "ClinkDevRoot.ClinkFeb[1].ClinkTop.RstPll",		0 );
 	setVariable( "ClinkDevRoot.ClinkFeb[1].ClinkTop.CntRst",		1 );
@@ -552,7 +552,7 @@ void axiRogueLib::FebPllConfig()
 	setVariable( "ClinkDevRoot.ClinkFeb[2].ClinkTop.Ch[1].CntRst",	0 );
 	setVariable( "ClinkDevRoot.ClinkFeb[2].ClinkTop.RstPll",		1 );
 	sleep(1);
-	LoadConfigFile( "db/cfgFeb2Pll85MHz.txt", 0.002 );
+	LoadConfigFile( "db/cfgFeb2Pll85MHz.txt", 0.003 );
 	sleep(1);
 	setVariable( "ClinkDevRoot.ClinkFeb[2].ClinkTop.RstPll",		0 );
 	setVariable( "ClinkDevRoot.ClinkFeb[2].ClinkTop.CntRst",		1 );
@@ -568,7 +568,7 @@ void axiRogueLib::FebPllConfig()
 	setVariable( "ClinkDevRoot.ClinkFeb[3].ClinkTop.Ch[1].CntRst",	0 );
 	setVariable( "ClinkDevRoot.ClinkFeb[3].ClinkTop.RstPll",		1 );
 	sleep(1);
-	LoadConfigFile( "db/cfgFeb3Pll85MHz.txt", 0.002 );
+	LoadConfigFile( "db/cfgFeb3Pll85MHz.txt", 0.003 );
 	sleep(1);
 	setVariable( "ClinkDevRoot.ClinkFeb[3].ClinkTop.RstPll",		0 );
 	setVariable( "ClinkDevRoot.ClinkFeb[3].ClinkTop.CntRst",		1 );
