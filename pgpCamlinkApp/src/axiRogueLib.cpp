@@ -44,7 +44,7 @@ typedef	std::map< std::string, rim::VariablePtr >	mapVarPtr_t;
 
 extern	int		DEBUG_AXI_ROGUE;
 int	doFebFpgaReload	= 1;
-int	doFebConfig	= 0;
+int	doFebConfig	= 1;
 
 // TODO Move to new file: src/rogue/memory/interfaces/memory/Constants.cpp
 // TODO Rename BlockProcessingType2String()?
@@ -492,7 +492,7 @@ void axiRogueLib::FebPllConfig()
 
 	// TODO: for ( iLane = 0; iLane < 4; iLane++ )
 	sleep(1);
-	LoadConfigFile( "db/cfgFeb0Pll85MHz.txt", 0.001 );
+	LoadConfigFile( "db/cfgFeb0Pll85MHz.txt", 0.002 );
 	sleep(1);
 #if 0
 	{
@@ -525,7 +525,7 @@ void axiRogueLib::FebPllConfig()
 	setVariable( "ClinkDevRoot.ClinkFeb[1].ClinkTop.Ch[1].CntRst",	0 );
 	setVariable( "ClinkDevRoot.ClinkFeb[1].ClinkTop.RstPll",		1 );
 	sleep(1);
-	LoadConfigFile( "db/cfgFeb1Pll85MHz.txt" , 0.001);
+	LoadConfigFile( "db/cfgFeb1Pll85MHz.txt", 0.002 );
 	sleep(1);
 	setVariable( "ClinkDevRoot.ClinkFeb[1].ClinkTop.RstPll",		0 );
 	setVariable( "ClinkDevRoot.ClinkFeb[1].ClinkTop.CntRst",		1 );
@@ -541,7 +541,7 @@ void axiRogueLib::FebPllConfig()
 	setVariable( "ClinkDevRoot.ClinkFeb[2].ClinkTop.Ch[1].CntRst",	0 );
 	setVariable( "ClinkDevRoot.ClinkFeb[2].ClinkTop.RstPll",		1 );
 	sleep(1);
-	LoadConfigFile( "db/cfgFeb2Pll85MHz.txt", 0.001 );
+	LoadConfigFile( "db/cfgFeb2Pll85MHz.txt", 0.002 );
 	sleep(1);
 	setVariable( "ClinkDevRoot.ClinkFeb[2].ClinkTop.RstPll",		0 );
 	setVariable( "ClinkDevRoot.ClinkFeb[2].ClinkTop.CntRst",		1 );
@@ -557,7 +557,7 @@ void axiRogueLib::FebPllConfig()
 	setVariable( "ClinkDevRoot.ClinkFeb[3].ClinkTop.Ch[1].CntRst",	0 );
 	setVariable( "ClinkDevRoot.ClinkFeb[3].ClinkTop.RstPll",		1 );
 	sleep(1);
-	LoadConfigFile( "db/cfgFeb3Pll85MHz.txt", 0.001 );
+	LoadConfigFile( "db/cfgFeb3Pll85MHz.txt", 0.002 );
 	sleep(1);
 	setVariable( "ClinkDevRoot.ClinkFeb[3].ClinkTop.RstPll",		0 );
 	setVariable( "ClinkDevRoot.ClinkFeb[3].ClinkTop.CntRst",		1 );
