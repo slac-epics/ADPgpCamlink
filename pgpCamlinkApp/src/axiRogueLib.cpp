@@ -16,8 +16,9 @@
 //
 
 #include <stdio.h>
-#include <iostream>
+#include <exception>
 #include <fstream>
+#include <iostream>
 #include <typeinfo>
 #include <sys/stat.h>
 #include <fcntl.h>
@@ -282,9 +283,19 @@ axiRogueLib::axiRogueLib(
 	{
 		printf( "%s error: %s!\n", functionName, e.what() );
 	}
+	catch ( std::exception & e )
+	{
+		printf( "%s error: %s!\n", functionName, e.what() );
+	}
+	catch ( ... )
+	{
+		printf( "%s unknown error!\n", functionName );
+	}
+	printf( "%s: Read %zu variables\n", functionName, (m_pRogueLib->getVariableList()).size() );
 
 	if ( doFebConfig or true )
 	{
+		printf( "%s: Set FEB BaudRate and Pll POWER\n", functionName );
 		// Set FEB BaudRate
 		setVariable( "ClinkDevRoot.ClinkFeb[0].ClinkTop.Ch[0].BaudRate", 57600 );
 		setVariable( "ClinkDevRoot.ClinkFeb[0].ClinkTop.Ch[1].BaudRate", 9600 );
@@ -646,6 +657,10 @@ void axiRogueLib::LoadConfigFile( const char * pszFilePath, double stepDelay )
 	{
 		printf( "%s error: %s!\n", functionName, e.what() );
 	}
+	catch ( std::exception & e )
+	{
+		printf( "%s error: %s!\n", functionName, e.what() );
+	}
 
 	fclose( cfgFile );
 	printf( "%s: Read %u values from %s\n", functionName, nValues, pszFilePath );
@@ -671,6 +686,10 @@ template<class R> int axiRogueLib::readVarPath( const char * pszVarPath, R & val
 		status = 0;
 	}
 	catch ( rogue::GeneralError & e )
+	{
+		printf( "%s error: %s!\n", functionName, e.what() );
+	}
+	catch ( std::exception & e )
 	{
 		printf( "%s error: %s!\n", functionName, e.what() );
 	}
@@ -741,6 +760,10 @@ template<class R> int axiRogueLib::writeVarPath( rim::VariablePtr pVar, const R 
 		}
 	}
 	catch ( rogue::GeneralError & e )
+	{
+		printf( "%s error: %s!\n", functionName, e.what() );
+	}
+	catch ( std::exception & e )
 	{
 		printf( "%s error: %s!\n", functionName, e.what() );
 	}
