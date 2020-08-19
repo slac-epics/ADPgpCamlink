@@ -1,6 +1,17 @@
 #
 # SLAC RELEASE_NOTES
 #
+R0.4.0	2020-08-18 Bruce Hill
+	Suppress FebPllConfig
+	Add checks for unconnected or unpowered FEB units
+	Add SDIS links to disable records when FEB not found.
+	Added delays to LoadConfigFile calls.  Appears to be working better!
+	Make boot config sequence match python config sequence.
+	Make sure fd and shared_ptrs are released on shutdown.
+	Add configurable FpgaReload on IOC boot.
+	Don't try to call getValue() for WO variables
+	Use named interfaces for cameralink-gateway >= v4.9.3
+
 R0.3.0	2020-08-10 Bruce Hill
 	Fix more FEB PV names
 	Configure all 3 FEB PLL's
