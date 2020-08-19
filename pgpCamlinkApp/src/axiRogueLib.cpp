@@ -394,7 +394,7 @@ axiRogueLib::axiRogueLib(
 
 	std::string sFpgaVersionPath( "ClinkDevRoot.ClinkPcie.AxiPcieCore.AxiVersion.BuildStamp" );
 	showVariable( sFpgaVersionPath.c_str(), true );
-	
+
 	std::string sDataCnt( "ClinkDevRoot.ClinkPcie.Application.AppLane[0].EventBuilder.DataCnt[0]" );
 	showVariable( sDataCnt.c_str(), true );
 	showVariable( "ClinkDevRoot.ClinkPcie.AxiPcieCore.AxiVersion.FpgaVersion", true );
@@ -466,10 +466,14 @@ void axiRogueLib::ConfigureLclsTimingV1()
 
 	// Reset latching RxDown flag
 	writeVarPath( "ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TimingFrameRx.RxDown",		lZero	);
-
-	// TODO: Export bUseMiniTpg as iocsh variable
-	writeVarPath( "ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TimingPhyMonitor.UseMiniTpg",	bUseMiniTpg );
 	nanosleep( &delay, NULL );
+
+	if ( bUseMiniTpg )
+	{
+		// TODO: Export bUseMiniTpg as iocsh variable
+		writeVarPath( "ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TimingPhyMonitor.UseMiniTpg",	bUseMiniTpg );
+		nanosleep( &delay, NULL );
+	}
 
 	WaitForRxLinkUp();
 	//ResetCounters();
@@ -515,6 +519,7 @@ void axiRogueLib::FebFpgaReload()
 			if ( !febFound[lane] )
 			{
 				febReady[lane] = true;	// Not really, but FEB not found so don't care
+				continue;
 			}
 			if ( ! febWasReady )
 			{
@@ -886,6 +891,21 @@ void axiRogueLib::dumpVariables( const char * pszFilePath, bool fWritableOnly, b
 	for ( mapVarPtr_t::const_iterator vit = mapVars.begin(); vit != mapVars.end(); ++vit )
 	{
 		rim::VariablePtr	pVar	= vit->second;
+		if ( pVar->path().find( "ClinkFeb" ) != std::string::npos )
+		{
+			if ( pVar->path().find( "ClinkFeb[0]" ) != std::string::npos )
+				if ( !FebReady( 0 ) )
+					continue;
+			if ( pVar->path().find( "ClinkFeb[1]" ) != std::string::npos )
+				if ( !FebReady( 1 ) )
+					continue;
+			if ( pVar->path().find( "ClinkFeb[2]" ) != std::string::npos )
+				if ( !FebReady( 2 ) )
+					continue;
+			if ( pVar->path().find( "ClinkFeb[3]" ) != std::string::npos )
+				if ( !FebReady( 3 ) )
+					continue;
+		}
 		try
 		{
 			if ( not fWritableOnly or pVar->mode() != std::string("RO") )
@@ -1054,6 +1074,21 @@ void axiRogueLib::showVariableList( bool verbose )
 		{
 			printf( "%s Error: Variable %s not found!\n", functionName, vit->first.c_str() );
 			continue;
+		}
+		if ( pVar->path().find( "ClinkFeb" ) != std::string::npos )
+		{
+			if ( pVar->path().find( "ClinkFeb[0]" ) != std::string::npos )
+				if ( !FebReady( 0 ) )
+					continue;
+			if ( pVar->path().find( "ClinkFeb[1]" ) != std::string::npos )
+				if ( !FebReady( 1 ) )
+					continue;
+			if ( pVar->path().find( "ClinkFeb[2]" ) != std::string::npos )
+				if ( !FebReady( 2 ) )
+					continue;
+			if ( pVar->path().find( "ClinkFeb[3]" ) != std::string::npos )
+				if ( !FebReady( 3 ) )
+					continue;
 		}
 		std::cout	<< pVar->path() << " Type " << pVar->modelId() << pVar->bitTotal() << std::endl;
 #endif
