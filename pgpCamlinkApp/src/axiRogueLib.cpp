@@ -45,7 +45,7 @@ typedef	std::map< std::string, rim::VariablePtr >	mapVarPtr_t;
 
 extern	int		DEBUG_AXI_ROGUE;
 int		doFebFpgaReload	= 1;
-int		doFebConfig		= 1;
+int		doFebConfig		= 0;
 bool	bUseMiniTpg		= 0;
 
 // TODO Move to new file: src/rogue/memory/interfaces/memory/Constants.cpp
