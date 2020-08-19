@@ -1,14 +1,9 @@
 # roguePcie.substitutions
 
 
-file biDevRogue.template
-{
-	{
-		NAME	= "Ch$(F):Feb$(F):LinkLockedA",
-		PATH	= "ClinkDevRoot.ClinkFeb[$(F)].ClinkTop.LinkLockedA",
-		SCAN	= "\$(SCAN=1 second)"
-	}
-}
+#file biDevRogue.template
+#{
+#}
 file boolDevRogue.template
 {
 	{
@@ -42,21 +37,6 @@ file liDevRogue.template
 		NAME	= "AxiPcieCore:UpTime",
 		PATH	= "ClinkDevRoot.ClinkPcie.AxiPcieCore.AxiVersion.UpTimeCnt",
 		EGU		= "sec"
-		SCAN	= "\$(SCAN=1 second)"
-	}
-	{
-		NAME	= "Ch$(F):Feb$(F):ClinkClkFreq0",
-		PATH	= "ClinkDevRoot.ClinkFeb[$(F)].ClinkTop.ClinkClkFreq[0]",
-		SCAN	= "\$(SCAN=1 second)"
-	}
-	{
-		NAME	= "Ch$(F):Feb$(F):ClkInFreq0",
-		PATH	= "ClinkDevRoot.ClinkFeb[$(F)].ClinkTop.ClkInFreq[0]",
-		SCAN	= "\$(SCAN=1 second)"
-	}
-	{
-		NAME	= "Ch$(F):Feb$(F):LinkLockedCntA",
-		PATH	= "ClinkDevRoot.ClinkFeb[$(F)].ClinkTop.LinkLockedCntA",
 		SCAN	= "\$(SCAN=1 second)"
 	}
 	{

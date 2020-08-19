@@ -4,6 +4,13 @@
 file biDevRogue.template
 {
 	{
+		NAME	= "Feb$(F):LinkLockedA",
+		PATH	= "ClinkDevRoot.ClinkFeb[$(F)].ClinkTop.LinkLockedA",
+		SCAN	= "\$(SCAN=1 second)"
+		DISV	= "0"
+		SDIS	= "$(P)$(R)PgpMon:RxRemLinkReady_RBV CP"
+	}
+	{
 		NAME	= "PgpMon:RxRemLinkReady"
 		PATH	= "ClinkDevRoot.ClinkPcie.Hsio.PgpMon[$(L)].RxRemLinkReady"
 		SCAN	= "\$(SCAN=1 second)"
@@ -213,6 +220,27 @@ file liDevRogue.template
 		PATH	= "ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TriggerEventManager.EvrV2CoreTriggers.EvrV2ChannelReg[$(L)].Count"
 		DESC	= "Trigger Logic Selection Count"
 		SCAN	= "\$(SCAN=1 second)"
+	}
+	{
+		NAME	= "Feb$(F):ClinkClkFreq0",
+		PATH	= "ClinkDevRoot.ClinkFeb[$(F)].ClinkTop.ClinkClkFreq[0]",
+		SCAN	= "\$(SCAN=1 second)"
+		DISV	= "0"
+		SDIS	= "$(P)$(R)PgpMon:RxRemLinkReady_RBV CP"
+	}
+	{
+		NAME	= "Feb$(F):ClkInFreq0",
+		PATH	= "ClinkDevRoot.ClinkFeb[$(F)].ClinkTop.ClkInFreq[0]",
+		SCAN	= "\$(SCAN=1 second)"
+		DISV	= "0"
+		SDIS	= "$(P)$(R)PgpMon:RxRemLinkReady_RBV CP"
+	}
+	{
+		NAME	= "Feb$(F):LinkLockedCntA",
+		PATH	= "ClinkDevRoot.ClinkFeb[$(F)].ClinkTop.LinkLockedCntA",
+		SCAN	= "\$(SCAN=1 second)"
+		DISV	= "0"
+		SDIS	= "$(P)$(R)PgpMon:RxRemLinkReady_RBV CP"
 	}
 }
 
