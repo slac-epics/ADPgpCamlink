@@ -342,7 +342,7 @@ axiRogueLib::axiRogueLib(
 	// Hack: Configure for LCLS-I timing
 	ConfigureLclsTimingV1();
 
-	LoadConfigFile( "db/defaults_LCLS-I.txt", 0.002 );
+	LoadConfigFile( "db/defaults_LCLS-I.txt", 0.003 );
 	if ( FebReady(0) )
 		LoadConfigFile( "db/cfgFeb0Opal1000.txt", 0.002 );
 	if ( FebReady(1) )
@@ -436,6 +436,7 @@ void axiRogueLib::ConfigureLclsTimingV1()
 	printf( "Configuring for LCLS-I timing ...\n" );
 	writeVarPath( "ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TimingFrameRx.ModeSelEn",		lZero	);
 	writeVarPath( "ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TimingFrameRx.RxPllReset",		lOne	);
+	nanosleep( &delay, NULL );
 	nanosleep( &delay, NULL );
 
 	writeVarPath( "ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TimingFrameRx.RxPllReset",		lZero	);
@@ -566,7 +567,7 @@ void axiRogueLib::FebPllConfig()
 		setVariable( "ClinkDevRoot.ClinkFeb[0].ClinkTop.RstPll",		1 );
 
 		sleep(1);
-		LoadConfigFile( "db/cfgFeb0Pll85MHz.txt", 0.003 );
+		LoadConfigFile( "db/cfgFeb0Pll85MHz.txt", 0.0025 );
 		sleep(1);
 
 		// Enable Pll
@@ -587,7 +588,7 @@ void axiRogueLib::FebPllConfig()
 		setVariable( "ClinkDevRoot.ClinkFeb[1].ClinkTop.Ch[1].CntRst",	0 );
 		setVariable( "ClinkDevRoot.ClinkFeb[1].ClinkTop.RstPll",		1 );
 		sleep(1);
-		LoadConfigFile( "db/cfgFeb1Pll85MHz.txt", 0.003 );
+		LoadConfigFile( "db/cfgFeb1Pll85MHz.txt", 0.0025 );
 		sleep(1);
 		setVariable( "ClinkDevRoot.ClinkFeb[1].ClinkTop.RstPll",		0 );
 		setVariable( "ClinkDevRoot.ClinkFeb[1].ClinkTop.CntRst",		1 );
@@ -606,7 +607,7 @@ void axiRogueLib::FebPllConfig()
 		setVariable( "ClinkDevRoot.ClinkFeb[2].ClinkTop.Ch[1].CntRst",	0 );
 		setVariable( "ClinkDevRoot.ClinkFeb[2].ClinkTop.RstPll",		1 );
 		sleep(1);
-		LoadConfigFile( "db/cfgFeb2Pll85MHz.txt", 0.003 );
+		LoadConfigFile( "db/cfgFeb2Pll85MHz.txt", 0.0025 );
 		sleep(1);
 		setVariable( "ClinkDevRoot.ClinkFeb[2].ClinkTop.RstPll",		0 );
 		setVariable( "ClinkDevRoot.ClinkFeb[2].ClinkTop.CntRst",		1 );
@@ -625,7 +626,7 @@ void axiRogueLib::FebPllConfig()
 		setVariable( "ClinkDevRoot.ClinkFeb[3].ClinkTop.Ch[1].CntRst",	0 );
 		setVariable( "ClinkDevRoot.ClinkFeb[3].ClinkTop.RstPll",		1 );
 		sleep(1);
-		LoadConfigFile( "db/cfgFeb3Pll85MHz.txt", 0.003 );
+		LoadConfigFile( "db/cfgFeb3Pll85MHz.txt", 0.0025 );
 		sleep(1);
 		setVariable( "ClinkDevRoot.ClinkFeb[3].ClinkTop.RstPll",		0 );
 		setVariable( "ClinkDevRoot.ClinkFeb[3].ClinkTop.CntRst",		1 );
@@ -671,7 +672,7 @@ void axiRogueLib::LoadConfigFile( const char * pszFilePath, double stepDelay )
 		fprintf( stderr, "LoadConfigFile error: Unable to open %s\n", pszFilePath );
 		return;
 	}
-	printf( "%s: Reading values from %s ...\n", functionName, pszFilePath );
+	printf( "%s: Reading values from %s w/ %.4f sec delay/value ...\n", functionName, pszFilePath, stepDelay );
 
 	unsigned int	nValues	= 0;
 	try
