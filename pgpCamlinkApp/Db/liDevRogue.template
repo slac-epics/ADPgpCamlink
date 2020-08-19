@@ -6,5 +6,7 @@ record( longin, "$(P)$(R)$(NAME)_RBV" )
 	field( INP,  "@B$(B) L$(L) $(PATH)" )
 	field( PINI, "YES" )
 	field( SCAN, "$(SCAN=)" )
+	field( DISV, "$(DISV=1)" )
+	field( SDIS, "$(SDIS=)" )
 	info( autosaveFields, "" )
 }

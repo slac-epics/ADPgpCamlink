@@ -95,6 +95,8 @@ public:		//	Public member functions
 
 	void FebPllConfig();
 
+	bool FebReady( size_t iFeb );
+
 	void ResetCounters();
 
 	void WaitForRxLinkUp();

@@ -78,17 +78,20 @@ void axiRogueLib::ResetCounters( )
 	setVariable( "ClinkDevRoot.ClinkPcie.Hsio.PgpMon[0].CountReset", 1 );
 	setVariable( "ClinkDevRoot.ClinkPcie.Hsio.PgpMon[0].CountReset", 0 );
 
-	setVariable( "ClinkDevRoot.ClinkFeb[0].ClinkTop.CntRst", 1 );
-	setVariable( "ClinkDevRoot.ClinkFeb[0].ClinkTop.CntRst", 0 );
+	if ( FebReady(0) )
+	{
+		setVariable( "ClinkDevRoot.ClinkFeb[0].ClinkTop.CntRst", 1 );
+		setVariable( "ClinkDevRoot.ClinkFeb[0].ClinkTop.CntRst", 0 );
 
-	setVariable( "ClinkDevRoot.ClinkFeb[0].ClinkTop.Ch[0].CntRst", 1 );
-	setVariable( "ClinkDevRoot.ClinkFeb[0].ClinkTop.Ch[0].CntRst", 0 );
+		setVariable( "ClinkDevRoot.ClinkFeb[0].ClinkTop.Ch[0].CntRst", 1 );
+		setVariable( "ClinkDevRoot.ClinkFeb[0].ClinkTop.Ch[0].CntRst", 0 );
 
-	setVariable( "ClinkDevRoot.ClinkFeb[0].TrigCtrl[0].CntRst", 1 );
-	setVariable( "ClinkDevRoot.ClinkFeb[0].TrigCtrl[0].CntRst", 0 );
+		setVariable( "ClinkDevRoot.ClinkFeb[0].TrigCtrl[0].CntRst", 1 );
+		setVariable( "ClinkDevRoot.ClinkFeb[0].TrigCtrl[0].CntRst", 0 );
 
-	setVariable( "ClinkDevRoot.ClinkFeb[0].PgpMon[0].CountReset", 1 );
-	setVariable( "ClinkDevRoot.ClinkFeb[0].PgpMon[0].CountReset", 0 );
+		setVariable( "ClinkDevRoot.ClinkFeb[0].PgpMon[0].CountReset", 1 );
+		setVariable( "ClinkDevRoot.ClinkFeb[0].PgpMon[0].CountReset", 0 );
+	}
 
 	// This resets   ClinkDevRoot.ClinkPcie.Application.AppLane[0].EventBuilder.DataCnt[0]
 	setVariable( "ClinkDevRoot.ClinkPcie.Application.AppLane[0].EventBuilder.CntRst", 1 );
@@ -295,40 +298,59 @@ axiRogueLib::axiRogueLib(
 
 	if ( doFebConfig or true )
 	{
-		printf( "%s: Set FEB BaudRate and Pll POWER\n", functionName );
-		// Set FEB BaudRate
-		setVariable( "ClinkDevRoot.ClinkFeb[0].ClinkTop.Ch[0].BaudRate", 57600 );
-		setVariable( "ClinkDevRoot.ClinkFeb[0].ClinkTop.Ch[1].BaudRate", 9600 );
+		if ( FebReady(0) )
+		{
+			printf( "%s: Set FEB 0 BaudRate and Pll POWER\n", functionName );
+			// Set FEB BaudRate
+			setVariable( "ClinkDevRoot.ClinkFeb[0].ClinkTop.Ch[0].BaudRate", 57600 );
+			setVariable( "ClinkDevRoot.ClinkFeb[0].ClinkTop.Ch[1].BaudRate", 9600 );
 
-		// Power up FEB Pll's
-		setVariable( "ClinkDevRoot.ClinkFeb[0].ClinkTop.Pll[0].POWER", 65535 );
-		setVariable( "ClinkDevRoot.ClinkFeb[0].ClinkTop.Pll[1].POWER", 65535 );
-		setVariable( "ClinkDevRoot.ClinkFeb[0].ClinkTop.Pll[2].POWER", 65535 );
+			// Power up FEB Pll's
+			setVariable( "ClinkDevRoot.ClinkFeb[0].ClinkTop.Pll[0].POWER", 65535 );
+			setVariable( "ClinkDevRoot.ClinkFeb[0].ClinkTop.Pll[1].POWER", 65535 );
+			setVariable( "ClinkDevRoot.ClinkFeb[0].ClinkTop.Pll[2].POWER", 65535 );
+		}
 
-		setVariable( "ClinkDevRoot.ClinkFeb[1].ClinkTop.Ch[0].BaudRate", 57600 );
-		setVariable( "ClinkDevRoot.ClinkFeb[1].ClinkTop.Ch[1].BaudRate", 9600 );
-		setVariable( "ClinkDevRoot.ClinkFeb[1].ClinkTop.Pll[0].POWER", 65535 );
-		setVariable( "ClinkDevRoot.ClinkFeb[1].ClinkTop.Pll[1].POWER", 65535 );
-		setVariable( "ClinkDevRoot.ClinkFeb[1].ClinkTop.Pll[2].POWER", 65535 );
+		if ( FebReady(1) )
+		{
+			setVariable( "ClinkDevRoot.ClinkFeb[1].ClinkTop.Ch[0].BaudRate", 57600 );
+			setVariable( "ClinkDevRoot.ClinkFeb[1].ClinkTop.Ch[1].BaudRate", 9600 );
+			setVariable( "ClinkDevRoot.ClinkFeb[1].ClinkTop.Pll[0].POWER", 65535 );
+			setVariable( "ClinkDevRoot.ClinkFeb[1].ClinkTop.Pll[1].POWER", 65535 );
+			setVariable( "ClinkDevRoot.ClinkFeb[1].ClinkTop.Pll[2].POWER", 65535 );
+		}
 
-		setVariable( "ClinkDevRoot.ClinkFeb[2].ClinkTop.Ch[0].BaudRate", 57600 );
-		setVariable( "ClinkDevRoot.ClinkFeb[2].ClinkTop.Ch[1].BaudRate", 9600 );
-		setVariable( "ClinkDevRoot.ClinkFeb[2].ClinkTop.Pll[0].POWER", 65535 );
-		setVariable( "ClinkDevRoot.ClinkFeb[2].ClinkTop.Pll[1].POWER", 65535 );
-		setVariable( "ClinkDevRoot.ClinkFeb[2].ClinkTop.Pll[2].POWER", 65535 );
+		if ( FebReady(2) )
+		{
+			setVariable( "ClinkDevRoot.ClinkFeb[2].ClinkTop.Ch[0].BaudRate", 57600 );
+			setVariable( "ClinkDevRoot.ClinkFeb[2].ClinkTop.Ch[1].BaudRate", 9600 );
+			setVariable( "ClinkDevRoot.ClinkFeb[2].ClinkTop.Pll[0].POWER", 65535 );
+			setVariable( "ClinkDevRoot.ClinkFeb[2].ClinkTop.Pll[1].POWER", 65535 );
+			setVariable( "ClinkDevRoot.ClinkFeb[2].ClinkTop.Pll[2].POWER", 65535 );
+		}
 
-		setVariable( "ClinkDevRoot.ClinkFeb[3].ClinkTop.Ch[0].BaudRate", 57600 );
-		setVariable( "ClinkDevRoot.ClinkFeb[3].ClinkTop.Ch[1].BaudRate", 9600 );
-		setVariable( "ClinkDevRoot.ClinkFeb[3].ClinkTop.Pll[0].POWER", 65535 );
-		setVariable( "ClinkDevRoot.ClinkFeb[3].ClinkTop.Pll[1].POWER", 65535 );
-		setVariable( "ClinkDevRoot.ClinkFeb[3].ClinkTop.Pll[2].POWER", 65535 );
+		if ( FebReady(3) )
+		{
+			setVariable( "ClinkDevRoot.ClinkFeb[3].ClinkTop.Ch[0].BaudRate", 57600 );
+			setVariable( "ClinkDevRoot.ClinkFeb[3].ClinkTop.Ch[1].BaudRate", 9600 );
+			setVariable( "ClinkDevRoot.ClinkFeb[3].ClinkTop.Pll[0].POWER", 65535 );
+			setVariable( "ClinkDevRoot.ClinkFeb[3].ClinkTop.Pll[1].POWER", 65535 );
+			setVariable( "ClinkDevRoot.ClinkFeb[3].ClinkTop.Pll[2].POWER", 65535 );
+		}
 	}
 
 	// Hack: Configure for LCLS-I timing
 	ConfigureLclsTimingV1();
 
 	LoadConfigFile( "db/defaults_LCLS-I.txt", 0.002 );
-	LoadConfigFile( "db/Opal1000.txt", 0.002 );
+	if ( FebReady(0) )
+		LoadConfigFile( "db/cfgFeb0Opal1000.txt", 0.002 );
+	if ( FebReady(1) )
+		LoadConfigFile( "db/cfgFeb1Opal1000.txt", 0.002 );
+	if ( FebReady(2) )
+		LoadConfigFile( "db/cfgFeb2Opal1000.txt", 0.002 );
+	if ( FebReady(3) )
+		LoadConfigFile( "db/cfgFeb3Opal1000.txt", 0.002 );
 
 	// Misc python resets, etc
 #if 1
@@ -377,11 +399,17 @@ axiRogueLib::axiRogueLib(
 	showVariable( sDataCnt.c_str(), true );
 	showVariable( "ClinkDevRoot.ClinkPcie.AxiPcieCore.AxiVersion.FpgaVersion", true );
 	showVariable( "ClinkDevRoot.ClinkPcie.AxiPcieCore.AxiVersion.UpTimeCnt", true );
-	showVariable( "ClinkDevRoot.ClinkFeb[0].AxiVersion.FpgaVersion", true );
-	showVariable( "ClinkDevRoot.ClinkFeb[0].AxiVersion.UpTimeCnt", true );
-	showVariable( "ClinkDevRoot.ClinkFeb[1].AxiVersion.UpTimeCnt", true );
-	showVariable( "ClinkDevRoot.ClinkFeb[2].AxiVersion.UpTimeCnt", true );
-	showVariable( "ClinkDevRoot.ClinkFeb[3].AxiVersion.UpTimeCnt", true );
+	if ( FebReady(0) )
+	{
+		showVariable( "ClinkDevRoot.ClinkFeb[0].AxiVersion.FpgaVersion", true );
+		showVariable( "ClinkDevRoot.ClinkFeb[0].AxiVersion.UpTimeCnt", true );
+	}
+	if ( FebReady(1) )
+		showVariable( "ClinkDevRoot.ClinkFeb[1].AxiVersion.UpTimeCnt", true );
+	if ( FebReady(2) )
+		showVariable( "ClinkDevRoot.ClinkFeb[2].AxiVersion.UpTimeCnt", true );
+	if ( FebReady(3) )
+		showVariable( "ClinkDevRoot.ClinkFeb[3].AxiVersion.UpTimeCnt", true );
 
 	m_fConnected = 1;	// Do we need this?
 }
@@ -448,29 +476,46 @@ void axiRogueLib::ConfigureLclsTimingV1()
 	printf( "Configured for LCLS-I timing\n" );
 }
 
+bool axiRogueLib::FebReady( size_t iFeb )
+{
+	const char	*	pszVarPathRxRemLinkReady	= "ClinkDevRoot.ClinkPcie.Hsio.PgpMon[%1u].RxRemLinkReady";
+	char			febVarPath[256];
+	bool			febReady	= false;
+	snprintf( febVarPath, 256, pszVarPathRxRemLinkReady, iFeb );
+	readVarPath( febVarPath, febReady );
+	return febReady;
+}
+
 void axiRogueLib::FebFpgaReload()
 {
 	const uint64_t	lOne	= 1L;
 	const char * pszVarPathFpgaReload		= "ClinkDevRoot.ClinkFeb[%1u].AxiVersion.FpgaReload";
-	const char * pszVarPathRxRemLinkReady	= "ClinkDevRoot.ClinkPcie.Hsio.PgpMon[%1u].RxRemLinkReady";
 
+	bool	febFound[N_AXI_LANES] = { false, false, false, false };
 	for ( size_t lane = 0; lane < N_AXI_LANES; lane++ )
 	{
 		char		febVarPath[256];
-		printf( "Initiating Feb[%zu] FpgaReload\n", lane );
-		snprintf( febVarPath, 256, pszVarPathFpgaReload, lane );
-		writeVarPath( febVarPath, lOne );
+		if ( FebReady(lane) )
+		{
+			febFound[lane] = true;
+			printf( "Initiating Feb[%zu] FpgaReload\n", lane );
+			snprintf( febVarPath, 256, pszVarPathFpgaReload, lane );
+			writeVarPath( febVarPath, lOne );
+		}
 	}
 
 	bool	febReady[N_AXI_LANES] = { false, false, false, false };
 	for ( size_t i = 0; i < 5; i++ )
 	{
+		sleep(1);
 		for ( size_t lane = 0; lane < N_AXI_LANES; lane++ )
 		{
-			char		febVarPath[256];
 			bool		febWasReady = febReady[lane];
-			snprintf( febVarPath, 256, pszVarPathRxRemLinkReady, lane );
-			readVarPath( febVarPath, febReady[lane] );
+			febReady[lane] = FebReady(lane);
+			if ( !febFound[lane] )
+			{
+				febReady[lane] = true;	// Not really, but FEB not found so don't care
+			}
 			if ( ! febWasReady )
 			{
 				if ( febReady[lane] )
@@ -481,11 +526,10 @@ void axiRogueLib::FebFpgaReload()
 		}
 		if ( febReady[0] && febReady[1] && febReady[2] && febReady[3] )
 			break;
-		sleep(1);
 	}
 	for ( size_t lane = 0; lane < N_AXI_LANES; lane++ )
 	{
-		if ( !febReady[lane] )
+		if ( febFound[lane] && !febReady[lane] )
 			printf( "Timeout waiting for Feb[%zu]!\n", lane );
 	}
 	sleep(5);
@@ -493,20 +537,8 @@ void axiRogueLib::FebFpgaReload()
 
 void axiRogueLib::FebPllConfig()
 {
-	printf( "Configuring Feb[0] Pll...\n" );
-	setVariable( "ClinkDevRoot.ClinkFeb[0].ClinkTop.Ch[0].CntRst",	1 );
-	setVariable( "ClinkDevRoot.ClinkFeb[0].ClinkTop.Ch[0].CntRst",	0 );
-	setVariable( "ClinkDevRoot.ClinkFeb[0].ClinkTop.Ch[1].CntRst",	1 );
-	setVariable( "ClinkDevRoot.ClinkFeb[0].ClinkTop.Ch[1].CntRst",	0 );
-	// Hold Pll in reset
-	setVariable( "ClinkDevRoot.ClinkFeb[0].ClinkTop.RstPll",		1 );
-
-	// TODO: for ( iLane = 0; iLane < 4; iLane++ )
-	sleep(1);
-	LoadConfigFile( "db/cfgFeb0Pll85MHz.txt", 0.003 );
-	sleep(1);
 #if 0
-	{
+	{	TODO: Need to provide C++ equivalent to select Pll rate for each camera type
 		# PllConfig is internal python variable
 		# TODO: Will need to select clock via st.cmd or Opal config file
 		if (self.PllConfig[i].get() == '85MHz'):
@@ -518,63 +550,84 @@ void axiRogueLib::FebPllConfig()
 			self.Pll[i].Config25MHz()        # Release the reset after configuration
 	}
 #endif
+	if ( FebReady(0) )
+	{
+		printf( "Configuring Feb[0] Pll...\n" );
+		setVariable( "ClinkDevRoot.ClinkFeb[0].ClinkTop.Ch[0].CntRst",	1 );
+		setVariable( "ClinkDevRoot.ClinkFeb[0].ClinkTop.Ch[0].CntRst",	0 );
+		setVariable( "ClinkDevRoot.ClinkFeb[0].ClinkTop.Ch[1].CntRst",	1 );
+		setVariable( "ClinkDevRoot.ClinkFeb[0].ClinkTop.Ch[1].CntRst",	0 );
+		// Hold Pll in reset
+		setVariable( "ClinkDevRoot.ClinkFeb[0].ClinkTop.RstPll",		1 );
 
-	// Enable Pll
-	setVariable( "ClinkDevRoot.ClinkFeb[0].ClinkTop.RstPll",		0 );
-	setVariable( "ClinkDevRoot.ClinkFeb[0].ClinkTop.CntRst",		1 );
-	setVariable( "ClinkDevRoot.ClinkFeb[0].ClinkTop.CntRst",		0 );
-	setVariable( "ClinkDevRoot.ClinkFeb[0].TrigCtrl[0].CntRst",		1 );
-	setVariable( "ClinkDevRoot.ClinkFeb[0].TrigCtrl[1].CntRst",		1 );
+		sleep(1);
+		LoadConfigFile( "db/cfgFeb0Pll85MHz.txt", 0.003 );
+		sleep(1);
 
-	// ResetFebCounters() same as python ClinkTop.CntRst()
+		// Enable Pll
+		setVariable( "ClinkDevRoot.ClinkFeb[0].ClinkTop.RstPll",		0 );
+		setVariable( "ClinkDevRoot.ClinkFeb[0].ClinkTop.CntRst",		1 );
+		setVariable( "ClinkDevRoot.ClinkFeb[0].ClinkTop.CntRst",		0 );
+		setVariable( "ClinkDevRoot.ClinkFeb[0].TrigCtrl[0].CntRst",		1 );
+		setVariable( "ClinkDevRoot.ClinkFeb[0].TrigCtrl[1].CntRst",		1 );
+	}
 
-	// Feb1 Pll Config:
-	printf( "Configuring Feb[1] Pll...\n" );
-	setVariable( "ClinkDevRoot.ClinkFeb[1].ClinkTop.Ch[0].CntRst",	1 );
-	setVariable( "ClinkDevRoot.ClinkFeb[1].ClinkTop.Ch[0].CntRst",	0 );
-	setVariable( "ClinkDevRoot.ClinkFeb[1].ClinkTop.Ch[1].CntRst",	1 );
-	setVariable( "ClinkDevRoot.ClinkFeb[1].ClinkTop.Ch[1].CntRst",	0 );
-	setVariable( "ClinkDevRoot.ClinkFeb[1].ClinkTop.RstPll",		1 );
-	sleep(1);
-	LoadConfigFile( "db/cfgFeb1Pll85MHz.txt", 0.003 );
-	sleep(1);
-	setVariable( "ClinkDevRoot.ClinkFeb[1].ClinkTop.RstPll",		0 );
-	setVariable( "ClinkDevRoot.ClinkFeb[1].ClinkTop.CntRst",		1 );
-	setVariable( "ClinkDevRoot.ClinkFeb[1].ClinkTop.CntRst",		0 );
-	setVariable( "ClinkDevRoot.ClinkFeb[1].TrigCtrl[0].CntRst",		1 );
-	setVariable( "ClinkDevRoot.ClinkFeb[1].TrigCtrl[1].CntRst",		1 );
+	if ( FebReady(1) )
+	{
+		// Feb1 Pll Config:
+		printf( "Configuring Feb[1] Pll...\n" );
+		setVariable( "ClinkDevRoot.ClinkFeb[1].ClinkTop.Ch[0].CntRst",	1 );
+		setVariable( "ClinkDevRoot.ClinkFeb[1].ClinkTop.Ch[0].CntRst",	0 );
+		setVariable( "ClinkDevRoot.ClinkFeb[1].ClinkTop.Ch[1].CntRst",	1 );
+		setVariable( "ClinkDevRoot.ClinkFeb[1].ClinkTop.Ch[1].CntRst",	0 );
+		setVariable( "ClinkDevRoot.ClinkFeb[1].ClinkTop.RstPll",		1 );
+		sleep(1);
+		LoadConfigFile( "db/cfgFeb1Pll85MHz.txt", 0.003 );
+		sleep(1);
+		setVariable( "ClinkDevRoot.ClinkFeb[1].ClinkTop.RstPll",		0 );
+		setVariable( "ClinkDevRoot.ClinkFeb[1].ClinkTop.CntRst",		1 );
+		setVariable( "ClinkDevRoot.ClinkFeb[1].ClinkTop.CntRst",		0 );
+		setVariable( "ClinkDevRoot.ClinkFeb[1].TrigCtrl[0].CntRst",		1 );
+		setVariable( "ClinkDevRoot.ClinkFeb[1].TrigCtrl[1].CntRst",		1 );
+	}
 
-	// Feb2 Pll Config:
-	printf( "Configuring Feb[2] Pll...\n" );
-	setVariable( "ClinkDevRoot.ClinkFeb[2].ClinkTop.Ch[0].CntRst",	1 );
-	setVariable( "ClinkDevRoot.ClinkFeb[2].ClinkTop.Ch[0].CntRst",	0 );
-	setVariable( "ClinkDevRoot.ClinkFeb[2].ClinkTop.Ch[1].CntRst",	1 );
-	setVariable( "ClinkDevRoot.ClinkFeb[2].ClinkTop.Ch[1].CntRst",	0 );
-	setVariable( "ClinkDevRoot.ClinkFeb[2].ClinkTop.RstPll",		1 );
-	sleep(1);
-	LoadConfigFile( "db/cfgFeb2Pll85MHz.txt", 0.003 );
-	sleep(1);
-	setVariable( "ClinkDevRoot.ClinkFeb[2].ClinkTop.RstPll",		0 );
-	setVariable( "ClinkDevRoot.ClinkFeb[2].ClinkTop.CntRst",		1 );
-	setVariable( "ClinkDevRoot.ClinkFeb[2].ClinkTop.CntRst",		0 );
-	setVariable( "ClinkDevRoot.ClinkFeb[2].TrigCtrl[0].CntRst",		1 );
-	setVariable( "ClinkDevRoot.ClinkFeb[2].TrigCtrl[1].CntRst",		1 );
+	if ( FebReady(2) )
+	{
+		// Feb2 Pll Config:
+		printf( "Configuring Feb[2] Pll...\n" );
+		setVariable( "ClinkDevRoot.ClinkFeb[2].ClinkTop.Ch[0].CntRst",	1 );
+		setVariable( "ClinkDevRoot.ClinkFeb[2].ClinkTop.Ch[0].CntRst",	0 );
+		setVariable( "ClinkDevRoot.ClinkFeb[2].ClinkTop.Ch[1].CntRst",	1 );
+		setVariable( "ClinkDevRoot.ClinkFeb[2].ClinkTop.Ch[1].CntRst",	0 );
+		setVariable( "ClinkDevRoot.ClinkFeb[2].ClinkTop.RstPll",		1 );
+		sleep(1);
+		LoadConfigFile( "db/cfgFeb2Pll85MHz.txt", 0.003 );
+		sleep(1);
+		setVariable( "ClinkDevRoot.ClinkFeb[2].ClinkTop.RstPll",		0 );
+		setVariable( "ClinkDevRoot.ClinkFeb[2].ClinkTop.CntRst",		1 );
+		setVariable( "ClinkDevRoot.ClinkFeb[2].ClinkTop.CntRst",		0 );
+		setVariable( "ClinkDevRoot.ClinkFeb[2].TrigCtrl[0].CntRst",		1 );
+		setVariable( "ClinkDevRoot.ClinkFeb[2].TrigCtrl[1].CntRst",		1 );
+	}
 
-	// Feb3 Pll Config:
-	printf( "Configuring Feb[3] Pll...\n" );
-	setVariable( "ClinkDevRoot.ClinkFeb[3].ClinkTop.Ch[0].CntRst",	1 );
-	setVariable( "ClinkDevRoot.ClinkFeb[3].ClinkTop.Ch[0].CntRst",	0 );
-	setVariable( "ClinkDevRoot.ClinkFeb[3].ClinkTop.Ch[1].CntRst",	1 );
-	setVariable( "ClinkDevRoot.ClinkFeb[3].ClinkTop.Ch[1].CntRst",	0 );
-	setVariable( "ClinkDevRoot.ClinkFeb[3].ClinkTop.RstPll",		1 );
-	sleep(1);
-	LoadConfigFile( "db/cfgFeb3Pll85MHz.txt", 0.003 );
-	sleep(1);
-	setVariable( "ClinkDevRoot.ClinkFeb[3].ClinkTop.RstPll",		0 );
-	setVariable( "ClinkDevRoot.ClinkFeb[3].ClinkTop.CntRst",		1 );
-	setVariable( "ClinkDevRoot.ClinkFeb[3].ClinkTop.CntRst",		0 );
-	setVariable( "ClinkDevRoot.ClinkFeb[3].TrigCtrl[0].CntRst",		1 );
-	setVariable( "ClinkDevRoot.ClinkFeb[3].TrigCtrl[1].CntRst",		1 );
+	if ( FebReady(3) )
+	{
+		// Feb3 Pll Config:
+		printf( "Configuring Feb[3] Pll...\n" );
+		setVariable( "ClinkDevRoot.ClinkFeb[3].ClinkTop.Ch[0].CntRst",	1 );
+		setVariable( "ClinkDevRoot.ClinkFeb[3].ClinkTop.Ch[0].CntRst",	0 );
+		setVariable( "ClinkDevRoot.ClinkFeb[3].ClinkTop.Ch[1].CntRst",	1 );
+		setVariable( "ClinkDevRoot.ClinkFeb[3].ClinkTop.Ch[1].CntRst",	0 );
+		setVariable( "ClinkDevRoot.ClinkFeb[3].ClinkTop.RstPll",		1 );
+		sleep(1);
+		LoadConfigFile( "db/cfgFeb3Pll85MHz.txt", 0.003 );
+		sleep(1);
+		setVariable( "ClinkDevRoot.ClinkFeb[3].ClinkTop.RstPll",		0 );
+		setVariable( "ClinkDevRoot.ClinkFeb[3].ClinkTop.CntRst",		1 );
+		setVariable( "ClinkDevRoot.ClinkFeb[3].ClinkTop.CntRst",		0 );
+		setVariable( "ClinkDevRoot.ClinkFeb[3].TrigCtrl[0].CntRst",		1 );
+		setVariable( "ClinkDevRoot.ClinkFeb[3].TrigCtrl[1].CntRst",		1 );
+	}
 }
 
 

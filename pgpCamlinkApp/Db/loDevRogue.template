@@ -6,5 +6,7 @@ record( longout, "$(P)$(R)$(NAME)" )
 	field( DOL,  "$(DOL=0)" )
 	field( OUT,  "@B$(B) L$(L) $(PATH)" )
 	field( PINI, "$(PINI=NO)" )
+	field( DISV, "$(DISV=1)" )
+	field( SDIS, "$(SDIS=)" )
 	info( autosaveFields, "$(SAVE=VAL)" )
 }

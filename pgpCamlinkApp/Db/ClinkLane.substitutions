@@ -20,6 +20,8 @@ file boolDevRogue.template
 		PINI	= "YES"
 		SAVE	= ""
 		SCAN	= "\$(SCAN=1 second)"
+		DISV	= "0"
+		SDIS	= "$(P)$(R)PgpMon:RxRemLinkReady_RBV CP"
 	}
 	{
 		NAME	= "EventBuilder:Blowoff",
@@ -54,6 +56,8 @@ file boolDevRogue.template
 		NAME	= "Feb$(F):FCh$(FL):InvCC",
 		PATH	= "ClinkDevRoot.ClinkFeb[$(F)].TrigCtrl[$(FL)].InvCC"
 		PINI	= "YES"
+		DISV	= "0"
+		SDIS	= "$(P)$(R)PgpMon:RxRemLinkReady_RBV CP"
 	}
 	{
 		NAME	= "Trigger:MasterEnable",
@@ -83,11 +87,15 @@ file liDevRogue.template
 		NAME	= "Feb$(F):FCh$(FL):DropCount",
 		PATH	= "ClinkDevRoot.ClinkFeb[$(F)].ClinkTop.Ch[$(FL)].DropCount",
 		SCAN	= "\$(SCAN=1 second)"
+		DISV	= "0"
+		SDIS	= "$(P)$(R)PgpMon:RxRemLinkReady_RBV CP"
 	}
 	{
 		NAME	= "Feb$(F):FCh$(FL):FrameCount",
 		PATH	= "ClinkDevRoot.ClinkFeb[$(F)].ClinkTop.Ch[$(FL)].FrameCount",
 		SCAN	= "\$(SCAN=1 second)"
+		DISV	= "0"
+		SDIS	= "$(P)$(R)PgpMon:RxRemLinkReady_RBV CP"
 	}
 	{
 		NAME	= "EventBuilder:DataCnt0",
@@ -104,12 +112,16 @@ file liDevRogue.template
 		PATH	= "ClinkDevRoot.ClinkFeb[$(F)].TrigCtrl[$(FL)].TrigCnt"
 		DESC	= "Feb$(F) FCh$(FL) TriggerCtrl count"
 		SCAN	= "\$(SCAN=1 second)"
+		DISV	= "0"
+		SDIS	= "$(P)$(R)PgpMon:RxRemLinkReady_RBV CP"
 	}
 	{
 		NAME	= "Feb$(F):FCh$(FL):TrigRate",
 		PATH	= "ClinkDevRoot.ClinkFeb[$(F)].TrigCtrl[$(FL)].TrigRate"
 		DESC	= "Feb$(F) FCh$(FL) TriggerCtrl rate"
 		SCAN	= "\$(SCAN=1 second)"
+		DISV	= "0"
+		SDIS	= "$(P)$(R)PgpMon:RxRemLinkReady_RBV CP"
 	}
 	{
 		NAME	= "PgpRx:Bandwidth",
@@ -152,26 +164,36 @@ file liDevRogue.template
 		NAME	= "Feb$(F):PgpMon:RxCellErrorCount"
 		PATH	= "ClinkDevRoot.ClinkFeb[$(F)].PgpMon[$(FL)].RxCellErrorCount"
 		SCAN	= "\$(SCAN=1 second)"
+		DISV	= "0"
+		SDIS	= "$(P)$(R)PgpMon:RxRemLinkReady_RBV CP"
 	}
 	{
 		NAME	= "Feb$(F):PgpMon:RxLinkDownCount"
 		PATH	= "ClinkDevRoot.ClinkFeb[$(F)].PgpMon[$(FL)].RxLinkDownCount"
 		SCAN	= "\$(SCAN=1 second)"
+		DISV	= "0"
+		SDIS	= "$(P)$(R)PgpMon:RxRemLinkReady_RBV CP"
 	}
 	{
 		NAME	= "Feb$(F):PgpMon:RxLinkErrorCount"
 		PATH	= "ClinkDevRoot.ClinkFeb[$(F)].PgpMon[$(FL)].RxLinkErrorCount"
 		SCAN	= "\$(SCAN=1 second)"
+		DISV	= "0"
+		SDIS	= "$(P)$(R)PgpMon:RxRemLinkReady_RBV CP"
 	}
 	{
 		NAME	= "Feb$(F):PgpMon:TxFrameErrorCount"
 		PATH	= "ClinkDevRoot.ClinkFeb[$(F)].PgpMon[$(FL)].TxFrameErrorCount"
 		SCAN	= "\$(SCAN=1 second)"
+		DISV	= "0"
+		SDIS	= "$(P)$(R)PgpMon:RxRemLinkReady_RBV CP"
 	}
 	{
 		NAME	= "Feb$(F):PgpMon:RxRemLinkReadyCount"
 		PATH	= "ClinkDevRoot.ClinkFeb[$(F)].PgpMon[$(FL)].RxRemLinkReadyCount"
 		SCAN	= "\$(SCAN=1 second)"
+		DISV	= "0"
+		SDIS	= "$(P)$(R)PgpMon:RxRemLinkReady_RBV CP"
 	}
 
 	{
@@ -215,6 +237,8 @@ file loDevRogue.template
 		PATH	= "ClinkDevRoot.ClinkFeb[$(F)].PgpMon[$(FL)].CountReset"
 		SAVE	= ""
 		DESC	= "Reset Feb$(F) PgpMon counts"
+		DISV	= "0"
+		SDIS	= "$(P)$(R)PgpMon:RxRemLinkReady_RBV CP"
 	}
 }
 
@@ -247,6 +271,8 @@ file longDevRogue.template
 		DESC	= "Software camera control bit values"
 		DOL		= "0"
 		PINI	= "YES"
+		DISV	= "0"
+		SDIS	= "$(P)$(R)PgpMon:RxRemLinkReady_RBV CP"
 	}
 	{
 		NAME	= "Feb$(F):FCh$(FL):SwControlEn",
@@ -254,12 +280,16 @@ file longDevRogue.template
 		DESC	= "Lane A SW camera control bit enable mask"
 		DOL		= "0"
 		PINI	= "YES"
+		DISV	= "0"
+		SDIS	= "$(P)$(R)PgpMon:RxRemLinkReady_RBV CP"
 	}
 	{
 		NAME	= "Feb$(F):RstPll",
 		PATH	= "ClinkDevRoot.ClinkFeb[$(F)].ClinkTop.RstPll"
 		PINI	= ""
 		SAVE	= ""
+		DISV	= "0"
+		SDIS	= "$(P)$(R)PgpMon:RxRemLinkReady_RBV CP"
 	}
 	{
 		NAME	= "Timing:PauseThreshold",
