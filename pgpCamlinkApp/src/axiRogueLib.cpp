@@ -44,8 +44,9 @@ namespace rim = rogue::interfaces::memory;
 typedef	std::map< std::string, rim::VariablePtr >	mapVarPtr_t;
 
 extern	int		DEBUG_AXI_ROGUE;
-int	doFebFpgaReload	= 1;
-int	doFebConfig	= 1;
+int		doFebFpgaReload	= 1;
+int		doFebConfig		= 1;
+bool	bUseMiniTpg		= 0;
 
 // TODO Move to new file: src/rogue/memory/interfaces/memory/Constants.cpp
 // TODO Rename BlockProcessingType2String()?
@@ -420,7 +421,6 @@ axiRogueLib::~axiRogueLib()
 	close( m_fd );
 }
 
-bool	bUseMiniTpg	= 0;
 
 /// Configure timing for LCLS-I
 void axiRogueLib::ConfigureLclsTimingV1()
@@ -457,6 +457,7 @@ void axiRogueLib::ConfigureLclsTimingV1()
 			break;
 		if ( nTries > 200 )
 		{
+			const char * functionName = "ConfigureLclsTimingV1";
 			printf( "%s: Timeout waiting for RxLinkUp 1\n", functionName );
 			break;
 		}
