@@ -444,27 +444,7 @@ void axiRogueLib::ConfigureLclsTimingV1()
 	writeVarPath( "ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TimingFrameRx.C_RxReset",		lOne	);
 	writeVarPath( "ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TimingFrameRx.C_RxReset",		lZero	);
 
-#if 1
-	WaitForRxLinkUp();
-#else
-	uint64_t		rxLinkUp	= 0;
-	size_t			nTries		= 0;
-	delay.tv_sec = 0; delay.tv_nsec = 10000000L;
-	while ( rxLinkUp == 0 )
-	{
-		readVarPath( "ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TimingFrameRx.RxLinkUp", rxLinkUp );
-		if ( rxLinkUp )
-			break;
-		if ( nTries > 200 )
-		{
-			const char * functionName = "ConfigureLclsTimingV1";
-			printf( "%s: Timeout waiting for RxLinkUp 1\n", functionName );
-			break;
-		}
-		nTries++;
-		nanosleep( &delay, NULL );
-	}
-#endif
+	WaitForRxLinkUp( "ConfigureLclsTimingV1: Wait 1" );
 
 	// Reset latching RxDown flag
 	writeVarPath( "ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TimingFrameRx.RxDown",		lZero	);
@@ -477,7 +457,7 @@ void axiRogueLib::ConfigureLclsTimingV1()
 		nanosleep( &delay, NULL );
 	}
 
-	WaitForRxLinkUp();
+	WaitForRxLinkUp( "ConfigureLclsTimingV1: Wait 2" );
 	//ResetCounters();
 	printf( "Configured for LCLS-I timing\n" );
 }
@@ -639,14 +619,11 @@ void axiRogueLib::FebPllConfig()
 
 
 /// Wait for RxLinkUp
-void axiRogueLib::WaitForRxLinkUp()
+void axiRogueLib::WaitForRxLinkUp( const char * pszDiagLabel )
 {
-	struct timespec delay	= { 1, 0 };
-	const char * functionName = "WaitForRxLinkUp";
-	// TODO: Push this into a function
+	const struct timespec tenMs	= { 0, 10000000L };
 	uint64_t	rxLinkUp	= 0;
 	size_t		nTries		= 0;
-	delay.tv_sec = 0; delay.tv_nsec = 10000000L;
 	while ( rxLinkUp == 0 )
 	{
 		readVarPath( "ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TimingFrameRx.RxLinkUp", rxLinkUp );
@@ -654,11 +631,11 @@ void axiRogueLib::WaitForRxLinkUp()
 			break;
 		if ( nTries > 200 )
 		{
-			printf( "%s: Timeout waiting for RxLinkUp 2\n", functionName );
+			printf( "%s: Timeout waiting for RxLinkUp\n", pszDiagLabel );
 			break;
 		}
 		nTries++;
-		nanosleep( &delay, NULL );
+		nanosleep( &tenMs, NULL );
 	}
 }
 
