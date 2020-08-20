@@ -430,31 +430,34 @@ void axiRogueLib::ConfigureLclsTimingV1()
 	const bool		bZero	= 0;
 	const uint64_t	lOne	= 1L;
 	const uint64_t	lZero	= 0L;
-	struct timespec delay	= { 1, 0 };
+	const struct timespec oneSec	= { 1, 0L };
+	const struct timespec twoMs		= { 0, 2000000L };
 
 	writeVarPath( "ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TimingPhyMonitor.UseMiniTpg",	bZero );
 	printf( "Configuring for LCLS-I timing ...\n" );
 	writeVarPath( "ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TimingFrameRx.ModeSelEn",		lZero	);
 	writeVarPath( "ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TimingFrameRx.RxPllReset",		lOne	);
-	nanosleep( &delay, NULL );
-	nanosleep( &delay, NULL );
+	nanosleep( &oneSec, NULL );
 
 	writeVarPath( "ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TimingFrameRx.RxPllReset",		lZero	);
+	//nanosleep( &twoMs, NULL );
 	writeVarPath( "ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TimingFrameRx.ClkSel",			lZero	);
+	nanosleep( &twoMs, NULL );
 	writeVarPath( "ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TimingFrameRx.C_RxReset",		lOne	);
+	//nanosleep( &twoMs, NULL );
 	writeVarPath( "ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TimingFrameRx.C_RxReset",		lZero	);
+	nanosleep( &oneSec, NULL );
 
 	WaitForRxLinkUp( "ConfigureLclsTimingV1: Wait 1" );
 
 	// Reset latching RxDown flag
 	writeVarPath( "ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TimingFrameRx.RxDown",		lZero	);
-	nanosleep( &delay, NULL );
 
 	if ( bUseMiniTpg )
 	{
 		// TODO: Export bUseMiniTpg as iocsh variable
 		writeVarPath( "ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TimingPhyMonitor.UseMiniTpg",	bUseMiniTpg );
-		nanosleep( &delay, NULL );
+		//nanosleep( &oneSec, NULL );
 	}
 
 	WaitForRxLinkUp( "ConfigureLclsTimingV1: Wait 2" );
