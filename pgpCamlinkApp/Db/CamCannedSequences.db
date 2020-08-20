@@ -124,8 +124,11 @@ record( seq, "$(CAM):GoToFullMode" )
 record( calcout, "$(CAM):Acquire:StartRun" )
 {
 	field( INPA, "$(CAM):Acquire CPP NMS" )
-	field( CALC, "A" )
-	field( OOPT, "Transition To Non-zero" )
+	field( INPB, "$(AXI):Ch$(CH):Trigger:MasterEnable CPP NMS" )
+	field( CALC, "A && !B" )
+#	Use "When Non-zero" so hitting Acquire will always force a new SeqStartRun.
+#	Needed for example, if axiRogue IOC is rebooted while $CAM:Acquire is set.
+	field( OOPT, "When Non-zero" )
 	field( OUT,  "$(AXI):Ch$(CH):SeqStartRun.PROC NPP NMS" )
 }
 
