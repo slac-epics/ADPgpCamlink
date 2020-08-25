@@ -440,11 +440,11 @@ void axiRogueLib::ConfigureLclsTimingV1()
 	nanosleep( &oneSec, NULL );
 
 	writeVarPath( "ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TimingFrameRx.RxPllReset",		lZero	);
-	//nanosleep( &twoMs, NULL );
+	nanosleep( &twoMs, NULL );
 	writeVarPath( "ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TimingFrameRx.ClkSel",			lZero	);
 	nanosleep( &twoMs, NULL );
 	writeVarPath( "ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TimingFrameRx.C_RxReset",		lOne	);
-	//nanosleep( &twoMs, NULL );
+	nanosleep( &twoMs, NULL );
 	writeVarPath( "ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TimingFrameRx.C_RxReset",		lZero	);
 	nanosleep( &oneSec, NULL );
 
@@ -457,7 +457,6 @@ void axiRogueLib::ConfigureLclsTimingV1()
 	{
 		// TODO: Export bUseMiniTpg as iocsh variable
 		writeVarPath( "ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TimingPhyMonitor.UseMiniTpg",	bUseMiniTpg );
-		//nanosleep( &oneSec, NULL );
 	}
 
 	WaitForRxLinkUp( "ConfigureLclsTimingV1: Wait 2" );
