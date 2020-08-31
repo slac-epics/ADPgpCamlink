@@ -770,10 +770,10 @@ template<class R> int axiRogueLib::writeVarPath( rim::VariablePtr pVar, const R 
 					<< ", typeid = "	<< typeid(R).name()
 					<< ", modelId = "	<< modelId2String(pVar->modelId()) << pVar->bitTotal()
 					<< ", value = "	<< value << std::endl;
-		printf( "%s type is %s, nBits %u, byteSize %u, fastCopy %u!\n",
+		printf( "%s type is %s, nBits %u, byteSize %u!\n",
 				pVar->path().c_str(),
 				modelId2String( pVar->modelId() ), pVar->bitTotal(),
-				pVar->byteSize(), pVar->fastCopy() );
+				pVar->byteSize() );
 	}
 
 	try
