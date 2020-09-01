@@ -1,6 +1,12 @@
 #
 # SLAC RELEASE_NOTES
 #
+R0.5.0	2020-08-31 Bruce Hill
+	Tweak timing configuration delays in ConfigureLclsTimingV1()
+	Acquire:StartRun calc record activates SeqStartRun any time Acquire is set but triggers are off.
+		Makes image streaming more independent of start/stop of rogue register IOC.
+		Will stop briefly as timing is reconfigured but restart automatically.
+
 R0.4.0	2020-08-18 Bruce Hill
 	Suppress FebPllConfig
 	Add checks for unconnected or unpowered FEB units
