@@ -36,7 +36,7 @@
 
 // ADPgpCamlink headers
 #include "rogueDev.h"
-#include "axiRogueLib.h"
+#include "pgpRogueLib.h"
 
 #include "rogue/Logging.h"
 
@@ -674,7 +674,7 @@ int rogueDev::_Reopen( )
 	// Open the camera lane
 	if ( DEBUG_PGP_ROGUE >= 1 )
 		printf( "%s: %s Reopening Dev ...\n", functionName, m_RogueName.c_str() );
-    m_pRogueLib = axiRogueLib::create( m_board );
+    m_pRogueLib = pgpRogueLib::create( m_board );
     if ( m_pRogueLib == NULL )
 	{
         printf(	"%s %s: ERROR, Unable to open camera for rogueDev card %u, lane %u\n",

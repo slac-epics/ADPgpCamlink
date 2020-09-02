@@ -8,10 +8,10 @@
 // the terms contained in the LICENSE.txt file.
 //////////////////////////////////////////////////////////////////////////////
 //
-//	axiRogueLib driver
+//	pgpRogueLib driver
 //
-//	Header file for axiRogueLib class.
-//	It provides a templated interface to SLAC Generic AXI Hardware registers
+//	Header file for pgpRogueLib class.
+//	It provides a templated interface to SLAC Generic PGP Hardware registers
 //	via the Rogue LibraryBase C++ API
 //
 
@@ -36,14 +36,14 @@
 #include <DmaDriver.h>
 
 // ADPgpCamlink headers
-#include "axiRogueLib.h"
+#include "pgpRogueLib.h"
 
 using namespace	std;
 namespace rim = rogue::interfaces::memory;
 
 typedef	std::map< std::string, rim::VariablePtr >	mapVarPtr_t;
 
-extern	int		DEBUG_AXI_ROGUE;
+extern	int		DEBUG_PGP_ROGUE;
 int		doFebFpgaReload	= 1;
 int		doFebConfig		= 0;
 bool	bUseMiniTpg		= 0;
@@ -73,7 +73,7 @@ const char * modelId2String( uint32_t modelId )
 	return pTypeName;
 }
 
-void axiRogueLib::ResetCounters( )
+void pgpRogueLib::ResetCounters( )
 {
 	// TODO: Add toggle option to setVariable
 	setVariable( "ClinkDevRoot.ClinkPcie.Hsio.PgpMon[0].CountReset", 1 );
@@ -102,7 +102,7 @@ void axiRogueLib::ResetCounters( )
 	setVariable( "ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TimingFrameRx.ClearRxCounters", 0 );
 }
 
-int		axiRogueLib::setTriggerEnable( unsigned int triggerNum, bool fEnable )
+int		pgpRogueLib::setTriggerEnable( unsigned int triggerNum, bool fEnable )
 {
 	int			status	= 0;
 	char		varPath[256];
@@ -137,7 +137,7 @@ int		axiRogueLib::setTriggerEnable( unsigned int triggerNum, bool fEnable )
 	return status;
 }
 
-bool	axiRogueLib::getTriggerEnable( unsigned int triggerNum )
+bool	pgpRogueLib::getTriggerEnable( unsigned int triggerNum )
 {
 	return false;
 }
@@ -172,7 +172,7 @@ rogueAddrMap::rogueAddrMap()
 
 
 ///	Constructor
-axiRogueLib::axiRogueLib(
+pgpRogueLib::pgpRogueLib(
 	unsigned int				board	)
 :	rogue::LibraryBase(),
 	m_board(		board	),
@@ -181,7 +181,7 @@ axiRogueLib::axiRogueLib(
 	m_pAxiMemMap(			),
 	m_pSrpFeb(				)
 {
-	const char		*	functionName	= "axiRogueLib::axiRogueLib";
+	const char		*	functionName	= "pgpRogueLib::pgpRogueLib";
 
 	/*
 	 * Check arguments
@@ -202,7 +202,7 @@ axiRogueLib::axiRogueLib(
 		AxiVersion vsn;
 		if ( axiVersionGet(m_fd, &vsn) >= 0 )
 		{
-			printf("axiRogueLib: -- Core Axi Version --\n");
+			printf("pgpRogueLib: -- Core Axi Version --\n");
 			printf("firmwareVersion : %x\n", vsn.firmwareVersion);
 			printf("buildString     : %s\n", vsn.buildString); 
 			//printf("upTimeCount     : %u\n", vsn.upTimeCount);
@@ -230,7 +230,7 @@ axiRogueLib::axiRogueLib(
 	const char	*	szMemName = "PCIe_Bar0";
 	addMemory( szMemName, m_pAxiMemMap );
 	m_pRogueLib->addMemory( szMemName, m_pAxiMemMap );
-	printf("axiRogueLib: addMemory AxiMemMap interface %s\n", szMemName );
+	printf("pgpRogueLib: addMemory AxiMemMap interface %s\n", szMemName );
 
 	//
 	// Create FEB Data Channel for each lane
@@ -258,7 +258,7 @@ axiRogueLib::axiRogueLib(
 		}
 		addMemory( szMemName, m_pSrpFeb[lane] );
 		m_pRogueLib->addMemory( szMemName, m_pSrpFeb[lane] );
-		printf("axiRogueLib: addMemory srpFeb interface %s\n", szMemName );
+		printf("pgpRogueLib: addMemory srpFeb interface %s\n", szMemName );
 		// Create FebMemMaster and link it to SRP
 		m_pFebMemMaster[lane] = FebMemoryMaster::create( );
 		m_pFebMemMaster[lane]->setSlave( m_pSrpFeb[lane] );
@@ -416,14 +416,14 @@ axiRogueLib::axiRogueLib(
 }
 
 /// virtual Destructor
-axiRogueLib::~axiRogueLib()
+pgpRogueLib::~pgpRogueLib()
 {
 	close( m_fd );
 }
 
 
 /// Configure timing for LCLS-I
-void axiRogueLib::ConfigureLclsTimingV1()
+void pgpRogueLib::ConfigureLclsTimingV1()
 {
 //	const char * functionName = "ConfigureLclsTimingV1";
 //	const bool		bOne	= 1;
@@ -464,7 +464,7 @@ void axiRogueLib::ConfigureLclsTimingV1()
 	printf( "Configured for LCLS-I timing\n" );
 }
 
-bool axiRogueLib::FebReady( size_t iFeb )
+bool pgpRogueLib::FebReady( size_t iFeb )
 {
 	const char	*	pszVarPathRxRemLinkReady	= "ClinkDevRoot.ClinkPcie.Hsio.PgpMon[%1u].RxRemLinkReady";
 	char			febVarPath[256];
@@ -474,7 +474,7 @@ bool axiRogueLib::FebReady( size_t iFeb )
 	return febReady;
 }
 
-void axiRogueLib::FebFpgaReload()
+void pgpRogueLib::FebFpgaReload()
 {
 	const uint64_t	lOne	= 1L;
 	const char * pszVarPathFpgaReload		= "ClinkDevRoot.ClinkFeb[%1u].AxiVersion.FpgaReload";
@@ -524,7 +524,7 @@ void axiRogueLib::FebFpgaReload()
 	sleep(5);
 }
 
-void axiRogueLib::FebPllConfig()
+void pgpRogueLib::FebPllConfig()
 {
 #if 0
 	{	TODO: Need to provide C++ equivalent to select Pll rate for each camera type
@@ -621,7 +621,7 @@ void axiRogueLib::FebPllConfig()
 
 
 /// Wait for RxLinkUp
-void axiRogueLib::WaitForRxLinkUp( const char * pszDiagLabel )
+void pgpRogueLib::WaitForRxLinkUp( const char * pszDiagLabel )
 {
 	const struct timespec tenMs	= { 0, 10000000L };
 	uint64_t	rxLinkUp	= 0;
@@ -642,9 +642,9 @@ void axiRogueLib::WaitForRxLinkUp( const char * pszDiagLabel )
 }
 
 /// Load Config file
-void axiRogueLib::LoadConfigFile( const char * pszFilePath, double stepDelay )
+void pgpRogueLib::LoadConfigFile( const char * pszFilePath, double stepDelay )
 {
-	const char	*	functionName	= "axiRogueLib::LoadConfigFile";
+	const char	*	functionName	= "pgpRogueLib::LoadConfigFile";
 	FILE		*	cfgFile			= fopen( pszFilePath, "r" );
 	struct timespec delay	= { (long int) floor(stepDelay), (long int) ((stepDelay - floor(stepDelay)) * 1e9) };
 	if ( cfgFile == NULL )
@@ -705,9 +705,9 @@ void axiRogueLib::LoadConfigFile( const char * pszFilePath, double stepDelay )
 	printf( "%s: Read %u values from %s\n", functionName, nValues, pszFilePath );
 }
 
-template<class R> int axiRogueLib::readVarPath( const char * pszVarPath, R & valueRet )
+template<class R> int pgpRogueLib::readVarPath( const char * pszVarPath, R & valueRet )
 {
-	const char *	functionName = "axiRogueLib::readVarPath";
+	const char *	functionName = "pgpRogueLib::readVarPath";
 	int				status	= -1;
 	std::string		varPath( pszVarPath );
 	rogue::interfaces::memory::VariablePtr	pVar;
@@ -734,7 +734,7 @@ template<class R> int axiRogueLib::readVarPath( const char * pszVarPath, R & val
 	}
 	//pVar->setLogLevel( rogue::Logging::Warning );
 
-	if ( DEBUG_AXI_ROGUE >= 6 )
+	if ( DEBUG_PGP_ROGUE >= 6 )
 	{
 		std::cout	<< functionName	<< ": " << varPath
 					<< ", typeid = "	<< typeid(R).name()
@@ -744,15 +744,15 @@ template<class R> int axiRogueLib::readVarPath( const char * pszVarPath, R & val
 	return status;
 }
 
-template int axiRogueLib::readVarPath( const char * pszVarPath, bool		& valueRet );
-template int axiRogueLib::readVarPath( const char * pszVarPath, double		& valueRet );
-template int axiRogueLib::readVarPath( const char * pszVarPath, int64_t	& valueRet );
-template int axiRogueLib::readVarPath( const char * pszVarPath, uint64_t	& valueRet );
-template int axiRogueLib::readVarPath( const char * pszVarPath, std::string & valueRet );
+template int pgpRogueLib::readVarPath( const char * pszVarPath, bool		& valueRet );
+template int pgpRogueLib::readVarPath( const char * pszVarPath, double		& valueRet );
+template int pgpRogueLib::readVarPath( const char * pszVarPath, int64_t	& valueRet );
+template int pgpRogueLib::readVarPath( const char * pszVarPath, uint64_t	& valueRet );
+template int pgpRogueLib::readVarPath( const char * pszVarPath, std::string & valueRet );
 
-template<class R> int axiRogueLib::writeVarPath( rim::VariablePtr pVar, const R & value )
+template<class R> int pgpRogueLib::writeVarPath( rim::VariablePtr pVar, const R & value )
 {
-	const char *	functionName = "axiRogueLib::writeVarPath";
+	const char *	functionName = "pgpRogueLib::writeVarPath";
 	int				status	= -1;
 	if ( !pVar )
 	{
@@ -760,7 +760,7 @@ template<class R> int axiRogueLib::writeVarPath( rim::VariablePtr pVar, const R 
 		return -1;
 	}
 
-	if ( DEBUG_AXI_ROGUE >= 6 )
+	if ( DEBUG_PGP_ROGUE >= 6 )
 	{
 		//if ( pVar->modelId() == rim::Bool )
 		//	pVar->setLogLevel( rogue::Logging::Debug );
@@ -784,7 +784,7 @@ template<class R> int axiRogueLib::writeVarPath( rim::VariablePtr pVar, const R 
 		{
 			R	valueRet;
 			pVar->getValue( valueRet );
-			if ( DEBUG_AXI_ROGUE >= 3 || value != valueRet )
+			if ( DEBUG_PGP_ROGUE >= 3 || value != valueRet )
 			{
 				std::cout	<< functionName	<< ": " << pVar->path()
 							<< ", setValue="	<< value;
@@ -812,9 +812,9 @@ template<class R> int axiRogueLib::writeVarPath( rim::VariablePtr pVar, const R 
 	return status;
 }
 
-template<class R> int axiRogueLib::writeVarPath( const char * pszVarPath, const R & value )
+template<class R> int pgpRogueLib::writeVarPath( const char * pszVarPath, const R & value )
 {
-	const char *	functionName = "axiRogueLib::writeVarPath";
+	const char *	functionName = "pgpRogueLib::writeVarPath";
 	std::string		varPath( pszVarPath );
 	rogue::interfaces::memory::VariablePtr	pVar;
 	//pVar = m_pRogueLib->getVariable( varPath );
@@ -827,19 +827,19 @@ template<class R> int axiRogueLib::writeVarPath( const char * pszVarPath, const 
 	return writeVarPath( pVar, value );
 }
 
-template int axiRogueLib::writeVarPath( const char * pszVarPath, const bool		& value );
-template int axiRogueLib::writeVarPath( const char * pszVarPath, const double		& value );
-template int axiRogueLib::writeVarPath( const char * pszVarPath, const int64_t		& value );
-template int axiRogueLib::writeVarPath( const char * pszVarPath, const uint64_t	& value );
+template int pgpRogueLib::writeVarPath( const char * pszVarPath, const bool		& value );
+template int pgpRogueLib::writeVarPath( const char * pszVarPath, const double		& value );
+template int pgpRogueLib::writeVarPath( const char * pszVarPath, const int64_t		& value );
+template int pgpRogueLib::writeVarPath( const char * pszVarPath, const uint64_t	& value );
 
-template int axiRogueLib::writeVarPath( rim::VariablePtr pVar, const bool		& value );
-template int axiRogueLib::writeVarPath( rim::VariablePtr pVar, const double	& value );
-template int axiRogueLib::writeVarPath( rim::VariablePtr pVar, const int64_t	& value );
-template int axiRogueLib::writeVarPath( rim::VariablePtr pVar, const uint64_t	& value );
+template int pgpRogueLib::writeVarPath( rim::VariablePtr pVar, const bool		& value );
+template int pgpRogueLib::writeVarPath( rim::VariablePtr pVar, const double	& value );
+template int pgpRogueLib::writeVarPath( rim::VariablePtr pVar, const int64_t	& value );
+template int pgpRogueLib::writeVarPath( rim::VariablePtr pVar, const uint64_t	& value );
 
-void axiRogueLib::dumpVariables( const char * pszFilePath, bool fWritableOnly, bool fForceRead, bool verbose )
+void pgpRogueLib::dumpVariables( const char * pszFilePath, bool fWritableOnly, bool fForceRead, bool verbose )
 {
-	const char *	functionName = "axiRogueLib::dumpVariables";
+	const char *	functionName = "pgpRogueLib::dumpVariables";
 
 	std::ofstream	dumpFile;
 	dumpFile.open( pszFilePath, ios_base::out );
@@ -918,7 +918,7 @@ void axiRogueLib::dumpVariables( const char * pszFilePath, bool fWritableOnly, b
 	dumpFile.close();
 }
 
-void axiRogueLib::setVariable( const char * pszVarPath, double value, bool verbose )
+void pgpRogueLib::setVariable( const char * pszVarPath, double value, bool verbose )
 {
 	uint64_t	u64Value;
 	int64_t		i64Value;
@@ -941,7 +941,7 @@ void axiRogueLib::setVariable( const char * pszVarPath, double value, bool verbo
 		case rim::PyFunc:
 		case rim::String:
 		default:
-			printf( "axiRogueLib::setVariable error: Type %s%u not supported.", modelId2String( pVar->modelId() ), pVar->bitTotal() );
+			printf( "pgpRogueLib::setVariable error: Type %s%u not supported.", modelId2String( pVar->modelId() ), pVar->bitTotal() );
 			break;
 		case rim::UInt:
 			u64Value	= static_cast<uint64_t>(value);
@@ -967,11 +967,11 @@ void axiRogueLib::setVariable( const char * pszVarPath, double value, bool verbo
 	}
 	else
 	{
-		printf( "axiRogueLib error: %s not found!\n", varPath.c_str() );
+		printf( "pgpRogueLib error: %s not found!\n", varPath.c_str() );
 	}
 }
 
-void axiRogueLib::showVariable( const char * pszVarPath, bool verbose )
+void pgpRogueLib::showVariable( const char * pszVarPath, bool verbose )
 {
 	std::string		varPath( pszVarPath );
 	rogue::interfaces::memory::VariablePtr	pVar;
@@ -979,7 +979,7 @@ void axiRogueLib::showVariable( const char * pszVarPath, bool verbose )
 	pVar = getVariable( varPath );
 	if ( !pVar )
 	{
-		printf( "axiRogueLib error: %s not found!\n", varPath.c_str() );
+		printf( "pgpRogueLib error: %s not found!\n", varPath.c_str() );
 		return;
 	}
 
@@ -1024,9 +1024,9 @@ void axiRogueLib::showVariable( const char * pszVarPath, bool verbose )
 	}
 }
 
-void axiRogueLib::showVariableList( bool verbose )
+void pgpRogueLib::showVariableList( bool verbose )
 {
-	const char *	functionName = "axiRogueLib::showVariableList";
+	const char *	functionName = "pgpRogueLib::showVariableList";
 #if 0
 	if ( ! m_pRogueLib )
 	{
@@ -1076,13 +1076,13 @@ void axiRogueLib::showVariableList( bool verbose )
 	}
 }
 
-void axiRogueLib::connect( )
+void pgpRogueLib::connect( )
 {
 }
 
-void axiRogueLib::disconnect( )
+void pgpRogueLib::disconnect( )
 {
-	printf( "axiRogueLib::disconnect\n" );
+	printf( "pgpRogueLib::disconnect\n" );
 	if ( m_fd > 0 )
 	{
 		close( m_fd );

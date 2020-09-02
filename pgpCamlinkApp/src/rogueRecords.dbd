@@ -11,4 +11,4 @@ device( mbbo,		INST_IO,	dsetRogueMBBO,	"RogueMBBO"	)
 #device( waveform,	INST_IO,	dsetRogueWF,	"RogueWF"	)
 
 variable(	DEBUG_ROGUE_DEV,	int	)
-variable(	DEBUG_AXI_ROGUE,	int	)
+variable(	DEBUG_PGP_ROGUE,	int	)

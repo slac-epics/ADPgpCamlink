@@ -21,8 +21,8 @@ DB += roguePcie.db
 DB += putMonitor.template
 DB += rbvMonitor.template
 DB += serialMonitor.template
-DB += AxiCannedSequences.db
-DB += AxiChCannedSequences.db
+DB += PgpCannedSequences.db
+DB += PgpChCannedSequences.db
 DB += CamCannedSequences.db
 
 # Install archive files

@@ -2,7 +2,7 @@
 # ClinkFeb rogue PVs
 #
 # Required macros:
-#	P				- Prefix for generic rogue AXI register access
+#	P				- Prefix for generic rogue PGP register access
 #	R				- Region, example, :Ch0:
 #	B				- Board number
 #	L				- Lane number

@@ -5,7 +5,7 @@
 #	P				- Prefix
 #	R				- Region, common camera PV prefix is $(P)$(R)
 #	PORT			- Asyn port name
-#	AXI				- Prefix for AXI PGP Rogue register IOC
+#	PGP				- Prefix for PGP PGP Rogue register IOC
 #	PGP_LANE		- Camera lane number on PGP framegrabber
 # Optional macros
 #	TIMEOUT			- Defaults to 1 sec
@@ -87,7 +87,7 @@ record( calcout, "$(P)$(R)CamAcquireTimeCalc" )
 	field( CALC, "FLOOR(A*B)" )
 	field( PREC, "4" )
 	field( EGU,  "us" )
-	field( OUT,  "$(AXI):Ch$(PGP_LANE):Feb$(PGP_LANE):FCh0:PulseWidth CA NMS" )
+	field( OUT,  "$(PGP):Ch$(PGP_LANE):Feb$(PGP_LANE):FCh0:PulseWidth CA NMS" )
 	info( archiveFields,  "VAL" )
 }
 # CamAcquireTime_RBV (Exposure Time)
@@ -95,7 +95,7 @@ record( calcout, "$(P)$(R)CamAcquireTimeCalc" )
 # which maps it to ADCore's ADAcquireTime parameter
 record( calc, "$(P)$(R)CamAcquireTime_RBV" )
 {
-	field( INPA, "$(AXI):Ch$(PGP_LANE):Feb$(PGP_LANE):FCh0:PulseWidth_RBV CPP MS" )
+	field( INPA, "$(PGP):Ch$(PGP_LANE):Feb$(PGP_LANE):FCh0:PulseWidth_RBV CPP MS" )
 #	field( INPB, "$(CAM):CamDelayScale NPP MS" )
 	field( INPB, "1000000" )
 	field( CALC, "A/B" )
@@ -500,7 +500,7 @@ record( calcout, "$(CAM):CamTrigDelayCalc" )
 	field( INPB, "125000000" )
 	field( CALC, "MAX(0,MIN(A*B,0xFFFFFF))" )
 #	field( OOPT, "On Change" )
-	field( OUT,  "$(AXI):Ch$(PGP_LANE):EvrV2:TriggerDelay CA NMS" )
+	field( OUT,  "$(PGP):Ch$(PGP_LANE):EvrV2:TriggerDelay CA NMS" )
 	field( EGU,  "1/125MHz" )
 	field( PREC, "4" )
 	info( autosaveFields, "HHSV HIGH HIHI HSV LLSV LOLO LOW LSV     DESC PREC" )
@@ -520,7 +520,7 @@ record( longout, "$(CAM):CamDelayScale" )
 record( calcout, "$(CAM):CamTrigDelay_RBV" )
 {
 #field( TPRO, "$(TPRO=2)" )
-	field( INPA, "$(AXI):Ch$(PGP_LANE):EvrV2:TriggerDelay_RBV CPP MS" )
+	field( INPA, "$(PGP):Ch$(PGP_LANE):EvrV2:TriggerDelay_RBV CPP MS" )
 #	field( INPB, "$(CAM):CamDelayScale CP MS" )
 	field( INPB, "125000000" )
 	field( CALC, "B==0?A:(A/B)" )
@@ -537,14 +537,14 @@ record( calcout, "$(CAM):CamTrigDelay_RBV" )
 record( longout, "$(P)$(R)CamEventCode" )
 {
 	field( DOL,  "40" )
-	field( OUT,  "$(AXI):Ch$(PGP_LANE):EvrV2:RateSel CA NMS" )
+	field( OUT,  "$(PGP):Ch$(PGP_LANE):EvrV2:RateSel CA NMS" )
 	field( PINI, "YES" )
 	info( autosaveFields, "HHSV HIGH HIHI HSV LLSV LOLO LOW LSV EGU DESC HOPR LOPR VAL" )
 	info( archiveFields,  "HHSV HIGH HIHI HSV LLSV LOLO LOW LSV EGU DESC HOPR LOPR VAL" )
 }
 
 # Put monitors
-substitute "SER_OK_PV=$(AXI):Ch$(PGP_LANE):EvrV2:RateSel_RBV"
+substitute "SER_OK_PV=$(PGP):Ch$(PGP_LANE):EvrV2:RateSel_RBV"
 substitute "MON_SCAN=1 second"
 substitute "MON_DISABLED=1"
 substitute "MON_PV= $(P)$(R)CamEventCode"
@@ -552,14 +552,14 @@ include "putMonitor.template"
 
 record( longin, "$(P)$(R)CamEventCode_RBV" )
 {
-	field( INP,  "$(AXI):Ch$(PGP_LANE):EvrV2:RateSel_RBV CPP MS" )
+	field( INP,  "$(PGP):Ch$(PGP_LANE):EvrV2:RateSel_RBV CPP MS" )
 	info( autosaveFields, "HHSV HIGH HIHI HSV LLSV LOLO LOW LSV EGU DESC" )
 	info( archiveFields,  "HHSV HIGH HIHI HSV LLSV LOLO LOW LSV EGU DESC VAL" )
 }
 
 record( ai, "$(P)$(R)CamRepRate_RBV" )
 {
-	field( INP,  "$(AXI):Ch$(PGP_LANE):Feb$(PGP_LANE):FCh0:TrigRate_RBV CPP MS" )
+	field( INP,  "$(PGP):Ch$(PGP_LANE):Feb$(PGP_LANE):FCh0:TrigRate_RBV CPP MS" )
 	field( EGU,  "Hz" )
 	field( PREC, "1" )
 	field( FLNK, "$(P)$(R)CamRepDur" )

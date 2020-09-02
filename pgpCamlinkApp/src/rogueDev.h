@@ -19,7 +19,7 @@
 #include <epicsMutex.h>
 #include <epicsThread.h>
 #include <dbScan.h>
-#include "axiRogueLib.h"
+#include "pgpRogueLib.h"
 #include <rogue/protocols/batcher/Data.h>
 
 
@@ -140,8 +140,8 @@ public:		//	Public member functions
     /// SetSerDisable
     int SetSerDisable( int value );
 
-	/// Return shared_ptr to axiRogueLib device
-	axiRogueLibPtr			GetRogueLib( ) const
+	/// Return shared_ptr to pgpRogueLib device
+	pgpRogueLibPtr			GetRogueLib( ) const
 	{
 		return m_pRogueLib;
 	}
@@ -205,7 +205,7 @@ protected:	//	Protected member variables
 	bool			m_fReopen;			// True when we need to reread the configuration file
 
 private:	//	Private member variables
-	axiRogueLibPtr 	m_pRogueLib;			// shared_ptr to axiRogueLib device
+	pgpRogueLibPtr 	m_pRogueLib;			// shared_ptr to pgpRogueLib device
 
 	unsigned int	m_board;		// index of Pgpcamlink card
 	unsigned int	m_lane;			// lane on  Pgpcamlink card
@@ -242,7 +242,7 @@ private:	//	Private class variables
 
 
 /*	Diagnostic variables	*/
-extern int				DEBUG_AXI_ROGUE;
+extern int				DEBUG_PGP_ROGUE;
 
 /* "C" linkage Configuration functions for iocsh */
 extern "C" int	rogueDevConfig(

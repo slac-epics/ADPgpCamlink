@@ -1539,7 +1539,7 @@ onColor index 5
 offColor index 3
 topShadowColor index 1
 botShadowColor index 11
-controlPv "$(AXI):Ch$(CH):SeqStartRun.PROC"
+controlPv "$(PGP):Ch$(CH):SeqStartRun.PROC"
 pressValue "1"
 onLabel "StartRun"
 offLabel "StartRun"
@@ -1562,7 +1562,7 @@ onColor index 5
 offColor index 3
 topShadowColor index 1
 botShadowColor index 11
-controlPv "$(AXI):Ch$(CH):SeqStopRun.PROC"
+controlPv "$(PGP):Ch$(CH):SeqStopRun.PROC"
 pressValue "1"
 onLabel "StopRun"
 offLabel "StopRun"

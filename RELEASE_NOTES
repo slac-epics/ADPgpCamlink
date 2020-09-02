@@ -21,9 +21,9 @@ R0.4.0	2020-08-18 Bruce Hill
 R0.3.0	2020-08-10 Bruce Hill
 	Fix more FEB PV names
 	Configure all 3 FEB PLL's
-	Create interfaces for all 4 FEB data lanes in axiRogueLib
+	Create interfaces for all 4 FEB data lanes in pgpRogueLib
 	Renamed pgpRogue files to rogueDev
-	Renamed pgpRogueDev class to axiRogueLib
+	Renamed pgpRogueDev class to pgpRogueLib
 	pgpClDev no longer needs to inherit from rogue::LibraryBase
 	pgpRogue.cpp and pgpCamlink.cpp split and compiling
 

@@ -26,8 +26,6 @@
 
 int	DEBUG_ROGUE_DEV = 2;
 epicsExportAddress( int,  DEBUG_ROGUE_DEV );
-int	DEBUG_AXI_ROGUE = 2;
-epicsExportAddress( int,  DEBUG_AXI_ROGUE );
 
 
 static int

@@ -2426,8 +2426,8 @@ bgColor index 3
 inconsistentColor index 40
 topShadowColor index 1
 botShadowColor index 11
-controlPv "$(AXI):Timing:UseMiniTpg"
-indicatorPv "$(AXI):Timing:UseMiniTpg_RBV"
+controlPv "$(PGP):Timing:UseMiniTpg"
+indicatorPv "$(PGP):Timing:UseMiniTpg_RBV"
 font "helvetica-medium-r-12.0"
 endObjectProperties
 
@@ -2441,7 +2441,7 @@ x 484
 y 520
 w 80
 h 20
-controlPv "$(AXI):Timing:UseMiniTpg_RBV"
+controlPv "$(PGP):Timing:UseMiniTpg_RBV"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
 fgColor index 15
@@ -2485,7 +2485,7 @@ x 572
 y 544
 w 96
 h 18
-controlPv "$(AXI):Timing:RxDown"
+controlPv "$(PGP):Timing:RxDown"
 format "decimal"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
@@ -2515,7 +2515,7 @@ x 484
 y 544
 w 80
 h 20
-controlPv "$(AXI):Timing:RxDown_RBV"
+controlPv "$(PGP):Timing:RxDown_RBV"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
 fgColor index 15
@@ -2559,7 +2559,7 @@ x 484
 y 592
 w 80
 h 20
-controlPv "$(AXI):Timing:FidCount_RBV"
+controlPv "$(PGP):Timing:FidCount_RBV"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
 fgColor index 15
@@ -2604,7 +2604,7 @@ x 484
 y 568
 w 80
 h 20
-controlPv "$(AXI):Timing:RxLinkUp_RBV"
+controlPv "$(PGP):Timing:RxLinkUp_RBV"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
 fgColor index 15
@@ -2654,7 +2654,7 @@ onColor index 5
 offColor index 3
 topShadowColor index 1
 botShadowColor index 11
-controlPv "$(AXI):Ch$(CH):SeqStopRun.PROC"
+controlPv "$(PGP):Ch$(CH):SeqStopRun.PROC"
 pressValue "1"
 onLabel "StopRun"
 offLabel "StopRun"
@@ -2677,7 +2677,7 @@ onColor index 5
 offColor index 3
 topShadowColor index 1
 botShadowColor index 11
-controlPv "$(AXI):Ch$(CH):SeqStartRun.PROC"
+controlPv "$(PGP):Ch$(CH):SeqStartRun.PROC"
 pressValue "1"
 onLabel "StartRun"
 offLabel "StartRun"
@@ -2700,7 +2700,7 @@ onColor index 6
 offColor index 3
 topShadowColor index 1
 botShadowColor index 11
-controlPv "$(AXI):Ch$(CH):PgpMon:CountReset"
+controlPv "$(PGP):Ch$(CH):PgpMon:CountReset"
 pressValue "1"
 onLabel "Resetting"
 offLabel "Reset Counts"
@@ -2723,7 +2723,7 @@ onColor index 6
 offColor index 3
 topShadowColor index 1
 botShadowColor index 11
-controlPv "$(AXI):Ch$(CH):Feb$(CH):PgpMon:CountReset"
+controlPv "$(PGP):Ch$(CH):Feb$(CH):PgpMon:CountReset"
 pressValue "1"
 onLabel "Resetting"
 offLabel "Reset Counts"
