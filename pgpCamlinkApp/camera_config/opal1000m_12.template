@@ -919,16 +919,19 @@ record( longin, "$(P)$(R)OpalBinY_RBV" )
     field( INP,	 "@opal1000m_12.proto GetInt(VBIN) $(PORT).SER" )
 }
 
+# TODO: Confirm w/ Larry
 # Vertical remapping is enabled by the config file and should not be changed.
-#record( bo, "$(P)$(R)OpalSetVR" )
-#{
-#    field( DESC, "Set Vertical Remapping" )
-#    field( DTYP, "stream"       )
-#    field( OUT,	 "@opal1000m_12.proto SetInt(VR) $(PORT).SER" )
-#    field( FLNK, "$(P)$(R)OpalVR" )
-#    field( ZNAM, "No Remapping" )
-#    field( ONAM, "Remapping"    )
-#}
+record( bo, "$(P)$(R)OpalSetVR" )
+{
+    field( DESC, "Set Vertical Remapping" )
+    field( DTYP, "stream"       )
+	field( DOL,  "1" )
+    field( OUT,	 "@opal1000m_12.proto SetInt(VR) $(PORT).SER" )
+    field( FLNK, "$(P)$(R)OpalVR" )
+    field( ZNAM, "No Remap" )
+    field( ONAM, "Remap"    )
+    info( autosaveFields, "VAL" )
+}
 
 # Vertical remapping is enabled by the config file and should not be changed.
 record( bi, "$(P)$(R)OpalVR" )
@@ -936,8 +939,8 @@ record( bi, "$(P)$(R)OpalVR" )
     field( DESC, "Vertical Remapping" )
     field( DTYP, "stream"       )
     field( INP,	 "@opal1000m_12.proto GetInt(VR) $(PORT).SER" )
-    field( ZNAM, "No Remapping" )
-    field( ONAM, "Remapping"    )
+    field( ZNAM, "No Remap" )
+    field( ONAM, "Remap"    )
 }
 
 # Recall configuration
