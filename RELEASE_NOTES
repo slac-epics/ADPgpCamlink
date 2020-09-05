@@ -1,6 +1,10 @@
 #
 # SLAC RELEASE_NOTES
 #
+R0.6.0	2020-09-04 Bruce Hill
+	Enable OpalSetVR PV and autosave
+	Rename Axi* to Pgp*
+
 R0.5.0	2020-08-31 Bruce Hill
 	Tweak timing configuration delays in ConfigureLclsTimingV1()
 	Acquire:StartRun calc record activates SeqStartRun any time Acquire is set but triggers are off.
