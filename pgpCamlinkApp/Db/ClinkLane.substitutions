@@ -69,6 +69,7 @@ file boolDevRogue.template
 	{
 		NAME	= "Trigger:MasterEnable",
 		PATH	= "ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TriggerEventManager.TriggerEventBuffer[$(L)].MasterEnable"
+		DOL 	= "1"
 		PINI	= "YES"
 		SAVE	= ""
 		SCAN	= "\$(SCAN=1 second)"
@@ -292,6 +293,8 @@ file longDevRogue.template
 		NAME	= "EvrV2:Source",
 		PATH	= "ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TriggerEventManager.EvrV2CoreTriggers.EvrV2TriggerReg[$(L)].Source"
 		SCAN	= "\$(SCAN=1 second)"
+		DOL		= "$(L)"
+		PINI	= "YES"
 	}
 	{
 		NAME	= "Feb$(F):FCh$(FL):SwControlValue",
@@ -328,10 +331,15 @@ file longDevRogue.template
 		PATH	= "ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TriggerEventManager.TriggerEventBuffer[$(L)].TriggerCount"
 		DESC	= "TriggerEventManager Trigger count"
 		SCAN	= "\$(SCAN=1 second)"
+		DOL		= "0"
+		PINI	= "YES"
+		SAVE	= ""
 	}
 	{
 		NAME	= "EvrV2:TriggerDelay",
 		PATH	= "ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TriggerEventManager.EvrV2CoreTriggers.EvrV2TriggerReg[$(L)].Delay"
+		DOL		= "0"
+		PINI	= "YES"
 	}
 }
 
