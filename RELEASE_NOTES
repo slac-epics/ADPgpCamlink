@@ -1,6 +1,10 @@
 #
 # SLAC RELEASE_NOTES
 #
+R0.7.0	2020-10-02 Bruce Hill
+	Fixed some PVs on timing screen
+	Fix initialization of EvrV2Trigger Source and other defaults
+
 R0.6.0	2020-09-04 Bruce Hill
 	Enable OpalSetVR PV and autosave
 	Rename Axi* to Pgp*
