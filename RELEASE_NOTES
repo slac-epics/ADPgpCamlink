@@ -1,6 +1,9 @@
 #
 # SLAC RELEASE_NOTES
 #
+R0.7.1	2020-10-02 Bruce Hill
+	Update to ADCore/R3.1-2.3.5
+
 R0.7.0	2020-10-02 Bruce Hill
 	Fixed some PVs on timing screen
 	Fix initialization of EvrV2Trigger Source and other defaults
