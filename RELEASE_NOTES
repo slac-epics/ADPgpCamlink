@@ -1,6 +1,11 @@
 #
 # SLAC RELEASE_NOTES
 #
+R0.8.0 2020-10-30 Bruce Hill
+	Build w/ rogue-no-python/R5.2.3-1.0.0 and aes-stream-drivers/R5.14.2
+	Add toggle of Trigger:FifoReset
+	Fix reference to AxiPcieCore PVs
+
 R0.7.1	2020-10-02 Bruce Hill
 	Update to ADCore/R3.1-2.3.5
 
