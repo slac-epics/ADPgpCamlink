@@ -106,6 +106,7 @@ int		pgpRogueLib::setTriggerEnable( unsigned int triggerNum, bool fEnable )
 {
 	int			status	= 0;
 	char		varPath[256];
+	const char * pszFifoReset	 = "ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TriggerEventManager.TriggerEventBuffer[%u].FifoReset";
 	const char * pszMasterEnable = "ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TriggerEventManager.TriggerEventBuffer[%u].MasterEnable";
 	const char * pszBlowoff		 = "ClinkDevRoot.ClinkPcie.Application.AppLane[%u].EventBuilder.Blowoff";
 	const char * pszSoftRst		 = "ClinkDevRoot.ClinkPcie.Application.AppLane[%u].EventBuilder.SoftRst";
@@ -114,7 +115,12 @@ int		pgpRogueLib::setTriggerEnable( unsigned int triggerNum, bool fEnable )
 		// Clear Blowoff
 		snprintf( varPath, 256, pszBlowoff, triggerNum );
 		setVariable( varPath,	0 );
-		
+
+		// Toggle FifoReset
+		snprintf( varPath, 256, pszFifoReset, triggerNum );
+		setVariable( varPath,	1 );
+		setVariable( varPath,	0 );
+
 		// Toggle SoftRst
 		snprintf( varPath, 256, pszSoftRst, triggerNum );
 		setVariable( varPath,	1 );

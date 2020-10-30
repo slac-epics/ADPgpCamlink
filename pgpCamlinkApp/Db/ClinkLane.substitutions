@@ -262,6 +262,14 @@ file loDevRogue.template
 		DESC	= "Reset PgpMon counts"
 	}
 	{
+		NAME	= "Trigger:FifoReset",
+		PATH	= "ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TriggerEventManager.TriggerEventBuffer[0].FifoReset"
+		SAVE	= ""
+		DESC	= "Reset Trigger FIFO"
+		DOL		= "0"
+		SCAN	= "\$(SCAN=1 second)"
+	}
+	{
 		NAME	= "Feb$(F):PgpMon:CountReset"
 		PATH	= "ClinkDevRoot.ClinkFeb[$(F)].PgpMon[$(FL)].CountReset"
 		SAVE	= ""

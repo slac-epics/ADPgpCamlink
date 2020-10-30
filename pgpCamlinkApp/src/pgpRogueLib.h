@@ -120,8 +120,7 @@ private:
 	//rogue::LibraryBasePtr				m_pRogueLib;
 	rogueAddrMapPtr						m_pRogueLib;
 	rogue::hardware::axi::AxiMemMapPtr 	m_pAxiMemMap;
-	ClMemoryMasterPtr		 			m_pClMemMaster;	// not needed?
-	//rim::MasterPtr		 			m_pAxiMemMaster;	// not needed?
+	ClMemoryMasterPtr		 			m_pClMemMaster;
 
 	///
 	// Firmware Lane assignments:
