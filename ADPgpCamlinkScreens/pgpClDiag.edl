@@ -3,8 +3,8 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 980
-y 98
+x 816
+y 147
 w 900
 h 800
 font "helvetica-medium-r-8.0"
@@ -139,7 +139,7 @@ x 140
 y 68
 w 80
 h 20
-controlPv "$(P)$(R)AxiPcieCore:FpgaVersion_RBV"
+controlPv "$(PGP):AxiPcieCore:FpgaVersion_RBV"
 format "hex"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
@@ -185,7 +185,7 @@ x 140
 y 92
 w 80
 h 20
-controlPv "$(P)$(R)AxiPcieCore:UpTime_RBV"
+controlPv "$(PGP):AxiPcieCore:UpTime_RBV"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
 fgColor index 15
@@ -914,7 +914,7 @@ x 496
 y 328
 w 80
 h 20
-controlPv "$(P)$(R)Timing:UseMiniTpg_RBV"
+controlPv "$(PGP):Timing:UseMiniTpg_RBV"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
 fgColor index 15
@@ -958,7 +958,7 @@ x 496
 y 352
 w 80
 h 20
-controlPv "$(P)$(R)Timing:ClkSel_RBV"
+controlPv "$(PGP):Timing:ClkSel_RBV"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
 fgColor index 15
@@ -1002,7 +1002,7 @@ x 584
 y 400
 w 96
 h 20
-controlPv "$(P)$(R)Timing:C_RxReset"
+controlPv "$(PGP):Timing:C_RxReset"
 format "decimal"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
@@ -1052,7 +1052,7 @@ x 496
 y 448
 w 80
 h 20
-controlPv "$(P)$(R)Timing:ModeSelEn_RBV"
+controlPv "$(PGP):Timing:ModeSelEn_RBV"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
 fgColor index 15
@@ -1096,7 +1096,7 @@ x 488
 y 628
 w 80
 h 20
-controlPv "$(P)$(R)XpmMini:HwEnable_RBV"
+controlPv "$(PGP):XpmMini:HwEnable_RBV"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
 fgColor index 15
@@ -1120,7 +1120,7 @@ x 576
 y 628
 w 76
 h 18
-controlPv "$(P)$(R)XpmMini:HwEnable"
+controlPv "$(PGP):XpmMini:HwEnable"
 format "decimal"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
@@ -1169,7 +1169,7 @@ x 488
 y 652
 w 80
 h 20
-controlPv "$(P)$(R)XpmMini:Config_L0Select_Enabled_RBV"
+controlPv "$(PGP):XpmMini:Config_L0Select_Enabled_RBV"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
 fgColor index 15
@@ -1193,7 +1193,7 @@ x 576
 y 652
 w 76
 h 18
-controlPv "$(P)$(R)XpmMini:Config_L0Select_Enabled"
+controlPv "$(PGP):XpmMini:Config_L0Select_Enabled"
 format "decimal"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
@@ -1242,7 +1242,7 @@ x 488
 y 700
 w 80
 h 20
-controlPv "$(P)$(R)XpmMini:Link_RBV"
+controlPv "$(PGP):XpmMini:Link_RBV"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
 fgColor index 15
@@ -1267,7 +1267,7 @@ x 576
 y 700
 w 76
 h 18
-controlPv "$(P)$(R)XpmMini:Link"
+controlPv "$(PGP):XpmMini:Link"
 format "decimal"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
@@ -1337,7 +1337,7 @@ x 488
 y 724
 w 80
 h 20
-controlPv "$(P)$(R)XpmMini:Config_L0Select_DestSel_RBV"
+controlPv "$(PGP):XpmMini:Config_L0Select_DestSel_RBV"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
 fgColor index 15
@@ -1362,7 +1362,7 @@ x 576
 y 724
 w 76
 h 18
-controlPv "$(P)$(R)XpmMini:Config_L0Select_DestSel"
+controlPv "$(PGP):XpmMini:Config_L0Select_DestSel"
 format "decimal"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
@@ -1392,7 +1392,7 @@ x 140
 y 116
 w 80
 h 20
-controlPv "$(P)$(R)AxiPcieCore:ScratchPad"
+controlPv "$(PGP):AxiPcieCore:ScratchPad"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
 fgColor index 15
@@ -1437,7 +1437,7 @@ x 228
 y 120
 w 76
 h 18
-controlPv "$(P)$(R)AxiPcieCore:ScratchPad"
+controlPv "$(PGP):AxiPcieCore:ScratchPad"
 format "decimal"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
@@ -1487,7 +1487,7 @@ x 496
 y 424
 w 80
 h 20
-controlPv "$(P)$(R)Timing:ModeSel_RBV"
+controlPv "$(PGP):Timing:ModeSel_RBV"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
 fgColor index 15
@@ -1516,7 +1516,7 @@ onColor index 5
 offColor index 3
 topShadowColor index 1
 botShadowColor index 11
-controlPv "$(P)$(R)SeqXpmMiniTiming.PROC"
+controlPv "$(PGP):SeqXpmMiniTiming.PROC"
 pressValue "1"
 onLabel "Config XpmMini Lcls2"
 offLabel "Config XpmMini Lcls2"
@@ -1580,7 +1580,7 @@ x 488
 y 676
 w 80
 h 20
-controlPv "$(P)$(R)XpmMini:Config_L0Select_RateSel_RBV"
+controlPv "$(PGP):XpmMini:Config_L0Select_RateSel_RBV"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
 fgColor index 15
@@ -1629,8 +1629,8 @@ bgColor index 3
 inconsistentColor index 40
 topShadowColor index 1
 botShadowColor index 11
-controlPv "$(P)$(R)Timing:ClkSel"
-indicatorPv "$(P)$(R)Timing:ClkSel_RBV"
+controlPv "$(PGP):Timing:ClkSel"
+indicatorPv "$(PGP):Timing:ClkSel_RBV"
 font "helvetica-medium-r-12.0"
 endObjectProperties
 
@@ -1649,8 +1649,8 @@ bgColor index 3
 inconsistentColor index 40
 topShadowColor index 1
 botShadowColor index 11
-controlPv "$(P)$(R)Timing:ModeSel"
-indicatorPv "$(P)$(R)Timing:ModeSel_RBV"
+controlPv "$(PGP):Timing:ModeSel"
+indicatorPv "$(PGP):Timing:ModeSel_RBV"
 font "helvetica-medium-r-12.0"
 endObjectProperties
 
@@ -1669,8 +1669,8 @@ bgColor index 3
 inconsistentColor index 40
 topShadowColor index 1
 botShadowColor index 11
-controlPv "$(P)$(R)Timing:ModeSelEn"
-indicatorPv "$(P)$(R)Timing:ModeSelEn_RBV"
+controlPv "$(PGP):Timing:ModeSelEn"
+indicatorPv "$(PGP):Timing:ModeSelEn_RBV"
 font "helvetica-medium-r-12.0"
 endObjectProperties
 
@@ -1689,8 +1689,8 @@ bgColor index 3
 inconsistentColor index 40
 topShadowColor index 1
 botShadowColor index 11
-controlPv "$(P)$(R)XpmMini:Config_L0Select_RateSel"
-indicatorPv "$(P)$(R)XpmMini:Config_L0Select_RateSel_RBV"
+controlPv "$(PGP):XpmMini:Config_L0Select_RateSel"
+indicatorPv "$(PGP):XpmMini:Config_L0Select_RateSel_RBV"
 font "helvetica-medium-r-12.0"
 endObjectProperties
 
@@ -1729,7 +1729,7 @@ onColor index 5
 offColor index 3
 topShadowColor index 1
 botShadowColor index 11
-controlPv "$(P)$(R)SeqLcls1Timing.PROC"
+controlPv "$(PGP):SeqLcls1Timing.PROC"
 pressValue "1"
 onLabel "Select LCLS-I Timing"
 offLabel "Select LCLS-I Timing"
@@ -1752,7 +1752,7 @@ onColor index 5
 offColor index 3
 topShadowColor index 1
 botShadowColor index 11
-controlPv "$(P)$(R)SeqLcls2Timing.PROC"
+controlPv "$(PGP):SeqLcls2Timing.PROC"
 pressValue "1"
 onLabel "Select LCLS-II Timing"
 offLabel "Select LCLS-II Timing"
@@ -1770,7 +1770,7 @@ x 484
 y 188
 w 80
 h 20
-controlPv "$(P)$(R)Timing:FidCount_RBV"
+controlPv "$(PGP):Timing:FidCount_RBV"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
 fgColor index 15
@@ -1815,7 +1815,7 @@ x 484
 y 164
 w 80
 h 20
-controlPv "$(P)$(R)Timing:RxLinkUp_RBV"
+controlPv "$(PGP):Timing:RxLinkUp_RBV"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
 fgColor index 15
@@ -1865,8 +1865,8 @@ bgColor index 3
 inconsistentColor index 40
 topShadowColor index 1
 botShadowColor index 11
-controlPv "$(P)$(R)Timing:UseMiniTpg"
-indicatorPv "$(P)$(R)Timing:UseMiniTpg_RBV"
+controlPv "$(PGP):Timing:UseMiniTpg"
+indicatorPv "$(PGP):Timing:UseMiniTpg_RBV"
 font "helvetica-medium-r-12.0"
 endObjectProperties
 
@@ -1880,7 +1880,7 @@ x 572
 y 188
 w 80
 h 20
-controlPv "$(P)$(R)Timing:sofCount_RBV"
+controlPv "$(PGP):Timing:sofCount_RBV"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
 fgColor index 15
@@ -1905,7 +1905,7 @@ x 656
 y 188
 w 80
 h 20
-controlPv "$(P)$(R)Timing:eofCount_RBV"
+controlPv "$(PGP):Timing:eofCount_RBV"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
 fgColor index 15
@@ -1935,7 +1935,7 @@ onColor index 5
 offColor index 3
 topShadowColor index 1
 botShadowColor index 11
-controlPv "$(P)$(R)SeqTpgMiniTiming.PROC"
+controlPv "$(PGP):SeqTpgMiniTiming.PROC"
 pressValue "1"
 onLabel "Config TpgMini Lcls1"
 offLabel "Config TpgMini Lcls1"
@@ -2336,7 +2336,7 @@ x 496
 y 376
 w 80
 h 20
-controlPv "$(P)$(R)Timing:RxDown_RBV"
+controlPv "$(PGP):Timing:RxDown_RBV"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
 fgColor index 15
@@ -2380,7 +2380,7 @@ x 584
 y 376
 w 96
 h 18
-controlPv "$(P)$(R)Timing:RxDown"
+controlPv "$(PGP):Timing:RxDown"
 format "decimal"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
