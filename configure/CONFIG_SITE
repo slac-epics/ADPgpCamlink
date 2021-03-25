@@ -19,7 +19,7 @@ CHECK_RELEASE = YES
 # Set this when you only want to compile this application
 #   for a subset of the cross-compiled target architectures
 #   that Base is built for.
-ifeq '$(EPICS_HOST_ARCH)' 'rhel6-x86_64'
+ifeq '$(EPICS_HOST_ARCH)' 'rhel7-x86_64'
 CROSS_COMPILER_TARGET_ARCHS     +=  linuxRT-x86_64
 endif
 CROSS_COMPILER_TARGET_ARCHS := $(filter-out linux-arm%,         $(CROSS_COMPILER_TARGET_ARCHS))
@@ -52,14 +52,21 @@ endif
 
 #ROGUE_DIR=/reg/neh/home/bhill/git-wa-neh/slaclab/rogue-git
 #ROGUE_DIR=/reg/neh/home/bhill/git-wa-neh/slaclab/rogue-no-python-git
-ROGUE_DIR=/cds/group/pcds/package/slaclab/rogue-no-python/R5.2.3-1.0.0
+ROGUE_DIR=$(PACKAGE_SITE_TOP)/rogue/v5.6.5/$(T_A)
 
-#PGP_DRIVER_DIR=/reg/neh/home/bhill/git-wa-neh/slaclab/aes-stream-drivers-git
-PGP_DRIVER_DIR=/cds/group/pcds/package/slaclab/aes-stream-drivers/R5.14.2
+# Specify buildroot version for linuxRT toolchain
+BUILDROOT	:= buildroot-2019.08-x86_64
+
+ifneq (,$(wildcard /cds/group/pcds/package))
+PGP_DRIVER_DIR=$(PACKAGE_SITE_TOP)/slaclab/aes-stream-drivers/R5.14.2
+else
+PGP_DRIVER_DIR=$(PACKAGE_SITE_TOP)/linuxKernel_Modules/aes-stream-drivers/ESLCOMMON-302/
+endif
 PGP_DRIVER_INCLUDE	= $(PGP_DRIVER_DIR)/include
 
 ROGUE_INCLUDE		= $(ROGUE_DIR)/include
 ROGUE_LIB			= $(ROGUE_DIR)/lib
+PGP_DRIVER_INCLUDE	= $(PGP_DRIVER_DIR)/include
 
 USR_CXXFLAGS += -std=c++11
 USR_INCLUDES += -I$(PGP_DRIVER_INCLUDE)
@@ -83,8 +90,17 @@ ifdef CONDA_DIR
 	ncurses_DIR			= $(CONDA_DIR)/lib
 	USR_LDFLAGS			+= -L$(CONDA_DIR)/lib
 else
-	bz2_DIR				= $(PSPKG_ROOT)/release/bzip2/1.0.6/$(T_A)/lib
-	zmq_DIR				= $(PSPKG_ROOT)/release/zeromq/4.1.5/$(T_A)/lib
+	ifeq '$(T_A)' 'linuxRT-x86_64'
+		bz2_DIR			= $(PACKAGE_SITE_TOP)/bzip2/1.0.6/$(BUILDROOT)/lib
+		lzma_DIR		= $(PACKAGE_SITE_TOP)/xz/5.2.2/$(BUILDROOT)/lib
+		xml2_DIR		= $(PACKAGE_SITE_TOP)/libxml2/2.9.10/$(BUILDROOT)/lib
+		zmq_DIR			= $(PACKAGE_SITE_TOP)/libzmq/zeromq-4.3.4/$(BUILDROOT)/lib
+	else
+		bz2_DIR			= $(PSPKG_ROOT)/release/bzip2/1.0.6/$(T_A)/lib
+		lzma_DIR		= $(PSPKG_ROOT)/release/xz/5.2.2/$(T_A)/lib
+		xml2_DIR		= /usr/lib64
+		zmq_DIR			= $(PSPKG_ROOT)/release/zeromq/4.1.5/$(T_A)/lib
+	endif
 endif
 
 SHARED_LIBRARIES = YES

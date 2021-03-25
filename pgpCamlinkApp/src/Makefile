@@ -26,7 +26,7 @@ LIB_SRCS		+= asynPgpClSerial.cpp
 
 #LIB_LIBS		+= asyn
 #LIB_LIBS		+= $(EPICS_BASE_IOC_LIBS)
-#pgpCamlink_LIBS		+= asyn
+pgpCamlink_LIBS		+= xml2
 #pgpCamlink_LIBS		+= $(EPICS_BASE_IOC_LIBS)
 LIB_INSTALLS_Linux += $(wildcard $(ROGUE_LIB)/lib*)
 
@@ -34,18 +34,26 @@ PROD += kcuPgpRead
 kcuPgpRead_SRCS	+= psdaq_drp_pgpread.cpp
 kcuPgpRead_LIBS += $(EPICS_BASE_HOST_LIBS)
 kcuPgpRead_LIBS	+= pgpCamlink
+kcuPgpRead_LIBS += ADBase
+kcuPgpRead_LIBS += asyn
 kcuPgpRead_LIBS	+= rogue-core
 kcuPgpRead_LIBS += zmq
 kcuPgpRead_LIBS += bz2
+kcuPgpRead_LIBS += xml2
+kcuPgpRead_LIBS += lzma
 
 PROD += pgpClSerialTool
 pgpClSerialTool_SRCS	+= pgpClSerialTool.cpp
 #pgpClSerialTool_LIBS	+= $(EPICS_BASE_HOST_LIBS)
 pgpClSerialTool_LIBS	+= pgpCamlink
+pgpClSerialTool_LIBS	+= ADBase
+pgpClSerialTool_LIBS	+= asyn
 pgpClSerialTool_LIBS	+= asyn
 pgpClSerialTool_LIBS	+= rogue-core
 pgpClSerialTool_LIBS	+= zmq
 pgpClSerialTool_LIBS	+= bz2
+pgpClSerialTool_LIBS	+= xml2
+pgpClSerialTool_LIBS 	+= lzma
 
 HOST_OPT = NO
 USR_CPPFLAGS += -O0 -DNO_PYTHON
