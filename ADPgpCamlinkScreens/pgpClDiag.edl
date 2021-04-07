@@ -3,8 +3,8 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 816
-y 147
+x 367
+y 284
 w 900
 h 800
 font "helvetica-medium-r-8.0"
@@ -75,7 +75,7 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 528
+x 496
 y 4
 w 276
 h 44
@@ -96,9 +96,9 @@ beginObjectProperties
 major 4
 minor 1
 release 0
-x 804
+x 832
 y 16
-w 56
+w 40
 h 24
 fgColor index 14
 bgColor index 3
@@ -1530,7 +1530,7 @@ beginObjectProperties
 major 4
 minor 1
 release 0
-x 352
+x 340
 y 12
 w 72
 h 24
@@ -1553,7 +1553,7 @@ beginObjectProperties
 major 4
 minor 1
 release 0
-x 436
+x 420
 y 12
 w 72
 h 24
@@ -1743,7 +1743,7 @@ beginObjectProperties
 major 4
 minor 1
 release 0
-x 180
+x 172
 y 12
 w 160
 h 24
@@ -2398,5 +2398,31 @@ useHexPrefix
 newPos
 objType "controls"
 noExecuteClipMask
+endObjectProperties
+
+# (Related Display)
+object relatedDisplayClass
+beginObjectProperties
+major 4
+minor 4
+release 0
+x 760
+y 16
+w 68
+h 24
+fgColor index 14
+bgColor index 3
+topShadowColor index 0
+botShadowColor index 14
+font "helvetica-medium-r-12.0"
+buttonLabel "Rogue IOC"
+numPvs 4
+numDsps 1
+displayFileName {
+  0 "iocScreens/ioc_soft.edl"
+}
+symbols {
+  0 "IOC=$(IOC)"
+}
 endObjectProperties
 
