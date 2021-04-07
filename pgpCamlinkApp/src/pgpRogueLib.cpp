@@ -211,7 +211,7 @@ pgpRogueLib::pgpRogueLib(
 			printf("pgpRogueLib: -- Core Axi Version --\n");
 			printf("firmwareVersion : %x\n", vsn.firmwareVersion);
 			printf("buildString     : %s\n", vsn.buildString); 
-			//printf("upTimeCount     : %u\n", vsn.upTimeCount);
+			printf("upTimeCount     : %u\n", vsn.upTimeCount);
 			//printf("deviceId        : %x\n", vsn.deviceId);
 			//printf("buildString     : %s\n", vsn.buildString);
 
@@ -220,6 +220,8 @@ pgpRogueLib::pgpRogueLib(
 			//m_LibVersion = vsn.buildString;
 		}
 	}
+	close( m_fd );
+	m_fd = -1;
 
 	//
 	// Connect Rogue Library
@@ -424,7 +426,11 @@ pgpRogueLib::pgpRogueLib(
 /// virtual Destructor
 pgpRogueLib::~pgpRogueLib()
 {
-	close( m_fd );
+	if ( m_fd > 0 )
+	{
+		close( m_fd );
+		m_fd = -1;
+	}
 }
 
 
