@@ -118,7 +118,7 @@ private:
 	std::string			m_LibVersion;	// Library Version
 
 	//rogue::LibraryBasePtr				m_pRogueLib;
-	rogueAddrMapPtr						m_pRogueLib;
+	//rogueAddrMapPtr						m_pRogueLib;
 	rogue::hardware::axi::AxiMemMapPtr 	m_pAxiMemMap;
 	ClMemoryMasterPtr		 			m_pClMemMaster;
 

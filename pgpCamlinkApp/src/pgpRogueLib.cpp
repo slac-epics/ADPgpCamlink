@@ -227,7 +227,7 @@ pgpRogueLib::pgpRogueLib(
 	// Connect Rogue Library
 	//
 	//m_pRogueLib = rogue::LibraryBase::create();
-	m_pRogueLib = rogueAddrMap::create();
+	//m_pRogueLib = rogueAddrMap::create();
 
 	//
 	// Connect DATACHAN 0 ClinkDev KCU1500 Register Access
@@ -237,7 +237,7 @@ pgpRogueLib::pgpRogueLib(
 	m_pClMemMaster->setSlave( m_pAxiMemMap );
 	const char	*	szMemName = "PCIe_Bar0";
 	addMemory( szMemName, m_pAxiMemMap );
-	m_pRogueLib->addMemory( szMemName, m_pAxiMemMap );
+	//m_pRogueLib->addMemory( szMemName, m_pAxiMemMap );
 	printf("pgpRogueLib: addMemory AxiMemMap interface %s\n", szMemName );
 
 	//
@@ -265,7 +265,7 @@ pgpRogueLib::pgpRogueLib(
 			case 3:	szMemName = "SRPv3[3]";	break;
 		}
 		addMemory( szMemName, m_pSrpFeb[lane] );
-		m_pRogueLib->addMemory( szMemName, m_pSrpFeb[lane] );
+		//m_pRogueLib->addMemory( szMemName, m_pSrpFeb[lane] );
 		printf("pgpRogueLib: addMemory srpFeb interface %s\n", szMemName );
 		// Create FebMemMaster and link it to SRP
 		m_pFebMemMaster[lane] = FebMemoryMaster::create( );
@@ -275,8 +275,8 @@ pgpRogueLib::pgpRogueLib(
 	printf( "Parsing ROGUE_ADDR_MAP\n" );
 	parseMemMap( ROGUE_ADDR_MAP ); // From generated rogueAddrMap.h
 	printf( "ROGUE_ADDR_MAP parsed successfully\n" );
-	m_pRogueLib->parseMemMap( ROGUE_ADDR_MAP );
-	printf( "m_pRogueLib: ROGUE_ADDR_MAP parsed successfully\n" );
+	//m_pRogueLib->parseMemMap( ROGUE_ADDR_MAP );
+	//printf( "m_pRogueLib: ROGUE_ADDR_MAP parsed successfully\n" );
 
 	if ( doFebFpgaReload )
 		FebFpgaReload();
@@ -286,11 +286,19 @@ pgpRogueLib::pgpRogueLib(
 	//printf( "m_pRogueLib: %zu variables\n", (m_pRogueLib->getVariableList()).size() );
 
 	// Force an initial read of all variables
+#if 1
+	printf( "%s: Reading %zu variables\n", functionName, (getVariableList()).size() );
+	try
+	{
+		readAll();
+	}
+#else
 	printf( "%s: Reading %zu variables\n", functionName, (m_pRogueLib->getVariableList()).size() );
 	try
 	{
 		m_pRogueLib->readAll();
 	}
+#endif
 	catch ( rogue::GeneralError & e )
 	{
 		printf( "%s error: %s!\n", functionName, e.what() );
@@ -303,7 +311,11 @@ pgpRogueLib::pgpRogueLib(
 	{
 		printf( "%s unknown error!\n", functionName );
 	}
+#if 1
+	printf( "%s: Read %zu variables\n", functionName, (getVariableList()).size() );
+#else
 	printf( "%s: Read %zu variables\n", functionName, (m_pRogueLib->getVariableList()).size() );
+#endif
 
 	if ( doFebConfig or true )
 	{
