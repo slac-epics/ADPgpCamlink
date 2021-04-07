@@ -128,7 +128,7 @@ int pgpClSerialDev::connect( )
 	catch ( rogue::GeneralError & e )
 	{
 		printf(  "%s Error: Unable to create %s serial data channel!\n", functionName, m_devName.c_str() );
-		disconnect();
+		//disconnect();
 		return -1;
 	}
 
@@ -150,7 +150,7 @@ int pgpClSerialDev::connect( )
 	catch ( rogue::GeneralError & e )
 	{
 		printf( "%s Unable to connect %s ClSerialTx stream!\nRogue Error: %s\n", functionName, m_devName.c_str(), e.what() );
-		disconnect();
+		//disconnect();
 		return -1;
 	}
 
@@ -172,7 +172,7 @@ int pgpClSerialDev::connect( )
 	catch ( rogue::GeneralError & e )
 	{
 		printf( "%s Unable to connect %s ClSerialRx stream!\nRogue Error: %s\n", functionName, m_devName.c_str(), e.what() );
-		disconnect();
+		//disconnect();
 		return -1;
 	}
 
@@ -207,6 +207,7 @@ void pgpClSerialDev::disconnect( )
 		printf(  "%s: board %u lane %u\n", functionName, m_board, m_lane );
 
 	// Release the rogue interfaces and data channel
+	// Note: Doesn't seem to be a way to remove a slave added via addSlave()
 	m_pClSerialRx.reset();
 	m_pClSerialTx.reset();
 	m_pDataChan.reset();

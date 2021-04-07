@@ -329,7 +329,6 @@ void rogueDev::Shutdown( )
 	if ( m_pRogueLib != NULL )
 	{
 		m_pRogueLib->disconnect();
-		m_pRogueLib->disconnect();
 		m_pRogueLib.reset();
 		printf( "rogueLib disconnected\n" );
 	}
