@@ -1,6 +1,11 @@
 #
 # SLAC RELEASE_NOTES
 #
+R1.0.0 2021-04-06 Bruce Hill
+	Add a button to access the Rogue IOC
+	Update rogueAddrMap.h due to new rogue version.
+	Adding build support for linuxRT via buildroot-2019.8-x86_64
+
 R0.8.1 2021-01-28 Zachary Lentz
 	Set info field for pass1 autosave of CamEventCode.
 	This needs to be processed at pass1 or else the default value of 40 will
