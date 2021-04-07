@@ -3,6 +3,7 @@
 #
 R1.0.0 2021-04-06 Bruce Hill
 	Add a button to access the Rogue IOC
+	Update to latest rogue v5.7.0
 	Update rogueAddrMap.h due to new rogue version.
 	Adding build support for linuxRT via buildroot-2019.8-x86_64
 
