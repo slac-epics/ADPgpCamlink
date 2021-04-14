@@ -1,0 +1,1081 @@
+#
+# EPICS database for
+# Basler acA2040-25gmNIR
+#
+# Protocol root must match db filename root
+# i.e. Genicam.proto
+
+record( seq, "$(P)$(R)ReConfigSeq" )
+{
+	field( DLY0, "0.0" ) field( DOL0, "1" ) field( LNK0, "$(P)$(R)BaslerAccessPrivilege.PROC CA NMS" )
+	field( DLY1, "0.1" ) field( DOL1, "1" ) field( LNK1, "$(P)$(R)BaslerExposureValue_RBV.PROC CA NMS" )
+	field( DLY2, "0.1" ) field( DOL2, "1" ) field( LNK2, "$(P)$(R)BaslerAcqStartFullTrMode_RBV.PROC CA NMS" )
+	field( DLY3, "0.1" ) field( DOL3, "1" ) field( LNK3, "$(P)$(R)BaslerAcqStopFullTrMode_RBV.PROC CA NMS" )
+	field( DLY5, "0.1" ) field( DOL5, "0" ) field( LNK0, "$(P)$(R)BaslerFStartFullTrMode_RBV.PROC CA NMS" )
+	field( DLY6, "0.1" ) field( DOL6, "1" ) field( LNK6, "$(P)$(R)BaslerLine1GlitchFilter.PROC CA NMS" )
+	field( DLY7, "0.1" ) field( DOL7, "1" ) field( LNK7, "$(P)$(R)BaslerFStartTrSrc.PROC CA NMS" )
+	field( DLY8, "0.1" ) field( DOL4, "1" ) field( LNK8, "$(P)$(R)BaslerHeartbeatTimeout_RBV.PROC CA NMS" )
+#   field( TPRO, 1 )
+	field( FLNK, "$(P)$(R)ReConfigSeq2" )
+}
+record( seq, "$(P)$(R)ReConfigSeq2" )
+{
+
+#	field( DLY1, "0.1" ) field( DOL1, "1" ) field( LNK1, "$(P)$(R)Model_RBV.PROC CA NMS" )
+#	field( DLY2, "0.1" ) field( DOL2, "1" ) field( LNK2, "$(P)$(R)Manufacturer_RBV.PROC CA NMS" )
+#	field( DLY3, "0.1" ) field( DOL3, "1" ) field( LNK3, "$(P)$(R)BaslerSerialNumber_RBV.PROC CA NMS" )
+#	field( DLY4, "0.1" ) field( DOL4, "1" ) field( LNK4, "$(P)$(R)BaslerFirmwareVersion_RBV.PROC CA NMS" )
+#	field( DLY5, "0.0" ) field( DOL5, "1" ) field( LNK5, "$(P)$(R)BaslerModel_RBV.PROC CA NMS" )
+#	field( DLY6, "0.1" ) field( DOL6, "1" ) field( LNK6, "$(P)$(R)BaslerTempMainBd_RBV.PROC CA NMS" )
+#	field( DLY7, "0.1" ) field( DOL7, "1" ) field( LNK7, "$(P)$(R)BaslerTempSensorBd_RBV.PROC CA NMS" )
+#	field( DLY8, "0.1" ) field( DOL8, "1" ) field( LNK8, "$(P)$(R)BaslerTemperature_RBV.PROC CA NMS" )
+#	field( FLNK, "$(P)$(R)ReConfigSeq3" )
+}
+
+record( stringin, "$(P)$(R)CamModel" )
+{
+	field( VAL,  "acA2040-180kmNIR" )
+	field( PINI, "YES" )
+}
+
+record( stringin, "$(P)$(R)CamModelScreen" )
+{
+	field( VAL,  "ADPgpCamlinkScreens/acA2040-180kmNIR.edl" )
+	field( PINI, "YES" )
+}
+
+# Provide defaults for ADCore SizeX and SizeY
+record( longout, "$(P)$(R)SizeX" )
+{
+	field( VAL, "324" )
+}
+record( longout, "$(P)$(R)SizeY" )
+{
+	field( VAL, "256" )
+}
+
+# Redirect FLNK of GenicamBinX to BaslerBinX, and
+# DOL for GenicamBinX_RBV to BaslerBinX_RBV
+# Ditto for BinY, MinX, MinY, SizeX, and SizeY
+record( longin, "$(P)$(R)GenicamBinX" )
+{
+	field( FLNK, "$(P)$(R)BaslerBinX" )
+}
+record( longout, "$(P)$(R)GenicamBinX_RBV" )
+{
+	field( OMSL, "closed_loop" )
+	field( DOL,  "$(P)$(R)BaslerBinX_RBV NPP MS" )
+}
+record( longin, "$(P)$(R)GenicamBinY" )
+{
+	field( FLNK, "$(P)$(R)BaslerBinY" )
+}
+record( longout, "$(P)$(R)GenicamBinY_RBV" )
+{
+	field( OMSL, "closed_loop" )
+	field( DOL,  "$(P)$(R)BaslerBinY_RBV NPP MS" )
+}
+record( longin, "$(P)$(R)GenicamMinX" )
+{
+	field( FLNK, "$(P)$(R)BaslerMinX" )
+}
+record( longout, "$(P)$(R)GenicamMinX_RBV" )
+{
+	field( DOL,  "$(P)$(R)BaslerMinX_RBV NPP MS" )
+}
+record( longin, "$(P)$(R)GenicamMinY" )
+{
+	field( FLNK, "$(P)$(R)BaslerMinY" )
+}
+record( longout, "$(P)$(R)GenicamMinY_RBV" )
+{
+	field( DOL,  "$(P)$(R)BaslerMinY_RBV NPP MS" )
+}
+record( longin, "$(P)$(R)GenicamSizeX" )
+{
+	field( FLNK, "$(P)$(R)BaslerSizeX" )
+}
+record( longout, "$(P)$(R)GenicamSizeX_RBV" )
+{
+	field( DOL,  "$(P)$(R)BaslerSizeX_RBV NPP MS" )
+}
+record( longin, "$(P)$(R)GenicamSizeY" )
+{
+	field( FLNK, "$(P)$(R)BaslerSizeY" )
+}
+record( longout, "$(P)$(R)GenicamSizeY_RBV" )
+{
+	field( DOL,  "$(P)$(R)BaslerSizeY_RBV NPP MS" )
+}
+
+#
+# AVT Basler Register Access PV's
+#
+
+# Need to set AccessPrivilege to 1 on startup for R/W control and image streaming
+record( longout, "$(P)$(R)BaslerAccessPrivilege" )
+{
+	field( DOL,  "1" )
+	field( DTYP, "stream" )
+	field( OUT,  "@Genicam.proto SetUint32(0x204ZZZZ) $(PORT).SER" )
+	field( PINI, "YES" )
+	field( FLNK, "$(P)$(R)BaslerAccessPrivilege_RBV" )
+    field( SDIS, "$(SerialDisable)")
+}
+
+# Read at least one register every 3 seconds or camera clears AccessPrivilege
+record( longin, "$(P)$(R)BaslerAccessPrivilege_RBV" )
+{
+	field( DTYP, "stream" )
+	field( INP,  "@Genicam.proto GetUint32(0x204ZZZZ) $(PORT).SER" )
+    field( SDIS, "$(SerialDisable)")
+	field( SCAN, "1 second" )
+	field( FLNK, "$(P)$(R)BaslerCalcAccessPrivilege" )
+}
+
+# Reassert AccessPrivilege if we don't have it
+record( calcout, "$(P)$(R)BaslerCalcAccessPrivilege" )
+{
+	field( INPA, "$(P)$(R)BaslerAccessPrivilege_RBV NPP NMS" )
+	field( CALC, "A!=1" )
+	field( OUT,  "$(P)$(R)BaslerAccessPrivilege PP MS" )
+	field( OOPT, "When Non-zero" )
+}
+
+# W/O, write 1 to reset device
+record( bo, "$(P)$(R)BaslerResetDevice" )
+{
+	field( DESC, "Reset camera to power up state" )
+	field( DTYP, "stream" )
+	field( OUT,  "@Genicam.proto SetUint32(0xF318ZZZZ) $(PORT).SER" )
+    field( ZNAM, "Reset" )
+    field( ONAM, "Resetting!"  )
+    field( SDIS, "$(SerialDisable)")
+}
+
+# Update fields for ADCore records that we get via GenCP
+record( stringin, "$(P)$(R)Manufacturer_RBV" )
+{
+	field( DTYP, "stream" )
+	field( INP,  "@Genicam.proto GetStr(64,0x4ZZZZ) $(PORT).SER" )
+	field( SCAN, "Passive" )
+	field( PINI, "YES" )
+    field( SDIS, "$(SerialDisable)")
+}
+
+# Update fields for ADCore records that we get via GenCP
+record( stringin, "$(P)$(R)Model_RBV" )
+{
+	field( DTYP, "stream" )
+	field( INP,  "@Genicam.proto GetStr(64,0x44ZZZZ) $(PORT).SER" )
+	field( SCAN, "Passive" )
+	field( PINI, "YES" )
+    field( SDIS, "$(SerialDisable)")
+}
+
+record( stringin, "$(P)$(R)BaslerModel_RBV" )
+{
+	field( DTYP, "stream" )
+	field( INP,  "@Genicam.proto GetStr(64,0x44ZZZZ) $(PORT).SER" )
+	field( SCAN, "Passive" )
+	field( PINI, "YES" )
+    field( SDIS, "$(SerialDisable)")
+}
+
+# Update fields for ADCore records that we get via GenCP
+record( stringin, "$(P)$(R)BaslerFirmwareVersion_RBV" )
+{
+	field( DTYP, "stream" )
+	field( INP,  "@Genicam.proto GetStr(64,0xC4ZZZZ) $(PORT).SER" )
+	field( SCAN, "Passive" )
+	field( PINI, "YES" )
+    field( SDIS, "$(SerialDisable)")
+}
+
+# Update fields for ADCore records that we get via GenCP
+record( stringin, "$(P)$(R)BaslerSerialNumber_RBV" )
+{
+	field( DTYP, "stream" )
+	field( INP,  "@Genicam.proto GetStr(64,0x144ZZZZ) $(PORT).SER" )
+	field( SCAN, "Passive" )
+	field( PINI, "YES" )
+    field( SDIS, "$(SerialDisable)")
+}
+
+# Update fields for ADCore records that we get via GenCP
+record( ai, "$(P)$(R)BaslerTemperature_RBV" )
+{
+	field( DESC, "Temperature of camera sensor" )
+	field( DTYP, "stream" )
+	field( INP,  "@Genicam.proto GetFloat32(0x24104ZZZZ) $(PORT).SER" )
+	field( EGU,  "C" )
+	field( PREC, "1" )
+	field( PINI, "YES" )
+ 	field( SCAN, "5 second" )
+    field( SDIS, "$(SerialDisable)")
+}
+
+record( ai, "$(P)$(R)BaslerTempMainBd_RBV" )
+{
+	field( DESC, "Temperature of main board" )
+	field( DTYP, "stream" )
+	field( INP,  "@Genicam.proto GetFloat32(0x24108ZZZZ) $(PORT).SER" )
+	field( EGU,  "C" )
+	field( PREC, "1" )
+	field( PINI, "YES" )
+	field( SCAN, "5 second" )
+    field( SDIS, "$(SerialDisable)")
+}
+
+record( ai, "$(P)$(R)BaslerTempSensorBd_RBV" )
+{
+	field( DESC, "Temperature of sensor board" )
+	field( DTYP, "stream" )
+	field( INP,  "@Genicam.proto GetFloat32(0x2410CZZZZ) $(PORT).SER" )
+	field( EGU,  "C" )
+	field( PREC, "1" )
+	field( PINI, "YES" )
+	field( SCAN, "5 second" )
+    field( SDIS, "$(SerialDisable)")
+}
+
+# AcquireTime
+record( ao, "$(P)$(R)GenicamAcquireTime" )
+{
+	field( PREC, "5" )
+	field( FLNK, "$(P)$(R)BaslerAcquireTime" )
+}
+record( calcout, "$(P)$(R)BaslerAcquireTime" )
+{
+	field( INPA, "$(P)$(R)GenicamAcquireTime NPP MS" )
+	field( CALC, "A*1e6" )
+	field( EGU,  "us" )
+	field( OUT,  "$(P)$(R)BaslerExposureValue NPP MS" )
+	field( FLNK, "$(P)$(R)BaslerExposureValue" )
+    field( SDIS, "$(SerialDisable)" )
+    field( PINI, "YES" )
+}
+record( longout, "$(P)$(R)BaslerExposureValue" )
+{
+	field( DTYP, "stream" )
+	field( OUT,  "@Genicam.proto SetUint32(0x14110ZZZZ) $(PORT).SER" )
+	field( EGU,  "us" )
+	field( LOPR, "6" )
+	field( HOPR, "0x6666666" )
+	field( FLNK, "$(P)$(R)BaslerExposureValue_RBV" )
+    field( SDIS, "$(SerialDisable)")
+}
+
+record( longin, "$(P)$(R)BaslerExposureValue_RBV" )
+{
+	field( DTYP, "stream" )
+	field( INP,  "@Genicam.proto GetUint32(0x14110ZZZZ) $(PORT).SER" )
+	field( EGU,  "us" )
+	field( LOPR, "6" )
+	field( HOPR, "0x6666666" )
+	field( PINI, "YES" )
+	field( FLNK, "$(P)$(R)BaslerAcquireTime_RBV" )
+    field( SDIS, "$(SerialDisable)")
+}
+record( calcout, "$(P)$(R)BaslerAcquireTime_RBV" )
+{
+	field( INPA, "$(P)$(R)BaslerExposureValue_RBV NPP MS" )
+	field( CALC, "A/1e6" )
+	field( OUT,  "$(P)$(R)GenicamAcquireTime_RBV NPP MS" )
+	field( FLNK, "$(P)$(R)GenicamAcquireTime_RBV" )
+	field( EGU,  "sec" )
+}
+
+record( longout, "$(P)$(R)BaslerHeartbeatTimeout" )
+{
+	field( DTYP, "stream" )
+	field( OUT,  "@Genicam.proto SetUint32(0x1E8ZZZZ) $(PORT).SER" )
+	field( EGU,  "ms" )
+	field( FLNK, "$(P)$(R)BaslerHeartbeatTimeout_RBV" )
+    field( SDIS, "$(SerialDisable)")
+}
+
+record( longin, "$(P)$(R)BaslerHeartbeatTimeout_RBV" )
+{
+	field( DTYP, "stream" )
+	field( INP,  "@Genicam.proto GetUint32(0x1E8ZZZZ) $(PORT).SER" )
+	field( EGU,  "ms" )
+	field( PINI, "YES" )
+    field( SDIS, "$(SerialDisable)")
+}
+
+record( longout, "$(P)$(R)BaslerBinX" )
+{
+	field( OMSL, "closed_loop" )
+	field( DOL,  "$(P)$(R)GenicamBinX NPP MS" )
+	field( DTYP, "stream" )
+	field( OUT,  "@Genicam.proto SetUint32(0x11108ZZZZ) $(PORT).SER" )
+	field( EGU,  "px" )
+	field( FLNK, "$(P)$(R)BaslerBinX_RBV" )
+    field( SDIS, "$(SerialDisable)")
+}
+
+record( longin, "$(P)$(R)BaslerBinX_RBV" )
+{
+	field( DTYP, "stream" )
+	field( INP,  "@Genicam.proto GetUint32(0x11108ZZZZ) $(PORT).SER" )
+	field( EGU,  "px" )
+	field( PINI, "YES" )
+    field( SDIS, "$(SerialDisable)")
+	field( FLNK, "$(P)$(R)GenicamBinX_RBV" )
+}
+
+record( longout, "$(P)$(R)BaslerBinY" )
+{
+	field( OMSL, "closed_loop" )
+	field( DOL,  "$(P)$(R)BinY CPP MS" )
+	field( DTYP, "stream" )
+	field( OUT,  "@Genicam.proto SetUint32(0x11128ZZZZ) $(PORT).SER" )
+	field( EGU,  "px" )
+	field( FLNK, "$(P)$(R)BaslerBinY_RBV" )
+    field( SDIS, "$(SerialDisable)")
+}
+
+record( longin, "$(P)$(R)BaslerBinY_RBV" )
+{
+	field( DTYP, "stream" )
+	field( INP,  "@Genicam.proto GetUint32(0x11128ZZZZ) $(PORT).SER" )
+	field( EGU,  "ms" )
+	field( PINI, "YES" )
+    field( SDIS, "$(SerialDisable)")
+	field( FLNK, "$(P)$(R)GenicamBinY_RBV" )
+}
+
+record( longout, "$(P)$(R)BaslerMinX" )
+{
+	field( OMSL, "closed_loop" )
+	field( DOL,  "$(P)$(R)GenicamMinX NPP MS" )
+	field( DTYP, "stream" )
+	field( OUT,  "@Genicam.proto SetUint32(0x1212CZZZZ) $(PORT).SER" )
+	field( EGU,  "px" )
+	field( FLNK, "$(P)$(R)BaslerMinX_RBV" )
+    field( SDIS, "$(SerialDisable)")
+}
+
+record( longin, "$(P)$(R)BaslerMinX_RBV" )
+{
+	field( DTYP, "stream" )
+	field( INP,  "@Genicam.proto GetUint32(0x1212CZZZZ) $(PORT).SER" )
+	field( EGU,  "ms" )
+	field( PINI, "YES" )
+    field( SDIS, "$(SerialDisable)")
+	field( FLNK, "$(P)$(R)GenicamMinX_RBV" )
+}
+
+record( longout, "$(P)$(R)BaslerMinY" )
+{
+	field( OMSL, "closed_loop" )
+	field( DOL,  "$(P)$(R)GenicamMinY NPP MS" )
+	field( DTYP, "stream" )
+	field( OUT,  "@Genicam.proto SetUint32(0x12130ZZZZ) $(PORT).SER" )
+	field( EGU,  "px" )
+	field( FLNK, "$(P)$(R)BaslerMinY_RBV" )
+    field( SDIS, "$(SerialDisable)")
+}
+
+record( longin, "$(P)$(R)BaslerMinY_RBV" )
+{
+	field( DTYP, "stream" )
+	field( INP,  "@Genicam.proto GetUint32(0x12130ZZZZ) $(PORT).SER" )
+	field( EGU,  "ms" )
+	field( PINI, "YES" )
+    field( SDIS, "$(SerialDisable)")
+	field( FLNK, "$(P)$(R)GenicamMinY_RBV" )
+}
+
+record( longout, "$(P)$(R)BaslerSizeX" )
+{
+	field( DESC, "RegWidth: ROI region width" )
+	field( OMSL, "closed_loop" )
+	field( DOL,  "$(P)$(R)GenicamSizeX NPP MS" )
+	field( DTYP, "stream" )
+	field( OUT,  "@Genicam.proto SetUint32(0x12124ZZZZ) $(PORT).SER" )
+	field( EGU,  "px" )
+	field( FLNK, "$(P)$(R)BaslerSizeX_RBV" )
+    field( SDIS, "$(SerialDisable)")
+}
+
+record( longin, "$(P)$(R)BaslerSizeX_RBV" )
+{
+	field( DESC, "RegWidth: ROI region width" )
+	field( DTYP, "stream" )
+	field( INP,  "@Genicam.proto GetUint32(0x12124ZZZZ) $(PORT).SER" )
+	field( EGU,  "ms" )
+	field( PINI, "YES" )
+    field( SDIS, "$(SerialDisable)")
+	field( FLNK, "$(P)$(R)GenicamSizeX_RBV" )
+}
+
+record( longout, "$(P)$(R)BaslerSizeY" )
+{
+	field( DESC, "RegHeight: ROI region Height" )
+	field( OMSL, "closed_loop" )
+	field( DOL,  "$(P)$(R)GenicamSizeY NPP MS" )
+	field( DTYP, "stream" )
+	field( OUT,  "@Genicam.proto SetUint32(0x12128ZZZZ) $(PORT).SER" )
+	field( EGU,  "px" )
+	field( FLNK, "$(P)$(R)BaslerSizeY_RBV" )
+    field( SDIS, "$(SerialDisable)")
+}
+
+record( longin, "$(P)$(R)BaslerSizeY_RBV" )
+{
+	field( DESC, "RegHeight: ROI region Height" )
+	field( DTYP, "stream" )
+	field( INP,  "@Genicam.proto GetUint32(0x12128ZZZZ) $(PORT).SER" )
+	field( EGU,  "ms" )
+	field( PINI, "YES" )
+    field( SDIS, "$(SerialDisable)")
+	field( FLNK, "$(P)$(R)GenicamSizeY_RBV" )
+}
+
+# RegAcquisitionCommand (AcquisitionStart, valid when AcqStartTrMode is Off
+record( mbbo, "$(P)$(R)BaslerAcquire" )
+{
+	field( DOL,  "$(P)$(R)Acquire CPP MS" )
+	field( OMSL, "closed_loop" )
+	field( DTYP, "stream" )
+	field( OUT,  "@Genicam.proto SetUint32(0x130F4ZZZZ) $(PORT).SER" )
+	field( ZRVL, "0" ) field( ZRST, "Stop" )
+	field( ONVL, "1" ) field( ONST, "Start" )
+	field( TWVL, "2" ) field( TWST, "Abort" )
+    field( SDIS, "$(SerialDisable)")
+}
+
+# 0x13160, RegSoftwareTrigger
+record( mbbo, "$(P)$(R)BaslerSoftwareTrigger" )
+{
+	field( DOL, "0" )
+	field( DTYP, "stream" )
+	field( OUT,  "@Genicam.proto SetUint32(0x13160ZZZZ) $(PORT).SER" )
+	field( ZRVL, "0" ) field( ZRST, "Off" )
+	field( ONVL, "1" ) field( ONST, "On" )
+    field( SDIS, "$(SerialDisable)")
+}
+
+record( mbbi, "$(P)$(R)GenicamTriggerMode" )
+{
+	field( FLNK, "$(P)$(R)BaslerCalcTriggerMode" )
+}
+record( calcout, "$(P)$(R)BaslerCalcTriggerMode" )
+{
+#	field( TPRO, 2 )
+	field( INPA, "$(P)$(R)GenicamTriggerMode NPP NMS" )
+	field( INPB, "$(P)$(R)AcquirePeriod NPP NMS"  )
+	field( CALC, "A==0?(B=0?0:9):1" )
+	field( OUT,  "$(P)$(R)BaslerFStartTrSrc PP MS" )
+	field( FLNK, "$(P)$(R)BaslerCalcTriggerEdge" )
+}
+
+record( calcout, "$(P)$(R)BaslerCalcTriggerEdge" )
+{
+#	field( TPRO, 2 )
+	field( INPA, "$(P)$(R)GenicamTriggerMode NPP NMS" )
+	field( CALC, "A==2?3:0" )
+	field( OUT,  "$(P)$(R)BaslerFStartTrEvent PP MS" )
+}
+
+# BaslerPulseAcquireTime
+# Write the AcquireTime to the trigger pulse width
+record( calcout, "$(P)$(R)BaslerPulseAcquireTime" )
+{
+	field( INPA, "$(P)$(R)GenicamAcquireTime NPP NMS"  )
+	field( INPB, "$(PW_SCALE=1e9)"  )
+	field( CALC, "A*B" )
+	field( OUT,  "$(PWIDTH=) CA NMS" )
+	field( PREC, "0" )
+	field( EGU,  "ns" )
+	info( autosaveFields, "HHSV HIGH HIHI HSV LLSV LOLO LOW LSV PREC" )
+	info( archiveFields,  "HHSV HIGH HIHI HSV LLSV LOLO LOW LSV PREC VAL" )
+}
+
+# BaslerPulseAcquireTime_RBV
+record( calcout, "$(P)$(R)BaslerPulseAcquireTime_RBV" )
+{
+	field( INPA, "$(PW_RBV) NPP NMS" )
+	field( INPB, "$(PW_SCALE=1e9)"  )
+	field( CALC, "A/B" )
+	field( PREC, "5" )
+	field( OOPT, "On Change" )
+	field( OUT,  "$(P)$(R)GenicamAcquireTime_RBV PP MS" )
+	field( EGU,  "ns" )
+	info( autosaveFields, "HHSV HIGH HIHI HSV LLSV LOLO LOW LSV PREC" )
+	info( archiveFields,  "HHSV HIGH HIHI HSV LLSV LOLO LOW LSV PREC VAL" )
+}
+
+record( ao, "$(P)$(R)AcquirePeriod"	)
+{
+	field( DISA, "0" )
+    field( FLNK, "$(P)$(R)BaslerCalcAcquirePeriod" )
+	field( PINI, "YES" )
+	info( autosaveFields, "PREC VAL" )
+	info( archiveFields,  "PREC VAL" )
+}
+
+# Min of 0x6666666 from 0x13134 RegFixedIntervalMax
+# Min of 7017 from 0x1313C RegFixedIntervalLimit
+record( calcout, "$(P)$(R)BaslerCalcAcquirePeriod" )
+{
+	field( INPA, "$(P)$(R)AcquirePeriod" )
+	field( INPB, "1e-6" )
+	field( CALC, "MIN(A/B,7017)" )
+	field( OUT,  "$(P)$(R)BaslerAcquirePeriod PP MS" )
+    field( HOPR,  0x6666666 )
+    field( LOPR,  7017      )
+    field( EGU,  "us"       )
+}
+
+# Set the acquire period, the rep rate for image capture
+# Only works in FreeRun trigger mode
+# Argument is an integer in us
+record( longout, "$(P)$(R)BaslerAcquirePeriod" )
+{
+    field( DOL,  10000 )
+    field( DESC, "Set The Frame Period" )
+    field( DTYP, "stream" )
+	field( OUT,  "@Genicam.proto SetUint32(0x13138ZZZZ) $(PORT).SER" )
+    field( FLNK, "$(P)$(R)BaslerAcquirePeriod_RBV" )
+    field( HOPR,  0x6666666 )
+    field( LOPR,  7017      )
+    field( EGU,  "us"	  )
+#	field( TPRO, 2 )
+	info( autosaveFields, "DESC VAL" )
+    field( SDIS, "$(SerialDisable)")
+}
+
+
+# Read AcquirePeriod, the rep rate for image capture
+# Only relevant in FreeRun trigger mode
+# Reply value is an integer in us
+record( longin, "$(P)$(R)BaslerAcquirePeriod_RBV" )
+{
+    field( DESC, "Frame Period" )
+    field( DTYP, "stream" )
+	field( INP,  "@Genicam.proto GetUint32(0x13138ZZZZ) $(PORT).SER" )
+    field( EGU,  "us"  )
+	field( FLNK, "$(P)$(R)BaslerCalcAcquirePeriod_RBV"	)
+    field( SDIS, "$(SerialDisable)")
+}
+
+record( calcout, "$(P)$(R)BaslerCalcAcquirePeriod_RBV" )
+{
+	field( INPA, "$(P)$(R)BaslerAcquirePeriod_RBV"	)
+	field( INPB, "1e-6" )
+	field( CALC, "A*B" )
+    field( EGU,  "sec"  )
+	field( OUT,  "$(P)$(R)AcquirePeriod_RBV PP MS"	)
+}
+record( ai, "$(P)$(R)AcquirePeriod_RBV"		)
+{
+	field( DISA, "0" )
+}
+
+#	0x13418	RegTriggerEvent, FStartTrEvent: RisingEdge/FallingEdge/AnyEdge/LevelHigh/LevelLow
+record( mbbo, "$(P)$(R)BaslerFStartTrEvent" )
+{
+	field( DTYP, "stream" )
+	field( OUT,  "@Genicam.proto SetUint32(0x13418ZZZZ) $(PORT).SER" )
+	field( ZRVL, "0" ) field( ZRST, "Rising" )
+	field( ONVL, "1" ) field( ONST, "Falling" )
+	field( TWVL, "2" ) field( TWST, "AnyEdge" )
+	field( THVL, "3" ) field( THST, "LevelHi" )
+	field( FRVL, "4" ) field( FRST, "LevelLo" )
+	field( FLNK, "$(P)$(R)BaslerFStartTrEvent_RBV" )
+	field( PINI, "YES" )
+	info( autosaveFields, "VAL" )
+	info( archiveFields,  "VAL" )
+}
+
+record( mbbi, "$(P)$(R)BaslerFStartTrEvent_RBV" )
+{
+	field( DTYP, "stream" )
+	field( INP,  "@Genicam.proto GetUint32(0x13418ZZZZ) $(PORT).SER" )
+	field( ZRVL, "0" ) field( ZRST, "Rising" )
+	field( ONVL, "1" ) field( ONST, "Falling" )
+	field( TWVL, "2" ) field( TWST, "AnyEdge" )
+	field( THVL, "3" ) field( THST, "LevelHi" )
+	field( FRVL, "4" ) field( FRST, "LevelLo" )
+	field( FLNK, "$(P)$(R)BaslerCalcGenicamTriggerMode_RBV" )
+	field( PINI, "YES" )
+}
+
+#	0x134D8	RegTriggerEvent, AcqStartTrEvent: RisingEdge/FallingEdge/AnyEdge/LevelHigh/LevelLow
+record( mbbo, "$(P)$(R)BaslerAcqStartTrEvent" )
+{
+	field( DTYP, "stream" )
+	field( OUT,  "@Genicam.proto SetUint32(0x134D8ZZZZ) $(PORT).SER" )
+	field( ZRVL, "0" ) field( ZRST, "Rising" )
+	field( ONVL, "1" ) field( ONST, "Falling" )
+	field( TWVL, "2" ) field( TWST, "AnyEdge" )
+	field( THVL, "3" ) field( THST, "LevelHi" )
+	field( FRVL, "4" ) field( FRST, "LevelLo" )
+	field( FLNK, "$(P)$(R)BaslerAcqStartTrEvent_RBV" )
+	field( PINI, "YES" )
+}
+
+record( mbbi, "$(P)$(R)BaslerAcqStartTrEvent_RBV" )
+{
+	field( DTYP, "stream" )
+	field( INP,  "@Genicam.proto GetUint32(0x134D8ZZZZ) $(PORT).SER" )
+	field( ZRVL, "0" ) field( ZRST, "Rising" )
+	field( ONVL, "1" ) field( ONST, "Falling" )
+	field( TWVL, "2" ) field( TWST, "AnyEdge" )
+	field( THVL, "3" ) field( THST, "LevelHi" )
+	field( FRVL, "4" ) field( FRST, "LevelLo" )
+	field( PINI, "YES" )
+}
+
+#	0x13518	RegTriggerEvent, AcqStopTrEvent: RisingEdge/FallingEdge/AnyEdge/LevelHigh/LevelLow
+record( mbbo, "$(P)$(R)BaslerAcqStopTrEvent" )
+{
+	field( DTYP, "stream" )
+	field( OUT,  "@Genicam.proto SetUint32(0x13518ZZZZ) $(PORT).SER" )
+	field( ZRVL, "0" ) field( ZRST, "Rising" )
+	field( ONVL, "1" ) field( ONST, "Falling" )
+	field( TWVL, "2" ) field( TWST, "AnyEdge" )
+	field( THVL, "3" ) field( THST, "LevelHi" )
+	field( FRVL, "4" ) field( FRST, "LevelLo" )
+	field( FLNK, "$(P)$(R)BaslerAcqStopTrEvent_RBV" )
+	field( PINI, "YES" )
+}
+
+record( mbbi, "$(P)$(R)BaslerAcqStopTrEvent_RBV" )
+{
+	field( DTYP, "stream" )
+	field( INP,  "@Genicam.proto GetUint32(0x13518ZZZZ) $(PORT).SER" )
+	field( ZRVL, "0" ) field( ZRST, "Rising" )
+	field( ONVL, "1" ) field( ONST, "Falling" )
+	field( TWVL, "2" ) field( TWST, "AnyEdge" )
+	field( THVL, "3" ) field( THST, "LevelHi" )
+	field( FRVL, "4" ) field( FRST, "LevelLo" )
+	field( PINI, "YES" )
+}
+
+record( mbbo, "$(P)$(R)BaslerFStartTrMode" )
+{
+	field( DOL,  "1" )
+	field( ZRVL, "0" ) field( ZRST, "Off" )
+	field( ONVL, "1" ) field( ONST, "On" )
+	field( PINI, "YES" )
+	field( FLNK, "$(P)$(R)BaslerCalcFStartFullTrMode" )
+	info( autosaveFields, "VAL" )
+	info( archiveFields,  "VAL" )
+}
+
+# FrameStart TriggerSource
+record( mbbo, "$(P)$(R)BaslerFStartTrSrc" )
+{
+	field( DOL,  "0" )
+	field( ZRVL, "0" ) field( ZRST, "FreeRun" )
+	field( ONVL, "1" ) field( ONST, "Line1" )
+	field( TWVL, "2" ) field( TWST, "Line2" )
+	field( THVL, "3" ) field( THST, "Line3" )
+	field( FRVL, "4" ) field( FRST, "Line4" )
+	field( FVVL, "5" ) field( FVST, "CC1" )
+	field( SXVL, "6" ) field( SXST, "CC2" )
+	field( SVVL, "7" ) field( SVST, "CC3" )
+	field( EIVL, "8" ) field( EIST, "CC4" )
+	field( NIVL, "9" ) field( NIST, "FixedRate" )
+	field( TEVL, "10") field( TEST, "Software" )
+	field( FLNK, "$(P)$(R)BaslerCalcFStartFullTrMode" )
+	field( PINI, "YES" )
+	info( autosaveFields, "VAL" )
+	info( archiveFields,  "VAL" )
+}
+
+# FrameStopTriggerMode combines several bit fields into one 32 bit register, RegFullTriggerMode
+# There are 3 of these RegFullTriggerMode registers:
+#	Addr		TriggerType			Name
+#	0x13410		FrameStart			FStartFullTrMode - The trigger that starts each image
+#	0x134D0		AcquisitionStart	AStartFullTrMode - The trigger that starts the acquisition process
+#	0x13510		AcquisitionStop		AStopFullTrMode  - The trigger that stops  the acquisition process
+
+# Bit numbering for GeniCam: MSB is 0, LSB is 31 for 32 bit register
+# Bit(s)	Name
+#	0		TriggerMode: Off/On
+#	16-31	TriggerSource enum, valid when TriggerMode is On
+#
+record( calcout, "$(P)$(R)BaslerCalcFStartFullTrMode" )
+{
+	field( DESC, "FrameStart: Controls image start" )
+	field( INPA, "$(P)$(R)BaslerFStartTrMode NPP MS" )
+	field( INPB, "$(P)$(R)BaslerFStartTrSrc  NPP MS" )
+	field( CALC, "((A&0x1)<<31)|(B&0xFFFF)" )
+	field( OUT,  "$(P)$(R)BaslerFStartFullTrMode PP MS" )
+}
+
+record( longout, "$(P)$(R)BaslerFStartFullTrMode" )
+{
+	field( DTYP, "stream" )
+	field( OUT,  "@Genicam.proto SetUint32(0x13410ZZZZ) $(PORT).SER" )
+	field( FLNK, "$(P)$(R)BaslerFStartFullTrMode_RBV" )
+    field( SDIS, "$(SerialDisable)")
+}
+
+record( longin, "$(P)$(R)BaslerFStartFullTrMode_RBV" )
+{
+	field( DTYP, "stream" )
+	field( INP,  "@Genicam.proto GetUint32(0x13410ZZZZ) $(PORT).SER" )
+	field( PINI, "YES" )
+    field( SDIS, "$(SerialDisable)")
+	field( FLNK, "$(P)$(R)BaslerCalcFStartTrSrc_RBV" )
+}
+
+record( calcout, "$(P)$(R)BaslerCalcFStartTrSrc_RBV" )
+{
+	field( DESC, "FrameStart: Controls image start" )
+	field( INPA, "$(P)$(R)BaslerFStartFullTrMode_RBV NPP MS" )
+	field( CALC, "A&0xFFFF" )
+	field( OUT,  "$(P)$(R)BaslerFStartTrSrc_RBV  PP MS" )
+}
+
+record( mbbo, "$(P)$(R)BaslerFStartTrSrc_RBV" )
+{
+	field( DOL,  "0" )
+	field( ZRVL, "0" ) field( ZRST, "FreeRun" )
+	field( ONVL, "1" ) field( ONST, "Line1" )
+	field( TWVL, "2" ) field( TWST, "Line2" )
+	field( THVL, "3" ) field( THST, "Line3" )
+	field( FRVL, "4" ) field( FRST, "Line4" )
+	field( FVVL, "5" ) field( FVST, "CC1" )
+	field( SXVL, "6" ) field( SXST, "CC2" )
+	field( SVVL, "7" ) field( SVST, "CC3" )
+	field( EIVL, "8" ) field( EIST, "CC4" )
+	field( NIVL, "9" ) field( NIST, "FixedRate" )
+	field( TEVL, "10") field( TEST, "Software" )
+	field( FLNK, "$(P)$(R)BaslerCalcGenicamTriggerMode_RBV" )
+}
+
+record( calcout, "$(P)$(R)BaslerCalcGenicamTriggerMode_RBV" )
+{
+#	field( TPRO, 2 )
+	field( INPA, "$(P)$(R)BaslerFStartTrSrc_RBV NPP NMS" )
+	field( INPB, "$(P)$(R)BaslerFStartTrEvent   NPP NMS" )
+	field( CALC, "A=0?0:(B=0?1:2)" )
+	field( OUT,  "$(P)$(R)GenicamTriggerMode_RBV PP MS" )
+}
+
+#
+# Acquisition Start records
+#
+record( mbbo, "$(P)$(R)BaslerAcqStartTrMode" )
+{
+	field( ZRVL, "0" ) field( ZRST, "Off" )
+	field( ONVL, "1" ) field( ONST, "On" )
+	field( FLNK, "$(P)$(R)BaslerCalcAcqStartFullTrMode" )
+	field( PINI, "YES" )
+	info( autosaveFields, "VAL" )
+	info( archiveFields,  "VAL" )
+}
+
+# Acquisition Start TriggerSource
+record( mbbo, "$(P)$(R)BaslerAcqStartTrSrc" )
+{
+	field( DOL, "1" )
+	field( ZRVL, "0" ) field( ZRST, "FreeRun" )
+	field( ONVL, "1" ) field( ONST, "Line1" )
+	field( TWVL, "2" ) field( TWST, "Line2" )
+	field( THVL, "3" ) field( THST, "Line3" )
+	field( FRVL, "4" ) field( FRST, "Line4" )
+	field( FVVL, "5" ) field( FVST, "CC1" )
+	field( SXVL, "6" ) field( SXST, "CC2" )
+	field( SVVL, "7" ) field( SVST, "CC3" )
+	field( EIVL, "8" ) field( EIST, "CC4" )
+	field( NIVL, "9" ) field( NIST, "FixedRate" )
+	field( TEVL, "10") field( TEST, "Software" )
+	field( FLNK, "$(P)$(R)BaslerCalcAcqStartFullTrMode" )
+	field( PINI, "YES" )
+	info( autosaveFields, "VAL" )
+	info( archiveFields,  "VAL" )
+}
+
+# FrameStopTriggerMode combines several bit fields into one 32 bit register, RegFullTriggerMode
+# There are 3 of these RegFullTriggerMode registers:
+#	Addr		TriggerType			Name
+#	0x13410		FrameStart			FStartFullTrMode - The trigger that starts each image
+#	0x134D0		AcquisitionStart	AcqStartFullTrMode - The trigger that starts the acquisition process
+#	0x13510		AcquisitionStop		AcqStopFullTrMode  - The trigger that stops  the acquisition process
+
+# Bit numbering for GeniCam: MSB is 0, LSB is 31 for 32 bit register
+# Bit(s)	Name
+#	0		TriggerMode: Off/On
+#	16-31	TriggerSource enum, valid when TriggerMode is On
+#
+record( calcout, "$(P)$(R)BaslerCalcAcqStartFullTrMode" )
+{
+	field( DESC, "Acquisition Start: Controls acq process" )
+	field( INPA, "$(P)$(R)BaslerAcqStartTrMode NPP NMS" )
+	field( INPB, "$(P)$(R)BaslerAcqStartTrSrc  NPP NMS" )
+	field( CALC, "((A&0x1)<<31)|(B&0xFFFF)" )
+	field( OUT,  "$(P)$(R)BaslerAcqStartFullTrMode PP MS" )
+}
+
+record( longout, "$(P)$(R)BaslerAcqStartFullTrMode" )
+{
+	field( DTYP, "stream" )
+	field( OUT,  "@Genicam.proto SetUint32(0x134D0ZZZZ) $(PORT).SER" )
+	field( FLNK, "$(P)$(R)BaslerAcqStartFullTrMode_RBV" )
+    field( SDIS, "$(SerialDisable)")
+}
+
+record( longin, "$(P)$(R)BaslerAcqStartFullTrMode_RBV" )
+{
+	field( DTYP, "stream" )
+	field( INP,  "@Genicam.proto GetUint32(0x134D0ZZZZ) $(PORT).SER" )
+	field( PINI, "YES" )
+    field( SDIS, "$(SerialDisable)")
+}
+
+#
+# Acquisition Stop records
+#
+record( mbbo, "$(P)$(R)BaslerAcqStopTrMode" )
+{
+	field( ZRVL, "0" ) field( ZRST, "Off" )
+	field( ONVL, "1" ) field( ONST, "On" )
+	field( FLNK, "$(P)$(R)BaslerCalcAcqStopFullTrMode" )
+	field( PINI, "YES" )
+	info( autosaveFields, "VAL" )
+	info( archiveFields,  "VAL" )
+}
+
+# Acquisition Stop TriggerSource
+record( mbbo, "$(P)$(R)BaslerAcqStopTrSrc" )
+{
+	field( DOL, "1" )
+	field( ZRVL, "0" ) field( ZRST, "FreeRun" )
+	field( ONVL, "1" ) field( ONST, "Line1" )
+	field( TWVL, "2" ) field( TWST, "Line2" )
+	field( THVL, "3" ) field( THST, "Line3" )
+	field( FRVL, "4" ) field( FRST, "Line4" )
+	field( FVVL, "5" ) field( FVST, "CC1" )
+	field( SXVL, "6" ) field( SXST, "CC2" )
+	field( SVVL, "7" ) field( SVST, "CC3" )
+	field( EIVL, "8" ) field( EIST, "CC4" )
+	field( NIVL, "9" ) field( NIST, "FixedRate" )
+	field( TEVL, "10") field( TEST, "Software" )
+	field( FLNK, "$(P)$(R)BaslerCalcAcqStopFullTrMode" )
+	field( PINI, "YES" )
+	info( autosaveFields, "VAL" )
+	info( archiveFields,  "VAL" )
+}
+
+# FrameStopTriggerMode combines several bit fields into one 32 bit register, RegFullTriggerMode
+# There are 3 of these RegFullTriggerMode registers:
+#	Addr		TriggerType			Name
+#	0x13410		FrameStart			FStartFullTrMode - The trigger that starts each image
+#	0x134D0		AcquisitionStart	AcqStartFullTrMode - The trigger that starts the acquisition process
+#	0x13510		AcquisitionStop		AcqStopFullTrMode  - The trigger that stops  the acquisition process
+
+# Bit numbering for GeniCam: MSB is 0, LSB is 31 for 32 bit register
+# Bit(s)	Name
+#	0		TriggerMode: Off/On
+#	16-31	TriggerSource enum, valid when TriggerMode is On
+#
+record( calcout, "$(P)$(R)BaslerCalcAcqStopFullTrMode" )
+{
+	field( DESC, "Acquisition Stop: Controls acq process" )
+	field( INPA, "$(P)$(R)BaslerAcqStopTrMode NPP MS" )
+	field( INPB, "$(P)$(R)BaslerAcqStopTrSrc  NPP MS" )
+	field( CALC, "((A&0x1)<<31)|(B&0xFFFF)" )
+	field( OUT,  "$(P)$(R)BaslerAcqStopFullTrMode PP MS" )
+}
+
+record( longout, "$(P)$(R)BaslerAcqStopFullTrMode" )
+{
+	field( DTYP, "stream" )
+	field( OUT,  "@Genicam.proto SetUint32(0x13510ZZZZ) $(PORT).SER" )
+	field( FLNK, "$(P)$(R)BaslerAcqStopFullTrMode_RBV" )
+    field( SDIS, "$(SerialDisable)")
+}
+
+record( longin, "$(P)$(R)BaslerAcqStopFullTrMode_RBV" )
+{
+	field( DTYP, "stream" )
+	field( INP,  "@Genicam.proto GetUint32(0x13510ZZZZ) $(PORT).SER" )
+	field( PINI, "YES" )
+    field( SDIS, "$(SerialDisable)")
+}
+
+# Custom xmit time estimate
+#record( ao, "$(P)$(R)XmitRate" )
+#{
+#    field( DOL,  "40.0e6" )
+#    field( EGU,  "Bytes/Sec" )
+#    field( PREC, "3" )
+#    field( PINI, "YES" )
+#    info( autosaveFields, "VAL" )
+#}
+#record( calc, "$(P)$(R)CamlinkXmitTime" )
+#{
+#    field( INPA, "$(P)$(R)ArraySize_RBV CP MS" )
+#    field( INPB, "$(P)$(R)XmitRate CPP MS" )
+#    field( INPC, "$(P)$(R)HTaps_RBV CPP MS" )
+#    field( INPD, "$(P)$(R)VTaps_RBV CPP MS" )
+#    field( CALC, "(A/B/C/D)" )
+#    field( EGU,  "Sec" )
+#    field( PREC, "5" ) 
+#	field( FLNK, "$(P)$(R)XmitDelay" )
+#}
+# Needed to add about 3ms to get avg 0.5ms DiffVsExp
+record( ao, "$(P)$(R)CamProcDelay" )
+{
+    field( DOL,  "3.0e-3" )
+}
+
+#	0x151D0	RegLineInGlitch Filter[Line1]: 4 byte minimum trigger width in ns
+record( longout, "$(P)$(R)BaslerLine1GlitchFilter" )
+{
+	field( DOL,  "1000" )
+	field( DTYP, "stream" )
+	field( OUT,  "@Genicam.proto SetUint32(0x151D0ZZZZ) $(PORT).SER" )
+	field( EGU,  "ns" )
+	field( FLNK, "$(P)$(R)BaslerLine1GlitchFilter_RBV" )
+	field( PINI, "YES" )
+    field( SDIS, "$(SerialDisable)")
+	info( autosaveFields, "VAL" )
+}
+record( longin, "$(P)$(R)BaslerLine1GlitchFilter_RBV" )
+{
+	field( DTYP, "stream" )
+	field( INP,  "@Genicam.proto GetUint32(0x151D0ZZZZ) $(PORT).SER" )
+	field( EGU,  "ns" )
+	field( PINI, "YES" )
+    field( SDIS, "$(SerialDisable)")
+}
+
+# RegTriggerSourceInq is 32 bit register w/ bits for whether
+# each trigger source type is selected
+# There are 3 of these RegTriggerSourceInq registers:
+#	Addr		TriggerType			BaslerValue	Name
+#	0x13408		FrameStart			0x0000707		FStartTrSrcInq - The trigger that starts each image
+#	0x134C8		AcquisitionStart	0x00001e6		AStartTrSrcInq - The trigger that starts the acquisition process
+#	0x13508		AcquisitionStop 	0x00001e6		AStopTrSrcInq  - The trigger that starts the acquisition process
+#
+#	Bit		Name
+#	21		Software
+#	22		FixedRate
+#	23		CC1
+#
+#	24		CC2
+#	25		CC3
+#	26		CC4
+#	27		unused
+#
+#	28		unused
+#	29		Ext Trig Line2
+#	30		Ext Trig Line1
+#	31		FreeRun
+
+# TODO:
+#	0x11020	RegSensorInfo: Bits 31..24=RegSensorType 0=Mono, 1=Bayer
+#	0x11020	RegSensorInfo: Bits 23..16=RegSensorBits
+#	0x12120	RegPixelFormat: 0x1080001=Mono8, 0x1100005=Mono12, 0x1100025=Mono14, 
+#	0x13104	RegAcquisitionMode: 1=Continuous, 2=SingleFrame, 3=MultiFrame via RegAcquisitionFrameCount
+#	0x13108	RegAcquisitionFrameCount: Frame count for MultiFrame AcquisitionMode
+#	0x13424	RegTriggeroverlap:	FStartTriggerOverlap: Ignore/ReTrig
+#	0xB00D0	RegAFE_LvdsTestSelector: 4 bytes 0..4
+#	0xB00D4	RegAFE_LvdsTestPattern: 4 bytes 0..65535
+#
+
+# Monitor and reprocess these records automatically when they're undefined
+# Macros:
+#	SER_OK_PV:	PV used to verify serial link, blocks reprocess when UDF 
+#	MON_PV:		PV to monitor
+#	MON_SCAN:	PV used to verify serial link
+
+# Include a serialMonitor.template monitor
+# This should be the first PV you process in the ReConfigSeq
+substitute "MON_SCAN=10 second"
+substitute "SER_OK_PV=$(P)$(R)BaslerAccessPrivilege.PROC"
+include "serialMonitor.template"
+
+# 1 second RBV monitors
+substitute "MON_SCAN=1 second"
+substitute "MON_PV=$(P)$(R)BaslerExposureValue_RBV"
+include "rbvMonitor.template"
+substitute "MON_PV=$(P)$(R)BaslerAcqStartFullTrMode_RBV"
+include "rbvMonitor.template"
+substitute "MON_PV=$(P)$(R)BaslerAcqStopFullTrMode_RBV"
+include "rbvMonitor.template"
+substitute "MON_PV=$(P)$(R)BaslerHeartbeatTimeout_RBV"
+include "rbvMonitor.template"
+substitute "MON_PV=$(P)$(R)BaslerFStartFullTrMode_RBV"
+include "rbvMonitor.template"
+substitute "MON_PV=$(P)$(R)BaslerLine1GlitchFilter"
+include "rbvMonitor.template"
+substitute "MON_PV=$(P)$(R)BaslerFStartTrSrc"
+include "rbvMonitor.template"
+
+# 10 second RBV monitors
+substitute "MON_SCAN=10 second"
+substitute "MON_PV=$(P)$(R)OrcaHeight_RBV"
+include "rbvMonitor.template"
+substitute "MON_PV=$(P)$(R)Model_RBV"
+include "rbvMonitor.template"
+substitute "MON_PV=$(P)$(R)Manufacturer_RBV"
+include "rbvMonitor.template"
+substitute "MON_PV=$(P)$(R)BaslerSerialNumber_RBV"
+include "rbvMonitor.template"
+substitute "MON_PV=$(P)$(R)BaslerFirmwareVersion_RBV"
+include "rbvMonitor.template"
+substitute "MON_PV=$(P)$(R)BaslerModel_RBV"
+include "rbvMonitor.template"
+substitute "MON_PV=$(P)$(R)BaslerTempMainBd_RBV"
+include "rbvMonitor.template"
+substitute "MON_PV=$(P)$(R)BaslerTempSensorBd_RBV"
+include "rbvMonitor.template"
+substitute "MON_PV=$(P)$(R)BaslerTemperature_RBV"
+include "rbvMonitor.template"
+
+# 1 second PUT monitors
+substitute "MON_SCAN=1 second"
+substitute "MON_PV= $(P)$(R)BaslerAccessPrivilege"
+include "putMonitor.template"
+substitute "MON_PV= $(P)$(R)BaslerExposureValue"
+include "putMonitor.template"
+substitute "MON_PV= $(P)$(R)BaslerBinX"
+include "putMonitor.template"
+substitute "MON_PV= $(P)$(R)BaslerBinY"
+include "putMonitor.template"
+substitute "MON_PV= $(P)$(R)BaslerMinX"
+include "putMonitor.template"
+substitute "MON_PV= $(P)$(R)BaslerMinY"
+include "putMonitor.template"
+substitute "MON_PV= $(P)$(R)BaslerSizeX"
+include "putMonitor.template"
+substitute "MON_PV= $(P)$(R)BaslerSizeY"
+include "putMonitor.template"
+substitute "MON_PV= $(P)$(R)BaslerAcquirePeriod"
+include "putMonitor.template"
+substitute "MON_PV= $(R)BaslerFStartTrEvent"
+include "putMonitor.template"
+substitute "MON_PV= $(R)BaslerAcqStartTrEvent"
+include "putMonitor.template"
+substitute "MON_PV= $(R)BaslerAcqStopTrEvent"
+include "putMonitor.template"
+substitute "MON_PV= $(P)$(R)BaslerFStartFullTrMode"
+include "putMonitor.template"
+substitute "MON_PV= $(P)$(R)BaslerAcqStartFullTrMode"
+include "putMonitor.template"
+substitute "MON_PV= $(P)$(R)BaslerAcqStopFullTrMode"
+include "putMonitor.template"
+substitute "MON_PV= $(R)BaslerAcquire"
+include "putMonitor.template"
+substitute "MON_PV= $(R)BaslerResetDevice"
+include "putMonitor.template"
+
+# 10 second PUT monitors
+substitute "MON_SCAN=10 second"
+substitute "MON_PV= $(P)$(R)BaslerLine1GlitchFilter"
+include "putMonitor.template"
+substitute "MON_PV= $(R)BaslerSoftwareTrigger"
+include "putMonitor.template"
+substitute "MON_PV= $(P)$(R)BaslerHeartbeatTimeout"
+include "putMonitor.template"
+
