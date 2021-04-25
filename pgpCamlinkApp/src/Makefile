@@ -44,6 +44,7 @@ kcuPgpRead_LIBS += lzma
 
 PROD += pgpClSerialTool
 pgpClSerialTool_SRCS	+= pgpClSerialTool.cpp
+pgpClSerialTool_SRCS	+= bbpFrame.cpp
 #pgpClSerialTool_LIBS	+= $(EPICS_BASE_HOST_LIBS)
 pgpClSerialTool_LIBS	+= pgpCamlink
 pgpClSerialTool_LIBS	+= ADBase
