@@ -1,0 +1,101 @@
+#
+# Basler ace, aviator, and beat Family Serial Protocol
+#
+# Messages start w/ SOH and end w/ ETX
+# SOH is the ^A character, 0x01
+# ETX is the ^C character, 0x03
+#
+# Successful replies start w/ an ACK, hex 0x06, followed by reply content, if any
+# Unsuccesful commands reply w/ a NAK, hex 0x15
+#
+InTerminator	= SOH;
+OutTerminator	= ETX;
+PeekSize		  = 0;
+ReplyTimeout	= 500;
+ReadTimeout		= 500;
+WriteTimeout	= 500;
+ExtraInput		= Ignore;
+
+GetBoolean
+{
+    out "U \$1?";  in "R%*#X=%u";
+}
+
+SetBoolean
+{
+    out "U \$1=%u";  in "OK"
+}
+
+GetFixedPoint
+{
+    out "F \$2 \$1?";  in "R%*#X=%u";
+}
+
+SetFixedPoint
+{
+    out "F \$2 \$1=0x%-8X";  in "OK"
+}
+
+GetScalar
+{
+    out "U \$1?";  in "R%*#X=%u";
+}
+
+SetScalar
+{
+    out "U \$1=0x%-8X";  in "OK"
+}
+
+GetInfo
+{
+    out "U \$1?";  in "R%*#X=%u";
+}
+
+GetString
+{
+    out "C\$1";    in  ACK "%#s";
+    @init { out "\$1";    in  ACK "%#s"; }
+}
+
+SetString
+{
+    out "C\$1";    in  ACK "%#s";
+    @init { out "\$1";    in  ACK "%#s"; }
+}
+
+GetEnum
+{
+    out "U \$1";    in  ACK "%d";
+#   @init { out "\$1";    in  ACK "%d"; }
+}
+
+SetEnum
+{
+    out "U \$1";    in  ACK "%d";
+#   @init { out "\$1";    in  ACK "%d"; }
+}
+
+GetBitField
+{
+    out "U32 \$1?";  in "R%*#X=%u";
+}
+
+SetBitField
+{
+    out "U \$1=0x%-8X";  in "OK"
+}
+
+GetArray
+{
+    out "U \$1?";  in "R%*#X=%u";
+}
+
+SetArray
+{
+    out "U \$1=0x%-8X";  in "OK"
+}
+
+SetCommand
+{
+    out "C \$1=0x%-8X";  in "OK"
+}

@@ -1,0 +1,49 @@
+ClinkDevRoot:
+  #########################################################################################################
+  ClinkFeb[:]:
+    ###################
+    ClinkTop:
+    ###################
+      PllConfig[:]: '80MHz'
+      ###################
+      Ch[:]:
+        LinkMode: Medium
+        DataMode: 12Bit
+        FrameMode: Frame
+        TapCount: 4
+        DataEn: True
+        Blowoff: False
+        BaudRate: 9600 # units of bps
+        SerThrottle: 10000 # (1ms x 1us throttle rate) = 10000
+        SwControlValue: 0x0
+        SwControlEn: 0x0
+        ###################
+        UartBaslerAce: # Basler ACE interface
+          ###############################
+          # 4.2 Transport Layer Registers
+          ###############################
+          TapGeometry: '9' # 9 = CLGeometry1X4_1Y: The tap geometry is 1X4-1Y.
+          PixelClock: '23' # 23 = CLClock82: The pixel clock speed is 84 MHz.
+          ############################
+          # 4.4 Image Format Registers
+          ############################
+          BitDepth: '12'   # 12 = BitDepth12: The sensor will produce pixel data at 12 bit depth per pixel.
+          PixelFormat: '5' # 5 = Mono12: The pixel format is Mono 12.
+          ################################
+          # 4.6 Exposure Control Registers
+          ################################
+          ExposureMode: '2' # 2 = TriggerWidth: The exposure mode is trigger width.
+          ###################################
+          # 4.5 Acquisition Control Registers
+          ###################################
+          TrigSrcFrameStart: '9'  # 9 = CC1: A signal input into CC 1 in the Camera Link interface will be used as the trigger signal.
+          TrigActFrameStart: '0'  # 0 = RisingEdge: The trigger signal is considered valid on the rising edge of the signal.
+          TrigModeFrameStart: '1' # 1 = ON: The trigger mode is set to on.
+    ###################
+    TrigCtrl[0]:
+      EnableTrig: True
+      InvCC: True # Active Low Pulse
+      TrigMap: ChA # ChA = pgpTrigger(0)
+      TrigPulseWidth: 32.768 # units of us
+      TrigMask: 0x1 # CC1 trigger
+  #########################################################################################################
