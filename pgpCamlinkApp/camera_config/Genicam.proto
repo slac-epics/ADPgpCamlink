@@ -1,0 +1,186 @@
+#
+# Genicam Serial Protocol
+#
+# This file is used for cameras with the GenCP protocol, a binary protocol.
+# By selecting GenCP via a cfg file parameter, we enable wrapper
+# functions which translate simple ASCII serial commands which are
+# compatible w/ streamdevice to the proper GenCP packets including
+# checksums and packet IDs.
+#
+# The raw GenCP protocol just does memory read/write.
+# This ASCII protocol supports read and write memory commands for different types.
+#
+# Line terminator for send and receive is CR.
+#
+# First character is the type, followed by a count.
+# For scalars, the count is the number of bits.
+# For arrays, it's the number of elements:
+#	U8	8  bit unsigned integer
+#	U16	16 bit unsigned integer
+#	U32	32 bit unsigned integer
+#	U64	32 bit unsigned integer
+#	I8	8  bit signed integer
+#	I16	16 bit signed integer
+#	I16	16 bit signed integer
+#	I16	16 bit signed integer
+#	F32	32 bit floating point, float
+#	F64	64 bit floating point, double
+#	C8	8  byte character string
+#	C64	64 byte character string
+#	B8	8  byte byte array as space separated 2 digit hex values
+#	B20	20 byte byte array as space separated 2 digit hex values
+#
+# This is followed by whitespace, then a register address,
+# then = for assignment or ? for read.
+#
+# Acknowledge packets are also binary and translated as follows:
+#
+# Error packet, ERR followed by whitespace then the error code
+# ERR 8001
+#
+# Success packet, OK, followed for query ack w/ whitespace then the register value.
+#
+# Examples:
+# Read 64 bit unsigned int at register 0x130F4
+# U64 0x1D0?
+# OK 0x00013108
+#
+# Write -2.5 to 32 bit float at register 0x130F4
+# F32 0x130F4=-2.5
+# OK
+#
+# TODO: Add bit field support?  U32.2.14 could be bits 14 and 15 of 32 bit word
+#
+# This gives us simple access to low level camera registers.
+# Accessing the camera via the features defined in it's feature XML file
+# requires use of the genicam software api.
+#
+# Some key register addresses, lengths, and names:
+# Address		Length	Name
+# 0x00000000	U32		GenCP Version
+# 0x00000004	C64		64 character Manufacturer Name
+# 0x00000044	C64		64 character Model Name
+# 0x000001D0	U64		Manifest table address (XML feature files)
+# 0x000001E0	U64		Device Configuration: Bit 0=HeartbeatEnable, Bit1=MultiEventEnable
+# 0x000001E8	U32		Heartbeat Timeout in ms
+# 0x00000204	U32		AccessPrivilege, 0=Avail (no image streaming), 1=Exclusive
+# NOTE: Must set AccessPrivilege in BRM to 1 for write access and read or write at
+# least once every 3 sec so heartbeat won't timeout and stop image streaming!
+#
+# Address		Length	Name
+# 0x000130F4	U32		RegAcquisitionStart, 0=Stop, 1=Start
+# 0x00013108	U32		RegAcquisitionMode, 1=Continuous, 2=Single, 3=Multiple
+# 0x00013108	U32		RegAcquisitionFrameCount, used for Multiple AcquisitionMode
+#
+# Manifest Table
+# Offset		Length	Name
+# 0             8       Number of entries
+# 8             64		Entry 0
+# 8+1*64        64		Entry 1
+# ...
+# 8+N*64        64		Entry N
+#
+# Manifest Entry, one per GeniCam XML file
+# Offset		Length	Name
+# 0             4       FileVersion
+# 4             4       Schema (version and compressed flag)
+# 8             8       Start register of file
+# 16            8		File Size
+# 24            20		SHA1-Hash
+#
+#
+InTerminator	= LF;
+OutTerminator	= LF;
+ReplyTimeout	= 800;
+ReadTimeout		= 100;
+WriteTimeout	= 500;
+PeekSize		= 0;
+ExtraInput		= Ignore;
+
+# Strings
+GetStr
+{
+    out "C\$1 \$2?";
+	in  "R%*#X=%40c";
+}
+
+SetStr
+{
+    out "C\$1 \$2=%s";
+	in  "OK";
+}
+
+# Unsigned Integers
+GetUint32
+{
+    out "U32 \$1?";
+	in  "R%*#X=%u";
+}
+
+SetUint32
+{
+    out "U32 \$1=0x%-8X";
+	in  "OK";
+}
+
+GetUint64
+{
+    out "U64 \$1?";
+	in  "R%*#X=%llu";
+}
+
+SetUint64
+{
+    out "U64 \$1=0x%-16X";
+	in  "OK";
+}
+
+# Integers
+GetInt32
+{
+    out "I32 \$1?";
+	in  "R%*#X=%d";
+}
+
+SetInt32
+{
+    out "I32 \$1=%d";
+	in  "OK";
+}
+
+GetInt64
+{
+    out "I64 \$1?";
+	in  "R%*#X=%lld";
+}
+
+SetInt64
+{
+    out "I64 \$1=%d";
+	in  "OK";
+}
+
+# Floats
+GetFloat32
+{
+    out "F32 \$1?";
+	in  "R%*#X=%f";
+}
+
+SetFloat32
+{
+    out "F32 \$1=%f";
+	in  "OK";
+}
+
+GetFloat64
+{
+    out "F64 \$1?";
+	in  "R%*#X=%e";
+}
+
+SetFloat64
+{
+    out "F64 \$1=%e";
+	in  "OK";
+}
