@@ -21,7 +21,7 @@
 # ==========================================================
 ASYN_MODULE_VERSION   = R4.39-0.0.1
 #ADSUPPORT_MODULE_VERSION  = R1.1-0.1.1
-ADCORE_MODULE_VERSION = R3.9-1.0.0
+ADCORE_MODULE_VERSION = R3.9-1.0.1
 
 # ==========================================================
 # Define module paths using pattern
