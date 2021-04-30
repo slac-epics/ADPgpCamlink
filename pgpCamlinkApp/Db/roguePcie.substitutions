@@ -62,6 +62,7 @@ file liDevRogue.template
 		PATH	= "ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TimingFrameRx.RxLinkUp"
 		DESC	= "Timing fiber link status"
 		SCAN	= "\$(SCAN=1 second)"
+		LLSV    = "MAJOR"
 	}
 }
 
