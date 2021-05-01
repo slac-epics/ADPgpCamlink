@@ -113,6 +113,13 @@ pgpClDev::pgpClDev(
 	uint32_t	dest;
 	dest = (0x100 * m_lane) + PGPCL_DATACHAN_FEB_FRAME_ACCESS;
 	m_pFebFrameChan	= rogue::hardware::axi::AxiStreamDma::create( m_devName, dest, true);
+	if ( m_pFebFrameChan )
+		printf("pgpClDev: AxiStreamDma::create( %s, 0x%X, true ) succeeded!\n", m_devName.c_str(), dest );
+	else
+	{
+		printf("pgpClDev: Error from AxiStreamDma::create( %s, 0x%X, true )\n", m_devName.c_str(), dest );
+		return;
+	}
 
 	//
 	// Connect DATACHAN 1 Camera Frames
