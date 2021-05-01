@@ -9,5 +9,7 @@ record( bi, "$(P)$(R)$(NAME)_RBV" )
 	field( ONAM, "$(ONAM=Enabled)" )
 	field( DISV, "$(DISV=1)" )
 	field( SDIS, "$(SDIS=)" )
+	field( OSV,  "$(OSV=NO_ALARM)" )
+	field( ZSV,  "$(ZSV=NO_ALARM)" )
 	info( autosaveFields, "" )
 }

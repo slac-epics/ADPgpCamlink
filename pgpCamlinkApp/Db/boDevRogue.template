@@ -10,5 +10,7 @@ record( bo, "$(P)$(R)$(NAME)" )
 	field( PINI, "$(PINI=NO)" )
 	field( DISV, "$(DISV=1)" )
 	field( SDIS, "$(SDIS=)" )
+	field( OSV,  "$(OSV=NO_ALARM)" )
+	field( ZSV,  "$(ZSV=NO_ALARM)" )
 	info( autosaveFields, "$(SAVE=VAL)" )
 }
