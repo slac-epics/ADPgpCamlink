@@ -40,7 +40,7 @@ record( stringin, "$(P)$(R)CamModel" )
 
 record( stringin, "$(P)$(R)CamModelScreen" )
 {
-	field( VAL,  "ADPgpCamlinkScreens/acA2040-180kmNIR.edl" )
+	field( VAL,  "ADPgpClScreens/acA2040-180kmNIR.edl" )
 	field( PINI, "YES" )
 }
 
