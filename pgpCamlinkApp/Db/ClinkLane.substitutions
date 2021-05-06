@@ -153,6 +153,7 @@ file liDevRogue.template
 		DESC	= "Feb$(F) FCh0 TriggerCtrl rate"
 		SCAN	= "\$(SCAN=1 second)"
 		DISV	= "0"
+		EGU     = "Hz"
 		SDIS	= "$(P)$(R)PgpMon:RxRemLinkReady_RBV CP"
 	}
 	{
@@ -207,6 +208,7 @@ file liDevRogue.template
 		PATH	= "ClinkDevRoot.ClinkPcie.Hsio.PgpRxAxisMon[$(L)].Ch[1].FrameRate"
 		DESC	= "Incoming frame rate on PGP RX PHY"
 		SCAN	= "\$(SCAN=1 second)"
+		EGU     = "Hz"
 	}
 	{
 		NAME	= "PgpRx:FrameSize",
