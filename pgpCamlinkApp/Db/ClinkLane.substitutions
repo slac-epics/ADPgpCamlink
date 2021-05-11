@@ -12,7 +12,27 @@ file biDevRogue.template
 	}
 	{
 		NAME	= "PgpMon:RxRemLinkReady"
-		PATH	= "ClinkDevRoot.ClinkPcie.Hsio.PgpMon[$(L)].RxRemLinkReady"
+		PATH	= "ClinkDevRoot.ClinkPcie.Hsio.PgpMon[$(L)].RxStatus.RemRxLinkReady"
+		SCAN	= "\$(SCAN=1 second)"
+	}
+	{
+		NAME	= "PgpMon:RxStatus:LinkReady"
+		PATH	= "ClinkDevRoot.ClinkPcie.Hsio.PgpMon[$(L)].RxStatus.LinkReady"
+		SCAN	= "\$(SCAN=1 second)"
+	}
+	{
+		NAME	= "PgpMon:RxStatus:PhyRxActive"
+		PATH	= "ClinkDevRoot.ClinkPcie.Hsio.PgpMon[$(L)].RxStatus.PhyRxActive"
+		SCAN	= "\$(SCAN=1 second)"
+	}
+	{
+		NAME	= "PgpMon:TxStatus:LinkReady"
+		PATH	= "ClinkDevRoot.ClinkPcie.Hsio.PgpMon[$(L)].TxStatus.LinkReady"
+		SCAN	= "\$(SCAN=1 second)"
+	}
+	{
+		NAME	= "PgpMon:TxStatus:PhyTxActive"
+		PATH	= "ClinkDevRoot.ClinkPcie.Hsio.PgpMon[$(L)].TxStatus.phyTxActive"
 		SCAN	= "\$(SCAN=1 second)"
 	}
 }
@@ -141,32 +161,6 @@ file liDevRogue.template
 		PATH	= "ClinkDevRoot.ClinkPcie.Hsio.PgpRxAxisMon[$(L)].Ch[1].FrameCnt"
 		SCAN	= "\$(SCAN=1 second)"
 	}
-
-	{
-		NAME	= "PgpMon:RxCellErrorCount"
-		PATH	= "ClinkDevRoot.ClinkPcie.Hsio.PgpMon[$(L)].RxCellErrorCount"
-		SCAN	= "\$(SCAN=1 second)"
-	}
-	{
-		NAME	= "PgpMon:RxLinkDownCount"
-		PATH	= "ClinkDevRoot.ClinkPcie.Hsio.PgpMon[$(L)].RxLinkDownCount"
-		SCAN	= "\$(SCAN=1 second)"
-	}
-	{
-		NAME	= "PgpMon:RxLinkErrorCount"
-		PATH	= "ClinkDevRoot.ClinkPcie.Hsio.PgpMon[$(L)].RxLinkErrorCount"
-		SCAN	= "\$(SCAN=1 second)"
-	}
-	{
-		NAME	= "PgpMon:TxFrameErrorCount"
-		PATH	= "ClinkDevRoot.ClinkPcie.Hsio.PgpMon[$(L)].TxFrameErrorCount"
-		SCAN	= "\$(SCAN=1 second)"
-	}
-	{
-		NAME	= "PgpMon:RxRemLinkReadyCount"
-		PATH	= "ClinkDevRoot.ClinkPcie.Hsio.PgpMon[$(L)].RxRemLinkReadyCount"
-		SCAN	= "\$(SCAN=1 second)"
-	}
 	
 	{
 		NAME	= "Feb$(F):PgpMon:RxCellErrorCount"
@@ -257,7 +251,7 @@ file loDevRogue.template
 	}
 	{
 		NAME	= "PgpMon:CountReset"
-		PATH	= "ClinkDevRoot.ClinkPcie.Hsio.PgpMon[$(L)].CountReset"
+		PATH	= "ClinkDevRoot.ClinkPcie.Hsio.PgpMon[$(L)].Ctrl.CountReset"
 		SAVE	= ""
 		DESC	= "Reset PgpMon counts"
 	}

@@ -76,8 +76,8 @@ const char * modelId2String( uint32_t modelId )
 void pgpRogueLib::ResetCounters( )
 {
 	// TODO: Add toggle option to setVariable
-	setVariable( "ClinkDevRoot.ClinkPcie.Hsio.PgpMon[0].CountReset", 1 );
-	setVariable( "ClinkDevRoot.ClinkPcie.Hsio.PgpMon[0].CountReset", 0 );
+	setVariable( "ClinkDevRoot.ClinkPcie.Hsio.PgpMon[0].Ctrl.CountReset", 1 );
+	setVariable( "ClinkDevRoot.ClinkPcie.Hsio.PgpMon[0].Ctrl.CountReset", 0 );
 
 	if ( FebReady(0) )
 	{
@@ -90,8 +90,8 @@ void pgpRogueLib::ResetCounters( )
 		setVariable( "ClinkDevRoot.ClinkFeb[0].TrigCtrl[0].CntRst", 1 );
 		setVariable( "ClinkDevRoot.ClinkFeb[0].TrigCtrl[0].CntRst", 0 );
 
-		setVariable( "ClinkDevRoot.ClinkFeb[0].PgpMon[0].CountReset", 1 );
-		setVariable( "ClinkDevRoot.ClinkFeb[0].PgpMon[0].CountReset", 0 );
+		setVariable( "ClinkDevRoot.ClinkFeb[0].PgpMon[0].Ctrl.CountReset", 1 );
+		setVariable( "ClinkDevRoot.ClinkFeb[0].PgpMon[0].Ctrl.CountReset", 0 );
 	}
 
 	// This resets   ClinkDevRoot.ClinkPcie.Application.AppLane[0].EventBuilder.DataCnt[0]
@@ -385,21 +385,21 @@ pgpRogueLib::pgpRogueLib(
 	setVariable( "ClinkDevRoot.ClinkPcie.Application.AppLane[2].EventBuilder.SoftRst", 0 );
 	setVariable( "ClinkDevRoot.ClinkPcie.Application.AppLane[3].EventBuilder.SoftRst", 1 );
 	setVariable( "ClinkDevRoot.ClinkPcie.Application.AppLane[3].EventBuilder.SoftRst", 0 );
-	setVariable( "ClinkDevRoot.ClinkPcie.Hsio.PgpMon[0].Flush", 1 );
-	setVariable( "ClinkDevRoot.ClinkPcie.Hsio.PgpMon[0].Flush", 0 );
-	setVariable( "ClinkDevRoot.ClinkPcie.Hsio.PgpTxAxisMon[0].CntRst", 1 );
+//	setVariable( "ClinkDevRoot.ClinkPcie.Hsio.PgpMon[0].Flush", 1 );
+//	setVariable( "ClinkDevRoot.ClinkPcie.Hsio.PgpMon[0].Flush", 0 );
+//	setVariable( "ClinkDevRoot.ClinkPcie.Hsio.PgpTxAxisMon[0].CntRst", 1 );
 	setVariable( "ClinkDevRoot.ClinkPcie.Hsio.PgpRxAxisMon[0].CntRst", 1 );
-	setVariable( "ClinkDevRoot.ClinkPcie.Hsio.PgpMon[1].Flush", 1 );
-	setVariable( "ClinkDevRoot.ClinkPcie.Hsio.PgpMon[1].Flush", 0 );
-	setVariable( "ClinkDevRoot.ClinkPcie.Hsio.PgpTxAxisMon[1].CntRst", 1 );
+//	setVariable( "ClinkDevRoot.ClinkPcie.Hsio.PgpMon[1].Flush", 1 );
+//	setVariable( "ClinkDevRoot.ClinkPcie.Hsio.PgpMon[1].Flush", 0 );
+//	setVariable( "ClinkDevRoot.ClinkPcie.Hsio.PgpTxAxisMon[1].CntRst", 1 );
 	setVariable( "ClinkDevRoot.ClinkPcie.Hsio.PgpRxAxisMon[1].CntRst", 1 );
-	setVariable( "ClinkDevRoot.ClinkPcie.Hsio.PgpMon[2].Flush", 1 );
-	setVariable( "ClinkDevRoot.ClinkPcie.Hsio.PgpMon[2].Flush", 0 );
-	setVariable( "ClinkDevRoot.ClinkPcie.Hsio.PgpTxAxisMon[2].CntRst", 1 );
+//	setVariable( "ClinkDevRoot.ClinkPcie.Hsio.PgpMon[2].Flush", 1 );
+//	setVariable( "ClinkDevRoot.ClinkPcie.Hsio.PgpMon[2].Flush", 0 );
+//	setVariable( "ClinkDevRoot.ClinkPcie.Hsio.PgpTxAxisMon[2].CntRst", 1 );
 	setVariable( "ClinkDevRoot.ClinkPcie.Hsio.PgpRxAxisMon[2].CntRst", 1 );
-	setVariable( "ClinkDevRoot.ClinkPcie.Hsio.PgpMon[3].Flush", 1 );
-	setVariable( "ClinkDevRoot.ClinkPcie.Hsio.PgpMon[3].Flush", 0 );
-	setVariable( "ClinkDevRoot.ClinkPcie.Hsio.PgpTxAxisMon[3].CntRst", 1 );
+//	setVariable( "ClinkDevRoot.ClinkPcie.Hsio.PgpMon[3].Flush", 1 );
+//	setVariable( "ClinkDevRoot.ClinkPcie.Hsio.PgpMon[3].Flush", 0 );
+//	setVariable( "ClinkDevRoot.ClinkPcie.Hsio.PgpTxAxisMon[3].CntRst", 1 );
 	setVariable( "ClinkDevRoot.ClinkPcie.Hsio.PgpRxAxisMon[3].CntRst", 1 );
 	setVariable( "ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TimingPhyMonitor.CntRst", 1 );
 #endif
@@ -490,7 +490,7 @@ void pgpRogueLib::ConfigureLclsTimingV1()
 
 bool pgpRogueLib::FebReady( size_t iFeb )
 {
-	const char	*	pszVarPathRxRemLinkReady	= "ClinkDevRoot.ClinkPcie.Hsio.PgpMon[%1u].RxRemLinkReady";
+	const char	*	pszVarPathRxRemLinkReady	= "ClinkDevRoot.ClinkFeb[%1u].PgpMon[0].RxRemLinkReady";
 	char			febVarPath[256];
 	bool			febReady	= false;
 	snprintf( febVarPath, 256, pszVarPathRxRemLinkReady, iFeb );
