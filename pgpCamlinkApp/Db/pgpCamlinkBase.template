@@ -249,7 +249,6 @@ record( longin, "$(P)$(R)HTaps_RBV" )
 	field( DTYP,  "asynInt32" )
 	field( INP,   "@asyn($(PORT),$(ADDR=0),$(TIMEOUT=1))CLCAM_HTAPS" )
 	field( SCAN, "I/O Intr" )
-	info( archiveFields,  "VAL" )
 }
 
 record( longin, "$(P)$(R)VTaps_RBV" )
@@ -257,7 +256,6 @@ record( longin, "$(P)$(R)VTaps_RBV" )
 	field( DTYP, "asynInt32" )
 	field( INP,  "@asyn($(PORT),$(ADDR=0),$(TIMEOUT=1))CLCAM_VTAPS" )
 	field( SCAN, "I/O Intr" )
-	info( archiveFields, "VAL" )
 }
 
 record( mbbi, "$(P)$(R)CamMode_RBV" )
@@ -326,8 +324,6 @@ record( mbbi, "$(P)$(R)CamOverrun" )	# Do we need this?
 	field( ZRST, "OK"		) field( ZRVL, "0" ) field( ZRSV, "NO_ALARM" )
 	field( ONST, "Overrun"	) field( ONVL, "1" ) field( ONSV, "MAJOR" )
 #	field( SCAN, "I/O Intr" )
-	info( autosaveFields,  "DESC ONSV ZRSV" )
-	info( archiveFields,  "DESC ONSV VAL ZRSV" )
 }
 
 record( longout, "$(P)$(R)CamDebugLevel" )
@@ -337,8 +333,6 @@ record( longout, "$(P)$(R)CamDebugLevel" )
 	field( PINI, "YES" )
 	field( DOL,	"0" )
 	field( FLNK, "$(P)$(R)CamDebugLevel_RBV" )
-	info( autosaveFields, "HHSV HIGH HIHI HSV LLSV LOLO LOW LSV EGU DESC HOPR LOPR VAL" )
-	info( archiveFields,  "VAL" )
 }
 
 record( longin, "$(P)$(R)CamDebugLevel_RBV" )
@@ -346,8 +340,6 @@ record( longin, "$(P)$(R)CamDebugLevel_RBV" )
 	field( DTYP, "asynInt32" )
 	field( INP,  "@asyn($(PORT),$(ADDR=0),$(TIMEOUT=1))CLCAM_DEBUG" )
 	field( SCAN, "I/O Intr" )
-	info( autosaveFields, "HHSV HIGH HIHI HSV LLSV LOLO LOW LSV EGU DESC HOPR LOPR" )
-	info( archiveFields,  "VAL" )
 }
 
 record( longout, "$(P)$(R)CamDebugSerLevel" )
@@ -357,8 +349,6 @@ record( longout, "$(P)$(R)CamDebugSerLevel" )
 	field( PINI, "YES" )
 	field( DOL,	"0" )
 	field( FLNK, "$(P)$(R)CamDebugSerLevel_RBV" )
-	info( autosaveFields, "VAL" )
-	info( archiveFields,  "VAL" )
 }
 
 record( longin, "$(P)$(R)CamDebugSerLevel_RBV" )
@@ -366,36 +356,30 @@ record( longin, "$(P)$(R)CamDebugSerLevel_RBV" )
 	field( DTYP, "asynInt32" )
 	field( INP,  "@asyn($(PORT),$(ADDR=0),$(TIMEOUT=1))CLCAM_DEBUG_SER" )
 	field( SCAN, "I/O Intr" )
-	info( autosaveFields, "HHSV HIGH HIHI HSV LLSV LOLO LOW LSV EGU DESC HOPR LOPR" )
-	info( archiveFields,  "VAL" )
 }
 
 record( longout, "$(P)$(R)CamHSkip" )
 {
 	field( DTYP, "asynInt32" )
 	field( OUT,  "@asyn($(PORT),$(ADDR=0),$(TIMEOUT=1))CLCAM_HSKIP" )
-	info( archiveFields,  "VAL" )
 }
 
 record( longout, "$(P)$(R)CamHSize" )
 {
 	field( DTYP, "asynInt32" )
 	field( OUT,  "@asyn($(PORT),$(ADDR=0),$(TIMEOUT=1))CLCAM_HSIZE" )
-	info( archiveFields,  "VAL" )
 }
 
 record( longout, "$(P)$(R)CamVSkip" )
 {
 	field( DTYP, "asynInt32" )
 	field( OUT,  "@asyn($(PORT),$(ADDR=0),$(TIMEOUT=1))CLCAM_VSKIP" )
-	info( archiveFields,  "VAL" )
 }
 
 record( longout, "$(P)$(R)CamVSize" )
 {
 	field( DTYP, "asynInt32" )
 	field( OUT,  "@asyn($(PORT),$(ADDR=0),$(TIMEOUT=1))CLCAM_VSIZE" )
-	info( archiveFields,  "VAL" )
 }
 
 record( mbbo, "$(P)$(R)CamTrigLevel" )
@@ -488,7 +472,7 @@ record( ao, "$(CAM):CamTrigDelay" )
 	field( PINI, "YES" )
 	field( FLNK, "$(CAM):CamTrigDelayCalc" )
 	info( autosaveFields, "HHSV HIGH HIHI HSV LLSV LOLO LOW LSV     DESC HOPR LOPR PREC VAL" )
-	info( archiveFields,  "HHSV HIGH HIHI HSV LLSV LOLO LOW LSV EGU DESC HOPR LOPR PREC VAL" )
+	info( archiveFields,  "EGU HOPR LOPR VAL" )
 }
 
 # This record calculates the trigger delay and writes it to the
@@ -504,7 +488,7 @@ record( calcout, "$(CAM):CamTrigDelayCalc" )
 	field( EGU,  "1/125MHz" )
 	field( PREC, "4" )
 	info( autosaveFields, "HHSV HIGH HIHI HSV LLSV LOLO LOW LSV     DESC PREC" )
-	info( archiveFields,  "HHSV HIGH HIHI HSV LLSV LOLO LOW LSV EGU DESC PREC VAL" )
+	info( archiveFields,  "EGU VAL" )
 }
 
 record( longout, "$(CAM):CamDelayScale" )
@@ -514,7 +498,7 @@ record( longout, "$(CAM):CamDelayScale" )
 	field( PINI, "YES" )
 	field( FLNK, "$(CAM):CamTrigDelayCalc" )
 	info( autosaveFields, "" )
-	info( archiveFields,  "EGU DESC VAL" )
+	info( archiveFields,  "EGU VAL" )
 }
 
 record( calcout, "$(CAM):CamTrigDelay_RBV" )
@@ -531,7 +515,7 @@ record( calcout, "$(CAM):CamTrigDelay_RBV" )
 #	field( OUT,  "$(CAM):CamTrigDelay PP MS" )
 #	field( PINI, "YES"
 	info( autosaveFields, "" )
-	info( archiveFields,  "EGU DESC VAL" )
+	info( archiveFields,  "EGU VAL" )
 }
 
 record( longout, "$(P)$(R)CamEventCode" )
@@ -541,7 +525,7 @@ record( longout, "$(P)$(R)CamEventCode" )
 	field( PINI, "YES" )
 	info( autosaveFields, "HHSV HIGH HIHI HSV LLSV LOLO LOW LSV EGU DESC HOPR LOPR VAL" )
 	info( autosaveFields_pass1, "VAL" )
-	info( archiveFields,  "HHSV HIGH HIHI HSV LLSV LOLO LOW LSV EGU DESC HOPR LOPR VAL" )
+	info( archiveFields,  "VAL" )
 }
 
 # Put monitors
@@ -555,7 +539,7 @@ record( longin, "$(P)$(R)CamEventCode_RBV" )
 {
 	field( INP,  "$(PGP):Ch$(PGP_LANE):EvrV2:RateSel_RBV CPP MS" )
 	info( autosaveFields, "HHSV HIGH HIHI HSV LLSV LOLO LOW LSV EGU DESC" )
-	info( archiveFields,  "HHSV HIGH HIHI HSV LLSV LOLO LOW LSV EGU DESC VAL" )
+	info( archiveFields,  "VAL" )
 }
 
 record( ai, "$(P)$(R)CamRepRate_RBV" )
@@ -565,7 +549,7 @@ record( ai, "$(P)$(R)CamRepRate_RBV" )
 	field( PREC, "1" )
 	field( FLNK, "$(P)$(R)CamRepDur" )
 	info( autosaveFields, "HHSV HIGH HIHI HSV LLSV LOLO LOW LSV EGU DESC PREC" )
-	info( archiveFields,  "HHSV HIGH HIHI HSV LLSV LOLO LOW LSV EGU DESC PREC VAL" )
+	info( archiveFields,  "VAL" )
 }
 record( calc, "$(P)$(R)CamRepDur" )
 {
@@ -574,7 +558,7 @@ record( calc, "$(P)$(R)CamRepDur" )
 	field( EGU,  "sec" )
 	field( PREC, "3" )
 	info( autosaveFields, "HHSV HIGH HIHI HSV LLSV LOLO LOW LSV EGU DESC PREC" )
-	info( archiveFields,  "HHSV HIGH HIHI HSV LLSV LOLO LOW LSV EGU DESC PREC VAL" )
+	info( archiveFields,  "EGU VAL" )
 }
 
 #
@@ -599,13 +583,13 @@ record( longout, "$(P)$(R)BeamEventCode" )
 	field( OUT,  "$(P)$(R)CamEventCode CPP NMS" )
 	field( DISA, "1" )
 	info( autosaveFields, "HHSV HIGH HIHI HSV LLSV LOLO LOW LSV EGU DESC HOPR LOPR" )
-	info( archiveFields,  "HHSV HIGH HIHI HSV LLSV LOLO LOW LSV EGU DESC HOPR LOPR VAL" )
+	info( archiveFields,  "VAL" )
 }
 record( longin, "$(P)$(R)BeamEventCode_RBV" )
 {
 	field( INP,  "$(P)$(R)CamEventCode_RBV CPP MS" )
 	info( autosaveFields, "HHSV HIGH HIHI HSV LLSV LOLO LOW LSV EGU DESC HOPR LOPR" )
-	info( archiveFields,  "HHSV HIGH HIHI HSV LLSV LOLO LOW LSV EGU DESC HOPR LOPR VAL" )
+	info( archiveFields,  "VAL" )
 }
 record( ai, "$(P)$(R)BeamRepRate_RBV" )
 {
@@ -614,7 +598,7 @@ record( ai, "$(P)$(R)BeamRepRate_RBV" )
 	field( PREC, "1" )
 	field( FLNK, "$(P)$(R)BeamRepDur" )
 	info( autosaveFields, "HHSV HIGH HIHI HSV LLSV LOLO LOW LSV EGU DESC PREC" )
-	info( archiveFields,  "HHSV HIGH HIHI HSV LLSV LOLO LOW LSV EGU DESC PREC VAL" )
+	info( archiveFields,  "VAL" )
 }
 record( calc, "$(P)$(R)BeamRepDur" )
 {
@@ -623,7 +607,7 @@ record( calc, "$(P)$(R)BeamRepDur" )
 	field( EGU,  "sec" )
 	field( PREC, "3" )
 	info( autosaveFields, "HHSV HIGH HIHI HSV LLSV LOLO LOW LSV EGU DESC PREC" )
-	info( archiveFields,  "HHSV HIGH HIHI HSV LLSV LOLO LOW LSV EGU DESC PREC VAL" )
+	info( archiveFields,  "VAL" )
 }
 
 
@@ -679,7 +663,6 @@ record( longout, "$(P)$(R)SyncTotalCnt" )
 	field( DTYP, "asynInt32" )
 	field( OUT,  "@asyn($(PORT),$(ADDR=0),$(TIMEOUT=1))SYNC_TOTAL" )
     field( SCAN, "I/O Intr" )
-	info( archiveFields,  "VAL" )
 }
 
 # Holds the total number of images discarded by Bad Timestamp
