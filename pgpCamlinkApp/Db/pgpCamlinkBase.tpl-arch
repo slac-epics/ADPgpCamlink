@@ -1,0 +1,36 @@
+# pgpCamlinkBase.tpl-arch
+$(P)$(R)CamAcquireTimeCalc.VAL	1	monitor
+$(P)$(R)CamHwHROI_RBV.VAL	1	monitor
+$(P)$(R)CamHwVROI_RBV.VAL	1	monitor
+$(P)$(R)CamMode_RBV.VAL	1	monitor
+$(P)$(R)CamClass.VAL	1	monitor
+$(P)$(R)CamDrvVersion.VAL	1	monitor
+$(P)$(R)PgpAxiVersion.VAL	1	monitor
+$(P)$(R)CamLibVersion.VAL	1	monitor
+$(P)$(R)CamInfo.VAL	1	monitor
+$(P)$(R)CamTrigLevel.VAL
+$(P)$(R)CamTriggerMode.DESC
+$(P)$(R)CamTriggerMode_RBV.DESC
+$(CAM):CamTrigDelay.EGU
+$(CAM):CamTrigDelay.HOPR
+$(CAM):CamTrigDelay.LOPR
+$(CAM):CamTrigDelay.VAL
+$(CAM):CamTrigDelayCalc.EGU
+$(CAM):CamTrigDelayCalc.VAL
+$(CAM):CamDelayScale.EGU
+$(CAM):CamDelayScale.VAL
+$(CAM):CamTrigDelay_RBV.EGU
+$(CAM):CamTrigDelay_RBV.VAL
+$(P)$(R)CamEventCode.VAL
+$(P)$(R)CamEventCode_RBV.VAL
+$(P)$(R)CamRepRate_RBV.VAL
+$(P)$(R)CamRepDur.VAL
+$(P)$(R)BeamEventCode.VAL
+$(P)$(R)BeamEventCode_RBV.VAL
+$(P)$(R)BeamRepRate_RBV.VAL
+$(P)$(R)BeamRepDur.VAL
+$(P)$(R)SyncTotalCnt.VAL
+$(P)$(R)SyncBadTSCnt.VAL
+$(P)$(R)SyncBadSyncCnt.VAL
+$(P)$(R)PgpCoreFpgaVersion.VAL
+$(P)$(R)PgpFebFpgaVersion.VAL

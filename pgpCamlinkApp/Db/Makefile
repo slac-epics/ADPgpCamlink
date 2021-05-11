@@ -27,6 +27,7 @@ DB += CamCannedSequences.db
 
 # Install archive files
 #ARCHIVE += foo.tpl-arch
+ARCHIVE += pgpCamlinkBase.tpl-arch
 
 # Install autosave files
 #REQ     += foo.req
