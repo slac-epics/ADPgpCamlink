@@ -75,28 +75,44 @@ const char * modelId2String( uint32_t modelId )
 
 void pgpRogueLib::ResetCounters( )
 {
-	// TODO: Add toggle option to setVariable
-	setVariable( "ClinkDevRoot.ClinkPcie.Hsio.PgpMon[0].Ctrl.CountReset", 1 );
-	setVariable( "ClinkDevRoot.ClinkPcie.Hsio.PgpMon[0].Ctrl.CountReset", 0 );
-
-	if ( FebReady(0) )
+	char	varPath[256];
+	for ( size_t iLane = 0; iLane < N_AXI_LANES; iLane++ )
 	{
-		setVariable( "ClinkDevRoot.ClinkFeb[0].ClinkTop.CntRst", 1 );
-		setVariable( "ClinkDevRoot.ClinkFeb[0].ClinkTop.CntRst", 0 );
+		// TODO: Add toggle option to setVariable
+		const char			*	pszCountReset = "ClinkDevRoot.ClinkPcie.Hsio.PgpMon[%u].Ctrl.CountReset";
+		snprintf( varPath, 256, pszCountReset, iLane );
+		setVariable( varPath, 1 );
+		setVariable( varPath, 0 );
 
-		setVariable( "ClinkDevRoot.ClinkFeb[0].ClinkTop.Ch[0].CntRst", 1 );
-		setVariable( "ClinkDevRoot.ClinkFeb[0].ClinkTop.Ch[0].CntRst", 0 );
+		if ( FebReady(iLane) )
+		{
+			const char			*	pszClinkTopCntRst = "ClinkDevRoot.ClinkFeb[%u].ClinkTop.CntRst";
+			snprintf( varPath, 256, pszClinkTopCntRst, iLane );
+			setVariable( varPath, 1 );
+			setVariable( varPath, 0 );
 
-		setVariable( "ClinkDevRoot.ClinkFeb[0].TrigCtrl[0].CntRst", 1 );
-		setVariable( "ClinkDevRoot.ClinkFeb[0].TrigCtrl[0].CntRst", 0 );
+			const char			*	pszClinkChCntRst = "ClinkDevRoot.ClinkFeb[%u].ClinkTop.Ch[0].CntRst";
+			snprintf( varPath, 256,	pszClinkChCntRst, iLane );
+			setVariable( varPath, 1 );
+			setVariable( varPath, 0 );
 
-		setVariable( "ClinkDevRoot.ClinkFeb[0].PgpMon[0].Ctrl.CountReset", 1 );
-		setVariable( "ClinkDevRoot.ClinkFeb[0].PgpMon[0].Ctrl.CountReset", 0 );
+			const char			*	pszClinkTrigCtrlCntRst = "ClinkDevRoot.ClinkFeb[%u].TrigCtrl[0].CntRst";
+			snprintf( varPath, 256,	pszClinkTrigCtrlCntRst, iLane );
+			setVariable( varPath, 1 );
+			setVariable( varPath, 0 );
+
+			const char			*	pszClinkPgpMonCntRst = "ClinkDevRoot.ClinkFeb[%u].PgpMon[0].CountReset";
+			snprintf( varPath, 256,	pszClinkPgpMonCntRst, iLane );
+			setVariable( varPath, 1 );
+			setVariable( varPath, 0 );
+		}
+
+		// This resets   ClinkDevRoot.ClinkPcie.Application.AppLane[i].EventBuilder.DataCnt[0]
+		const char * pszEventBuilderReset = "ClinkDevRoot.ClinkPcie.Application.AppLane[%u].EventBuilder.CntRst";
+		snprintf( varPath, 256, pszEventBuilderReset, iLane );
+		setVariable( varPath, 1 );
+		setVariable( varPath, 0 );
 	}
-
-	// This resets   ClinkDevRoot.ClinkPcie.Application.AppLane[0].EventBuilder.DataCnt[0]
-	setVariable( "ClinkDevRoot.ClinkPcie.Application.AppLane[0].EventBuilder.CntRst", 1 );
-	setVariable( "ClinkDevRoot.ClinkPcie.Application.AppLane[0].EventBuilder.CntRst", 0 );
 
 	setVariable( "ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TimingFrameRx.ClearRxCounters", 1 );
 	setVariable( "ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TimingFrameRx.ClearRxCounters", 0 );
@@ -321,10 +337,8 @@ pgpRogueLib::pgpRogueLib(
 	{
 		if ( FebReady(0) )
 		{
-			printf( "%s: Set FEB 0 BaudRate and Pll POWER\n", functionName );
 			// Set FEB BaudRate
-			setVariable( "ClinkDevRoot.ClinkFeb[0].ClinkTop.Ch[0].BaudRate", 57600 );
-			setVariable( "ClinkDevRoot.ClinkFeb[0].ClinkTop.Ch[1].BaudRate", 9600 );
+			//setVariable( "ClinkDevRoot.ClinkFeb[0].ClinkTop.Ch[0].BaudRate", 57600 );
 
 			// Power up FEB Pll's
 			setVariable( "ClinkDevRoot.ClinkFeb[0].ClinkTop.Pll[0].POWER", 65535 );
@@ -334,8 +348,7 @@ pgpRogueLib::pgpRogueLib(
 
 		if ( FebReady(1) )
 		{
-			setVariable( "ClinkDevRoot.ClinkFeb[1].ClinkTop.Ch[0].BaudRate", 57600 );
-			setVariable( "ClinkDevRoot.ClinkFeb[1].ClinkTop.Ch[1].BaudRate", 9600 );
+			//setVariable( "ClinkDevRoot.ClinkFeb[1].ClinkTop.Ch[0].BaudRate", 57600 );
 			setVariable( "ClinkDevRoot.ClinkFeb[1].ClinkTop.Pll[0].POWER", 65535 );
 			setVariable( "ClinkDevRoot.ClinkFeb[1].ClinkTop.Pll[1].POWER", 65535 );
 			setVariable( "ClinkDevRoot.ClinkFeb[1].ClinkTop.Pll[2].POWER", 65535 );
@@ -343,8 +356,7 @@ pgpRogueLib::pgpRogueLib(
 
 		if ( FebReady(2) )
 		{
-			setVariable( "ClinkDevRoot.ClinkFeb[2].ClinkTop.Ch[0].BaudRate", 57600 );
-			setVariable( "ClinkDevRoot.ClinkFeb[2].ClinkTop.Ch[1].BaudRate", 9600 );
+			//setVariable( "ClinkDevRoot.ClinkFeb[2].ClinkTop.Ch[0].BaudRate", 57600 );
 			setVariable( "ClinkDevRoot.ClinkFeb[2].ClinkTop.Pll[0].POWER", 65535 );
 			setVariable( "ClinkDevRoot.ClinkFeb[2].ClinkTop.Pll[1].POWER", 65535 );
 			setVariable( "ClinkDevRoot.ClinkFeb[2].ClinkTop.Pll[2].POWER", 65535 );
@@ -352,8 +364,7 @@ pgpRogueLib::pgpRogueLib(
 
 		if ( FebReady(3) )
 		{
-			setVariable( "ClinkDevRoot.ClinkFeb[3].ClinkTop.Ch[0].BaudRate", 57600 );
-			setVariable( "ClinkDevRoot.ClinkFeb[3].ClinkTop.Ch[1].BaudRate", 9600 );
+			//setVariable( "ClinkDevRoot.ClinkFeb[3].ClinkTop.Ch[0].BaudRate", 57600 );
 			setVariable( "ClinkDevRoot.ClinkFeb[3].ClinkTop.Pll[0].POWER", 65535 );
 			setVariable( "ClinkDevRoot.ClinkFeb[3].ClinkTop.Pll[1].POWER", 65535 );
 			setVariable( "ClinkDevRoot.ClinkFeb[3].ClinkTop.Pll[2].POWER", 65535 );
@@ -364,6 +375,7 @@ pgpRogueLib::pgpRogueLib(
 	ConfigureLclsTimingV1();
 
 	LoadConfigFile( "db/defaults_LCLS-I.txt", 0.003 );
+#if 1 // Don't think we need these Opal specific config files
 	if ( FebReady(0) )
 		LoadConfigFile( "db/cfgFeb0Opal1000.txt", 0.002 );
 	if ( FebReady(1) )
@@ -372,6 +384,7 @@ pgpRogueLib::pgpRogueLib(
 		LoadConfigFile( "db/cfgFeb2Opal1000.txt", 0.002 );
 	if ( FebReady(3) )
 		LoadConfigFile( "db/cfgFeb3Opal1000.txt", 0.002 );
+#endif
 
 	// Misc python resets, etc
 #if 1
@@ -450,47 +463,51 @@ pgpRogueLib::~pgpRogueLib()
 void pgpRogueLib::ConfigureLclsTimingV1()
 {
 //	const char * functionName = "ConfigureLclsTimingV1";
-//	const bool		bOne	= 1;
-	const bool		bZero	= 0;
-	const uint64_t	lOne	= 1L;
-	const uint64_t	lZero	= 0L;
 	const struct timespec oneSec	= { 1, 0L };
 	const struct timespec twoMs		= { 0, 2000000L };
 
-	writeVarPath( "ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TimingPhyMonitor.UseMiniTpg",	bZero );
+	setVariable( "ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TimingPhyMonitor.UseMiniTpg", 0 );
 	printf( "Configuring for LCLS-I timing ...\n" );
-	writeVarPath( "ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TimingFrameRx.ModeSelEn",		lZero	);
-	writeVarPath( "ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TimingFrameRx.RxPllReset",		lOne	);
+	setVariable( "ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TimingFrameRx.ModeSelEn", 0 );
+
+	// Mask off XPM Timing message port
+	// Not implemented for LCLS-I mode so blocks data stream
+	setVariable( "ClinkDevRoot.ClinkPcie.Application.AppLane[0].EventBuilder.Bypass", 4 );
+	setVariable( "ClinkDevRoot.ClinkPcie.Application.AppLane[1].EventBuilder.Bypass", 4 );
+	setVariable( "ClinkDevRoot.ClinkPcie.Application.AppLane[2].EventBuilder.Bypass", 4 );
+	setVariable( "ClinkDevRoot.ClinkPcie.Application.AppLane[3].EventBuilder.Bypass", 4 );
+
+	setVariable( "ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TimingFrameRx.RxPllReset", 1	);
 	nanosleep( &oneSec, NULL );
 
-	writeVarPath( "ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TimingFrameRx.RxPllReset",		lZero	);
+	setVariable( "ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TimingFrameRx.RxPllReset", 0	);
 	nanosleep( &twoMs, NULL );
-	writeVarPath( "ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TimingFrameRx.ClkSel",			lZero	);
+	setVariable( "ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TimingFrameRx.ClkSel", 0	);
 	nanosleep( &twoMs, NULL );
-	writeVarPath( "ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TimingFrameRx.C_RxReset",		lOne	);
+	setVariable( "ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TimingFrameRx.C_RxReset", 1	);
 	nanosleep( &twoMs, NULL );
-	writeVarPath( "ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TimingFrameRx.C_RxReset",		lZero	);
+	setVariable( "ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TimingFrameRx.C_RxReset", 0	);
 	nanosleep( &oneSec, NULL );
 
 	WaitForRxLinkUp( "ConfigureLclsTimingV1: Wait 1" );
 
 	// Reset latching RxDown flag
-	writeVarPath( "ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TimingFrameRx.RxDown",		lZero	);
+	setVariable( "ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TimingFrameRx.RxDown", 0	);
 
 	if ( bUseMiniTpg )
 	{
 		// TODO: Export bUseMiniTpg as iocsh variable
-		writeVarPath( "ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TimingPhyMonitor.UseMiniTpg",	bUseMiniTpg );
+		setVariable( "ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TimingPhyMonitor.UseMiniTpg",	bUseMiniTpg );
 	}
 
 	WaitForRxLinkUp( "ConfigureLclsTimingV1: Wait 2" );
-	//ResetCounters();
 	printf( "Configured for LCLS-I timing\n" );
+	ResetCounters();
 }
 
 bool pgpRogueLib::FebReady( size_t iFeb )
 {
-	const char	*	pszVarPathRxRemLinkReady	= "ClinkDevRoot.ClinkFeb[%1u].PgpMon[0].RxRemLinkReady";
+	const char	*	pszVarPathRxRemLinkReady	= "ClinkDevRoot.ClinkPcie.Hsio.PgpMon[%u].RxStatus.RemRxLinkReady";
 	char			febVarPath[256];
 	bool			febReady	= false;
 	snprintf( febVarPath, 256, pszVarPathRxRemLinkReady, iFeb );
@@ -500,7 +517,6 @@ bool pgpRogueLib::FebReady( size_t iFeb )
 
 void pgpRogueLib::FebFpgaReload()
 {
-	const uint64_t	lOne	= 1L;
 	const char * pszVarPathFpgaReload		= "ClinkDevRoot.ClinkFeb[%1u].AxiVersion.FpgaReload";
 
 	bool	febFound[N_AXI_LANES] = { false, false, false, false };
@@ -512,7 +528,7 @@ void pgpRogueLib::FebFpgaReload()
 			febFound[lane] = true;
 			printf( "Initiating Feb[%zu] FpgaReload\n", lane );
 			snprintf( febVarPath, 256, pszVarPathFpgaReload, lane );
-			writeVarPath( febVarPath, lOne );
+			setVariable( febVarPath, 1 );
 		}
 	}
 
@@ -706,7 +722,7 @@ void pgpRogueLib::LoadConfigFile( const char * pszFilePath, double stepDelay )
 			}
 			if( nScan == 2 )
 			{
-				setVariable( varPath, dValue, false );
+				setVariable( varPath, dValue );
 				nanosleep( &delay, NULL );
 				nValues++;
 			}
@@ -750,11 +766,11 @@ template<class R> int pgpRogueLib::readVarPath( const char * pszVarPath, R & val
 	}
 	catch ( rogue::GeneralError & e )
 	{
-		printf( "%s error: %s!\n", functionName, e.what() );
+		printf( "%s %s error: %s!\n", functionName, varPath.c_str(), e.what() );
 	}
 	catch ( std::exception & e )
 	{
-		printf( "%s error: %s!\n", functionName, e.what() );
+		printf( "%s %s error: %s!\n", functionName, varPath.c_str(), e.what() );
 	}
 	//pVar->setLogLevel( rogue::Logging::Warning );
 
@@ -896,6 +912,13 @@ void pgpRogueLib::dumpVariables( const char * pszFilePath, bool fWritableOnly, b
 	for ( mapVarPtr_t::const_iterator vit = mapVars.begin(); vit != mapVars.end(); ++vit )
 	{
 		rim::VariablePtr	pVar	= vit->second;
+		if ( !pVar )
+		{
+			printf( "%s: NULL pVar!\n", functionName );
+			continue;
+		}
+		std::string	pathName = pVar->path();
+		//printf( "%s: Checking %s for ClinkFeb...\n", functionName, pathName.c_str() );
 		if ( pVar->path().find( "ClinkFeb" ) != std::string::npos )
 		{
 			if ( pVar->path().find( "ClinkFeb[0]" ) != std::string::npos )
@@ -913,6 +936,7 @@ void pgpRogueLib::dumpVariables( const char * pszFilePath, bool fWritableOnly, b
 		}
 		try
 		{
+			//printf( "%s: Dumping %s\n", functionName, pVar->path().c_str() );
 			if ( not fWritableOnly or pVar->mode() != std::string("RO") )
 			{
 				//	pVar->setLogLevel( rogue::Logging::Debug );
@@ -942,7 +966,7 @@ void pgpRogueLib::dumpVariables( const char * pszFilePath, bool fWritableOnly, b
 	dumpFile.close();
 }
 
-void pgpRogueLib::setVariable( const char * pszVarPath, double value, bool verbose )
+void pgpRogueLib::setVariable( const char * pszVarPath, double value )
 {
 	uint64_t	u64Value;
 	int64_t		i64Value;
@@ -955,8 +979,8 @@ void pgpRogueLib::setVariable( const char * pszVarPath, double value, bool verbo
 	pVar = getVariable( varPath );
 	if ( pVar )
 	{
-		if ( verbose )
-			printf( "%s%u: ", modelId2String( pVar->modelId() ), pVar->bitTotal() );
+		// Removed verbose printf option here
+		// Use DEBUG_PGP_ROGUE=3 for writeVarPath diagnostics
 		switch ( pVar->modelId() )
 		{
 		case rim::Bytes:

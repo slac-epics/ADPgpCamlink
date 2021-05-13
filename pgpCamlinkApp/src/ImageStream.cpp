@@ -95,6 +95,12 @@ void ImageStream::acceptFrame ( rogue::interfaces::stream::FramePtr frame )
 			if ( DEBUG_PGP_CAMLINK >= 4 )
 				printf( "ImageStream::acceptFrame TDEST 2 SubFrame %d, size %u\n", sf, size );
 		}
+		else if ( data->dest() == 3 ) // new Timing msg created by Matt
+		{	// TDEST 3 is XPM Timing
+			if ( DEBUG_PGP_CAMLINK >= 4 )
+				printf( "ImageStream::acceptFrame TDEST 3 SubFrame %d, Event: \n", sf );
+			//it = data->begin();
+		}
 	}
 
 	// Process image

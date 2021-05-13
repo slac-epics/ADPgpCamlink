@@ -294,7 +294,7 @@ int rogueDev::SetPgpVariable( const char * pszVarPath, double value )
 		printf( "%s error: %s PGP Dev not configured!\n", functionName, m_RogueName.c_str() );
 		return -1;
 	}
-	m_pRogueLib->setVariable( pszVarPath, value, false );
+	m_pRogueLib->setVariable( pszVarPath, value );
 	return 0;
 }
 
