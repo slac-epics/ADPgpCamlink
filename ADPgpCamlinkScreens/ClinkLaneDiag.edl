@@ -3,8 +3,8 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 19
-y 210
+x 628
+y 227
 w 1100
 h 900
 font "helvetica-medium-r-8.0"
@@ -309,7 +309,7 @@ release 0
 x 356
 y 652
 w 336
-h 88
+h 116
 lineColor index 3
 fill
 fillColor index 3
@@ -1259,8 +1259,8 @@ beginObjectProperties
 major 4
 minor 7
 release 0
-x 572
-y 280
+x 576
+y 716
 w 76
 h 18
 controlPv "$(P)$(R)EventBuilder:Blowoff"
@@ -1288,8 +1288,8 @@ beginObjectProperties
 major 4
 minor 7
 release 0
-x 484
-y 280
+x 488
+y 716
 w 80
 h 20
 controlPv "$(P)$(R)EventBuilder:Blowoff_RBV"
@@ -1312,8 +1312,8 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 356
-y 280
+x 360
+y 716
 w 120
 h 20
 font "helvetica-medium-r-12.0"
@@ -2729,5 +2729,78 @@ onLabel "Resetting"
 offLabel "Reset Counts"
 3d
 font "helvetica-medium-r-12.0"
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 576
+y 740
+w 76
+h 14
+controlPv "$(P)$(R)EventBuilder:Bypass"
+format "decimal"
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+fgColor index 25
+fgAlarm
+bgColor index 5
+editable
+autoHeight
+limitsFromDb
+nullColor index 40
+smartRefresh
+fastUpdate
+useHexPrefix
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 488
+y 740
+w 80
+h 20
+controlPv "$(P)$(R)EventBuilder:Bypass_RBV"
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+fgColor index 15
+fgAlarm
+bgColor index 12
+limitsFromDb
+nullColor index 40
+smartRefresh
+newPos
+objType "monitors"
+noExecuteClipMask
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 360
+y 740
+w 120
+h 20
+font "helvetica-medium-r-12.0"
+fontAlign "right"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "Bypass"
+}
 endObjectProperties
 

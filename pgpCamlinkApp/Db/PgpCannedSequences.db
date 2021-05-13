@@ -29,6 +29,12 @@ record( seq, "$(PGP):SeqLcls1Timing" )
 	# Reset the latching register
 	field( DLY8, ".1") field( DOL8, "0" ) field( LNK8, "$(PGP):Timing:RxDown        PP NMS" )
 
+	# Set EventBuilder Bypass to mask out XPM Timing Message for LCLS1 timing 
+	field( DLY9, "0" ) field( DOL9, "4" ) field( LNK9, "$(PGP):Ch0:EventBuilder:Bypass  PP NMS" )
+	field( DLYA, "0" ) field( DOLA, "4" ) field( LNKA, "$(PGP):Ch1:EventBuilder:Bypass  PP NMS" )
+	field( DLYB, "0" ) field( DOLB, "4" ) field( LNKB, "$(PGP):Ch2:EventBuilder:Bypass  PP NMS" )
+	field( DLYC, "0" ) field( DOLC, "4" ) field( LNKC, "$(PGP):Ch3:EventBuilder:Bypass  PP NMS" )
+
 	info( autosaveFields, "DESC" )
 }
 
@@ -83,6 +89,12 @@ record( seq, "$(PGP):SeqLcls2Timing" )
 
 	# Reset the latching register
 	field( DLY8, ".1") field( DOL8, "0" ) field( LNK8, "$(PGP):Timing:RxDown        PP NMS" )
+
+	# Set EventBuilder Bypass to unmask XPM Timing Message for LCLS2 timing 
+	field( DLY9, "0" ) field( DOL9, "0" ) field( LNK9, "$(PGP):Ch0:EventBuilder:Bypass  PP NMS" )
+	field( DLYA, "0" ) field( DOLA, "0" ) field( LNKA, "$(PGP):Ch1:EventBuilder:Bypass  PP NMS" )
+	field( DLYB, "0" ) field( DOLB, "0" ) field( LNKB, "$(PGP):Ch2:EventBuilder:Bypass  PP NMS" )
+	field( DLYC, "0" ) field( DOLC, "0" ) field( LNKC, "$(PGP):Ch3:EventBuilder:Bypass  PP NMS" )
 
 	info( autosaveFields, "DESC" )
 	#	info( autosaveFields, "DESC DOL1 DLY1 DOL2 DLY2 DOL3 DLY3 DOL4 DLY4 DOL5 DLY5 DOL6 DLY6 DOL7 DLY7 DOL8 DLY8 DOL9 DLY9 DOLA DLYA" )
