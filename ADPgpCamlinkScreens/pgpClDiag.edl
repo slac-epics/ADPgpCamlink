@@ -3,8 +3,8 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 367
-y 284
+x 97
+y 110
 w 900
 h 800
 font "helvetica-medium-r-8.0"
@@ -1767,7 +1767,7 @@ major 4
 minor 7
 release 0
 x 484
-y 188
+y 120
 w 80
 h 20
 controlPv "$(PGP):Timing:FidCount_RBV"
@@ -1792,7 +1792,7 @@ major 4
 minor 1
 release 1
 x 356
-y 188
+y 120
 w 120
 h 20
 font "helvetica-medium-r-12.0"
@@ -1812,7 +1812,7 @@ major 4
 minor 7
 release 0
 x 484
-y 164
+y 96
 w 80
 h 20
 controlPv "$(PGP):Timing:RxLinkUp_RBV"
@@ -1837,7 +1837,7 @@ major 4
 minor 1
 release 1
 x 356
-y 164
+y 96
 w 120
 h 20
 font "helvetica-medium-r-12.0"
@@ -1876,8 +1876,8 @@ beginObjectProperties
 major 4
 minor 7
 release 0
-x 572
-y 188
+x 484
+y 144
 w 80
 h 20
 controlPv "$(PGP):Timing:sofCount_RBV"
@@ -1901,8 +1901,8 @@ beginObjectProperties
 major 4
 minor 7
 release 0
-x 656
-y 188
+x 484
+y 168
 w 80
 h 20
 controlPv "$(PGP):Timing:eofCount_RBV"
@@ -2423,6 +2423,182 @@ displayFileName {
 }
 symbols {
   0 "IOC=$(IOC)"
+}
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 140
+y 428
+w 80
+h 20
+controlPv "$(P)$(R)Feb$(CH):FCh0:TrigRate_RBV"
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+fgColor index 15
+fgAlarm
+bgColor index 12
+limitsFromDb
+nullColor index 40
+smartRefresh
+showUnits
+newPos
+objType "monitors"
+noExecuteClipMask
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 12
+y 428
+w 120
+h 20
+font "helvetica-medium-r-12.0"
+fontAlign "right"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "FCh0:TrigRate"
+}
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 140
+y 404
+w 80
+h 20
+controlPv "$(P)$(R)Feb$(CH):FCh0:TrigCnt_RBV"
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+fgColor index 15
+fgAlarm
+bgColor index 12
+limitsFromDb
+nullColor index 40
+smartRefresh
+showUnits
+newPos
+objType "monitors"
+noExecuteClipMask
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 12
+y 404
+w 120
+h 20
+font "helvetica-medium-r-12.0"
+fontAlign "right"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "FCh0:TrigCnt"
+}
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 484
+y 72
+w 80
+h 20
+controlPv "$(P)$(R)EventBuilder:DataCnt1_RBV"
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+fgColor index 15
+fgAlarm
+bgColor index 12
+limitsFromDb
+nullColor index 40
+smartRefresh
+useHexPrefix
+showUnits
+newPos
+objType "monitors"
+noExecuteClipMask
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 356
+y 72
+w 120
+h 20
+font "helvetica-medium-r-12.0"
+fontAlign "right"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "DataCnt1"
+}
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 356
+y 168
+w 120
+h 20
+font "helvetica-medium-r-12.0"
+fontAlign "right"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "Timing:eofCount"
+}
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 356
+y 144
+w 120
+h 20
+font "helvetica-medium-r-12.0"
+fontAlign "right"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "Timing:sofCount"
 }
 endObjectProperties
 

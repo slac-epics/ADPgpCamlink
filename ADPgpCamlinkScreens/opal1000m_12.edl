@@ -3,8 +3,8 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 199
-y 580
+x 18
+y 408
 w 700
 h 579
 font "helvetica-medium-r-12.0"
@@ -426,7 +426,7 @@ major 4
 minor 7
 release 0
 x 588
-y 188
+y 116
 w 88
 h 20
 controlPv "$(P)$(R)OpalDefPixelCorr_RBV"
@@ -451,7 +451,7 @@ major 4
 minor 0
 release 0
 x 488
-y 188
+y 116
 w 92
 h 20
 fgColor index 25
@@ -471,7 +471,7 @@ major 4
 minor 1
 release 1
 x 348
-y 188
+y 116
 w 132
 h 20
 font "helvetica-medium-r-12.0"
@@ -533,7 +533,7 @@ major 4
 minor 7
 release 0
 x 588
-y 164
+y 92
 w 88
 h 20
 controlPv "$(P)$(R)OpalElapsedTime_RBV"
@@ -559,7 +559,7 @@ major 4
 minor 1
 release 1
 x 348
-y 164
+y 92
 w 232
 h 20
 font "helvetica-medium-r-12.0"
@@ -952,7 +952,7 @@ major 4
 minor 7
 release 0
 x 588
-y 212
+y 140
 w 88
 h 20
 controlPv "$(P)$(R)OpalDefPixelTest_RBV"
@@ -977,7 +977,7 @@ major 4
 minor 0
 release 0
 x 488
-y 212
+y 140
 w 92
 h 20
 fgColor index 25
@@ -997,7 +997,7 @@ major 4
 minor 1
 release 1
 x 348
-y 212
+y 140
 w 132
 h 20
 font "helvetica-medium-r-12.0"
@@ -1491,60 +1491,6 @@ beginObjectProperties
 major 4
 minor 7
 release 0
-x 260
-y 492
-w 88
-h 20
-controlPv "$(P)$(R)OpalPulseAcquireTime"
-format "float"
-font "helvetica-medium-r-12.0"
-fontAlign "center"
-fgColor index 15
-fgAlarm
-bgColor index 12
-limitsFromDb
-nullColor index 40
-smartRefresh
-useHexPrefix
-showUnits
-newPos
-objType "monitors"
-noExecuteClipMask
-endObjectProperties
-
-# (Text Monitor)
-object activeXTextDspClass:noedit
-beginObjectProperties
-major 4
-minor 7
-release 0
-x 364
-y 492
-w 88
-h 20
-controlPv "$(P)$(R)OpalPulseAcquireTime_RBV"
-format "gfloat"
-font "helvetica-medium-r-12.0"
-fontAlign "center"
-fgColor index 15
-fgAlarm
-bgColor index 12
-limitsFromDb
-nullColor index 40
-smartRefresh
-useHexPrefix
-showUnits
-newPos
-objType "monitors"
-noExecuteClipMask
-endObjectProperties
-
-# (Text Monitor)
-object activeXTextDspClass:noedit
-beginObjectProperties
-major 4
-minor 7
-release 0
 x 588
 y 236
 w 88
@@ -1894,7 +1840,7 @@ major 4
 minor 7
 release 0
 x 588
-y 380
+y 184
 w 88
 h 20
 controlPv "$(P)$(R)OpalGain_RBV"
@@ -1919,7 +1865,7 @@ major 4
 minor 1
 release 1
 x 348
-y 380
+y 184
 w 132
 h 20
 font "helvetica-medium-r-12.0"
@@ -1938,7 +1884,7 @@ major 4
 minor 7
 release 0
 x 488
-y 380
+y 184
 w 92
 h 20
 controlPv "$(P)$(R)OpalGain"
@@ -2018,6 +1964,224 @@ fgColor index 14
 bgColor index 3
 value {
   "Vertical Remapping"
+}
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 588
+y 212
+w 88
+h 20
+controlPv "$(P)$(R)OpalAcquirePeriod_RBV"
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+fgColor index 15
+fgAlarm
+bgColor index 12
+limitsFromDb
+nullColor index 40
+smartRefresh
+useHexPrefix
+showUnits
+newPos
+objType "monitors"
+noExecuteClipMask
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 488
+y 212
+w 92
+h 20
+controlPv "$(P)$(R)OpalAcquirePeriod"
+format "decimal"
+font "helvetica-medium-r-12.0"
+fgColor index 25
+bgColor index 5
+editable
+motifWidget
+nullColor index 40
+smartRefresh
+fastUpdate
+useHexPrefix
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 348
+y 212
+w 132
+h 20
+font "helvetica-medium-r-12.0"
+fontAlign "right"
+fgColor index 14
+bgColor index 3
+value {
+  "Frame Period / 10us"
+}
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 192
+y 516
+w 64
+h 20
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 3
+value {
+  "Pulse"
+}
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 192
+y 468
+w 64
+h 20
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 3
+value {
+  "FreeRun"
+}
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 192
+y 492
+w 64
+h 20
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 3
+value {
+  "External"
+}
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 260
+y 492
+w 88
+h 20
+controlPv "$(P)$(R)OpalAcquirePeriod"
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+fgColor index 15
+fgAlarm
+bgColor index 12
+limitsFromDb
+nullColor index 40
+smartRefresh
+useHexPrefix
+showUnits
+newPos
+objType "monitors"
+noExecuteClipMask
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 364
+y 492
+w 88
+h 20
+controlPv "$(P)$(R)OpalAcquirePeriod_RBV"
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+fgColor index 15
+fgAlarm
+bgColor index 12
+limitsFromDb
+nullColor index 40
+smartRefresh
+useHexPrefix
+showUnits
+newPos
+objType "monitors"
+noExecuteClipMask
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 260
+y 516
+w 88
+h 20
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 3
+value {
+  "N/A"
+}
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 364
+y 516
+w 88
+h 20
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 3
+value {
+  "N/A"
 }
 endObjectProperties
 
