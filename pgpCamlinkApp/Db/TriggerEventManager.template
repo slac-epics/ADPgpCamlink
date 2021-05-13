@@ -7,21 +7,14 @@
 #	B				- Board number
 #	L				- Lane number
 #	F				- Feb number
-#	FL				- Feb lane
 #
 # Relationship between Lane number, Feb number, and Feb lane
 #	One Channel Feb Firmware
-#	L		F		FL
+#	L		F		Feb lane
 #	0		0		0
 #	1		1		0
 #	2		2		0
 #	3		3		0
-#	Two Channel Feb Firmware
-#	L		F		FL
-#	0		0		0
-#	1		0		1
-#	2		1		0
-#	3		1		1
 #
 # Optional macros
 #	TIMEOUT			- Defaults to 1 sec

@@ -34,10 +34,10 @@ record( longin, "$(P)$(R)Feb$(F):UpTime" )
 }
 
 # TODO Use mbbi w/ enumerated baud rates
-record( longin, "$(P)$(R)Feb$(F):FCh$(FL):BaudRate_RBV" )
+record( longin, "$(P)$(R)Feb$(F):FCh0:BaudRate_RBV" )
 {
 	field( DTYP, "RogueLI" )
-	field( INP,  "@B$(B) L$(L) ClinkDevRoot.ClinkFeb[$(F)].ClinkTop.Ch[$(FL)].BaudRate" )
+	field( INP,  "@B$(B) L$(L) ClinkDevRoot.ClinkFeb[$(F)].ClinkTop.Ch[0].BaudRate" )
 	field( EGU,  "bps" )
 	field( DISV, "0" )
 	field( SDIS, "$(P)$(R)PgpMon:RxRemLinkReady_RBV CP" )
@@ -46,14 +46,14 @@ record( longin, "$(P)$(R)Feb$(F):FCh$(FL):BaudRate_RBV" )
 
 # TODO Use mbbo w/ enumerated baud rates
 # TODO Move DOL to camera model template
-record( longout, "$(P)$(R)Feb$(F):FCh$(FL):BaudRate" )
+record( longout, "$(P)$(R)Feb$(F):FCh0:BaudRate" )
 {
 	field( DTYP, "RogueLO" )
-	field( OUT,  "@B$(B) L$(L) ClinkDevRoot.ClinkFeb[$(F)].ClinkTop.Ch[$(FL)].BaudRate" )
+	field( OUT,  "@B$(B) L$(L) ClinkDevRoot.ClinkFeb[$(F)].ClinkTop.Ch[0].BaudRate" )
 	field( DOL,  "57600" )
 	field( EGU,  "bps" )
 	field( PINI, "YES" )
-	field( FLNK, "$(P)$(R)Feb$(F):FCh$(FL):BaudRate_RBV" )
+	field( FLNK, "$(P)$(R)Feb$(F):FCh0:BaudRate_RBV" )
 	field( DISV, "0" )
 	field( SDIS, "$(P)$(R)PgpMon:RxRemLinkReady_RBV CP" )
 	info( autosaveFields, "" )
@@ -61,10 +61,10 @@ record( longout, "$(P)$(R)Feb$(F):FCh$(FL):BaudRate" )
 
 # CameraLink Mode
 # 0: 'Disable', 1: 'Base', 2: 'Medium', 3: 'Full', 4: 'Deca'
-record( mbbi, "$(P)$(R)Feb$(F):FCh$(FL):LinkMode_RBV" )
+record( mbbi, "$(P)$(R)Feb$(F):FCh0:LinkMode_RBV" )
 {
 	field( DTYP, "RogueMBBI" )
-	field( INP,  "@B$(B) L$(L) ClinkDevRoot.ClinkFeb[$(F)].ClinkTop.Ch[$(FL)].LinkMode" )
+	field( INP,  "@B$(B) L$(L) ClinkDevRoot.ClinkFeb[$(F)].ClinkTop.Ch[0].LinkMode" )
 	field( ZRVL, "0" ) field( ZRST, "Disable" )
 	field( ONVL, "1" ) field( ONST, "Base" )
 	field( TWVL, "2" ) field( TWST, "Medium" )
@@ -78,20 +78,20 @@ record( mbbi, "$(P)$(R)Feb$(F):FCh$(FL):LinkMode_RBV" )
 
 # CameraLink Mode
 # 0: 'Disable', 1: 'Base', 2: 'Medium', 3: 'Full', 4: 'Deca'
-#record( mbbo, "$(P)$(R)Feb$(F):FCh$(FL):LinkMode" )
+#record( mbbo, "$(P)$(R)Feb$(F):FCh0:LinkMode" )
 #{
 #	field( DTYP, "RogueMBBO" )
-#	field( OUT,  "@B$(B) L$(L) ClinkDevRoot.ClinkFeb[$(F)].ClinkTop.Ch[$(FL)].LinkMode" )
+#	field( OUT,  "@B$(B) L$(L) ClinkDevRoot.ClinkFeb[$(F)].ClinkTop.Ch[0].LinkMode" )
 ##	field( PINI, "YES" )
 #	field( ZRVL, "0" ) field( ZRST, "Disable" )
 #	field( ONVL, "1" ) field( ONST, "Base" )
 #	field( TWVL, "2" ) field( TWST, "Medium" )
 #	field( THVL, "3" ) field( THST, "Full" )
 #	field( FRVL, "4" ) field( FRST, "Deca" )
-#	field( FLNK, "$(P)$(R)Feb$(F):FCh$(FL):LinkMode_RBV" )
+#	field( FLNK, "$(P)$(R)Feb$(F):FCh0:LinkMode_RBV" )
 #}
 # TODO: Move DOL to camera model template file
-#record( mbbo, "$(P)$(R)Feb$(F):FCh$(FL):LinkMode" )
+#record( mbbo, "$(P)$(R)Feb$(F):FCh0:LinkMode" )
 #{
 #	field( DOL,  "Base" )
 #}
@@ -99,10 +99,10 @@ record( mbbi, "$(P)$(R)Feb$(F):FCh$(FL):LinkMode_RBV" )
 # Camlink Data Mode (# bits per pixel)
 # 0: 'None', 1: '8Bit', 2: '10Bit', 3: '12Bit',
 # 4: '14Bit', 5: '16Bit', 6: '24Bit', 7: '30Bit', 8: '36Bit' 
-record( mbbi, "$(P)$(R)Feb$(F):FCh$(FL):DataMode_RBV" )
+record( mbbi, "$(P)$(R)Feb$(F):FCh0:DataMode_RBV" )
 {
 	field( DTYP, "RogueMBBI" )
-	field( INP,  "@B$(B) L$(L) ClinkDevRoot.ClinkFeb[$(F)].ClinkTop.Ch[$(FL)].DataMode" )
+	field( INP,  "@B$(B) L$(L) ClinkDevRoot.ClinkFeb[$(F)].ClinkTop.Ch[0].DataMode" )
 	field( ZRVL, "0" ) field( ZRST, "None" )
 	field( ONVL, "1" ) field( ONST, "8 Bit" )
 	field( TWVL, "2" ) field( TWST, "10 Bit" )
@@ -121,10 +121,10 @@ record( mbbi, "$(P)$(R)Feb$(F):FCh$(FL):DataMode_RBV" )
 # Camlink Data Mode (# bits per pixel)
 # 0: 'None', 1: '8Bit', 2: '10Bit', 3: '12Bit',
 # 4: '14Bit', 5: '16Bit', 6: '24Bit', 7: '30Bit', 8: '36Bit' 
-#record( mbbo, "$(P)$(R)Feb$(F):FCh$(FL):DataMode" )
+#record( mbbo, "$(P)$(R)Feb$(F):FCh0:DataMode" )
 #{
 #	field( DTYP, "RogueMBBO" )
-#	field( OUT,  "@B$(B) L$(L) ClinkDevRoot.ClinkFeb[$(F)].ClinkTop.Ch[$(FL)].DataMode" )
+#	field( OUT,  "@B$(B) L$(L) ClinkDevRoot.ClinkFeb[$(F)].ClinkTop.Ch[0].DataMode" )
 ##	field( PINI, "YES" )
 #	field( ZRVL, "0" ) field( ZRST, "None" )
 #	field( ONVL, "1" ) field( ONST, "8 Bit" )
@@ -137,17 +137,17 @@ record( mbbi, "$(P)$(R)Feb$(F):FCh$(FL):DataMode_RBV" )
 #	field( EIVL, "8" ) field( EIST, "36 Bit" )
 #}
 # TODO: Move DOL to camera model template file
-#record( mbbo, "$(P)$(R)Feb$(F):FCh$(FL):DataMode" )
+#record( mbbo, "$(P)$(R)Feb$(F):FCh0:DataMode" )
 #{
 #	field( DOL,  "12 Bit" )
 #}
 
 # Camlink Frame Mode
 # 0: 'None', 1: 'Line', 2: 'Frame'
-record( mbbi, "$(P)$(R)Feb$(F):FCh$(FL):FrameMode_RBV" )
+record( mbbi, "$(P)$(R)Feb$(F):FCh0:FrameMode_RBV" )
 {
 	field( DTYP, "RogueMBBI" )
-	field( INP,  "@B$(B) L$(L) ClinkDevRoot.ClinkFeb[$(F)].ClinkTop.Ch[$(FL)].FrameMode" )
+	field( INP,  "@B$(B) L$(L) ClinkDevRoot.ClinkFeb[$(F)].ClinkTop.Ch[0].FrameMode" )
 	field( ZRVL, "0" ) field( ZRST, "None" )
 	field( ONVL, "1" ) field( ONST, "Line" )
 	field( TWVL, "2" ) field( TWST, "Frame" )
@@ -159,10 +159,10 @@ record( mbbi, "$(P)$(R)Feb$(F):FCh$(FL):FrameMode_RBV" )
 
 # Camlink Frame Mode
 # 0: 'None', 1: 'Line', 2: 'Frame'
-#record( mbbo, "$(P)$(R)Feb$(F):FCh$(FL):FrameMode" )
+#record( mbbo, "$(P)$(R)Feb$(F):FCh0:FrameMode" )
 #{
 #	field( DTYP, "RogueMBBO" )
-#	field( OUT,  "@B$(B) L$(L) ClinkDevRoot.ClinkFeb[$(F)].ClinkTop.Ch[$(FL)].FrameMode" )
+#	field( OUT,  "@B$(B) L$(L) ClinkDevRoot.ClinkFeb[$(F)].ClinkTop.Ch[0].FrameMode" )
 #	field( ZRVL, "0" ) field( ZRST, "None" )
 #	field( ONVL, "1" ) field( ONST, "Line" )
 #	field( TWVL, "2" ) field( TWST, "Frame" )
@@ -170,171 +170,171 @@ record( mbbi, "$(P)$(R)Feb$(F):FCh$(FL):FrameMode_RBV" )
 
 # TODO: Move DOL to camera model template file
 
-#record( mbbo, "$(P)$(R)Feb$(F):FCh$(FL):FrameMode" )
+#record( mbbo, "$(P)$(R)Feb$(F):FCh0:FrameMode" )
 #{
 #	field( DOL,  "Frame" )
 #}
 
-record( longin, "$(P)$(R)Feb$(F):FCh$(FL):SerThrottle_RBV" )
+record( longin, "$(P)$(R)Feb$(F):FCh0:SerThrottle_RBV" )
 {
 	field( DTYP, "RogueLI" )
-	field( INP,  "@B$(B) L$(L) ClinkDevRoot.ClinkFeb[$(F)].ClinkTop.Ch[$(FL)].SerThrottle" )
+	field( INP,  "@B$(B) L$(L) ClinkDevRoot.ClinkFeb[$(F)].ClinkTop.Ch[0].SerThrottle" )
 	field( DISV, "0" )
 	field( SDIS, "$(P)$(R)PgpMon:RxRemLinkReady_RBV CP" )
 	info( autosaveFields, "" )
 }
 
-record( longout, "$(P)$(R)Feb$(F):FCh$(FL):SerThrottle" )
+record( longout, "$(P)$(R)Feb$(F):FCh0:SerThrottle" )
 {
 	field( DTYP, "RogueLO" )
-	field( OUT,  "@B$(B) L$(L) ClinkDevRoot.ClinkFeb[$(F)].ClinkTop.Ch[$(FL)].SerThrottle" )
+	field( OUT,  "@B$(B) L$(L) ClinkDevRoot.ClinkFeb[$(F)].ClinkTop.Ch[0].SerThrottle" )
 	field( DOL,  "10000" )
 	field( EGU,  "usec" )
 	field( PINI, "YES" )
-	field( FLNK, "$(P)$(R)Feb$(F):FCh$(FL):SerThrottle_RBV" )
+	field( FLNK, "$(P)$(R)Feb$(F):FCh0:SerThrottle_RBV" )
 	field( DISV, "0" )
 	field( SDIS, "$(P)$(R)PgpMon:RxRemLinkReady_RBV CP" )
 	info( autosaveFields, "VAL" )
 }
 
-record( longin, "$(P)$(R)Feb$(F):FCh$(FL):TapCount_RBV" )
+record( longin, "$(P)$(R)Feb$(F):FCh0:TapCount_RBV" )
 {
 	field( DTYP, "RogueLI" )
-	field( INP,  "@B$(B) L$(L) ClinkDevRoot.ClinkFeb[$(F)].ClinkTop.Ch[$(FL)].TapCount" )
+	field( INP,  "@B$(B) L$(L) ClinkDevRoot.ClinkFeb[$(F)].ClinkTop.Ch[0].TapCount" )
 	field( DISV, "0" )
 	field( SDIS, "$(P)$(R)PgpMon:RxRemLinkReady_RBV CP" )
 }
 
 # TODO: Move DOL to camera template
-record( longout, "$(P)$(R)Feb$(F):FCh$(FL):TapCount" )
+record( longout, "$(P)$(R)Feb$(F):FCh0:TapCount" )
 {
 	field( DTYP, "RogueLO" )
-	field( OUT,  "@B$(B) L$(L) ClinkDevRoot.ClinkFeb[$(F)].ClinkTop.Ch[$(FL)].TapCount" )
+	field( OUT,  "@B$(B) L$(L) ClinkDevRoot.ClinkFeb[$(F)].ClinkTop.Ch[0].TapCount" )
 	field( DOL,  "2" )
 	field( PINI, "YES" )
-	field( FLNK, "$(P)$(R)Feb$(F):FCh$(FL):TapCount_RBV" )
+	field( FLNK, "$(P)$(R)Feb$(F):FCh0:TapCount_RBV" )
 	field( DISV, "0" )
 	field( SDIS, "$(P)$(R)PgpMon:RxRemLinkReady_RBV CP" )
 }
 
-record( longin, "$(P)$(R)Feb$(F):FCh$(FL):Rate_RBV" )
+record( longin, "$(P)$(R)Feb$(F):FCh0:Rate_RBV" )
 {
 	field( DTYP, "RogueLI" )
-	field( INP,  "@B$(B) L$(L) ClinkDevRoot.ClinkFeb[$(F)].TrigCtrl[$(FL)].TrigRate" )
+	field( INP,  "@B$(B) L$(L) ClinkDevRoot.ClinkFeb[$(F)].TrigCtrl[0].TrigRate" )
 	field( SCAN, "$(SCAN=1 second)" )
 	field( DISV, "0" )
 	field( SDIS, "$(P)$(R)PgpMon:RxRemLinkReady_RBV CP" )
 	info( autosaveFields, "" )
 }
 
-record( mbbi, "$(P)$(R)Feb$(F):FCh$(FL):Map_RBV" )
+record( mbbi, "$(P)$(R)Feb$(F):FCh0:Map_RBV" )
 {
 	field( DTYP, "RogueMBBI" )
-	field( INP,  "@B$(B) L$(L) ClinkDevRoot.ClinkFeb[$(F)].TrigCtrl[$(FL)].TrigMap" )
+	field( INP,  "@B$(B) L$(L) ClinkDevRoot.ClinkFeb[$(F)].TrigCtrl[0].TrigMap" )
 	field( ZRVL, "0" ) field( ZRST, "ChA" )
 	field( ONVL, "1" ) field( ONST, "ChB" )
 	field( DISV, "0" )
 	field( SDIS, "$(P)$(R)PgpMon:RxRemLinkReady_RBV CP" )
 }
 
-record( mbbo, "$(P)$(R)Feb$(F):FCh$(FL):Map" )
+record( mbbo, "$(P)$(R)Feb$(F):FCh0:Map" )
 {
 	field( DTYP, "RogueMBBO" )
-	field( OUT,  "@B$(B) L$(L) ClinkDevRoot.ClinkFeb[$(F)].TrigCtrl[$(FL)].TrigMap" )
+	field( OUT,  "@B$(B) L$(L) ClinkDevRoot.ClinkFeb[$(F)].TrigCtrl[0].TrigMap" )
 	field( ZRVL, "0" ) field( ZRST, "ChA" )
 	field( ONVL, "1" ) field( ONST, "ChB" )
 	field( DOL,  "0" )
 	field( PINI, "YES" )
-	field( FLNK, "$(P)$(R)Feb$(F):FCh$(FL):Map_RBV" )
+	field( FLNK, "$(P)$(R)Feb$(F):FCh0:Map_RBV" )
 	field( DISV, "0" )
 	field( SDIS, "$(P)$(R)PgpMon:RxRemLinkReady_RBV CP" )
 }
 
-record( longin, "$(P)$(R)Feb$(F):FCh$(FL):Mask_RBV" )
+record( longin, "$(P)$(R)Feb$(F):FCh0:Mask_RBV" )
 {
 	field( DESC, "Sets trigger mask on 4-bit camCtrl bus" )
 	field( DTYP, "RogueLI" )
-	field( INP,  "@B$(B) L$(L) ClinkDevRoot.ClinkFeb[$(F)].TrigCtrl[$(FL)].TrigMask" )
+	field( INP,  "@B$(B) L$(L) ClinkDevRoot.ClinkFeb[$(F)].TrigCtrl[0].TrigMask" )
 	field( DISV, "0" )
 	field( SDIS, "$(P)$(R)PgpMon:RxRemLinkReady_RBV CP" )
 }
 
-record( longout, "$(P)$(R)Feb$(F):FCh$(FL):Mask" )
+record( longout, "$(P)$(R)Feb$(F):FCh0:Mask" )
 {
 	field( DESC, "Sets trigger mask on 4-bit camCtrl bus" )
 	field( DTYP, "RogueLO" )
-	field( OUT,  "@B$(B) L$(L) ClinkDevRoot.ClinkFeb[$(F)].TrigCtrl[$(FL)].TrigMask" )
+	field( OUT,  "@B$(B) L$(L) ClinkDevRoot.ClinkFeb[$(F)].TrigCtrl[0].TrigMask" )
 	field( DOL,  "1" )
 	field( PINI, "YES" )
-	field( FLNK, "$(P)$(R)Feb$(F):FCh$(FL):Mask_RBV" )
+	field( FLNK, "$(P)$(R)Feb$(F):FCh0:Mask_RBV" )
 	field( DISV, "0" )
 	field( SDIS, "$(P)$(R)PgpMon:RxRemLinkReady_RBV CP" )
 }
 
-record( longin, "$(P)$(R)Feb$(F):FCh$(FL):PulseWidthRaw_RBV" )
+record( longin, "$(P)$(R)Feb$(F):FCh0:PulseWidthRaw_RBV" )
 {
 	field( DTYP, "RogueLI" )
-	field( INP,  "@B$(B) L$(L) ClinkDevRoot.ClinkFeb[$(F)].TrigCtrl[$(FL)].TrigPulseWidthRaw" )
+	field( INP,  "@B$(B) L$(L) ClinkDevRoot.ClinkFeb[$(F)].TrigCtrl[0].TrigPulseWidthRaw" )
 	field( EGU,  "1/125MHz" )
-	field( FLNK, "$(P)$(R)Feb$(F):FCh$(FL):PulseWidth_RBVCalc" )
+	field( FLNK, "$(P)$(R)Feb$(F):FCh0:PulseWidth_RBVCalc" )
 	field( SCAN, "$(SCAN=1 second)" )
 	field( DISV, "0" )
 	field( SDIS, "$(P)$(R)PgpMon:RxRemLinkReady_RBV CP" )
 }
 
-record( calcout, "$(P)$(R)Feb$(F):FCh$(FL):PulseWidth_RBVCalc" )
+record( calcout, "$(P)$(R)Feb$(F):FCh0:PulseWidth_RBVCalc" )
 {
-	field( INPA, "$(P)$(R)Feb$(F):FCh$(FL):PulseWidthRaw_RBV" )
+	field( INPA, "$(P)$(R)Feb$(F):FCh0:PulseWidthRaw_RBV" )
 	field( CALC, "(A + 1) * 0.008" )
-	field( OUT,  "$(P)$(R)Feb$(F):FCh$(FL):PulseWidth_RBV CPP MS" )
+	field( OUT,  "$(P)$(R)Feb$(F):FCh0:PulseWidth_RBV CPP MS" )
 	field( EGU,  "1/125MHz" )
-	field( FLNK, "$(P)$(R)Feb$(F):FCh$(FL):PulseWidth_RBV" )
+	field( FLNK, "$(P)$(R)Feb$(F):FCh0:PulseWidth_RBV" )
 	field( DISV, "0" )
 	field( SDIS, "$(P)$(R)PgpMon:RxRemLinkReady_RBV CP" )
 	info( autosaveFields, "" )
 }
 
-record( longin, "$(P)$(R)Feb$(F):FCh$(FL):PulseWidth_RBV" )
+record( longin, "$(P)$(R)Feb$(F):FCh0:PulseWidth_RBV" )
 {
-	field( INP,  "$(P)$(R)Feb$(F):FCh$(FL):PulseWidth_RBVCalc" )
+	field( INP,  "$(P)$(R)Feb$(F):FCh0:PulseWidth_RBVCalc" )
 	field( EGU,  "usec" )
 }
 
-record( longout, "$(P)$(R)Feb$(F):FCh$(FL):PulseWidthRaw" )
+record( longout, "$(P)$(R)Feb$(F):FCh0:PulseWidthRaw" )
 {
 	field( DTYP, "RogueLO" )
-	field( OUT,  "@B$(B) L$(L) ClinkDevRoot.ClinkFeb[$(F)].TrigCtrl[$(FL)].TrigPulseWidthRaw" )
+	field( OUT,  "@B$(B) L$(L) ClinkDevRoot.ClinkFeb[$(F)].TrigCtrl[0].TrigPulseWidthRaw" )
 	field( DOL,  "4095" )
 #	field( EGU,  "usec?" )
 	field( EGU,  "1/125MHz" )
-	field( FLNK, "$(P)$(R)Feb$(F):FCh$(FL):PulseWidthRaw_RBV" )
+	field( FLNK, "$(P)$(R)Feb$(F):FCh0:PulseWidthRaw_RBV" )
 	field( DISV, "0" )
 	field( SDIS, "$(P)$(R)PgpMon:RxRemLinkReady_RBV CP" )
 	info( autosaveFields, "" )
 }
 
-record( calcout, "$(P)$(R)Feb$(F):FCh$(FL):PulseWidthCalc" )
+record( calcout, "$(P)$(R)Feb$(F):FCh0:PulseWidthCalc" )
 {
-	field( INPA, "$(P)$(R)Feb$(F):FCh$(FL):PulseWidth" )
+	field( INPA, "$(P)$(R)Feb$(F):FCh0:PulseWidth" )
 	field( CALC, "MAX(0,(A/0.008)-1)" )
-	field( OUT,  "$(P)$(R)Feb$(F):FCh$(FL):PulseWidthRaw PP MS" )
+	field( OUT,  "$(P)$(R)Feb$(F):FCh0:PulseWidthRaw PP MS" )
 	field( EGU,  "1/125MHz" )
 	info( autosaveFields, "" )
 }
 
-record( longout, "$(P)$(R)Feb$(F):FCh$(FL):PulseWidth" )
+record( longout, "$(P)$(R)Feb$(F):FCh0:PulseWidth" )
 {
 	field( EGU,  "usec" )
 	field( DOL,  "1000" )
 	field( PINI, "YES" )
-	field( FLNK, "$(P)$(R)Feb$(F):FCh$(FL):PulseWidthCalc" )
+	field( FLNK, "$(P)$(R)Feb$(F):FCh0:PulseWidthCalc" )
 	info( autosaveFields, "VAL" )
 }
 
-record( bi, "$(P)$(R)Feb$(F):FCh$(FL):Running" )
+record( bi, "$(P)$(R)Feb$(F):FCh0:Running" )
 {
 	field( DTYP, "RogueBI" )
-	field( INP,  "@B$(B) L$(L) ClinkDevRoot.ClinkFeb[$(F)].ClinkTop.Ch[$(FL)].Running" )
+	field( INP,  "@B$(B) L$(L) ClinkDevRoot.ClinkFeb[$(F)].ClinkTop.Ch[0].Running" )
 	field( SCAN, "$(SCAN=1 second)" )
 	field( ZNAM, "Stopped" )
 	field( ONAM, "Running"  )
