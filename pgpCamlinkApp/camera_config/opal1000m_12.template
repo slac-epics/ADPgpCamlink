@@ -120,10 +120,12 @@ record( mbbo, "$(P)$(R)OpalTrigPol" )
     field( DESC, "Set Exposure Source & Event" )
     field( DTYP, "stream" )
     field( OUT,	 "@opal1000m_12.proto SetInt(CCE0;) $(PORT).SER" )
-	# or if we want to allow selection of CC2, CC3, or CC4   
-	# add an OpalTrigInput mbbo record and change OUT to
+	# As an alternative, if we wanted to allow selection of CC2, CC3, or CC4   
+	# we could add an OpalTrigInput mbbo record and change OUT to
 	#      OUT,	 "@opal1000m_12.proto SetCCE $(PORT).SER" )
-	# which would send CCE$OpalTrigInput;$OpalTrigPol
+	# SetCCE would be added as a new protocol
+	# which would send "CCE$OpalTrigInput;$OpalTrigPol"
+	# instead of always             "CCE0;$OpalTrigPol"
 	field( DOL,  1 )
     field( ZRVL, 0 )
     field( ONVL, 1 )
