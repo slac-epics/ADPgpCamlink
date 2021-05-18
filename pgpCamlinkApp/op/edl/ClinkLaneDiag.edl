@@ -3,8 +3,8 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 628
-y 227
+x 294
+y 236
 w 1100
 h 900
 font "helvetica-medium-r-8.0"
@@ -1861,7 +1861,7 @@ x 932
 y 264
 w 80
 h 20
-controlPv "$(P)$(R)PgpMon:RxCellErrorCount_RBV"
+controlPv "$(P)$(R)Feb0:PgpMon:RxCellErrorCount_RBV"
 format "hex"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
@@ -1927,7 +1927,7 @@ x 932
 y 240
 w 80
 h 20
-controlPv "$(P)$(R)PgpMon:RxLinkDownCount_RBV"
+controlPv "$(P)$(R)Feb$(CH):PgpMon:RxLinkDownCount_RBV"
 format "hex"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
@@ -1973,7 +1973,7 @@ x 932
 y 288
 w 80
 h 20
-controlPv "$(P)$(R)PgpMon:RxLinkErrorCount_RBV"
+controlPv "$(P)$(R)Feb0:PgpMon:RxLinkErrorCount_RBV"
 format "hex"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
@@ -2019,7 +2019,7 @@ x 932
 y 312
 w 80
 h 20
-controlPv "$(P)$(R)PgpMon:TxFrameErrorCount_RBV"
+controlPv "$(P)$(R)Feb1:PgpMon:TxFrameErrorCount_RBV"
 format "hex"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
@@ -2065,7 +2065,7 @@ x 932
 y 336
 w 80
 h 20
-controlPv "$(P)$(R)PgpMon:RxRemLinkReadyCount_RBV"
+controlPv "$(P)$(R)Feb0:PgpMon:RxRemLinkReadyCount_RBV"
 format "hex"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
@@ -2700,7 +2700,7 @@ onColor index 6
 offColor index 3
 topShadowColor index 1
 botShadowColor index 11
-controlPv "$(PGP):Ch$(CH):PgpMon:CountReset"
+controlPv "$(PGP):Ch$(CH):Feb$(CH):PgpMon:CountReset"
 pressValue "1"
 onLabel "Resetting"
 offLabel "Reset Counts"

@@ -3,7 +3,7 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 946
+x 862
 y 54
 w 900
 h 800
@@ -2687,7 +2687,7 @@ x 712
 y 436
 w 60
 h 24
-controlPv "$(P)$(R)Ch0:Feb0:FCh0:TrigRate_RBV"
+controlPv "$(PGP):Ch0:Feb0:FCh0:TrigRate_RBV"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
 fgColor index 15
@@ -2712,7 +2712,7 @@ x 664
 y 436
 w 44
 h 24
-controlPv "$(P)$(R)Ch0:EvrV2:RateSel_RBV"
+controlPv "$(PGP):Ch0:EvrV2:RateSel_RBV"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
 fgColor index 15
@@ -2737,7 +2737,7 @@ x 600
 y 436
 w 60
 h 24
-controlPv "$(P)$(R)Ch0:EvrV2:RateSel"
+controlPv "$(PGP):Ch0:EvrV2:RateSel"
 format "decimal"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
@@ -2767,7 +2767,7 @@ x 536
 y 436
 w 60
 h 24
-controlPv "$(P)$(R)Ch0:Trigger:MasterEnable_RBV"
+controlPv "$(PGP):Ch0:Trigger:MasterEnable_RBV"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
 fgColor index 15
@@ -2796,8 +2796,8 @@ bgColor index 3
 inconsistentColor index 40
 topShadowColor index 1
 botShadowColor index 11
-controlPv "$(P)$(R)Ch0:Trigger:MasterEnable"
-indicatorPv "$(P)$(R)Ch0:Trigger:MasterEnable_RBV"
+controlPv "$(PGP):Ch0:Trigger:MasterEnable"
+indicatorPv "$(PGP):Ch0:Trigger:MasterEnable_RBV"
 font "helvetica-medium-r-12.0"
 endObjectProperties
 
@@ -2851,7 +2851,7 @@ x 712
 y 464
 w 60
 h 24
-controlPv "$(P)$(R)Ch1:Feb1:FCh0:TrigRate_RBV"
+controlPv "$(PGP):Ch1:Feb1:FCh0:TrigRate_RBV"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
 fgColor index 15
@@ -2876,7 +2876,7 @@ x 664
 y 464
 w 44
 h 24
-controlPv "$(P)$(R)Ch1:EvrV2:RateSel_RBV"
+controlPv "$(PGP):Ch1:EvrV2:RateSel_RBV"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
 fgColor index 15
@@ -2901,7 +2901,7 @@ x 600
 y 464
 w 60
 h 24
-controlPv "$(P)$(R)Ch1:EvrV2:RateSel"
+controlPv "$(PGP):Ch1:EvrV2:RateSel"
 format "decimal"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
@@ -2931,7 +2931,7 @@ x 536
 y 464
 w 60
 h 24
-controlPv "$(P)$(R)Ch1:Trigger:MasterEnable_RBV"
+controlPv "$(PGP):Ch1:Trigger:MasterEnable_RBV"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
 fgColor index 15
@@ -2960,8 +2960,8 @@ bgColor index 3
 inconsistentColor index 40
 topShadowColor index 1
 botShadowColor index 11
-controlPv "$(P)$(R)Ch1:Trigger:MasterEnable"
-indicatorPv "$(P)$(R)Ch1:Trigger:MasterEnable_RBV"
+controlPv "$(PGP):Ch1:Trigger:MasterEnable"
+indicatorPv "$(PGP):Ch1:Trigger:MasterEnable_RBV"
 font "helvetica-medium-r-12.0"
 endObjectProperties
 
@@ -2995,7 +2995,7 @@ x 712
 y 492
 w 60
 h 24
-controlPv "$(P)$(R)Ch2:Feb2:FCh0:TrigRate_RBV"
+controlPv "$(PGP):Ch2:Feb2:FCh0:TrigRate_RBV"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
 fgColor index 15
@@ -3020,7 +3020,7 @@ x 664
 y 492
 w 44
 h 24
-controlPv "$(P)$(R)Ch2:EvrV2:RateSel_RBV"
+controlPv "$(PGP):Ch2:EvrV2:RateSel_RBV"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
 fgColor index 15
@@ -3045,7 +3045,7 @@ x 600
 y 492
 w 60
 h 24
-controlPv "$(P)$(R)Ch2:EvrV2:RateSel"
+controlPv "$(PGP):Ch2:EvrV2:RateSel"
 format "decimal"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
@@ -3075,7 +3075,7 @@ x 536
 y 492
 w 60
 h 24
-controlPv "$(P)$(R)Ch2:Trigger:MasterEnable_RBV"
+controlPv "$(PGP):Ch2:Trigger:MasterEnable_RBV"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
 fgColor index 15
@@ -3104,8 +3104,8 @@ bgColor index 3
 inconsistentColor index 40
 topShadowColor index 1
 botShadowColor index 11
-controlPv "$(P)$(R)Ch2:Trigger:MasterEnable"
-indicatorPv "$(P)$(R)Ch2:Trigger:MasterEnable_RBV"
+controlPv "$(PGP):Ch2:Trigger:MasterEnable"
+indicatorPv "$(PGP):Ch2:Trigger:MasterEnable_RBV"
 font "helvetica-medium-r-12.0"
 endObjectProperties
 
@@ -3139,7 +3139,7 @@ x 712
 y 524
 w 60
 h 24
-controlPv "$(P)$(R)Ch3:Feb3:FCh0:TrigRate_RBV"
+controlPv "$(PGP):Ch3:Feb3:FCh0:TrigRate_RBV"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
 fgColor index 15
@@ -3164,7 +3164,7 @@ x 664
 y 524
 w 44
 h 24
-controlPv "$(P)$(R)Ch3:EvrV2:RateSel_RBV"
+controlPv "$(PGP):Ch3:EvrV2:RateSel_RBV"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
 fgColor index 15
@@ -3189,7 +3189,7 @@ x 600
 y 524
 w 60
 h 24
-controlPv "$(P)$(R)Ch3:EvrV2:RateSel"
+controlPv "$(PGP):Ch3:EvrV2:RateSel"
 format "decimal"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
@@ -3219,7 +3219,7 @@ x 536
 y 524
 w 60
 h 24
-controlPv "$(P)$(R)Ch3:Trigger:MasterEnable_RBV"
+controlPv "$(PGP):Ch3:Trigger:MasterEnable_RBV"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
 fgColor index 15
@@ -3248,8 +3248,8 @@ bgColor index 3
 inconsistentColor index 40
 topShadowColor index 1
 botShadowColor index 11
-controlPv "$(P)$(R)Ch3:Trigger:MasterEnable"
-indicatorPv "$(P)$(R)Ch3:Trigger:MasterEnable_RBV"
+controlPv "$(PGP):Ch3:Trigger:MasterEnable"
+indicatorPv "$(PGP):Ch3:Trigger:MasterEnable_RBV"
 font "helvetica-medium-r-12.0"
 endObjectProperties
 
@@ -3303,7 +3303,7 @@ x 392
 y 436
 w 68
 h 24
-controlPv "$(P)$(R)Ch0:PgpMon:RxRemLinkReady_RBV"
+controlPv "$(PGP):Ch0:PgpMon:RxRemLinkReady_RBV"
 format "hex"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
@@ -3329,7 +3329,7 @@ x 392
 y 464
 w 68
 h 20
-controlPv "$(P)$(R)Ch1:PgpMon:RxRemLinkReady_RBV"
+controlPv "$(PGP):Ch1:PgpMon:RxRemLinkReady_RBV"
 format "hex"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
@@ -3355,7 +3355,7 @@ x 392
 y 492
 w 68
 h 20
-controlPv "$(P)$(R)Ch2:PgpMon:RxRemLinkReady_RBV"
+controlPv "$(PGP):Ch2:PgpMon:RxRemLinkReady_RBV"
 format "hex"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
@@ -3381,7 +3381,7 @@ x 392
 y 524
 w 68
 h 20
-controlPv "$(P)$(R)Ch3:PgpMon:RxRemLinkReady_RBV"
+controlPv "$(PGP):Ch3:PgpMon:RxRemLinkReady_RBV"
 format "hex"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
