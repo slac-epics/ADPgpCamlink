@@ -337,9 +337,6 @@ pgpRogueLib::pgpRogueLib(
 	{
 		if ( FebReady(0) )
 		{
-			// Set FEB BaudRate
-			//setVariable( "ClinkDevRoot.ClinkFeb[0].ClinkTop.Ch[0].BaudRate", 57600 );
-
 			// Power up FEB Pll's
 			setVariable( "ClinkDevRoot.ClinkFeb[0].ClinkTop.Pll[0].POWER", 65535 );
 			setVariable( "ClinkDevRoot.ClinkFeb[0].ClinkTop.Pll[1].POWER", 65535 );
@@ -348,7 +345,6 @@ pgpRogueLib::pgpRogueLib(
 
 		if ( FebReady(1) )
 		{
-			//setVariable( "ClinkDevRoot.ClinkFeb[1].ClinkTop.Ch[0].BaudRate", 57600 );
 			setVariable( "ClinkDevRoot.ClinkFeb[1].ClinkTop.Pll[0].POWER", 65535 );
 			setVariable( "ClinkDevRoot.ClinkFeb[1].ClinkTop.Pll[1].POWER", 65535 );
 			setVariable( "ClinkDevRoot.ClinkFeb[1].ClinkTop.Pll[2].POWER", 65535 );
@@ -356,7 +352,6 @@ pgpRogueLib::pgpRogueLib(
 
 		if ( FebReady(2) )
 		{
-			//setVariable( "ClinkDevRoot.ClinkFeb[2].ClinkTop.Ch[0].BaudRate", 57600 );
 			setVariable( "ClinkDevRoot.ClinkFeb[2].ClinkTop.Pll[0].POWER", 65535 );
 			setVariable( "ClinkDevRoot.ClinkFeb[2].ClinkTop.Pll[1].POWER", 65535 );
 			setVariable( "ClinkDevRoot.ClinkFeb[2].ClinkTop.Pll[2].POWER", 65535 );
@@ -364,7 +359,6 @@ pgpRogueLib::pgpRogueLib(
 
 		if ( FebReady(3) )
 		{
-			//setVariable( "ClinkDevRoot.ClinkFeb[3].ClinkTop.Ch[0].BaudRate", 57600 );
 			setVariable( "ClinkDevRoot.ClinkFeb[3].ClinkTop.Pll[0].POWER", 65535 );
 			setVariable( "ClinkDevRoot.ClinkFeb[3].ClinkTop.Pll[1].POWER", 65535 );
 			setVariable( "ClinkDevRoot.ClinkFeb[3].ClinkTop.Pll[2].POWER", 65535 );
@@ -375,7 +369,7 @@ pgpRogueLib::pgpRogueLib(
 	ConfigureLclsTimingV1();
 
 	LoadConfigFile( "db/defaults_LCLS-I.txt", 0.003 );
-#if 1 // Don't think we need these Opal specific config files
+#if 0 // Don't think we need these Opal specific config files
 	if ( FebReady(0) )
 		LoadConfigFile( "db/cfgFeb0Opal1000.txt", 0.002 );
 	if ( FebReady(1) )

@@ -15,6 +15,43 @@ record( stringin, "$(P)$(R)CamModelScreen" )
 	field( PINI, "YES" )
 }
 
+# Camlink settings
+record( longout, "$(P)$(R)Feb$(F):FCh0:BaudRate" )
+{
+	field( DOL,  "9600" )
+	field( PINI, "YES" )
+}
+record( mbbo, "$(P)$(R)Feb$(F):FCh0:DataMode" )
+{
+	field( DOL,  "12 Bit" )
+	field( PINI, "YES" )
+}
+record( mbbo, "$(P)$(R)Feb$(F):FCh0:FrameMode" )
+{
+	field( DOL,  "Frame" )
+	field( PINI, "YES" )
+}
+record( mbbo, "$(P)$(R)Feb$(F):FCh0:LinkMode" )
+{
+	field( DOL,  "Base" )
+	field( PINI, "YES" )
+}
+record( longout, "$(P)$(R)Feb$(F):FCh0:TapCount" )
+{
+	field( DOL,  "2" )
+	field( PINI, "YES" )
+}
+record( longout, "$(P)$(R)Feb$(F):FCh0:TrigMask" )
+{
+	field( DOL,  "2" )
+	field( PINI, "YES" )
+}
+record( bo, "$(P)$(R)Feb$(F):FCh0:InvCC" )
+{
+	field( DOL,  "0" )
+	field( PINI, "YES" )
+}
+
 record( seq, "$(P)$(R)Up900DoReport" )
 {
 	field( DESC,	"Do delayed report" )

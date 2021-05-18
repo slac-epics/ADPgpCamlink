@@ -44,6 +44,43 @@ record( stringin, "$(P)$(R)CamModelScreen" )
 	field( PINI, "YES" )
 }
 
+# Camlink settings
+record( longout, "$(P)$(R)Feb$(F):FCh0:BaudRate" )
+{
+	field( DOL,  "9600" )
+	field( PINI, "YES" )
+}
+record( mbbo, "$(P)$(R)Feb$(F):FCh0:DataMode" )
+{
+	field( DOL,  "12 Bit" )
+	field( PINI, "YES" )
+}
+record( mbbo, "$(P)$(R)Feb$(F):FCh0:FrameMode" )
+{
+	field( DOL,  "Frame" )
+	field( PINI, "YES" )
+}
+record( mbbo, "$(P)$(R)Feb$(F):FCh0:LinkMode" )
+{
+	field( DOL,  "Medium" )
+	field( PINI, "YES" )
+}
+record( longout, "$(P)$(R)Feb$(F):FCh0:TapCount" )
+{
+	field( DOL,  "4" )
+	field( PINI, "YES" )
+}
+record( longout, "$(P)$(R)Feb$(F):FCh0:TrigMask" )
+{
+	field( DOL,  "1" )
+	field( PINI, "YES" )
+}
+record( bo, "$(P)$(R)Feb$(F):FCh0:InvCC" )
+{
+	field( DOL,  "1" )
+	field( PINI, "YES" )
+}
+
 # Provide defaults for ADCore SizeX and SizeY
 record( longout, "$(P)$(R)SizeX" )
 {

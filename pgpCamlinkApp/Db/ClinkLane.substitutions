@@ -86,7 +86,7 @@ file boolDevRogue.template
 	{
 		NAME	= "Feb$(F):FCh0:InvCC",
 		PATH	= "ClinkDevRoot.ClinkFeb[$(F)].TrigCtrl[0].InvCC"
-		PINI	= "YES"
+		PINI	= ""
 		DISV	= "0"
 		SDIS	= "$(P)$(R)PgpMon:RxRemLinkReady_RBV CP"
 	}
@@ -316,6 +316,7 @@ file longDevRogue.template
 		DESC	= "Software camera control bit values"
 		DOL		= "0"
 		PINI	= "YES"
+		SAVE	= ""
 		DISV	= "0"
 		SDIS	= "$(P)$(R)PgpMon:RxRemLinkReady_RBV CP"
 	}
@@ -325,6 +326,7 @@ file longDevRogue.template
 		DESC	= "Lane A SW camera control bit enable mask"
 		DOL		= "0"
 		PINI	= "YES"
+		SAVE	= ""
 		DISV	= "0"
 		SDIS	= "$(P)$(R)PgpMon:RxRemLinkReady_RBV CP"
 	}
