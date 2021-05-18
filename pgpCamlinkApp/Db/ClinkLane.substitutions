@@ -285,6 +285,7 @@ file longDevRogue.template
 		NAME	= "EventBuilder:Bypass",
 		PATH	= "ClinkDevRoot.ClinkPcie.Application.AppLane[$(L)].EventBuilder.Bypass",
 		SCAN	= "\$(SCAN=1 second)"
+		SAVE	= ""
 	}
 	{
 		NAME	= "EvrV2:FebTrigWidth",
