@@ -86,6 +86,9 @@ file boolDevRogue.template
 	{
 		NAME	= "Feb$(F):FCh0:InvCC",
 		PATH	= "ClinkDevRoot.ClinkFeb[$(F)].TrigCtrl[0].InvCC"
+		DESC	= "Inverts the Camlink CC control lines"
+		ZNAM	= "Normal"
+		ONAM	= "Inverted"
 		PINI	= ""
 		DISV	= "0"
 		SDIS	= "$(P)$(R)PgpMon:RxRemLinkReady_RBV CP"
