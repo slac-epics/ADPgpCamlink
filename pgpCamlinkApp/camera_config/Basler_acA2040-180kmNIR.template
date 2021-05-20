@@ -45,37 +45,37 @@ record( stringin, "$(P)$(R)CamModelScreen" )
 }
 
 # Camlink settings
-record( longout, "$(P)$(R)Feb$(F):FCh0:BaudRate" )
+record( mbbo, "$(P)$(R)CamlinkBaudRate" )
 {
 	field( DOL,  "9600" )
 	field( PINI, "YES" )
 }
-record( mbbo, "$(P)$(R)Feb$(F):FCh0:DataMode" )
+record( mbbo, "$(P)$(R)CamlinkDataMode" )
 {
 	field( DOL,  "12 Bit" )
 	field( PINI, "YES" )
 }
-record( mbbo, "$(P)$(R)Feb$(F):FCh0:FrameMode" )
+record( mbbo, "$(P)$(R)CamlinkFrameMode" )
 {
 	field( DOL,  "Frame" )
 	field( PINI, "YES" )
 }
-record( mbbo, "$(P)$(R)Feb$(F):FCh0:LinkMode" )
+record( mbbo, "$(P)$(R)CamlinkLinkMode" )
 {
 	field( DOL,  "Medium" )
 	field( PINI, "YES" )
 }
-record( longout, "$(P)$(R)Feb$(F):FCh0:TapCount" )
+record( longout, "$(P)$(R)CamlinkHTap" )
 {
 	field( DOL,  "4" )
 	field( PINI, "YES" )
 }
-record( longout, "$(P)$(R)Feb$(F):FCh0:TrigMask" )
+record( longout, "$(P)$(R)CamlinkTrigMask" )
 {
 	field( DOL,  "1" )
 	field( PINI, "YES" )
 }
-record( bo, "$(P)$(R)Feb$(F):FCh0:InvCC" )
+record( bo, "$(P)$(R)CamlinkInvCC" )
 {
 	field( DOL,  "1" )
 	field( PINI, "YES" )
@@ -524,7 +524,7 @@ record( calcout, "$(P)$(R)BaslerPulseAcquireTime" )
 	field( INPA, "$(P)$(R)GenicamAcquireTime NPP NMS"  )
 	field( INPB, "$(PW_SCALE=1e9)"  )
 	field( CALC, "A*B" )
-	field( OUT,  "$(PWIDTH=) CA NMS" )
+	field( OUT,  "$(PGP):Ch$(PGP_LANE):Feb$(PGP_LANE):FCh0:PulseWidth CA NMS" )
 	field( PREC, "0" )
 	field( EGU,  "ns" )
 	info( autosaveFields, "HHSV HIGH HIHI HSV LLSV LOLO LOW LSV PREC" )
@@ -534,7 +534,7 @@ record( calcout, "$(P)$(R)BaslerPulseAcquireTime" )
 # BaslerPulseAcquireTime_RBV
 record( calcout, "$(P)$(R)BaslerPulseAcquireTime_RBV" )
 {
-	field( INPA, "$(PW_RBV) NPP NMS" )
+	field( INPA, "$(PGP):Ch$(PGP_LANE):Feb$(PGP_LANE):FCh0:PulseWidth_RBV CPP MS" )
 	field( INPB, "$(PW_SCALE=1e9)"  )
 	field( CALC, "A/B" )
 	field( PREC, "5" )

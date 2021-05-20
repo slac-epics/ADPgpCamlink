@@ -16,37 +16,37 @@ record( stringin, "$(P)$(R)CamModelScreen" )
 }
 
 # Camlink settings
-record( longout, "$(P)$(R)Feb$(F):FCh0:BaudRate" )
+record( mbbo, "$(P)$(R)CamlinkBaudRate" )
 {
 	field( DOL,  "9600" )
 	field( PINI, "YES" )
 }
-record( mbbo, "$(P)$(R)Feb$(F):FCh0:DataMode" )
+record( mbbo, "$(P)$(R)CamlinkDataMode" )
 {
 	field( DOL,  "12 Bit" )
 	field( PINI, "YES" )
 }
-record( mbbo, "$(P)$(R)Feb$(F):FCh0:FrameMode" )
+record( mbbo, "$(P)$(R)CamlinkFrameMode" )
 {
 	field( DOL,  "Frame" )
 	field( PINI, "YES" )
 }
-record( mbbo, "$(P)$(R)Feb$(F):FCh0:LinkMode" )
+record( mbbo, "$(P)$(R)CamlinkLinkMode" )
 {
 	field( DOL,  "Base" )
 	field( PINI, "YES" )
 }
-record( longout, "$(P)$(R)Feb$(F):FCh0:TapCount" )
+record( longout, "$(P)$(R)CamlinkHTap" )
 {
 	field( DOL,  "2" )
 	field( PINI, "YES" )
 }
-record( longout, "$(P)$(R)Feb$(F):FCh0:TrigMask" )
+record( longout, "$(P)$(R)CamlinkTrigMask" )
 {
 	field( DOL,  "2" )
 	field( PINI, "YES" )
 }
-record( bo, "$(P)$(R)Feb$(F):FCh0:InvCC" )
+record( bo, "$(P)$(R)CamlinkInvCC" )
 {
 	field( DOL,  "0" )
 	field( PINI, "YES" )
@@ -238,7 +238,7 @@ record( calcout,	"$(P)$(R)Up900PulseShutter" )
 	field( INPA, "$(P)$(R)CamAcquireTime NPP NMS"  )
 	field( INPB, "$(PW_SCALE=1e9)"  )
 	field( CALC, "A*B" )
-	field( OUT,  "$(PWIDTH=) CA NMS" )
+	field( OUT,  "$(PGP):Ch$(PGP_LANE):Feb$(PGP_LANE):FCh0:PulseWidth CA NMS" )
 	field( PREC, "0" )
 	field( EGU,  "ns" )
 	info( autosaveFields, "HHSV HIGH HIHI HSV LLSV LOLO LOW LSV PREC" )
@@ -308,7 +308,7 @@ record( aSub, "$(P)$(R)Up900Shutter_ASub" )
 
 	field( FTVA,	"LONG"	)	field( OUTA,	"$(P)$(R)Up900RawShutterSpeed PP  MS" )
 	field( FTVB,	"LONG"	)	field( OUTB,	"$(P)$(R)Up900RawShutterMode  PP  MS" )
-	field( FTVC,	"DOUBLE")	field( OUTC,	"$(PWIDTH=) CA NMS"   )
+	field( FTVC,	"DOUBLE")	field( OUTC,	"$(PGP):Ch$(PGP_LANE):Feb$(PGP_LANE):FCh0:PulseWidth CA NMS" )
 }
 
 record( aSub, "$(P)$(R)Up900Shutter_RBV_ASub" )
@@ -317,7 +317,7 @@ record( aSub, "$(P)$(R)Up900Shutter_RBV_ASub" )
 	field( SNAM,	"Up900Shutter_RBV_Process" )
 	field( FTA,		"LONG"	)	field( INPA,	"$(P)$(R)Up900RawShutterSpeed_RBV NPP MS" )
 	field( FTB,		"LONG"	)	field( INPB,	"$(P)$(R)Up900RawShutterMode_RBV    NPP MS" )
-	field( FTC,		"DOUBLE")	field( INPC,	"$(PW_RBV=1e6)"   )
+	field( FTC,		"DOUBLE")	field( INPC,	"$(PGP):Ch$(PGP_LANE):Feb$(PGP_LANE):FCh0:PulseWidth_RBV CPP MS" )
 	field( FTD,		"DOUBLE")	field( INPD,	"$(PW_SCALE=1e9)" )
 
 	field( FTVA,	"DOUBLE")	field( OUTA,	"$(P)$(R)CamAcquireTime_RBV  PP  MS" )

@@ -58,6 +58,80 @@ record( stringin, "$(P)$(R)CamModelScreen" )
 }
 
 #
+# Camlink settings
+#
+
+record( mbbo, "$(P)$(R)CamlinkBaudRate" )
+{
+	field( OUT,  "$(PGP):Feb$(PGP_LANE):FCh0:BaudRate" )
+	field( ZRVL, "9600"   ) field( ZRST, "9600"   )
+	field( ONVL, "19200"  ) field( ONST, "19200"  )
+	field( TWVL, "38400"  ) field( TWST, "38400"  )
+	field( THVL, "57600"  ) field( THST, "57600"  )
+	field( FRVL, "115200" ) field( FRST, "115200" )
+#	field( EGU,  "bps" )
+	info( autosaveFields, "" )
+}
+
+# CameraLink Mode
+# 0: 'Disable', 1: 'Base', 2: 'Medium', 3: 'Full', 4: 'Deca'
+record( mbbo, "$(P)$(R)CamlinkLinkMode" )
+{
+	field( OUT,  "$(PGP):Feb$(PGP_LANE):FCh0:LinkMode" )
+	field( ZRVL, "0" ) field( ZRST, "Disable" )
+	field( ONVL, "1" ) field( ONST, "Base" )
+	field( TWVL, "2" ) field( TWST, "Medium" )
+	field( THVL, "3" ) field( THST, "Full" )
+	field( FRVL, "4" ) field( FRST, "Deca" )
+}
+
+# Camlink Data Mode (# bits per pixel)
+# 0: 'None', 1: '8Bit', 2: '10Bit', 3: '12Bit',
+# 4: '14Bit', 5: '16Bit', 6: '24Bit', 7: '30Bit', 8: '36Bit' 
+record( mbbo, "$(P)$(R)CamlinkDataMode" )
+{
+	field( OUT,  "$(PGP):Feb$(PGP_LANE):FCh0:DataMode" )
+	field( ZRVL, "0" ) field( ZRST, "None" )
+	field( ONVL, "1" ) field( ONST, "8 Bit" )
+	field( TWVL, "2" ) field( TWST, "10 Bit" )
+	field( THVL, "3" ) field( THST, "12 Bit" )
+	field( FRVL, "4" ) field( FRST, "14 Bit" )
+	field( FVVL, "5" ) field( FVST, "16 Bit" )
+	field( SXVL, "6" ) field( SXST, "24 Bit" )
+	field( SVVL, "7" ) field( SVST, "30 Bit" )
+	field( EIVL, "8" ) field( EIST, "36 Bit" )
+}
+
+# Camlink Frame Mode
+# 0: 'None', 1: 'Line', 2: 'Frame'
+record( mbbo, "$(P)$(R)CamlinkFrameMode" )
+{
+	field( OUT,  "$(PGP):Feb$(PGP_LANE):FCh0:FrameMode" )
+	field( ZRVL, "0" ) field( ZRST, "None" )
+	field( ONVL, "1" ) field( ONST, "Line" )
+	field( TWVL, "2" ) field( TWST, "Frame" )
+}
+
+record( longout, "$(P)$(R)CamlinkHTap" )
+{
+	field( DESC, "Camlink horizontal taps" )
+	field( OUT,  "$(PGP):Feb$(PGP_LANE):FCh0:TapCount" )
+}
+
+record( longout, "$(P)$(R)CamlinkTrigMask" )
+{
+	field( DESC, "Sets trigger mask on 4-bit camCtrl bus" )
+	field( OUT,  "$(PGP):Feb$(PGP_LANE):FCh0:TrigMask" )
+}
+
+record( bo, "$(P)$(R)CamlinkInvCC" )
+{
+	field( OUT,  "$(PGP):Feb$(PGP_LANE):FCh0:InvCC" )
+	field( ZNAM, "Normal" )
+	field( ONAM, "Invert" )
+}
+
+#
 # Propagate these PVs through the CAM interface
 
 record( ao, "$(P)$(R)AcquireTime" )
@@ -260,9 +334,9 @@ record( longin, "$(P)$(R)VTaps_RBV" )
 
 record( mbbi, "$(P)$(R)CamMode_RBV" )
 {
-	field( INP,  "$(PGP):LinkMode_RBV CPP" )
 #	field( DTYP, "asynInt32" )
 #	field( INP,  "@asyn($(PORT),$(ADDR=0),$(TIMEOUT=1))CLCAM_MODE" )
+	field( INP,  "$(PGP):Ch$(PGP_LANE):Feb$(PGP_LANE):LinkMode_RBV CPP" )
 	field( ZRST, "Base" )
 	field( ZRVL, "0" )
 	field( ONST, "Medium" )
