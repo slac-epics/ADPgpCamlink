@@ -227,7 +227,7 @@ record( longout, "$(P)$(R)CamHwHROI_RBV" )
 	field( OMSL, "closed_loop" )
 	field( VAL,  "0" )
 	field( DTYP, "asynInt32" )
-	field( OUT,  "@asyn($(PORT),$(ADDR=0),$(TIMEOUT=1))CLCAM_HW_VROI" )
+#	field( OUT,  "@asyn($(PORT),$(ADDR=0),$(TIMEOUT=1))CLCAM_HW_VROI" )
 	field( PINI, "YES" )
 	info( archiveFields,  "VAL" )
 }
@@ -239,43 +239,44 @@ record( longout, "$(P)$(R)CamHwVROI_RBV" )
 	field( OMSL, "closed_loop" )
 	field( VAL,  "0" )
 	field( DTYP, "asynInt32" )
-	field( OUT,  "@asyn($(PORT),$(ADDR=0),$(TIMEOUT=1))CLCAM_HW_VROI" )
+#	field( OUT,  "@asyn($(PORT),$(ADDR=0),$(TIMEOUT=1))CLCAM_HW_VROI" )
 	field( PINI, "YES" )
 	info( archiveFields,  "VAL" )
 }
 
 record( longin, "$(P)$(R)HTaps_RBV" )
 {
-	field( DTYP,  "asynInt32" )
-	field( INP,   "@asyn($(PORT),$(ADDR=0),$(TIMEOUT=1))CLCAM_HTAPS" )
-	field( SCAN, "I/O Intr" )
+#	field( DTYP,  "asynInt32" )
+#	field( INP,   "@asyn($(PORT),$(ADDR=0),$(TIMEOUT=1))CLCAM_HTAPS" )
+#	field( SCAN, "I/O Intr" )
 }
 
 record( longin, "$(P)$(R)VTaps_RBV" )
 {
-	field( DTYP, "asynInt32" )
-	field( INP,  "@asyn($(PORT),$(ADDR=0),$(TIMEOUT=1))CLCAM_VTAPS" )
+#	field( DTYP, "asynInt32" )
+#	field( INP,  "@asyn($(PORT),$(ADDR=0),$(TIMEOUT=1))CLCAM_VTAPS" )
 	field( SCAN, "I/O Intr" )
 }
 
 record( mbbi, "$(P)$(R)CamMode_RBV" )
 {
-	field( DTYP, "asynInt32" )
-	field( INP,  "@asyn($(PORT),$(ADDR=0),$(TIMEOUT=1))CLCAM_MODE" )
+	field( INP,  "$(PGP):LinkMode_RBV CPP" )
+#	field( DTYP, "asynInt32" )
+#	field( INP,  "@asyn($(PORT),$(ADDR=0),$(TIMEOUT=1))CLCAM_MODE" )
 	field( ZRST, "Base" )
 	field( ZRVL, "0" )
 	field( ONST, "Medium" )
 	field( ONVL, "1" )
 	field( TWST, "Full" )
 	field( TWVL, "2" )
-	field( SCAN, "I/O Intr" )
+#	field( SCAN, "I/O Intr" )
 	info( archiveFields,  "VAL" )
 }
 
 record( stringin, "$(P)$(R)CamClass" )
 {
-	field( DTYP, "asynOctetRead" )
-	field( INP,  "@asyn($(PORT),$(ADDR=0),$(TIMEOUT=1))CLCAM_CLASS" )
+#	field( DTYP, "asynOctetRead" )
+#	field( INP,  "@asyn($(PORT),$(ADDR=0),$(TIMEOUT=1))CLCAM_CLASS" )
 	field( SCAN, "I/O Intr" )
 	info( archiveFields,  "VAL" )
 }
@@ -688,15 +689,6 @@ record( longin, "$(P)$(R)PgpCoreFpgaVersion" )
 {
 	field( DTYP, "asynInt32" )
 	field( INP,  "@asyn($(PORT),$(ADDR=0),$(TIMEOUT=1))ClinkDevRoot.Hardware.AxiPcieCore.AxiVersion.FpgaVersion" )
-	field( SCAN, "I/O Intr" )
-	field( PINI, "YES" )
-	info( archiveFields,  "VAL" )
-}
-
-record( longin, "$(P)$(R)PgpFebFpgaVersion" )
-{
-	field( DTYP, "asynInt32" )
-	field( INP,  "@asyn($(PORT),$(ADDR=0),$(TIMEOUT=1))ClinkDevRoot.ClinkFeb[0].AxiVersion.FpgaVersion" )
 	field( SCAN, "I/O Intr" )
 	field( PINI, "YES" )
 	info( archiveFields,  "VAL" )
