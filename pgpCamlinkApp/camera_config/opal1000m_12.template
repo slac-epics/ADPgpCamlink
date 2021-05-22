@@ -60,31 +60,47 @@ record( stringin, "$(P)$(R)CamModelScreen" )
 # Camlink settings
 record( mbbo, "$(P)$(R)CamlinkBaudRate" )
 {
-#	field( TPRO, "2" )
-	field( DOL,  "57600" )
+	field( DOL,  "3" )
+	field( HIGH, "4" )
+	field( HSV,  "MINOR" )
+	field( LOW,  "2" )
+	field( LSV,  "MINOR" )
 	field( PINI, "YES" )
 }
 record( mbbo, "$(P)$(R)CamlinkDataMode" )
 {
-#	field( TPRO, "2" )
 	field( DOL,  "3" )
+	field( HIGH, "4" )
+	field( HSV,  "MINOR" )
+	field( LOW,  "2" )
+	field( LSV,  "MINOR" )
 	field( PINI, "YES" )
 }
 record( mbbo, "$(P)$(R)CamlinkFrameMode" )
 {
-#	field( TPRO, "2" )
 	field( DOL,  "2" )
+	field( HIGH, "3" )
+	field( HSV,  "MINOR" )
+	field( LOW,  "1" )
+	field( LSV,  "MINOR" )
 	field( PINI, "YES" )
 }
 record( mbbo, "$(P)$(R)CamlinkLinkMode" )
 {
-#	field( TPRO, "2" )
 	field( DOL,  "1" )
+	field( HIGH, "2" )
+	field( HSV,  "MINOR" )
+	field( LOW,  "0" )
+	field( LSV,  "MINOR" )
 	field( PINI, "YES" )
 }
 record( longout, "$(P)$(R)CamlinkHTap" )
 {
 	field( DOL,  "2" )
+	field( HIGH, "3" )
+	field( HSV,  "MINOR" )
+	field( LOW,  "1" )
+	field( LSV,  "MINOR" )
 	field( PINI, "YES" )
 }
 record( longout, "$(P)$(R)CamlinkTrigMask" )
@@ -153,7 +169,7 @@ record( stringin, "$(P)$(R)OpalBuildState_RBV" )
 }
 
 # Set Camera Control Exposure source
-#	We use source 0, CC1 for external trigger in Pulse mode.
+#	We use source CCE 0, Camlink line CC1, for external trigger in Pulse mode.
 #	CCE source isn't used in FreeRun mode.
 # This is reflected in the rogue CamlinkTrigMask PV which is currently 1.
 # In the serial protocol, we need the bit number
@@ -893,6 +909,7 @@ record( bo, "$(P)$(R)OpalTestPattern" )
     field( FLNK, "$(P)$(R)OpalTestPattern_RBV" )
     field( ZNAM, "OFF" )
     field( ONAM, "ON"  )
+    field( OSV,  "MINOR"    )
 }
 
 record( bi, "$(P)$(R)OpalTestPattern_RBV" )
@@ -979,6 +996,7 @@ record( bo, "$(P)$(R)OpalSetVR" )
     field( FLNK, "$(P)$(R)OpalVR" )
     field( ZNAM, "No Remap" )
     field( ONAM, "Remap"    )
+    field( ZSV,  "MINOR"    )
     info( autosaveFields, "VAL" )
 }
 
@@ -990,6 +1008,7 @@ record( bi, "$(P)$(R)OpalVR" )
     field( INP,	 "@opal1000m_12.proto GetInt(VR) $(PORT).SER" )
     field( ZNAM, "No Remap" )
     field( ONAM, "Remap"    )
+    field( ZSV,  "MINOR"    )
 }
 
 # Recall configuration
