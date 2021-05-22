@@ -90,6 +90,7 @@ record( longout, "$(P)$(R)CamlinkHTap" )
 record( longout, "$(P)$(R)CamlinkTrigMask" )
 {
 	field( DOL,  "1" )
+	field( OMSL, "closed_loop" )
 	field( PINI, "YES" )
 }
 record( bo, "$(P)$(R)CamlinkInvCC" )
@@ -154,6 +155,17 @@ record( stringin, "$(P)$(R)OpalBuildState_RBV" )
 # Set Camera Control Exposure source
 #	We use source 0, CC1 for external trigger in Pulse mode.
 #	CCE source isn't used in FreeRun mode.
+# This is reflected in the rogue CamlinkTrigMask PV which is currently 1.
+# In the serial protocol, we need the bit number
+# log-base2(CamlinkTrigMask)+1
+#
+# As an alternative, if we wanted to allow selection of CC2, CC3, or CC4   
+# we could add an OpalTrigInput calc record and change OUT to
+#      OUT,	 "@opal1000m_12.proto SetCCE $(PORT).SER" )
+# SetCCE would be added as a new protocol
+# which would send "CCE$OpalTrigInput;$OpalTrigPol"
+# instead of always             "CCE0;$OpalTrigPol"
+# 
 # Note: Trigger polarity from testing is opposite of Opal documentation.
 record( mbbo, "$(P)$(R)OpalTrigPol" )
 {
@@ -161,13 +173,7 @@ record( mbbo, "$(P)$(R)OpalTrigPol" )
     field( DESC, "Set Exposure Source & Event" )
     field( DTYP, "stream" )
     field( OUT,	 "@opal1000m_12.proto SetInt(CCE0;) $(PORT).SER" )
-	# As an alternative, if we wanted to allow selection of CC2, CC3, or CC4   
-	# we could add an OpalTrigInput mbbo record and change OUT to
-	#      OUT,	 "@opal1000m_12.proto SetCCE $(PORT).SER" )
-	# SetCCE would be added as a new protocol
-	# which would send "CCE$OpalTrigInput;$OpalTrigPol"
-	# instead of always             "CCE0;$OpalTrigPol"
-	field( DOL,  1 )
+	field( DOL,  "$(P)$(R)CamlinkInvCC CPP NMS" )
     field( ZRVL, 0 )
     field( ONVL, 1 )
     field( ZRST, "Active Hi"	)
