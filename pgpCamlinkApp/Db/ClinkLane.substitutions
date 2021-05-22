@@ -13,12 +13,17 @@ file biDevRogue.template
 	{
 		NAME	= "PgpMon:RxRemLinkReady"
 		PATH	= "ClinkDevRoot.ClinkPcie.Hsio.PgpMon[$(L)].RxStatus.RemRxLinkReady"
+		ZNAM	= "Not Ready"
+		ONAM	= "Ready"
 		SCAN	= "\$(SCAN=1 second)"
 		ZSV     = "MAJOR"
 	}
 	{
 		NAME	= "PgpMon:RxStatus:LinkReady"
 		PATH	= "ClinkDevRoot.ClinkPcie.Hsio.PgpMon[$(L)].RxStatus.LinkReady"
+		ZNAM	= "Not Ready"
+		ONAM	= "Ready"
+		ZSV     = "MAJOR"
 		SCAN	= "\$(SCAN=1 second)"
 	}
 	{
@@ -60,7 +65,7 @@ file boolDevRogue.template
 		PATH	= "ClinkDevRoot.ClinkPcie.Application.AppLane[$(L)].EventBuilder.Blowoff"
 		SAVE	= ""
 		DESC	= "Blow off data in EventBuilder pipeline"
-		ZNAM	= "Disabled"
+		ZNAM	= "OK"
 		ONAM	= "Blowoff"
 		DOL		= "1"
 		PINI	= "YES"
