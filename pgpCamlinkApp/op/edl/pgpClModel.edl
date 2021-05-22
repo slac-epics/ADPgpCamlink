@@ -3,10 +3,10 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 2510
-y 129
-w 739
-h 782
+x 553
+y 181
+w 770
+h 807
 font "helvetica-medium-r-12.0"
 ctlFont "helvetica-medium-r-12.0"
 btnFont "helvetica-medium-r-12.0"
@@ -136,7 +136,7 @@ major 4
 minor 0
 release 0
 x 8
-y 172
+y 200
 w 720
 h 604
 
@@ -149,7 +149,7 @@ major 4
 minor 1
 release 0
 x 8
-y 172
+y 200
 w 720
 h 604
 fgColor index 14
@@ -592,6 +592,314 @@ bgColor index 0
 useDisplayBg
 value {
   "Lib Version"
+}
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 140
+y 128
+w 108
+h 20
+controlPv "$(CAM):CamlinkBaudRate"
+format "hex"
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+fgColor index 15
+fgAlarm
+bgColor index 12
+limitsFromDb
+nullColor index 0
+useHexPrefix
+newPos
+objType "monitors"
+noExecuteClipMask
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 16
+y 128
+w 116
+h 20
+font "helvetica-medium-r-12.0"
+fgColor index 14
+bgColor index 12
+useDisplayBg
+value {
+  "CamlinkBaudRate"
+}
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 140
+y 152
+w 108
+h 20
+controlPv "$(CAM):CamlinkDataMode"
+format "hex"
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+fgColor index 15
+fgAlarm
+bgColor index 12
+limitsFromDb
+nullColor index 0
+useHexPrefix
+newPos
+objType "monitors"
+noExecuteClipMask
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 16
+y 152
+w 116
+h 20
+font "helvetica-medium-r-12.0"
+fgColor index 14
+bgColor index 12
+useDisplayBg
+value {
+  "CamlinkDataMode"
+}
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 252
+y 128
+w 116
+h 20
+font "helvetica-medium-r-12.0"
+fgColor index 14
+bgColor index 12
+useDisplayBg
+value {
+  "CamlinkFrameMode"
+}
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 368
+y 128
+w 108
+h 20
+controlPv "$(CAM):CamlinkFrameMode"
+format "hex"
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+fgColor index 15
+fgAlarm
+bgColor index 12
+limitsFromDb
+nullColor index 0
+useHexPrefix
+newPos
+objType "monitors"
+noExecuteClipMask
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 368
+y 152
+w 108
+h 20
+controlPv "$(CAM):CamlinkLinkMode"
+format "hex"
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+fgColor index 15
+fgAlarm
+bgColor index 12
+limitsFromDb
+nullColor index 0
+useHexPrefix
+newPos
+objType "monitors"
+noExecuteClipMask
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 252
+y 152
+w 116
+h 20
+font "helvetica-medium-r-12.0"
+fgColor index 14
+bgColor index 12
+useDisplayBg
+value {
+  "CamlinkLinkMode"
+}
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 596
+y 128
+w 108
+h 20
+controlPv "$(CAM):CamlinkHTap"
+format "hex"
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+fgColor index 15
+fgAlarm
+bgColor index 12
+limitsFromDb
+nullColor index 0
+useHexPrefix
+newPos
+objType "monitors"
+noExecuteClipMask
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 480
+y 128
+w 116
+h 20
+font "helvetica-medium-r-12.0"
+fgColor index 14
+bgColor index 12
+useDisplayBg
+value {
+  "CamlinkHTap"
+}
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 480
+y 152
+w 116
+h 20
+font "helvetica-medium-r-12.0"
+fgColor index 14
+bgColor index 12
+useDisplayBg
+value {
+  "CamlinkInvCC"
+}
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 596
+y 152
+w 108
+h 20
+controlPv "$(CAM):CamlinkInvCC"
+format "hex"
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+fgColor index 15
+fgAlarm
+bgColor index 12
+limitsFromDb
+nullColor index 0
+useHexPrefix
+newPos
+objType "monitors"
+noExecuteClipMask
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 596
+y 176
+w 108
+h 20
+controlPv "$(CAM):CamlinkTrigMask"
+format "hex"
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+fgColor index 15
+fgAlarm
+bgColor index 12
+limitsFromDb
+nullColor index 0
+useHexPrefix
+newPos
+objType "monitors"
+noExecuteClipMask
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 480
+y 176
+w 116
+h 20
+font "helvetica-medium-r-12.0"
+fgColor index 14
+bgColor index 12
+useDisplayBg
+value {
+  "CamlinkTrigMask"
 }
 endObjectProperties
 

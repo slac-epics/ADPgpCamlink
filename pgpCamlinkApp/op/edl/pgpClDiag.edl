@@ -3,8 +3,8 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 8
-y 265
+x 2309
+y 213
 w 929
 h 800
 font "helvetica-medium-r-8.0"
@@ -1809,36 +1809,6 @@ value {
 }
 endObjectProperties
 
-# (Text Control)
-object activeXTextDspClass
-beginObjectProperties
-major 4
-minor 7
-release 0
-x 548
-y 308
-w 96
-h 20
-controlPv "$(PGP):Timing:C_RxReset"
-format "decimal"
-font "helvetica-medium-r-12.0"
-fontAlign "center"
-fgColor index 25
-fgAlarm
-bgColor index 5
-editable
-autoHeight
-motifWidget
-limitsFromDb
-nullColor index 40
-smartRefresh
-fastUpdate
-useHexPrefix
-newPos
-objType "controls"
-noExecuteClipMask
-endObjectProperties
-
 # (Static Text)
 object activeXTextClass
 beginObjectProperties
@@ -1933,9 +1903,9 @@ beginObjectProperties
 major 4
 minor 0
 release 0
-x 548
+x 544
 y 260
-w 96
+w 108
 h 20
 fgColor index 14
 bgColor index 3
@@ -1953,9 +1923,9 @@ beginObjectProperties
 major 4
 minor 0
 release 0
-x 548
+x 544
 y 332
-w 96
+w 108
 h 20
 fgColor index 14
 bgColor index 3
@@ -1973,9 +1943,9 @@ beginObjectProperties
 major 4
 minor 0
 release 0
-x 548
+x 544
 y 356
-w 96
+w 108
 h 20
 fgColor index 14
 bgColor index 3
@@ -1993,9 +1963,9 @@ beginObjectProperties
 major 4
 minor 0
 release 0
-x 548
+x 544
 y 236
-w 96
+w 108
 h 20
 fgColor index 14
 bgColor index 3
@@ -2049,36 +2019,6 @@ useDisplayBg
 value {
   "Timing:RxDown"
 }
-endObjectProperties
-
-# (Text Control)
-object activeXTextDspClass
-beginObjectProperties
-major 4
-minor 7
-release 0
-x 548
-y 284
-w 96
-h 18
-controlPv "$(PGP):Timing:RxDown"
-format "decimal"
-font "helvetica-medium-r-12.0"
-fontAlign "center"
-fgColor index 25
-fgAlarm
-bgColor index 5
-editable
-autoHeight
-motifWidget
-limitsFromDb
-nullColor index 40
-smartRefresh
-fastUpdate
-useHexPrefix
-newPos
-objType "controls"
-noExecuteClipMask
 endObjectProperties
 
 # (Rectangle)
