@@ -13,27 +13,27 @@ record( seq, "$(PGP):SeqLcls1Timing" )
 
 	# Disable MiniTpg and set ModeSelEn to UseClkSel
 	field( DLY0, "0" ) field( DOL0, "0" ) field( LNK0, "$(PGP):Timing:UseMiniTpg    PP NMS" )
-	field( DLY2, "0" ) field( DOL2, "0" ) field( LNK2, "$(PGP):Timing:ModeSelEn     PP NMS" )
+	field( DLY1, "0" ) field( DOL1, "0" ) field( LNK1, "$(PGP):Timing:ModeSelEn     PP NMS" )
 
 	# Assert RxPllReset for 1 sec 
-	field( DLY3, "0" ) field( DOL3, "1" ) field( LNK3, "$(PGP):Timing:RxPllReset    PP NMS" )
-	field( DLY4, "1" ) field( DOL4, "0" ) field( LNK4, "$(PGP):Timing:RxPllReset    PP NMS" )
+	field( DLY2, "0" ) field( DOL2, "1" ) field( LNK2, "$(PGP):Timing:RxPllReset    PP NMS" )
+	field( DLY3, "1" ) field( DOL3, "0" ) field( LNK3, "$(PGP):Timing:RxPllReset    PP NMS" )
 
 	# Select LCLS-I Clock
-	field( DLY5, "0" ) field( DOL5, "0" ) field( LNK5, "$(PGP):Timing:ClkSel        PP NMS" )
+	field( DLY4, "0" ) field( DOL4, "0" ) field( LNK4, "$(PGP):Timing:ClkSel        PP NMS" )
 
 	# Assert C_RxReset for 1 sec 
-	field( DLY6, "0" ) field( DOL6, "1" ) field( LNK6, "$(PGP):Timing:C_RxReset     PP NMS" )
-	field( DLY7, "1" ) field( DOL7, "0" ) field( LNK7, "$(PGP):Timing:C_RxReset     PP NMS" )
+	field( DLY5, "0" ) field( DOL5, "1" ) field( LNK5, "$(PGP):Timing:C_RxReset     PP NMS" )
+	field( DLY6, "1" ) field( DOL6, "0" ) field( LNK6, "$(PGP):Timing:C_RxReset     PP NMS" )
 
 	# Reset the latching register
-	field( DLY8, ".1") field( DOL8, "0" ) field( LNK8, "$(PGP):Timing:RxDown        PP NMS" )
+	field( DLY7, ".1") field( DOL7, "0" ) field( LNK7, "$(PGP):Timing:RxDown        PP NMS" )
 
 	# Set EventBuilder Bypass to mask out XPM Timing Message for LCLS1 timing 
-	field( DLY9, "0" ) field( DOL9, "4" ) field( LNK9, "$(PGP):Ch0:EventBuilder:Bypass  PP NMS" )
-	field( DLYA, "0" ) field( DOLA, "4" ) field( LNKA, "$(PGP):Ch1:EventBuilder:Bypass  PP NMS" )
-	field( DLYB, "0" ) field( DOLB, "4" ) field( LNKB, "$(PGP):Ch2:EventBuilder:Bypass  PP NMS" )
-	field( DLYC, "0" ) field( DOLC, "4" ) field( LNKC, "$(PGP):Ch3:EventBuilder:Bypass  PP NMS" )
+	field( DLY8, "0" ) field( DOL8, "4" ) field( LNK8, "$(PGP):Ch0:EventBuilder:Bypass  PP NMS" )
+	field( DLY9, "0" ) field( DOL9, "4" ) field( LNK9, "$(PGP):Ch1:EventBuilder:Bypass  PP NMS" )
+	field( DLYA, "0" ) field( DOLA, "4" ) field( LNKA, "$(PGP):Ch2:EventBuilder:Bypass  PP NMS" )
+	field( DLYB, "0" ) field( DOLB, "4" ) field( LNKB, "$(PGP):Ch3:EventBuilder:Bypass  PP NMS" )
 
 	info( autosaveFields, "DESC" )
 }
@@ -44,22 +44,28 @@ record( seq, "$(PGP):SeqTpgMiniTiming" )
 	field( DESC, "Select TpgMini Internal LCLS-I Clock" )
 
 	# Disable MiniTpg and set ModeSelEn to UseClkSel
-	field( DLY1, "0" ) field( DOL1, "0" ) field( LNK1, "$(PGP):Timing:UseMiniTpg    PP NMS" )
-	field( DLY2, "0" ) field( DOL2, "0" ) field( LNK2, "$(PGP):Timing:ModeSelEn     PP NMS" )
+	field( DLY0, "0" ) field( DOL0, "0" ) field( LNK0, "$(PGP):Timing:UseMiniTpg    PP NMS" )
+	field( DLY1, "0" ) field( DOL1, "0" ) field( LNK1, "$(PGP):Timing:ModeSelEn     PP NMS" )
 
 	# Assert RxPllReset for 1 sec 
-	field( DLY3, "0" ) field( DOL3, "1" ) field( LNK3, "$(PGP):Timing:RxPllReset    PP NMS" )
-	field( DLY4, "1" ) field( DOL4, "0" ) field( LNK4, "$(PGP):Timing:RxPllReset    PP NMS" )
+	field( DLY2, "0" ) field( DOL2, "1" ) field( LNK2, "$(PGP):Timing:RxPllReset    PP NMS" )
+	field( DLY3, "1" ) field( DOL3, "0" ) field( LNK3, "$(PGP):Timing:RxPllReset    PP NMS" )
 
 	# Select LCLS-I Clock
-	field( DLY5, "0" ) field( DOL5, "0" ) field( LNK5, "$(PGP):Timing:ClkSel        PP NMS" )
+	field( DLY4, "0" ) field( DOL4, "0" ) field( LNK4, "$(PGP):Timing:ClkSel        PP NMS" )
 
 	# Assert C_RxReset for 1 sec 
-	field( DLY6, "0" ) field( DOL6, "1" ) field( LNK6, "$(PGP):Timing:C_RxReset     PP NMS" )
-	field( DLY7, "1" ) field( DOL7, "0" ) field( LNK7, "$(PGP):Timing:C_RxReset     PP NMS" )
+	field( DLY5, "0" ) field( DOL5, "1" ) field( LNK5, "$(PGP):Timing:C_RxReset     PP NMS" )
+	field( DLY6, "1" ) field( DOL6, "0" ) field( LNK6, "$(PGP):Timing:C_RxReset     PP NMS" )
 
 	# Reset the latching register
-	field( DLY8, ".1") field( DOL8, "0" ) field( LNK8, "$(PGP):Timing:RxDown        PP NMS" )
+	field( DLY7, ".1") field( DOL7, "0" ) field( LNK7, "$(PGP):Timing:RxDown        PP NMS" )
+
+	# Set EventBuilder Bypass to mask out XPM Timing Message for LCLS1 timing 
+	field( DLY8, "0" ) field( DOL8, "4" ) field( LNK8, "$(PGP):Ch0:EventBuilder:Bypass  PP NMS" )
+	field( DLY9, "0" ) field( DOL9, "4" ) field( LNK9, "$(PGP):Ch1:EventBuilder:Bypass  PP NMS" )
+	field( DLYA, "0" ) field( DOLA, "4" ) field( LNKA, "$(PGP):Ch2:EventBuilder:Bypass  PP NMS" )
+	field( DLYB, "0" ) field( DOLB, "4" ) field( LNKB, "$(PGP):Ch3:EventBuilder:Bypass  PP NMS" )
 
 	# Enable MiniTpg
 	field( DLYF, "0" ) field( DOLF, "1" ) field( LNKF, "$(PGP):Timing:UseMiniTpg    PP NMS" )
@@ -73,28 +79,28 @@ record( seq, "$(PGP):SeqLcls2Timing" )
 	field( DESC, "Select LCLS-II Timing" )
 
 	# Disable MiniTpg and set ModeSelEn to UseClkSel
-	field( DLY1, "0" ) field( DOL1, "0" ) field( LNK1, "$(PGP):Timing:UseMiniTpg    PP NMS" )
-	field( DLY2, "0" ) field( DOL2, "0" ) field( LNK2, "$(PGP):Timing:ModeSelEn     PP NMS" )
+	field( DLY0, "0" ) field( DOL0, "0" ) field( LNK0, "$(PGP):Timing:UseMiniTpg    PP NMS" )
+	field( DLY1, "0" ) field( DOL1, "0" ) field( LNK1, "$(PGP):Timing:ModeSelEn     PP NMS" )
 
 	# Assert RxPllReset for 1 sec 
-	field( DLY3, "0" ) field( DOL3, "1" ) field( LNK3, "$(PGP):Timing:RxPllReset    PP NMS" )
-	field( DLY4, "1" ) field( DOL4, "0" ) field( LNK4, "$(PGP):Timing:RxPllReset    PP NMS" )
+	field( DLY2, "0" ) field( DOL2, "1" ) field( LNK2, "$(PGP):Timing:RxPllReset    PP NMS" )
+	field( DLY3, "1" ) field( DOL3, "0" ) field( LNK3, "$(PGP):Timing:RxPllReset    PP NMS" )
 
 	# Select LCLS-II Clock
-	field( DLY5, "1" ) field( DOL5, "1" ) field( LNK5, "$(PGP):Timing:ClkSel        PP NMS" )
+	field( DLY4, "0" ) field( DOL4, "1" ) field( LNK4, "$(PGP):Timing:ClkSel        PP NMS" )
 
 	# Assert C_RxReset for 1 sec 
-	field( DLY6, "0" ) field( DOL6, "1" ) field( LNK6, "$(PGP):Timing:C_RxReset     PP NMS" )
-	field( DLY7, "1" ) field( DOL7, "0" ) field( LNK7, "$(PGP):Timing:C_RxReset     PP NMS" )
+	field( DLY5, "0" ) field( DOL5, "1" ) field( LNK5, "$(PGP):Timing:C_RxReset     PP NMS" )
+	field( DLY6, "1" ) field( DOL6, "0" ) field( LNK6, "$(PGP):Timing:C_RxReset     PP NMS" )
 
 	# Reset the latching register
-	field( DLY8, ".1") field( DOL8, "0" ) field( LNK8, "$(PGP):Timing:RxDown        PP NMS" )
+	field( DLY7, ".1") field( DOL7, "0" ) field( LNK7, "$(PGP):Timing:RxDown        PP NMS" )
 
 	# Set EventBuilder Bypass to unmask XPM Timing Message for LCLS2 timing 
-	field( DLY9, "0" ) field( DOL9, "0" ) field( LNK9, "$(PGP):Ch0:EventBuilder:Bypass  PP NMS" )
-	field( DLYA, "0" ) field( DOLA, "0" ) field( LNKA, "$(PGP):Ch1:EventBuilder:Bypass  PP NMS" )
-	field( DLYB, "0" ) field( DOLB, "0" ) field( LNKB, "$(PGP):Ch2:EventBuilder:Bypass  PP NMS" )
-	field( DLYC, "0" ) field( DOLC, "0" ) field( LNKC, "$(PGP):Ch3:EventBuilder:Bypass  PP NMS" )
+	field( DLY8, "0" ) field( DOL8, "0" ) field( LNK8, "$(PGP):Ch0:EventBuilder:Bypass  PP NMS" )
+	field( DLY9, "0" ) field( DOL9, "0" ) field( LNK9, "$(PGP):Ch1:EventBuilder:Bypass  PP NMS" )
+	field( DLYA, "0" ) field( DOLA, "0" ) field( LNKA, "$(PGP):Ch2:EventBuilder:Bypass  PP NMS" )
+	field( DLYB, "0" ) field( DOLB, "0" ) field( LNKB, "$(PGP):Ch3:EventBuilder:Bypass  PP NMS" )
 
 	info( autosaveFields, "DESC" )
 	#	info( autosaveFields, "DESC DOL1 DLY1 DOL2 DLY2 DOL3 DLY3 DOL4 DLY4 DOL5 DLY5 DOL6 DLY6 DOL7 DLY7 DOL8 DLY8 DOL9 DLY9 DOLA DLYA" )
@@ -106,37 +112,37 @@ record( seq, "$(PGP):SeqXpmMiniTiming" )
 	field( DESC, "Select XpmMini Internal LCLS-II Clock" )
 
 	# Disable MiniTpg and set ModeSelEn to UseClkSel
-	field( DLY1, "0" ) field( DOL1, "0" ) field( LNK1, "$(PGP):Timing:UseMiniTpg    PP NMS" )
-	field( DLY2, "0" ) field( DOL2, "0" ) field( LNK2, "$(PGP):Timing:ModeSelEn     PP NMS" )
+	field( DLY0, "0" ) field( DOL0, "0" ) field( LNK0, "$(PGP):Timing:UseMiniTpg    PP NMS" )
+	field( DLY1, "0" ) field( DOL1, "0" ) field( LNK1, "$(PGP):Timing:ModeSelEn     PP NMS" )
 
 	# Assert RxPllReset for 1 sec 
-	field( DLY3, "0" ) field( DOL3, "1" ) field( LNK3, "$(PGP):Timing:RxPllReset    PP NMS" )
-	field( DLY4, "1" ) field( DOL4, "0" ) field( LNK4, "$(PGP):Timing:RxPllReset    PP NMS" )
+	field( DLY2, "0" ) field( DOL2, "1" ) field( LNK2, "$(PGP):Timing:RxPllReset    PP NMS" )
+	field( DLY3, "1" ) field( DOL3, "0" ) field( LNK3, "$(PGP):Timing:RxPllReset    PP NMS" )
 
 	# Select LCLS-II Clock
-	field( DLY5, "1" ) field( DOL5, "1" ) field( LNK5, "$(PGP):Timing:ClkSel        PP NMS" )
+	field( DLY4, "0" ) field( DOL4, "1" ) field( LNK4, "$(PGP):Timing:ClkSel        PP NMS" )
 
 	# Assert C_RxReset for 1 sec 
-	field( DLY6, "0" ) field( DOL6, "1" ) field( LNK6, "$(PGP):Timing:C_RxReset     PP NMS" )
-	field( DLY7, "1" ) field( DOL7, "0" ) field( LNK7, "$(PGP):Timing:C_RxReset     PP NMS" )
+	field( DLY5, "0" ) field( DOL5, "1" ) field( LNK5, "$(PGP):Timing:C_RxReset     PP NMS" )
+	field( DLY6, "1" ) field( DOL6, "0" ) field( LNK6, "$(PGP):Timing:C_RxReset     PP NMS" )
 
 	# Reset the latching register
-	field( DLY8, ".1") field( DOL8, "0" ) field( LNK8, "$(PGP):Timing:RxDown        PP NMS" )
+	field( DLY7, ".1") field( DOL7, "0" ) field( LNK7, "$(PGP):Timing:RxDown        PP NMS" )
+
+	# Set EventBuilder Bypass to unmask XPM Timing Message for LCLS2 timing 
+	field( DLY8, "0" ) field( DOL8, "0" ) field( LNK8, "$(PGP):Ch0:EventBuilder:Bypass  PP NMS" )
+	field( DLY9, "0" ) field( DOL9, "0" ) field( LNK9, "$(PGP):Ch1:EventBuilder:Bypass  PP NMS" )
+	field( DLYA, "0" ) field( DOLA, "0" ) field( LNKA, "$(PGP):Ch2:EventBuilder:Bypass  PP NMS" )
+	field( DLYB, "0" ) field( DOLB, "0" ) field( LNKB, "$(PGP):Ch3:EventBuilder:Bypass  PP NMS" )
 
 	# Enable MiniTpg
-	field( DLY9, "1" ) field( DOL9, "1" ) field( LNK9, "$(PGP):Timing:UseMiniTpg    PP NMS" )
-	field( DLYA, "0" ) field( DOLA, "1" ) field( LNKA, "$(PGP):XpmMini:HwEnable     PP NMS" )
-	field( DLYB, "0" ) field( DOLB, "0" ) field( LNKB, "$(PGP):XpmMini:Link         PP NMS" )
+	field( DLYC, "1" ) field( DOLC, "1" ) field( LNKC, "$(PGP):Timing:UseMiniTpg    PP NMS" )
+	field( DLYD, "0" ) field( DOLD, "1" ) field( LNKD, "$(PGP):XpmMini:HwEnable     PP NMS" )
+	field( DLYE, "0" ) field( DOLE, "0" ) field( LNKE, "$(PGP):XpmMini:Link         PP NMS" )
 
-	# Configure rate and enable
-	# 4: 100Hz, 5: 10Hz, 6: 1Hz
-	field( DLYC, "0" ) field( DOLC, "6" ) field( LNKC, "$(PGP):XpmMini:Config_L0Select_RateSel PP NMS" )
-	field( DLYD, "0" ) field( DOLD, "1" ) field( LNKD, "$(PGP):XpmMini:Config_L0Select_Enabled PP NMS" )
-
-#	field( DLYE, "0" ) field( DOLE, "1" ) field( LNKE, "$(PGP):Trigger:MasterEnable PP NMS" )
-#	field( DLYF, "0" ) field( DOLF, "0" ) field( LNKF, "$(PGP):?    PP NMS" )
+	# Enable
+	field( DLYF, "0" ) field( DOLF, "1" ) field( LNKF, "$(PGP):XpmMini:Config_L0Select_Enabled PP NMS" )
 
 	info( autosaveFields, "DESC" )
-	#	info( autosaveFields, "DESC DOL1 DLY1 DOL2 DLY2 DOL3 DLY3 DOL4 DLY4 DOL5 DLY5 DOL6 DLY6 DOL7 DLY7 DOL8 DLY8 DOL9 DLY9 DOLA DLYA" )
 }
 
