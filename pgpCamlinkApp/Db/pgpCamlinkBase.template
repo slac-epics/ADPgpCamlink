@@ -63,7 +63,7 @@ record( stringin, "$(P)$(R)CamModelScreen" )
 
 record( mbbo, "$(P)$(R)CamlinkBaudRate" )
 {
-	field( OUT,  "$(PGP):Feb$(PGP_LANE):FCh0:BaudRate" )
+	field( OUT,  "$(PGP):Ch$(PGP_LANE):Feb$(PGP_LANE):FCh0:BaudRate CPP MS" )
 	field( ZRVL, "9600"   ) field( ZRST, "9600"   )
 	field( ONVL, "19200"  ) field( ONST, "19200"  )
 	field( TWVL, "38400"  ) field( TWST, "38400"  )
@@ -77,7 +77,7 @@ record( mbbo, "$(P)$(R)CamlinkBaudRate" )
 # 0: 'Disable', 1: 'Base', 2: 'Medium', 3: 'Full', 4: 'Deca'
 record( mbbo, "$(P)$(R)CamlinkLinkMode" )
 {
-	field( OUT,  "$(PGP):Feb$(PGP_LANE):FCh0:LinkMode" )
+	field( OUT,  "$(PGP):Ch$(PGP_LANE):Feb$(PGP_LANE):FCh0:LinkMode" )
 	field( ZRVL, "0" ) field( ZRST, "Disable" )
 	field( ONVL, "1" ) field( ONST, "Base" )
 	field( TWVL, "2" ) field( TWST, "Medium" )
@@ -90,7 +90,7 @@ record( mbbo, "$(P)$(R)CamlinkLinkMode" )
 # 4: '14Bit', 5: '16Bit', 6: '24Bit', 7: '30Bit', 8: '36Bit' 
 record( mbbo, "$(P)$(R)CamlinkDataMode" )
 {
-	field( OUT,  "$(PGP):Feb$(PGP_LANE):FCh0:DataMode" )
+	field( OUT,  "$(PGP):Ch$(PGP_LANE):Feb$(PGP_LANE):FCh0:DataMode" )
 	field( ZRVL, "0" ) field( ZRST, "None" )
 	field( ONVL, "1" ) field( ONST, "8 Bit" )
 	field( TWVL, "2" ) field( TWST, "10 Bit" )
@@ -106,7 +106,7 @@ record( mbbo, "$(P)$(R)CamlinkDataMode" )
 # 0: 'None', 1: 'Line', 2: 'Frame'
 record( mbbo, "$(P)$(R)CamlinkFrameMode" )
 {
-	field( OUT,  "$(PGP):Feb$(PGP_LANE):FCh0:FrameMode" )
+	field( OUT,  "$(PGP):Ch$(PGP_LANE):Feb$(PGP_LANE):FCh0:FrameMode" )
 	field( ZRVL, "0" ) field( ZRST, "None" )
 	field( ONVL, "1" ) field( ONST, "Line" )
 	field( TWVL, "2" ) field( TWST, "Frame" )
@@ -115,18 +115,18 @@ record( mbbo, "$(P)$(R)CamlinkFrameMode" )
 record( longout, "$(P)$(R)CamlinkHTap" )
 {
 	field( DESC, "Camlink horizontal taps" )
-	field( OUT,  "$(PGP):Feb$(PGP_LANE):FCh0:TapCount" )
+	field( OUT,  "$(PGP):Ch$(PGP_LANE):Feb$(PGP_LANE):FCh0:TapCount" )
 }
 
 record( longout, "$(P)$(R)CamlinkTrigMask" )
 {
 	field( DESC, "Sets trigger mask on 4-bit camCtrl bus" )
-	field( OUT,  "$(PGP):Feb$(PGP_LANE):FCh0:TrigMask" )
+	field( OUT,  "$(PGP):Ch$(PGP_LANE):Feb$(PGP_LANE):FCh0:TrigMask" )
 }
 
 record( bo, "$(P)$(R)CamlinkInvCC" )
 {
-	field( OUT,  "$(PGP):Feb$(PGP_LANE):FCh0:InvCC" )
+	field( OUT,  "$(PGP):Ch$(PGP_LANE):Feb$(PGP_LANE):FCh0:InvCC" )
 	field( ZNAM, "Normal" )
 	field( ONAM, "Invert" )
 }
@@ -329,7 +329,7 @@ record( longin, "$(P)$(R)VTaps_RBV" )
 {
 #	field( DTYP, "asynInt32" )
 #	field( INP,  "@asyn($(PORT),$(ADDR=0),$(TIMEOUT=1))CLCAM_VTAPS" )
-	field( SCAN, "I/O Intr" )
+#	field( SCAN, "I/O Intr" )
 }
 
 record( mbbi, "$(P)$(R)CamMode_RBV" )
@@ -351,7 +351,7 @@ record( stringin, "$(P)$(R)CamClass" )
 {
 #	field( DTYP, "asynOctetRead" )
 #	field( INP,  "@asyn($(PORT),$(ADDR=0),$(TIMEOUT=1))CLCAM_CLASS" )
-	field( SCAN, "I/O Intr" )
+#	field( SCAN, "I/O Intr" )
 	info( archiveFields,  "VAL" )
 }
 
@@ -607,7 +607,23 @@ record( longout, "$(P)$(R)CamEventCode" )
 substitute "SER_OK_PV=$(PGP):Ch$(PGP_LANE):EvrV2:RateSel_RBV"
 substitute "MON_SCAN=1 second"
 substitute "MON_DISABLED=1"
-substitute "MON_PV= $(P)$(R)CamEventCode"
+substitute "MON_PV=$(P)$(R)CamEventCode"
+include "putMonitor.template"
+
+substitute "SER_OK_PV=$(PGP):Ch$(PGP_LANE):PgpMon:RxRemLinkReady_RBV"
+substitute "MON_PV=$(P)$(R)CamlinkBaudRate"
+include "putMonitor.template"
+substitute "MON_PV=$(P)$(R)CamlinkDataMode"
+include "putMonitor.template"
+substitute "MON_PV=$(P)$(R)CamlinkFrameMode"
+include "putMonitor.template"
+substitute "MON_PV=$(P)$(R)CamlinkLinkMode"
+include "putMonitor.template"
+substitute "MON_PV=$(P)$(R)CamlinkTrigMask"
+include "putMonitor.template"
+substitute "MON_PV=$(P)$(R)CamlinkInvCC"
+include "putMonitor.template"
+substitute "MON_PV=$(PGP):Ch$(PGP_LANE):EventBuilder:Bypass"
 include "putMonitor.template"
 
 record( longin, "$(P)$(R)CamEventCode_RBV" )
