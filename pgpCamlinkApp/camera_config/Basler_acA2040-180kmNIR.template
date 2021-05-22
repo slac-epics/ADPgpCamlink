@@ -52,17 +52,17 @@ record( mbbo, "$(P)$(R)CamlinkBaudRate" )
 }
 record( mbbo, "$(P)$(R)CamlinkDataMode" )
 {
-	field( DOL,  "12 Bit" )
+	field( DOL,  "3" )
 	field( PINI, "YES" )
 }
 record( mbbo, "$(P)$(R)CamlinkFrameMode" )
 {
-	field( DOL,  "Frame" )
+	field( DOL,  "1" )
 	field( PINI, "YES" )
 }
 record( mbbo, "$(P)$(R)CamlinkLinkMode" )
 {
-	field( DOL,  "Medium" )
+	field( DOL,  "2" )
 	field( PINI, "YES" )
 }
 record( longout, "$(P)$(R)CamlinkHTap" )
