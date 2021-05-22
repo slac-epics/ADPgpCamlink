@@ -14,6 +14,7 @@ file biDevRogue.template
 		NAME	= "PgpMon:RxRemLinkReady"
 		PATH	= "ClinkDevRoot.ClinkPcie.Hsio.PgpMon[$(L)].RxStatus.RemRxLinkReady"
 		SCAN	= "\$(SCAN=1 second)"
+		ZSV     = "MAJOR"
 	}
 	{
 		NAME	= "PgpMon:RxStatus:LinkReady"
@@ -43,7 +44,7 @@ file biDevRogue.template
 file boolDevRogue.template
 {
 	{
-		NAME	= "Feb$(F):ClCh0:DataEn",
+		NAME	= "Feb$(F):DataEn",
 		PATH	= "ClinkDevRoot.ClinkFeb[$(F)].ClinkTop.Ch[0].DataEn"
 #       DESC    = "01234567890123 Max 40 char 7890123456789"
 		DESC	= "Clink FSM module Data Enable."
@@ -82,6 +83,17 @@ file boolDevRogue.template
 		PINI	= "YES"
 		SAVE	= ""
 		SCAN	= "\$(SCAN=1 second)"
+	}
+	{
+		NAME	= "Feb$(F):FCh0:EnableTrig",
+		PATH	= "ClinkDevRoot.ClinkFeb[0].TrigCtrl[0].EnableTrig"
+		DESC	= "Enables the Feb Trigger Output"
+		DOL		= "1"
+		PINI	= "YES"
+		SAVE	= ""
+		SCAN	= "\$(SCAN=1 second)"
+		DISV	= "0"
+		SDIS	= "$(P)$(R)PgpMon:RxRemLinkReady_RBV CP"
 	}
 	{
 		NAME	= "Feb$(F):FCh0:InvCC",
@@ -288,6 +300,7 @@ file longDevRogue.template
 		NAME	= "EventBuilder:Bypass",
 		PATH	= "ClinkDevRoot.ClinkPcie.Application.AppLane[$(L)].EventBuilder.Bypass",
 		SCAN	= "\$(SCAN=1 second)"
+		DOL		= "4"
 		SAVE	= ""
 	}
 	{
