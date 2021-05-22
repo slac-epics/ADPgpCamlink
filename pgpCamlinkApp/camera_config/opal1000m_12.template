@@ -60,22 +60,26 @@ record( stringin, "$(P)$(R)CamModelScreen" )
 # Camlink settings
 record( mbbo, "$(P)$(R)CamlinkBaudRate" )
 {
+#	field( TPRO, "2" )
 	field( DOL,  "57600" )
 	field( PINI, "YES" )
 }
 record( mbbo, "$(P)$(R)CamlinkDataMode" )
 {
-	field( DOL,  "12 Bit" )
+#	field( TPRO, "2" )
+	field( DOL,  "3" )
 	field( PINI, "YES" )
 }
 record( mbbo, "$(P)$(R)CamlinkFrameMode" )
 {
-	field( DOL,  "Frame" )
+#	field( TPRO, "2" )
+	field( DOL,  "2" )
 	field( PINI, "YES" )
 }
 record( mbbo, "$(P)$(R)CamlinkLinkMode" )
 {
-	field( DOL,  "Base" )
+#	field( TPRO, "2" )
+	field( DOL,  "1" )
 	field( PINI, "YES" )
 }
 record( longout, "$(P)$(R)CamlinkHTap" )
@@ -166,8 +170,8 @@ record( mbbo, "$(P)$(R)OpalTrigPol" )
 	field( DOL,  1 )
     field( ZRVL, 0 )
     field( ONVL, 1 )
-    field( ZRST, "Active Low"	)
-    field( ONST, "Active Hi"	)
+    field( ZRST, "Active Hi"	)
+    field( ONST, "Active Low"	)
     field( FLNK, "$(P)$(R)OpalTrigPol_RBV" )
 	field( PINI, "YES" )
 	info( autosaveFields, "DESC VAL" )
