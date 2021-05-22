@@ -3866,3 +3866,26 @@ value {
 autoSize
 endObjectProperties
 
+# (Related Display)
+object relatedDisplayClass
+beginObjectProperties
+major 4
+minor 4
+release 0
+x 712
+y 16
+w 48
+h 24
+fgColor index 14
+bgColor index 3
+topShadowColor index 1
+botShadowColor index 11
+font "helvetica-bold-r-12.0"
+buttonLabel "Diag"
+numPvs 4
+numDsps 1
+displayFileName {
+  0 "ADPgpCamlinkScreens/ClinkLaneDiag.edl"
+}
+endObjectProperties
+
