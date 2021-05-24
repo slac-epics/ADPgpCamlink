@@ -58,12 +58,13 @@ record( stringin, "$(P)$(R)CamModelScreen" )
 }
 
 # Camlink settings
-record( mbbo, "$(P)$(R)CamlinkBaudRate" )
+record( longout, "$(P)$(R)CamlinkBaudRate" )
 {
-	field( DOL,  "3" )
-	field( HIGH, "4" )
+	field( DOL,  "57600" )
+	field( OMSL, "closed_loop" )
+	field( HIGH, "57601" )
 	field( HSV,  "MINOR" )
-	field( LOW,  "2" )
+	field( LOW,  "57599" )
 	field( LSV,  "MINOR" )
 	field( PINI, "YES" )
 }

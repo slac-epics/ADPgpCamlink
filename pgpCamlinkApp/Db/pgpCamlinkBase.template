@@ -61,15 +61,10 @@ record( stringin, "$(P)$(R)CamModelScreen" )
 # Camlink settings
 #
 
-record( mbbo, "$(P)$(R)CamlinkBaudRate" )
+record( longout, "$(P)$(R)CamlinkBaudRate" )
 {
 	field( OUT,  "$(PGP):Ch$(PGP_LANE):Feb$(PGP_LANE):FCh0:BaudRate CPP MS" )
-	field( ZRVL, "9600"   ) field( ZRST, "9600"   )
-	field( ONVL, "19200"  ) field( ONST, "19200"  )
-	field( TWVL, "38400"  ) field( TWST, "38400"  )
-	field( THVL, "57600"  ) field( THST, "57600"  )
-	field( FRVL, "115200" ) field( FRST, "115200" )
-#	field( EGU,  "bps" )
+	field( EGU,  "bps" )
 	info( autosaveFields, "" )
 }
 
