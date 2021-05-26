@@ -534,11 +534,11 @@ asynStatus pgpCamlink::ConnectCamera( )
     }
 
 	if ( DEBUG_PGP_CAMLINK >= 1 )
-		printf(	"%s %s: PGP Framegrabber %s 0 connected!\n", 
+		printf(	"%s %s: PGP Framegrabber %s connected!\n", 
 				driverName, functionName, m_CameraName.c_str() );
     asynPrint(	this->pasynUserSelf, ASYN_TRACE_FLOW, 
 				"asynPrint "
-				"%s %s: PGP Framegrabber %s 0 connected!\n", 
+				"%s %s: PGP Framegrabber %s connected!\n", 
 				driverName, functionName, m_CameraName.c_str() );
 
 	UpdateStatus( ADStatusIdle );
