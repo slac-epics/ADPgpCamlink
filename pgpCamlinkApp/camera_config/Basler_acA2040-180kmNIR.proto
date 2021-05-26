@@ -9,22 +9,21 @@
 # Successful replies start w/ an ACK, hex 0x06, followed by reply content, if any
 # Unsuccesful commands reply w/ a NAK, hex 0x15
 #
-InTerminator	= SOH;
-OutTerminator	= ETX;
-PeekSize		  = 0;
+Terminator		= 0x03;
+PeekSize		= 0;
 ReplyTimeout	= 500;
 ReadTimeout		= 500;
 WriteTimeout	= 500;
 ExtraInput		= Ignore;
 
 # Baster FTF field
-FTF_RD  = 0x08
-FTF_WR  = 0x00
-FTF_CRC = 0x04
-FTF_A16 = 0x00
-FTF_A32 = 0x01
-FTF_A48 = 0x02
-FTF_A64 = 0x03
+FTF_RD  = 0x08;
+FTF_WR  = 0x00;
+FTF_CRC = 0x04;
+FTF_A16 = 0x00;
+FTF_A32 = 0x01;
+FTF_A48 = 0x02;
+FTF_A64 = 0x03;
 
 # Output: FTF, Datalen, Address, Data, BCC
 # FTF: FTF_RD | FTF_A32
@@ -39,13 +38,13 @@ FTF_A64 = 0x03
 # Bcc: Not using for now
 GetUInt32
 {
-    out "0x090x04%#4r\$1";
-	in  "0x090x04%#4r";
+    out "\x01\x09\x04%#4r\$1";
+	in  "\x01\x09\x04%#4r";
 }
 
 SetUInt32
 {
-    out "0x010x04%#4r\$1%#4r";
+    out "\x01\x01\x04%#4r\$1%#4r";
 	in  "ACK";
 }
 

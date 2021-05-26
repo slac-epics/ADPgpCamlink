@@ -111,7 +111,7 @@ record( longout, "$(P)$(R)SizeY" )
 record( stringin, "$(P)$(R)Manufacturer_RBV" )
 {
 	field( DTYP, "stream" )
-    field( INP,  "@Basler_acA2040-180kmNIR.proto GetString(0x0100,32) $(PORT).SER" )
+    field( INP,  "@Basler_acA2040-180kmNIR.proto GetString(0x0108,32) $(PORT).SER" )
 	field( SCAN, "Passive" )
 	field( PINI, "YES" )
 }
@@ -120,7 +120,7 @@ record( stringin, "$(P)$(R)Manufacturer_RBV" )
 record( stringin, "$(P)$(R)Model_RBV" )
 {
 	field( DTYP, "stream" )
-    field( INP,  "@Basler_acA2040-180kmNIR.proto GetString(0x0200,32) $(PORT).SER" )
+    field( INP,  "@Basler_acA2040-180kmNIR.proto GetString(0x0208,32) $(PORT).SER" )
 	field( SCAN, "Passive" )
 	field( PINI, "YES" )
 }
@@ -195,3 +195,20 @@ record( ao, "$(P)$(R)CamProcDelay" )
     field( DOL,  "3.0e-3" )
 }
 
+record( longout, "$(P)$(R)BaslerTestPattern" )
+{
+    field( DOL,  "0" )
+    field( DESC, "Select test pattern.  0 = Off" )
+    field( DTYP, "stream" )
+	field( OUT,  "@Basler_acA2040-180kmNIR.proto SetUint32(0x30168) $(PORT).SER" )
+    field( FLNK, "$(P)$(R)BaslerTestPattern_RBV" )
+	field( TPRO, 2 )
+}
+
+record( longin, "$(P)$(R)BaslerTestPattern_RBV" )
+{
+    field( DESC, "Select test pattern.  0 = Off" )
+    field( DTYP, "stream" )
+	field( INP,  "@Basler_acA2040-180kmNIR.proto GetUint32(0x30164) $(PORT).SER" )
+	field( TPRO, 2 )
+}
