@@ -1,6 +1,13 @@
 #
 # SLAC RELEASE_NOTES
 #
+R1.1.0 2021-05-24 Bruce Hill
+	New version for cameralink firmware v7.1.1.
+	FEB units need new firmware and fiber link moving from
+	the PGP2B fiber port 0 to PGP4 fiber port 1.
+	Includes new rogueAddrMap and updated firmware paths.
+	Tested and working w/ Opal1000.
+
 R1.0.0 2021-04-06 Bruce Hill
 	Add a button to access the Rogue IOC
 	Update to latest rogue v5.7.0
