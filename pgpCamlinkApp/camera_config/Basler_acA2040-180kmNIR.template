@@ -64,9 +64,9 @@ record( mbbo, "$(P)$(R)CamlinkDataMode" )
 }
 record( mbbo, "$(P)$(R)CamlinkFrameMode" )
 {
-	field( DOL,  "1" )
-	field( TWSV, "MINOR" )
-	field( ZRSV, "MINOR" )
+	field( DOL,  "2" )
+	field( THSV, "MINOR" )
+	field( ONSV, "MINOR" )
 	field( PINI, "YES" )
 }
 record( mbbo, "$(P)$(R)CamlinkLinkMode" )
