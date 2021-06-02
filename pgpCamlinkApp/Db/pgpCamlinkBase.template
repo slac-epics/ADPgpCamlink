@@ -53,7 +53,7 @@ record( stringin, "$(P)$(R)CamModel" )
 }
 record( stringin, "$(P)$(R)CamModelScreen" )
 {
-	field( VAL,  "pgpCamlinkScreens/UnknownModel.edl" )
+	field( VAL,  "ADPgpCamlinkScreens/UnknownModel.edl" )
 	field( PINI, "NO" )
 }
 
