@@ -601,12 +601,18 @@ int bbp::frameToAscii(const uint8_t* frame,
       case 'C':
         if (sz != 0)
         {
+          static bool reminded = false;
+          if (!reminded)
+          {
+            printf("%s: Revisit hack to mask off bit 7\n", __PRETTY_FUNCTION__);
+            reminded = true;
+          }
           //size = snprintf(stream, size, "%s", data.buf);
           unsigned i;
           for (i = 0; (i < size) && (i < dataLen); ++i)
           {
             if (data.buf[i] == '\0')  break;
-            stream[i] = data.buf[i] & 0x7f; // Revisit: Mask off 8th bit
+            stream[i] = data.buf[i] & 0x7f; // Revisit: Mask off bit 7
           }
           if (i < size)  size = ++i;
         }

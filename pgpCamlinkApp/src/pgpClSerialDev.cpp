@@ -1,10 +1,10 @@
 //////////////////////////////////////////////////////////////////////////////
 // This file is part of 'ADPgpCamlink'.
-// It is subject to the license terms in the LICENSE.txt file found in the 
-// top-level directory of this distribution and at: 
-//    https://confluence.slac.stanford.edu/display/ppareg/LICENSE.html. 
-// No part of 'ADPgpCamlink', including this file, 
-// may be copied, modified, propagated, or distributed except according to 
+// It is subject to the license terms in the LICENSE.txt file found in the
+// top-level directory of this distribution and at:
+//    https://confluence.slac.stanford.edu/display/ppareg/LICENSE.html.
+// No part of 'ADPgpCamlink', including this file,
+// may be copied, modified, propagated, or distributed except according to
 // the terms contained in the LICENSE.txt file.
 //////////////////////////////////////////////////////////////////////////////
 //
@@ -119,6 +119,13 @@ int pgpClSerialDev::connect( )
 		sleep(2);
 	}
 
+  if (m_pDataChan)
+  {
+    if ( DEBUG_PGPCL_SER >= 1 )
+      printf(  "%s: %s lane %u is already connected\n", functionName, m_devName.c_str(), m_lane );
+    return 0;
+  }
+
 	uint32_t ch = 2;	// Data channel 2 is used for pgpCamlink serial I/O
 	dest		= (0x100 * m_lane) + ch;	// Derived from python code
 	try
@@ -127,7 +134,7 @@ int pgpClSerialDev::connect( )
 	}
 	catch ( rogue::GeneralError & e )
 	{
-		printf(  "%s Error: Unable to create %s serial data channel!\n", functionName, m_devName.c_str() );
+		printf(  "%s Error: Unable to create %s serial data channel!  %s\n", functionName, m_devName.c_str(), e.what() );
 		//disconnect();
 		return -1;
 	}
@@ -189,7 +196,7 @@ int pgpClSerialDev::connect( )
 		{
 			printf("-- Core Axi Version --\n");
 			printf("firmwareVersion : %x\n", vsn.firmwareVersion);
-			printf("buildString     : %s\n", vsn.buildString); 
+			printf("buildString     : %s\n", vsn.buildString);
 		}
 		close( fd );
 	}
@@ -249,7 +256,7 @@ int pgpClSerialDev::readBytes( unsigned char * buffer, double timeout, size_t nB
 	if ( nRead <= 0 )
 	{
 		if ( DEBUG_PGPCL_SER >= 3 )
-			printf(  "%s: board %u lane %u read error!\n", functionName, m_board, m_lane );
+			printf(  "%s: board %u lane %u read %s  timeout %f, nRead %d\n", functionName, m_board, m_lane, nRead ? "error!" : "nothing.", timeout, nRead );
 		return 0;
 	}
 	return nRead;

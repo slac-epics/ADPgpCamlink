@@ -9,48 +9,59 @@
 # Successful replies start w/ an ACK, hex 0x06, followed by reply content, if any
 # Unsuccesful commands reply w/ a NAK, hex 0x15
 #
-Terminator		= 0x03;
-PeekSize		= 0;
+Terminator    = 0x03;
+#PeekSize		= 0;
 ReplyTimeout	= 500;
 ReadTimeout		= 500;
 WriteTimeout	= 500;
 ExtraInput		= Ignore;
 
-# Baster FTF field
-FTF_RD  = 0x08;
-FTF_WR  = 0x00;
-FTF_CRC = 0x04;
-FTF_A16 = 0x00;
-FTF_A32 = 0x01;
-FTF_A48 = 0x02;
-FTF_A64 = 0x03;
+## Basler FTF field
+#FTF_RD  = 0x08;
+#FTF_WR  = 0x00;
+#FTF_CRC = 0x04;
+#FTF_A16 = 0x00;
+#FTF_A32 = 0x01;
+#FTF_A48 = 0x02;
+#FTF_A64 = 0x03;
 
 # Output: FTF, Datalen, Address, Data, BCC
-# FTF: FTF_RD | FTF_A32
+# FTF: FTF_WRT | FTF_A32
 # Datalen: 0x04
 # Addr: 4 byte little endian
-# Bcc: Not using for now
+# Bcc: xor sum
 #
 # Input: FTF, Datalen, Data, BCC
 # FTF: FTF_RD | FTF_A32
 # Datalen: 0x04
 # Data: 4 byte little endian
-# Bcc: Not using for now
+# Bcc: xor sum
 GetUInt32
 {
-    out "\x01\x09\x04%#4r\$1";
-	in  "\x01\x09\x04%#4r";
+  out 0x01 0x0d 0x04 "\$4\$3\$2\$1" "%1.0<xor>";
+  in  ACK 0x01 0x14 0x04 "%#04r" "%2.0<xor>";
 }
 
 SetUInt32
 {
-    out "\x01\x01\x04%#4r\$1%#4r";
-	in  "ACK";
+  outTerminator = 0x03;
+  inTerminator  = "";
+
+  out 0x01 0x05 0x04 "\$4\$3\$2\$1" "%#04r" "%1.0<xor>";
+  in  ACK;
 }
 
 GetString
 {
-    out "0x09%#1r\$20x20%#4r\$1";
-	in  "0x09%#1r\$20x20%s";
+  out 0x01 0x0d "\$5" "\$4\$3\$2\$1" "%1.0<xor>";
+  in  ACK 0x01 0x14 "\$5" "%32c" "%2.0<xor>";
 }
 
+SetString
+{
+  outTerminator = 0x03;
+  inTerminator  = "";
+
+  out 0x01 0x05 "\$5" "\$4\$3\$2\$1" "%32c" "%1.0<xor>";
+  in  ACK;
+}

@@ -1,10 +1,10 @@
 //////////////////////////////////////////////////////////////////////////////
 // This file is part of 'ADPgpCamlink'.
-// It is subject to the license terms in the LICENSE.txt file found in the 
-// top-level directory of this distribution and at: 
-//    https://confluence.slac.stanford.edu/display/ppareg/LICENSE.html. 
-// No part of 'ADPgpCamlink', including this file, 
-// may be copied, modified, propagated, or distributed except according to 
+// It is subject to the license terms in the LICENSE.txt file found in the
+// top-level directory of this distribution and at:
+//    https://confluence.slac.stanford.edu/display/ppareg/LICENSE.html.
+// No part of 'ADPgpCamlink', including this file,
+// may be copied, modified, propagated, or distributed except according to
 // the terms contained in the LICENSE.txt file.
 //////////////////////////////////////////////////////////////////////////////
 //
@@ -193,6 +193,20 @@ asynStatus	asynPgpClSerial::disconnect(
 }
 
 
+void maskBit7( char* pBuf, int sBuf )
+{
+	if ( pBuf == NULL || sBuf == 0 )
+		return;
+
+	const char*	pBufEnd	= pBuf + sBuf - 2;
+  pBuf += 3;
+	while ( pBuf < pBufEnd )
+	{
+    *pBuf++ &= 0x7f;
+	}
+}
+
+
 bool isAscii( const char * pBuf, int sBuf )
 {
 	if ( pBuf == NULL || sBuf == 0 )
@@ -202,7 +216,8 @@ bool isAscii( const char * pBuf, int sBuf )
 	while ( pBuf < pBufEnd )
 	{
 		char	next = *pBuf++;
-		if ( next <= 0 || next >= 0x7F )
+		//if ( next <= 0 || next >= 0x7F )
+		if ( next < 0 || next >= 0x7F )     // Revisit
 			return false;
 	}
 	return true;
@@ -219,7 +234,7 @@ asynStatus	asynPgpClSerial::readOctet(
 	asynStatus				status			= asynSuccess;
     static const char	*	functionName	= "asynPgpClSerial::readOctet";
 	int						nAvailToRead	= 0;
- 
+
 	if ( pnRead )
 		*pnRead = 0;
 	if ( eomReason )
@@ -296,6 +311,14 @@ asynStatus	asynPgpClSerial::readOctet(
 		// If we read something
 		if( nRead > 0 )
 		{
+      static bool reminded = false;
+      if (!reminded)
+      {
+        printf("%s: Revisit line %d hack to mask off bit 7\n", functionName, __LINE__);
+        reminded = true;
+      }
+      maskBit7(pBuffer, nRead);
+
 			// Make sure we have a valid ascii response, and not garbage on the camlink Rx/Tx lines
 			if ( isAscii( pBuffer, nRead ) == false )
 			{
@@ -359,6 +382,15 @@ asynStatus	asynPgpClSerial::readOctet(
 		asynPrintIO(	pasynUser, ASYN_TRACEIO_DRIVER, pBuffer, nRead,
 						"%s: %s  read  %d of %d\n",
 						functionName, this->portName, nRead, nAvailToRead );
+
+    static bool reminded = false;
+    if (!reminded)
+    {
+      printf("%s: Revisit line %d hack to mask off bit 7\n", functionName, __LINE__);
+      reminded = true;
+    }
+    maskBit7(pBuffer, nRead);
+
 		if ( isAscii( pBuffer, nRead ) )
 		{
 			if ( DEBUG_PGPCL_SER >= 3 )
@@ -380,6 +412,12 @@ asynStatus	asynPgpClSerial::readOctet(
 		// Call the parameter callbacks
 		callParamCallbacks();
 	}
+
+  printf("%s: returning status %d, pBuffer '%s', pnRead %zu, eomReason %d (of %d, %d)\n",
+         functionName, status, pBuffer, *pnRead, *eomReason, ASYN_EOM_EOS, ASYN_EOM_CNT);
+  for (unsigned i = 0; i < *pnRead; ++i)
+    printf("%02hhx ", pBuffer[i]);
+  printf("\n");
 
     return status;
 }
@@ -435,7 +473,7 @@ asynStatus	asynPgpClSerial::writeOctet(
 	const unsigned char	*	pSendBuffer	= (unsigned char *) pBuffer;
 	size_t					sSendBuffer	= maxChars;
 
-	// Note: 
+	// Note:
 	// This driver is designed to be used from DTYP "stream" PV's.
 	// The streamdevice asynDriver owns the pgpClSerialDev lane
 	// and manages any bytes read from that lane, using it's
@@ -487,7 +525,7 @@ asynStatus asynPgpClSerial::flushOctet(
 {
 static const char	*	functionName	= "asynPgpClSerial::flushOctet";
 double     savetimeout = pasynUser->timeout;
-char       buffer[100]; 
+char       buffer[100];
 size_t     nbytesTransfered;
 
 pasynUser->timeout = .05;

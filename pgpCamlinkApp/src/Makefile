@@ -49,7 +49,6 @@ pgpClSerialTool_SRCS	+= bbpFrame.cpp
 pgpClSerialTool_LIBS	+= pgpCamlink
 pgpClSerialTool_LIBS	+= ADBase
 pgpClSerialTool_LIBS	+= asyn
-pgpClSerialTool_LIBS	+= asyn
 pgpClSerialTool_LIBS	+= rogue-core
 pgpClSerialTool_LIBS	+= zmq
 pgpClSerialTool_LIBS	+= bz2

@@ -7,144 +7,288 @@
 
 record( seq, "$(P)$(R)ReConfigSeq" )
 {
-#	field( DLY0, "0.0" ) field( DOL0, "1" ) field( LNK0, "$(P)$(R)BaslerAccessPrivilege.PROC CA NMS" )
-#	field( DLY1, "0.1" ) field( DOL1, "1" ) field( LNK1, "$(P)$(R)BaslerExposureValue_RBV.PROC CA NMS" )
-#	field( DLY2, "0.1" ) field( DOL2, "1" ) field( LNK2, "$(P)$(R)BaslerAcqStartFullTrMode_RBV.PROC CA NMS" )
-#	field( DLY3, "0.1" ) field( DOL3, "1" ) field( LNK3, "$(P)$(R)BaslerAcqStopFullTrMode_RBV.PROC CA NMS" )
-#	field( DLY5, "0.1" ) field( DOL5, "0" ) field( LNK0, "$(P)$(R)BaslerFStartFullTrMode_RBV.PROC CA NMS" )
-#	field( DLY6, "0.1" ) field( DOL6, "1" ) field( LNK6, "$(P)$(R)BaslerLine1GlitchFilter.PROC CA NMS" )
-#	field( DLY7, "0.1" ) field( DOL7, "1" ) field( LNK7, "$(P)$(R)BaslerFStartTrSrc.PROC CA NMS" )
-#	field( DLY8, "0.1" ) field( DOL4, "1" ) field( LNK8, "$(P)$(R)BaslerHeartbeatTimeout_RBV.PROC CA NMS" )
-    field( TPRO, 1 )
-	field( FLNK, "$(P)$(R)ReConfigSeq2" )
+#  field( DLY0, "0.0" ) field( DOL0, "1" ) field( LNK0, "$(P)$(R)BaslerAccessPrivilege.PROC CA NMS" )
+#  field( DLY1, "0.1" ) field( DOL1, "1" ) field( LNK1, "$(P)$(R)BaslerExposureValue_RBV.PROC CA NMS" )
+#  field( DLY2, "0.1" ) field( DOL2, "1" ) field( LNK2, "$(P)$(R)BaslerAcqStartFullTrMode_RBV.PROC CA NMS" )
+#  field( DLY3, "0.1" ) field( DOL3, "1" ) field( LNK3, "$(P)$(R)BaslerAcqStopFullTrMode_RBV.PROC CA NMS" )
+#  field( DLY5, "0.1" ) field( DOL5, "0" ) field( LNK0, "$(P)$(R)BaslerFStartFullTrMode_RBV.PROC CA NMS" )
+#  field( DLY6, "0.1" ) field( DOL6, "1" ) field( LNK6, "$(P)$(R)BaslerLine1GlitchFilter.PROC CA NMS" )
+#  field( DLY7, "0.1" ) field( DOL7, "1" ) field( LNK7, "$(P)$(R)BaslerFStartTrSrc.PROC CA NMS" )
+#  field( DLY8, "0.1" ) field( DOL4, "1" ) field( LNK8, "$(P)$(R)BaslerHeartbeatTimeout_RBV.PROC CA NMS" )
+  field( TPRO, 1 )
+  field( FLNK, "$(P)$(R)ReConfigSeq2" )
 }
 record( seq, "$(P)$(R)ReConfigSeq2" )
 {
 
-#	field( DLY1, "0.1" ) field( DOL1, "1" ) field( LNK1, "$(P)$(R)Model_RBV.PROC CA NMS" )
-#	field( DLY2, "0.1" ) field( DOL2, "1" ) field( LNK2, "$(P)$(R)Manufacturer_RBV.PROC CA NMS" )
-#	field( DLY3, "0.1" ) field( DOL3, "1" ) field( LNK3, "$(P)$(R)BaslerSerialNumber_RBV.PROC CA NMS" )
-#	field( DLY4, "0.1" ) field( DOL4, "1" ) field( LNK4, "$(P)$(R)BaslerFirmwareVersion_RBV.PROC CA NMS" )
-#	field( DLY5, "0.0" ) field( DOL5, "1" ) field( LNK5, "$(P)$(R)BaslerModel_RBV.PROC CA NMS" )
-#	field( DLY6, "0.1" ) field( DOL6, "1" ) field( LNK6, "$(P)$(R)BaslerTempMainBd_RBV.PROC CA NMS" )
-#	field( DLY7, "0.1" ) field( DOL7, "1" ) field( LNK7, "$(P)$(R)BaslerTempSensorBd_RBV.PROC CA NMS" )
-#	field( DLY8, "0.1" ) field( DOL8, "1" ) field( LNK8, "$(P)$(R)BaslerTemperature_RBV.PROC CA NMS" )
-#	field( FLNK, "$(P)$(R)ReConfigSeq3" )
+  field( DLY1, "0.1" ) field( DOL1, "1" ) field( LNK1, "$(P)$(R)Model_RBV.PROC CA NMS" )
+  field( DLY2, "0.1" ) field( DOL2, "1" ) field( LNK2, "$(P)$(R)Manufacturer_RBV.PROC CA NMS" )
+  field( DLY3, "0.1" ) field( DOL3, "1" ) field( LNK3, "$(P)$(R)BaslerSerialNumber_RBV.PROC CA NMS" )
+  field( DLY4, "0.1" ) field( DOL4, "1" ) field( LNK4, "$(P)$(R)BaslerFirmwareVersion_RBV.PROC CA NMS" )
+  field( DLY5, "0.0" ) field( DOL5, "1" ) field( LNK5, "$(P)$(R)BaslerModel_RBV.PROC CA NMS" )
+  field( DLY6, "0.1" ) field( DOL6, "1" ) field( LNK6, "$(P)$(R)BaslerTempMainBd_RBV.PROC CA NMS" )
+  field( DLY7, "0.1" ) field( DOL7, "1" ) field( LNK7, "$(P)$(R)BaslerTempSensorBd_RBV.PROC CA NMS" )
+  field( DLY8, "0.1" ) field( DOL8, "1" ) field( LNK8, "$(P)$(R)BaslerTemperature_RBV.PROC CA NMS" )
+#  field( FLNK, "$(P)$(R)ReConfigSeq3" )
 }
 
 record( stringin, "$(P)$(R)CamModel" )
 {
-	field( VAL,  "acA2040-180kmNIR" )
-	field( PINI, "YES" )
+  field( VAL,  "acA2040-180kmNIR" )
+  field( PINI, "YES" )
 }
 
 record( stringin, "$(P)$(R)CamModelScreen" )
 {
-	field( VAL,  "ADPgpCamlinkScreens/acA2040-180kmNIR.edl" )
-	field( PINI, "YES" )
+  #field( VAL,  "ADPgpClScreens/acA2040-180kmNIR.edl" )
+  field( VAL,  "pgpCamlinkScreens/acA2040-180kmNIR.edl" )
+  field( PINI, "YES" )
 }
 
 # Camlink settings
 record( longout, "$(P)$(R)CamlinkBaudRate" )
 {
-	field( DOL,  "9600" )
-	field( OMSL, "closed_loop" )
-	field( HIGH, "9601" )
-	field( HSV,  "MINOR" )
-	field( LOW,  "9599" )
-	field( LSV,  "MINOR" )
-	field( PINI, "YES" )
+  field( DOL,  "9600" )
+  field( OMSL, "closed_loop" )
+  field( HIGH, "9601" )
+  field( HSV,  "MINOR" )
+  field( LOW,  "9599" )
+  field( LSV,  "MINOR" )
+  field( PINI, "YES" )
 }
 record( mbbo, "$(P)$(R)CamlinkDataMode" )
 {
-	field( DOL,  "3" )
-	field( FRSV, "MINOR" )
-	field( TWSV, "MINOR" )
-	field( PINI, "YES" )
+  field( DOL,  "3" )
+  field( FRSV, "MINOR" )
+  field( TWSV, "MINOR" )
+  field( PINI, "YES" )
 }
 record( mbbo, "$(P)$(R)CamlinkFrameMode" )
 {
-	field( DOL,  "2" )
-	field( THSV, "MINOR" )
-	field( ONSV, "MINOR" )
-	field( PINI, "YES" )
+  field( DOL,  "2" )
+  field( THSV, "MINOR" )
+  field( ONSV, "MINOR" )
+  field( PINI, "YES" )
 }
 record( mbbo, "$(P)$(R)CamlinkLinkMode" )
 {
-	field( DOL,  "2" )
-	field( THSV, "MINOR" )
-	field( ONSV, "MINOR" )
-	field( PINI, "YES" )
+  field( DOL,  "2" )
+  field( THSV, "MINOR" )
+  field( ONSV, "MINOR" )
+  field( PINI, "YES" )
 }
 record( longout, "$(P)$(R)CamlinkHTap" )
 {
-	field( DOL,  "4" )
-	field( LOW,  "3" )
-	field( LSV,  "MINOR" )
-	field( HIGH, "5" )
-	field( HSV,  "MINOR" )
-	field( PINI, "YES" )
+  field( DOL,  "4" )
+  field( LOW,  "3" )
+  field( LSV,  "MINOR" )
+  field( HIGH, "5" )
+  field( HSV,  "MINOR" )
+  field( PINI, "YES" )
 }
 record( longout, "$(P)$(R)CamlinkTrigMask" )
 {
-	field( DOL,  "1" )
-	field( OMSL, "closed_loop" )
-	field( PINI, "YES" )
+  field( DOL,  "1" )
+  field( OMSL, "closed_loop" )
+  field( PINI, "YES" )
 }
 record( bo, "$(P)$(R)CamlinkInvCC" )
 {
-	field( DOL,  "1" )
-	field( PINI, "YES" )
+  field( DOL,  "1" )
+  field( PINI, "YES" )
 }
 
 # Provide defaults for ADCore SizeX and SizeY
 record( longout, "$(P)$(R)SizeX" )
 {
-	field( VAL, "324" )
+  field( VAL, "324" )
 }
 record( longout, "$(P)$(R)SizeY" )
 {
-	field( VAL, "256" )
+  field( VAL, "256" )
 }
 
 # Update fields for ADCore records that we get via GenCP
 record( stringin, "$(P)$(R)Manufacturer_RBV" )
 {
-	field( DTYP, "stream" )
-    field( INP,  "@Basler_acA2040-180kmNIR.proto GetString(0x0108,32) $(PORT).SER" )
-	field( SCAN, "Passive" )
-	field( PINI, "YES" )
+  field( DTYP, "stream" )
+#  field( INP,  "@Basler_acA2040-180kmNIR.proto GetString(0x0108,32) $(PORT).SER" )
+#  field( INP,  "@Basler_acA2040-180kmNIR.proto GetManufacturer $(PORT).SER" )
+  field( INP,  "@Basler_acA2040-180kmNIR.proto GetString(\\x00,\\x00,\\x01,\\x08, \\x20) $(PORT).SER" )
+  field( SCAN, "Passive" )
+  field( PINI, "YES" )
 }
 
 # Update fields for ADCore records that we get via GenCP
 record( stringin, "$(P)$(R)Model_RBV" )
 {
-	field( DTYP, "stream" )
-    field( INP,  "@Basler_acA2040-180kmNIR.proto GetString(0x0208,32) $(PORT).SER" )
-	field( SCAN, "Passive" )
+  field( DTYP, "stream" )
+#  field( INP,  "@Basler_acA2040-180kmNIR.proto GetString(0x0208,32) $(PORT).SER" )
+  field( INP,  "@Basler_acA2040-180kmNIR.proto GetString(\\x00,\\x00,\\x02,\\x08, \\x20) $(PORT).SER" )
+  field( SCAN, "Passive" )
+  field( PINI, "YES" )
+}
+
+record( stringin, "$(P)$(R)BaslerFirmwareVersion_RBV" )
+{
+  field( DTYP, "stream" )
+  field( INP,  "@Basler_acA2040-180kmNIR.proto GetString(\\x00,\\x00,\\x03,\\x08, \\x20) $(PORT).SER" )
+  field( SCAN, "Passive" )
+  field( PINI, "YES" )
+}
+
+record( stringin, "$(P)$(R)BaslerVersion_RBV" )
+{
+  field( DTYP, "stream" )
+  field( INP,  "@Basler_acA2040-180kmNIR.proto GetString(\\x00,\\x00,\\x04,\\x08, \\x20) $(PORT).SER" )
+  field( SCAN, "Passive" )
+  field( PINI, "YES" )
+}
+
+record( stringin, "$(P)$(R)BaslerSerialNumber_RBV" )
+{
+  field( DTYP, "stream" )
+  field( INP,  "@Basler_acA2040-180kmNIR.proto GetString(\\x00,\\x00,\\x05,\\x08, \\x20) $(PORT).SER" )
+  field( SCAN, "Passive" )
+  field( PINI, "YES" )
+}
+
+record( stringin, "$(P)$(R)BaslerModel_RBV" ) #fgInfo_RBV" )
+{
+  field( DTYP, "stream" )
+  field( INP,  "@Basler_acA2040-180kmNIR.proto GetString(\\x00,\\x00,\\x05,\\x88, \\x20) $(PORT).SER" )
+  field( SCAN, "Passive" )
+  field( PINI, "YES" )
+}
+
+record( stringin, "$(P)$(R)BaslerUserID_RBV" )
+{
+  field( DTYP, "stream" )
+  field( INP,  "@Basler_acA2040-180kmNIR.proto GetString(\\x00,\\x01,\\x20,\\x08, \\x20) $(PORT).SER" )
+  field( SCAN, "Passive" )
+  field( PINI, "YES" )
+}
+
+record( stringout, "$(P)$(R)BaslerUserID" )
+{
+  field( DTYP, "stream" )
+  field( OUT,  "@Basler_acA2040-180kmNIR.proto SetString(\\x00,\\x01,\\x20,\\x08, \\x20) $(PORT).SER" )
+  field( FLNK, "$(P)$(R)BaslerUserID_RBV" )
+  field( TPRO, 2 )
+}
+
+record( longin, "$(P)$(R)BaslerTempSensorBd_RBV" )
+{
+  field( DTYP, "stream" )
+  field( INP,  "@Basler_acA2040-180kmNIR.proto GetUInt32(\\x00,\\x01,\\x10,\\x04) $(PORT).SER" )
+  field( EGU,  "C" )
+  field( HIHI, "60" )   field( HHSV, "MAJOR" )
+  field( HIGH, "50" )   field( HSV,  "MINOR" )
+  #field( SCAN, "10 second" )
 	field( PINI, "YES" )
 }
 
-record( ao, "$(P)$(R)AcquirePeriod"	)
+record( longin, "$(P)$(R)BaslerTempMainBd_RBV" )
 {
-	field( DISA, "0" )
-    field( FLNK, "$(P)$(R)BaslerCalcAcquirePeriod" )
+  field( DTYP, "stream" )
+  field( INP,  "@Basler_acA2040-180kmNIR.proto GetUInt32(\\x00,\\x01,\\x10,\\x24) $(PORT).SER" )
+  field( EGU,  "C" )
+  field( HIHI, "60" )   field( HHSV, "MAJOR" )
+  field( HIGH, "50" )   field( HSV,  "MINOR" )
+  #field( SCAN, "10 second" )
 	field( PINI, "YES" )
-	info( autosaveFields, "PREC VAL" )
-	info( archiveFields,  "PREC VAL" )
+}
+
+record( longin, "$(P)$(R)BaslerTemperature_RBV" )
+{
+  field( DTYP, "stream" )
+  field( INP,  "@Basler_acA2040-180kmNIR.proto GetUInt32(\\x00,\\x01,\\x10,\\x64) $(PORT).SER" )
+  field( EGU,  "C" )
+  field( HIHI, "60" )   field( HHSV, "MAJOR" )
+  field( HIGH, "50" )   field( HSV,  "MINOR" )
+  #field( SCAN, "10 second" )
+	field( PINI, "YES" )
+}
+
+record( longin, "$(P)$(R)BaslerBlackLevel_RBV" )
+{
+  field( DESC, "Black Level" )
+  field( DTYP, "stream" )
+  field( INP,  "@Basler_acA2040-180kmNIR.proto GetUInt32(\\x00,\\x02,\\x02,\\x04) $(PORT).SER" )
+#  field( PINI, "YES" )
+}
+
+record( longout, "$(P)$(R)BaslerBlackLevel" )
+{
+  field( DESC, "Set The Black Level" )
+  field( DTYP, "stream" )
+  field( OUT,  "@Basler_acA2040-180kmNIR.proto SetUInt32(\\x00,\\x02,\\x02,\\x04) $(PORT).SER" )
+  field( HOPR, 4096 )
+  field( DRVH, 4096 )
+  field( LOPR, 0    )
+  field( DRVL, 0    )
+	info( autosaveFields, "DESC VAL" )
+  field( FLNK, "$(P)$(R)BaslerBlackLevel_RBV" )
+}
+
+record( mbbi, "$(P)$(R)BaslerBitsPerPixel_RBV" )
+{
+  field( DESC, "The bit depth of the pixel data" )
+  field( DTYP, "stream" )
+  field( INP,	 "@Basler_acA2040-180kmNIR.proto GetUInt32(\\x00,\\x03,\\x05,\\x04) $(PORT).SER" )
+  field( ZRVL,  8 )
+  field( ONVL, 10 )
+  field( TWVL, 12 )
+  field( THVL, 14 )
+  field( FRVL, 16 )
+  field( ZRST, "BitDepth8" )   # The sensor will produce pixel data at  8 bit depth per pixel.
+  field( ONST, "BitDepth10" )  # The sensor will produce pixel data at 10 bit depth per pixel.
+  field( TWST, "BitDepth12" )  # The sensor will produce pixel data at 12 bit depth per pixel.
+  field( THST, "BitDepth14" )  # The sensor will produce pixel data at 14 bit depth per pixel.
+  field( FRST, "BitDepth16" )  # The sensor will produce pixel data at 16 bit depth per pixel.
+	field( PINI, "YES" )
+}
+
+record( mbbo, "$(P)$(R)BaslerBitsPerPixel" )
+{
+  field( DESC, "Sets the bit depth of the pixel data" )
+  field( DTYP, "stream" )
+  field( OUT,	 "@Basler_acA2040-180kmNIR.proto SetUInt32(\\x00,\\x03,\\x05,\\x04) $(PORT).SER" )
+  field( ZRVL,  8 )
+  field( ONVL, 10 )
+  field( TWVL, 12 )
+  field( THVL, 14 )
+  field( FRVL, 16 )
+  field( ZRST, "BitDepth8" )   # The sensor will produce pixel data at  8 bit depth per pixel.
+  field( ONST, "BitDepth10" )  # The sensor will produce pixel data at 10 bit depth per pixel.
+  field( TWST, "BitDepth12" )  # The sensor will produce pixel data at 12 bit depth per pixel.
+  field( THST, "BitDepth14" )  # The sensor will produce pixel data at 14 bit depth per pixel.
+  field( FRST, "BitDepth16" )  # The sensor will produce pixel data at 16 bit depth per pixel.
+  field( FLNK, "$(P)$(R)BaslerBitsPerPixel_RBV" )
+# Disabled to avoid accidental use
+	field( DISV, "0" )
+}
+
+record( ao, "$(P)$(R)AcquirePeriod"  )
+{
+  field( DISA, "0" )
+  field( FLNK, "$(P)$(R)BaslerCalcAcquirePeriod" )
+  field( PINI, "YES" )
+  info( autosaveFields, "PREC VAL" )
+  info( archiveFields,  "PREC VAL" )
 }
 
 # Min of 0x6666666 from 0x13134 RegFixedIntervalMax
 # Min of 7017 from 0x1313C RegFixedIntervalLimit
 record( calcout, "$(P)$(R)BaslerCalcAcquirePeriod" )
 {
-	field( INPA, "$(P)$(R)AcquirePeriod" )
-	field( INPB, "1e-6" )
-	field( CALC, "MIN(A/B,7017)" )
-	field( OUT,  "$(P)$(R)BaslerAcquirePeriod PP MS" )
-    field( HOPR,  0x6666666 )
-    field( LOPR,  7017      )
-    field( EGU,  "us"       )
+  field( INPA, "$(P)$(R)AcquirePeriod" )
+  field( INPB, "1e-6" )
+  field( CALC, "MIN(A/B,7017)" )
+  field( OUT,  "$(P)$(R)BaslerAcquirePeriod PP MS" )
+  field( HOPR,  0x6666666 )
+  field( LOPR,  7017      )
+  field( EGU,  "us"       )
 }
 
 # Set the acquire period, the rep rate for image capture
@@ -152,16 +296,16 @@ record( calcout, "$(P)$(R)BaslerCalcAcquirePeriod" )
 # Argument is an integer in us
 record( longout, "$(P)$(R)BaslerAcquirePeriod" )
 {
-    field( DOL,  10000 )
-    field( DESC, "Set The Frame Period" )
-#    field( DTYP, "stream" )
-#	field( OUT,  "@Basler_acA2040-180kmNIR.proto SetUint32(0x13138ZZZZ) $(PORT).SER" )
-    field( FLNK, "$(P)$(R)BaslerAcquirePeriod_RBV" )
-    field( HOPR,  0x6666666 )
-    field( LOPR,  7017      )
-    field( EGU,  "us"	  )
-#	field( TPRO, 2 )
-	info( autosaveFields, "DESC VAL" )
+  field( DOL,  10000 )
+  field( DESC, "Set The Frame Period" )
+  field( DTYP, "stream" )
+  field( OUT,  "@Basler_acA2040-180kmNIR.proto SetUint32(\\x00,\\x04,\\x04,\\xA4) $(PORT).SER" )
+  field( FLNK, "$(P)$(R)BaslerAcquirePeriod_RBV" )
+  field( HOPR,  0x6666666 )
+  field( LOPR,  7017      )
+  field( EGU,  "us"    )
+#  field( TPRO, 2 )
+  info( autosaveFields, "DESC VAL" )
 }
 
 
@@ -170,45 +314,49 @@ record( longout, "$(P)$(R)BaslerAcquirePeriod" )
 # Reply value is an integer in us
 record( longin, "$(P)$(R)BaslerAcquirePeriod_RBV" )
 {
-    field( DESC, "Frame Period" )
-#    field( DTYP, "stream" )
-#	field( INP,  "@Basler_acA2040-180kmNIR.proto GetUint32(0x13138ZZZZ) $(PORT).SER" )
-    field( EGU,  "us"  )
-	field( FLNK, "$(P)$(R)BaslerCalcAcquirePeriod_RBV"	)
+  field( DESC, "Frame Period" )
+  field( DTYP, "stream" )
+  field( INP,  "@Basler_acA2040-180kmNIR.proto GetUint32(\\x00,\\x04,\\x04,\\xA4) $(PORT).SER" )
+  field( EGU,  "us"  )
+  field( FLNK, "$(P)$(R)BaslerCalcAcquirePeriod_RBV"  )
 }
 
 record( calcout, "$(P)$(R)BaslerCalcAcquirePeriod_RBV" )
 {
-	field( INPA, "$(P)$(R)BaslerAcquirePeriod_RBV"	)
-	field( INPB, "1e-6" )
-	field( CALC, "A*B" )
-    field( EGU,  "sec"  )
-	field( OUT,  "$(P)$(R)AcquirePeriod_RBV PP MS"	)
+  field( INPA, "$(P)$(R)BaslerAcquirePeriod_RBV"  )
+  field( INPB, "1e-6" )
+  field( CALC, "A*B" )
+  field( EGU,  "sec"  )
+  field( OUT,  "$(P)$(R)AcquirePeriod_RBV PP MS"  )
 }
-record( ai, "$(P)$(R)AcquirePeriod_RBV"		)
+record( ai, "$(P)$(R)AcquirePeriod_RBV"    )
 {
-	field( DISA, "0" )
+  field( DISA, "0" )
 }
 
 record( ao, "$(P)$(R)CamProcDelay" )
 {
-    field( DOL,  "3.0e-3" )
+  field( DOL,  "3.0e-3" )
 }
 
 record( longout, "$(P)$(R)BaslerTestPattern" )
 {
-    field( DOL,  "0" )
-    field( DESC, "Select test pattern.  0 = Off" )
-    field( DTYP, "stream" )
-	field( OUT,  "@Basler_acA2040-180kmNIR.proto SetUint32(0x30168) $(PORT).SER" )
-    field( FLNK, "$(P)$(R)BaslerTestPattern_RBV" )
-	field( TPRO, 2 )
+  field( DOL,  "0" )
+  field( DESC, "Select test pattern.  0 = Off" )
+  field( DTYP, "stream" )
+#  field( OUT,  "@Basler_acA2040-180kmNIR.proto SetUint32(0x30168) $(PORT).SER" )
+  field( OUT,  "@Basler_acA2040-180kmNIR.proto SetUint32(\\x00,\\x03,\\x01,\\x64) $(PORT).SER" )
+#  field( OUT,  "@Basler_acA2040-180kmNIR.proto SetTestPattern $(PORT).SER" )
+  field( FLNK, "$(P)$(R)BaslerTestPattern_RBV" )
+  field( TPRO, 2 )
 }
 
 record( longin, "$(P)$(R)BaslerTestPattern_RBV" )
 {
-    field( DESC, "Select test pattern.  0 = Off" )
-    field( DTYP, "stream" )
-	field( INP,  "@Basler_acA2040-180kmNIR.proto GetUint32(0x30164) $(PORT).SER" )
-	field( TPRO, 2 )
+  field( DESC, "Select test pattern.  0 = Off" )
+  field( DTYP, "stream" )
+#  field( INP,  "@Basler_acA2040-180kmNIR.proto GetUint32(0x30164) $(PORT).SER" )
+  field( INP,  "@Basler_acA2040-180kmNIR.proto GetUint32(\\x00,\\x03,\\x01,\\x64) $(PORT).SER" )
+#  field( INP,  "@Basler_acA2040-180kmNIR.proto GetTestPattern $(PORT).SER" )
+  field( TPRO, 2 )
 }
