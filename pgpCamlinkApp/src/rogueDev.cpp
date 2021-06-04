@@ -899,8 +899,8 @@ int SetPgpVariable( const char * pszCamName, const char * pszVarPath, double val
 	const char	*	functionName = "SetPgpVariable";
 	if ( pszCamName == NULL || pszVarPath == NULL )
 	{
-		printf( "Usage: %s camPortName varPath\n", functionName );
-		printf( "Example: %s CAM ClinkDevRoot.ClinkPcie.AxiPcieCore.AxiVersion.BuildStamp\n", functionName );
+		printf( "Usage: %s camPortName varPath value\n", functionName );
+		printf( "Example: %s CAM ClinkDevRoot.ClinkPcie.AxiPcieCore.AxiVersion.ScratchPad 123\n", functionName );
 		return -1;
 	}
 
