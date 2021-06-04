@@ -126,6 +126,7 @@ record( stringin, "$(P)$(R)Model_RBV" )
   field( INP,  "@Basler.proto GetString(\\x00,\\x00,\\x02,\\x08, \\x20) $(PORT).SER" )
   field( SCAN, "Passive" )
   field( PINI, "YES" )
+  field( TPRO, 2 )
 }
 
 record( stringin, "$(P)$(R)BaslerFirmwareVersion_RBV" )
@@ -134,6 +135,7 @@ record( stringin, "$(P)$(R)BaslerFirmwareVersion_RBV" )
   field( INP,  "@Basler.proto GetString2(\\x00,\\x00,\\x03,\\x08, \\xec) $(PORT).SER" )
   field( SCAN, "Passive" )
   field( PINI, "YES" )
+  field( TPRO, 2 )
 }
 
 record( stringin, "$(P)$(R)BaslerVersion_RBV" )
@@ -142,6 +144,7 @@ record( stringin, "$(P)$(R)BaslerVersion_RBV" )
   field( INP,  "@Basler.proto GetString(\\x00,\\x00,\\x04,\\x08, \\x20) $(PORT).SER" )
   field( SCAN, "Passive" )
   field( PINI, "YES" )
+  field( TPRO, 2 )
 }
 
 record( stringin, "$(P)$(R)BaslerSerialNumber_RBV" )
@@ -150,14 +153,16 @@ record( stringin, "$(P)$(R)BaslerSerialNumber_RBV" )
   field( INP,  "@Basler.proto GetString(\\x00,\\x00,\\x05,\\x08, \\x20) $(PORT).SER" )
   field( SCAN, "Passive" )
   field( PINI, "YES" )
+  field( TPRO, 2 )
 }
 
-record( stringin, "$(P)$(R)BaslerModel_RBV" ) #fgInfo_RBV" )
+record( stringin, "$(P)$(R)BaslerModel_RBV" )
 {
   field( DTYP, "stream" )
   field( INP,  "@Basler.proto GetString(\\x00,\\x00,\\x05,\\x88, \\x20) $(PORT).SER" )
   field( SCAN, "Passive" )
   field( PINI, "YES" )
+  field( TPRO, 2 )
 }
 
 record( stringin, "$(P)$(R)BaslerUserID_RBV" )
@@ -166,6 +171,7 @@ record( stringin, "$(P)$(R)BaslerUserID_RBV" )
   field( INP,  "@Basler.proto GetString(\\x00,\\x01,\\x20,\\x08, \\x20) $(PORT).SER" )
   field( SCAN, "Passive" )
   field( PINI, "YES" )
+  field( TPRO, 2 )
 }
 
 record( stringout, "$(P)$(R)BaslerUserID" )
@@ -207,6 +213,7 @@ record( longin, "$(P)$(R)BaslerTemperature_RBV" )
   field( HIGH, "50" )   field( HSV,  "MINOR" )
   #field( SCAN, "10 second" )
 	field( PINI, "YES" )
+  field( TPRO, 2 )
 }
 
 record( bi, "$(P)$(R)OverTemp" )
@@ -214,6 +221,8 @@ record( bi, "$(P)$(R)OverTemp" )
   field( DESC, "Over Temperature" )
   field( DTYP, "stream" )
   field( INP,  "@Basler.proto GetUInt32(\\x00,\\x01,\\x11,\\x08) $(PORT).SER" )
+	field( PINI, "YES" )
+  field( TPRO, 2 )
 }
 
 record( bi, "$(P)$(R)CriticalTemp" )
@@ -221,6 +230,8 @@ record( bi, "$(P)$(R)CriticalTemp" )
   field( DESC, "Critical Temperature" )
   field( DTYP, "stream" )
   field( INP,  "@Basler.proto GetUInt32(\\x00,\\x01,\\x12,\\x08) $(PORT).SER" )
+	field( PINI, "YES" )
+  field( TPRO, 2 )
 }
 
 record( longin, "$(P)$(R)SensorWidth" )
@@ -228,6 +239,8 @@ record( longin, "$(P)$(R)SensorWidth" )
   field( DESC, "Sensor Width" )
   field( DTYP, "stream" )
   field( INP,  "@Basler.proto GetUInt32(\\x00,\\x01,\\x00,\\x08) $(PORT).SER" )
+	field( PINI, "YES" )
+  field( TPRO, 2 )
 }
 
 record( longin, "$(P)$(R)SensorHeight" )
@@ -235,6 +248,8 @@ record( longin, "$(P)$(R)SensorHeight" )
   field( DESC, "Sensor Height" )
   field( DTYP, "stream" )
   field( INP,  "@Basler.proto GetUInt32(\\x00,\\x01,\\x00,\\x28) $(PORT).SER" )
+	field( PINI, "YES" )
+  field( TPRO, 2 )
 }
 
 record( mbbi, "$(P)$(R)ScanType" )
