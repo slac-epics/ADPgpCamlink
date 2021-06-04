@@ -359,17 +359,6 @@ record( stringin, "$(P)$(R)CamDrvVersion" )
 	info( archiveFields,  "VAL" )
 }
 
-record( waveform, "$(P)$(R)PgpAxiVersion" )
-{
-	field( DTYP, "asynInt8ArrayIn" )
-	field( NELM, "2048" )
-	field( FTVL, "CHAR" )
-	field( INP,  "@asyn($(PORT),$(ADDR=0),$(TIMEOUT=1))ClinkDevRoot.Hardware.AxiPcieCore.AxiVersion.BuildStamp" )
-	field( SCAN, "I/O Intr" )
-	field( PINI, "YES" )
-	info( archiveFields,  "VAL" )
-}
-
 record( stringin, "$(P)$(R)CamLibVersion" )
 {
 	field( DTYP, "asynOctetRead" )
@@ -766,16 +755,6 @@ record( longout, "$(P)$(R)SyncBadSyncCnt" )
 	field( DTYP, "asynInt32" )
 	field( OUT,  "@asyn($(PORT),$(ADDR=0),$(TIMEOUT=1))SYNC_BAD_SYNC" )
     field( SCAN, "I/O Intr" )
-	info( archiveFields,  "VAL" )
-}
-
-# TODO: Normalize these FpgaVersion PV names
-record( longin, "$(P)$(R)PgpCoreFpgaVersion" )
-{
-	field( DTYP, "asynInt32" )
-	field( INP,  "@asyn($(PORT),$(ADDR=0),$(TIMEOUT=1))ClinkDevRoot.Hardware.AxiPcieCore.AxiVersion.FpgaVersion" )
-	field( SCAN, "I/O Intr" )
-	field( PINI, "YES" )
 	info( archiveFields,  "VAL" )
 }
 

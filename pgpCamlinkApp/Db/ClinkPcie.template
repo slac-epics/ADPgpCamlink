@@ -12,6 +12,17 @@
 #	TIMEOUT			- Defaults to 1 sec
 #
 
+record( waveform, "$(P)$(R)PgpAxiVersion" )
+{
+	field( DTYP, "asynInt8ArrayIn" )
+	field( NELM, "2048" )
+	field( FTVL, "CHAR" )
+	field( INP,  "@asyn($(PORT),$(ADDR=0),$(TIMEOUT=1))ClinkDevRoot.ClinkPcie.AxiPcieCore.AxiVersion.BuildStamp" )
+	field( SCAN, "I/O Intr" )
+	field( PINI, "YES" )
+	info( archiveFields,  "VAL" )
+}
+
 record( mbbi, "$(P)$(R)Timing:ClkSel_RBV" )
 {
 	field( DTYP, "RogueMBBI" )

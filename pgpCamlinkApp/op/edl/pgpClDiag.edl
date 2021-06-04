@@ -3,8 +3,8 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 2309
-y 213
+x 495
+y 180
 w 929
 h 800
 font "helvetica-medium-r-8.0"
@@ -1572,7 +1572,7 @@ displayFileName {
   0 "iocScreens/ioc_soft.edl"
 }
 symbols {
-  0 "IOC=$(IOC)"
+  0 "IOC=$(PGP)"
 }
 endObjectProperties
 
