@@ -22,6 +22,7 @@ MODEL_FILES += $(addsuffix  .yml,   $(MODELS))
 MODEL_FILES += $(addsuffix  .env,   $(MODELS))
 MODEL_FILES += $(addsuffix  .proto, $(MODELS))
 DB_INSTALLS =  $(addprefix  $(TOP)/pgpCamlinkApp/camera_config/, $(MODEL_FILES))
+DB_INSTALLS += $(TOP)/pgpCamlinkApp/camera_config/Basler.proto
 
 include $(TOP)/configure/RULES
 #----------------------------------------
