@@ -438,7 +438,7 @@ record( longout, "$(P)$(R)CLInterlineDelay" )
 
 record( mbbo, "$(P)$(R)CLConfig" )
 {
-  field( DESC, "Indicates the Camera Link configuration that the camera will use given its current tap geometry setting." )
+  field( DESC, "Camera Link configuration" )
   field( DTYP, "stream" )
   field( OUT,  "@Basler.proto GetUInt32(\\x00,\\x00,\\x07,\\x84) $(PORT).SER" )
   field( ZRVL, 1 )
