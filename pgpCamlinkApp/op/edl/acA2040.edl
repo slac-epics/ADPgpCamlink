@@ -4,7 +4,7 @@ major 4
 minor 0
 release 1
 x 565
-y 305
+y 327
 w 700
 h 579
 font "helvetica-medium-r-12.0"
@@ -754,7 +754,7 @@ x 300
 y 524
 w 88
 h 20
-controlPv "$(P)$(R)BaslerCalcAcquirePeriod_RBV"
+controlPv "$(P)$(R)AcquirePeriod_RBV"
 format "gfloat"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
@@ -819,7 +819,7 @@ x 196
 y 524
 w 88
 h 20
-controlPv "$(P)$(R)BaslerCalcAcquirePeriod"
+controlPv "$(P)$(R)AcquirePeriod"
 format "gfloat"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
