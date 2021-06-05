@@ -102,11 +102,11 @@ asynStatus asynPgpClSerial::ConnectCamSerial( )
 	if ( DEBUG_PGPCL_SER >= 1 )
 		printf( "%s: in thread %s ...\n", functionName, epicsThreadGetNameSelf() );
 	if ( m_fConnected )
-  {
-    if ( DEBUG_PGPCL_SER >= 1 )
-      printf("%s: DisconnectCamSerial is being called\n", functionName);
+	{
+		if ( DEBUG_PGPCL_SER >= 1 )
+			printf("%s: DisconnectCamSerial is being called\n", functionName);
 		DisconnectCamSerial( );
-  }
+	}
 
 // asynPgpClSerial::connect not being called
 // streamDebug 1 output below
@@ -325,13 +325,13 @@ asynStatus	asynPgpClSerial::readOctet(
 		// If we read something
 		if( nRead > 0 )
 		{
-      static bool reminded = false;
-      if (!reminded)
-      {
-        printf("%s: Revisit line %d hack to mask off bit 7\n", functionName, __LINE__);
-        reminded = true;
-      }
-      maskBit7(pBuffer, nRead);
+			static bool reminded = false;
+			if (!reminded)
+			{
+				printf("%s: Revisit line %d hack to mask off bit 7\n", functionName, __LINE__);
+				reminded = true;
+			}
+			maskBit7(pBuffer, nRead);
 
 			// Make sure we have a valid ascii response, and not garbage on the camlink Rx/Tx lines
 			if ( 0 && isAscii( pBuffer, nRead ) == false )
@@ -405,13 +405,13 @@ asynStatus	asynPgpClSerial::readOctet(
 						"%s: %s  read  %d of %d\n",
 						functionName, this->portName, nRead, nAvailToRead );
 
-    static bool reminded = false;
-    if (!reminded)
-    {
-      printf("%s: Revisit line %d hack to mask off bit 7\n", functionName, __LINE__);
-      reminded = true;
-    }
-    maskBit7(pBuffer, nRead);
+		static bool reminded = false;
+		if (!reminded)
+		{
+			printf("%s: Revisit line %d hack to mask off bit 7\n", functionName, __LINE__);
+			reminded = true;
+		}
+		maskBit7(pBuffer, nRead);
 
 		if ( isAscii( pBuffer, nRead ) )
 		{
@@ -528,7 +528,7 @@ asynStatus	asynPgpClSerial::writeOctet(
 		if ( DEBUG_PGPCL_SER >= 3 )
 		{
 			for (unsigned i = 0; i < *pnWritten; ++i)
-			  printf("%02hhx ", pBuffer[i]);
+				printf("%02hhx ", pBuffer[i]);
 			printf("\n");
 		}
 	}
