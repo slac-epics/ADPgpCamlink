@@ -278,8 +278,8 @@ asynStatus	asynPgpClSerial::readOctet(
 		if ( m_fConnected )
 		{
 			nAvailToRead = m_SerDev.getNumAvailBytes();
-      if ( DEBUG_PGPCL_SER >= 1 )
-        printf("%s: nAvailToRead %d\n", functionName, nAvailToRead);
+			if ( DEBUG_PGPCL_SER >= 4 )
+				printf("%s: nAvailToRead %d\n", functionName, nAvailToRead);
 		}
 		if( 1 || nAvailToRead > 0 )
 		{
@@ -335,7 +335,7 @@ asynStatus	asynPgpClSerial::readOctet(
       maskBit7(pBuffer, nRead);
 
 			// Make sure we have a valid ascii response, and not garbage on the camlink Rx/Tx lines
-			if ( isAscii( pBuffer, nRead ) == false )
+			if ( 0 && isAscii( pBuffer, nRead ) == false )
 			{
 				epicsSnprintf(	pasynUser->errorMessage, pasynUser->errorMessageSize, "Invalid ascii response!" );
 				asynPrint(	pasynUser, ASYN_TRACE_ERROR,
@@ -433,14 +433,14 @@ asynStatus	asynPgpClSerial::readOctet(
 		callParamCallbacks();
 	}
 
-	if ( DEBUG_PGPCL_SER >= 1 )
-  {
-    printf("%s: returning status %d, pBuffer '%s', pnRead %zu, eomReason %d (of %d, %d)\n",
-           functionName, status, pBuffer, *pnRead, *eomReason, ASYN_EOM_EOS, ASYN_EOM_CNT);
-    for (unsigned i = 0; i < *pnRead; ++i)
-      printf("%02hhx ", pBuffer[i]);
-    printf("\n");
-  }
+	if ( DEBUG_PGPCL_SER >= 3 )
+	{
+		printf(	"%s: returning status %d, pBuffer '%s', pnRead %zu, eomReason %d (of %d, %d)\n",
+				functionName, status, pBuffer, *pnRead, *eomReason, ASYN_EOM_EOS, ASYN_EOM_CNT);
+		for (unsigned i = 0; i < *pnRead; ++i)
+			printf("%02hhx ", pBuffer[i]);
+		printf("\n");
+	}
 
     return status;
 }
@@ -523,9 +523,12 @@ asynStatus	asynPgpClSerial::writeOctet(
 						"%s: wrote %zu to %s\n",
 						functionName, *pnWritten, this->portName );
 		}
-    for (unsigned i = 0; i < *pnWritten; ++i)
-      printf("%02hhx ", pBuffer[i]);
-    printf("\n");
+		if ( DEBUG_PGPCL_SER >= 3 )
+		{
+			for (unsigned i = 0; i < *pnWritten; ++i)
+			  printf("%02hhx ", pBuffer[i]);
+			printf("\n");
+		}
 	}
 	else
 	{
