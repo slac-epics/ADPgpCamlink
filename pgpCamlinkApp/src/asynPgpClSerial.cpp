@@ -522,10 +522,10 @@ asynStatus	asynPgpClSerial::writeOctet(
 			asynPrint(	pasynUser,	ASYN_TRACE_FLOW,
 						"%s: wrote %zu to %s\n",
 						functionName, *pnWritten, this->portName );
-			for (unsigned i = 0; i < *pnWritten; ++i)
-				printf("%02hhx ", pBuffer[i]);
-			printf("\n");
 		}
+    for (unsigned i = 0; i < *pnWritten; ++i)
+      printf("%02hhx ", pBuffer[i]);
+    printf("\n");
 	}
 	else
 	{

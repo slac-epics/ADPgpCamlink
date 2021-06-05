@@ -3,8 +3,8 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 589
-y 393
+x 565
+y 305
 w 700
 h 579
 font "helvetica-medium-r-12.0"
@@ -239,7 +239,7 @@ release 0
 x 132
 y 268
 w 92
-h 18
+h 20
 controlPv "$(P)$(R)CLPixelClock"
 format "decimal"
 font "helvetica-medium-r-12.0"
@@ -281,9 +281,9 @@ beginObjectProperties
 major 4
 minor 7
 release 0
-x 144
+x 112
 y 88
-w 176
+w 208
 h 20
 controlPv "$(P)$(R)BaslerFirmwareVersion_RBV"
 font "helvetica-medium-r-12.0"
@@ -308,7 +308,7 @@ minor 1
 release 1
 x 4
 y 88
-w 136
+w 104
 h 20
 font "helvetica-medium-r-12.0"
 fontAlign "right"
@@ -521,9 +521,9 @@ beginObjectProperties
 major 4
 minor 7
 release 0
-x 212
-y 292
-w 108
+x 232
+y 296
+w 88
 h 20
 controlPv "$(P)$(R)SensorBitDepth_RBV"
 font "helvetica-medium-r-12.0"
@@ -546,8 +546,8 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 16
-y 292
+x 28
+y 296
 w 100
 h 20
 font "helvetica-medium-r-12.0"
@@ -1081,9 +1081,9 @@ beginObjectProperties
 major 4
 minor 7
 release 0
-x 212
+x 232
 y 164
-w 108
+w 88
 h 20
 controlPv "$(P)$(R)BaslerTemperature_RBV"
 font "helvetica-medium-r-12.0"
@@ -1125,9 +1125,9 @@ beginObjectProperties
 major 4
 minor 7
 release 0
-x 212
+x 232
 y 192
-w 108
+w 88
 h 20
 controlPv "$(P)$(R)BaslerTempMainBd_RBV"
 font "helvetica-medium-r-12.0"
@@ -1169,9 +1169,9 @@ beginObjectProperties
 major 4
 minor 7
 release 0
-x 212
+x 232
 y 220
-w 108
+w 88
 h 20
 controlPv "$(P)$(R)BaslerTempSensorBd_RBV"
 font "helvetica-medium-r-12.0"
@@ -1290,7 +1290,7 @@ x 500
 y 120
 w 92
 h 20
-controlPv "$(P)$(R)BaslerFStartTrMode"
+controlPv "$(P)$(R)TrigModeFrameStart"
 font "helvetica-medium-r-12.0"
 fgColor index 25
 bgColor index 5
@@ -1333,7 +1333,7 @@ x 600
 y 120
 w 88
 h 20
-controlPv "$(P)$(R)BaslerCalcFStartFullTrMode"
+controlPv "$(P)$(R)TrigModeFrameStart_RBV"
 format "hex"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
@@ -1359,7 +1359,7 @@ x 500
 y 144
 w 92
 h 20
-controlPv "$(P)$(R)BaslerFStartTrSrc"
+controlPv "$(P)$(R)TrigSrcFrameStart_RBV"
 font "helvetica-medium-r-12.0"
 fgColor index 25
 bgColor index 5
@@ -1402,7 +1402,7 @@ x 600
 y 144
 w 88
 h 20
-controlPv "$(P)$(R)BaslerFStartFullTrMode"
+controlPv "$(P)$(R)TrigSrcFrameStart"
 format "hex"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
@@ -1732,7 +1732,7 @@ offColor index 3
 inconsistentColor index 5
 topShadowColor index 1
 botShadowColor index 11
-controlPv "$(P)$(R)BaslerSoftwareTrigger"
+controlPv "$(P)$(R)TrigSwFrameStart"
 onLabel "On"
 offLabel "Off"
 buttonType "push"
@@ -2395,9 +2395,9 @@ beginObjectProperties
 major 4
 minor 7
 release 0
-x 192
+x 232
 y 244
-w 128
+w 88
 h 20
 controlPv "$(P)$(R)CLTapGeometry_RBV"
 format "hex"
@@ -2421,10 +2421,10 @@ beginObjectProperties
 major 4
 minor 7
 release 0
-x 96
+x 132
 y 244
 w 92
-h 18
+h 20
 controlPv "$(P)$(R)CLTapGeometry"
 font "helvetica-medium-r-12.0"
 fgColor index 25
@@ -2446,7 +2446,7 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 8
+x 40
 y 244
 w 88
 h 20
@@ -2745,10 +2745,10 @@ beginObjectProperties
 major 4
 minor 7
 release 0
-x 116
+x 132
 y 296
 w 92
-h 18
+h 20
 controlPv "$(P)$(R)SensorBitDepth"
 format "decimal"
 font "helvetica-medium-r-12.0"
