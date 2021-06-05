@@ -227,7 +227,7 @@ bool isAscii( const char * pBuf, int sBuf )
 		char	next = *pBuf++;
 		if ( next < 0 || next >= 0x7F )     // Revisit
 		{
-			if ( DEBUG_PGPCL_SER >= 2 )
+			if ( DEBUG_PGPCL_SER >= 5 )
 				printf("*** isAscii: Non ASCII character: %02x at offset %ld\n", next, pBuf - pBufBeg - 1);
 			return false;
 		}
