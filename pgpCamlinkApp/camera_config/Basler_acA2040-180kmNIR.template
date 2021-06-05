@@ -991,3 +991,7 @@ record( longin, "$(P)$(R)BaslerTestPattern_RBV" )
   field( TPRO, 2 )
 }
 
+substitute "MON_PV=$(P)$(R)Model_RBV"
+include "rbvMonitor.template"
+substitute "MON_PV=$(P)$(R)BaslerSerialNumber_RBV"
+include "rbvMonitor.template"
