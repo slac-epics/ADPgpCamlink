@@ -3,10 +3,10 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 565
-y 327
+x 942
+y 399
 w 700
-h 579
+h 624
 font "helvetica-medium-r-12.0"
 ctlFont "helvetica-medium-r-12.0"
 btnFont "helvetica-medium-r-12.0"
@@ -283,7 +283,7 @@ minor 7
 release 0
 x 112
 y 88
-w 208
+w 240
 h 20
 controlPv "$(P)$(R)BaslerFirmwareVersion_RBV"
 font "helvetica-medium-r-12.0"
@@ -608,7 +608,7 @@ beginObjectProperties
 major 4
 minor 7
 release 0
-x 580
+x 604
 y 524
 w 88
 h 20
@@ -635,7 +635,7 @@ beginObjectProperties
 major 4
 minor 7
 release 0
-x 580
+x 604
 y 500
 w 88
 h 20
@@ -649,58 +649,6 @@ limitsFromDb
 nullColor index 40
 smartRefresh
 useHexPrefix
-newPos
-objType "monitors"
-noExecuteClipMask
-endObjectProperties
-
-# (Text Monitor)
-object activeXTextDspClass:noedit
-beginObjectProperties
-major 4
-minor 7
-release 0
-x 484
-y 500
-w 88
-h 20
-controlPv "$(P)$(R)TriggerMode_RBV"
-font "helvetica-medium-r-12.0"
-fontAlign "center"
-fgColor index 15
-fgAlarm
-bgColor index 12
-limitsFromDb
-nullColor index 40
-smartRefresh
-useHexPrefix
-newPos
-objType "monitors"
-noExecuteClipMask
-endObjectProperties
-
-# (Text Monitor)
-object activeXTextDspClass:noedit
-beginObjectProperties
-major 4
-minor 7
-release 0
-x 484
-y 524
-w 88
-h 20
-controlPv "$(P)$(R)AcquireTime_RBV"
-format "gfloat"
-font "helvetica-medium-r-12.0"
-fontAlign "center"
-fgColor index 15
-fgAlarm
-bgColor index 12
-limitsFromDb
-nullColor index 40
-smartRefresh
-useHexPrefix
-showUnits
 newPos
 objType "monitors"
 noExecuteClipMask
@@ -712,7 +660,7 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 484
+x 508
 y 476
 w 88
 h 20
@@ -731,7 +679,7 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 580
+x 604
 y 476
 w 88
 h 20
@@ -750,11 +698,11 @@ beginObjectProperties
 major 4
 minor 7
 release 0
-x 300
+x 324
 y 524
 w 88
 h 20
-controlPv "$(P)$(R)AcquirePeriod_RBV"
+controlPv "$(P)$(R)BaslerAcquirePeriod"
 format "gfloat"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
@@ -777,7 +725,7 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 300
+x 324
 y 476
 w 88
 h 20
@@ -796,107 +744,9 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 196
+x 96
 y 476
-w 88
-h 20
-font "helvetica-medium-r-12.0"
-fontAlign "center"
-fgColor index 14
-bgColor index 3
-value {
-  "Basler"
-}
-endObjectProperties
-
-# (Text Monitor)
-object activeXTextDspClass:noedit
-beginObjectProperties
-major 4
-minor 7
-release 0
-x 196
-y 524
-w 88
-h 20
-controlPv "$(P)$(R)AcquirePeriod"
-format "gfloat"
-font "helvetica-medium-r-12.0"
-fontAlign "center"
-fgColor index 15
-fgAlarm
-bgColor index 12
-limitsFromDb
-nullColor index 40
-smartRefresh
-useHexPrefix
-showUnits
-newPos
-objType "monitors"
-noExecuteClipMask
-endObjectProperties
-
-# (Text Monitor)
-object activeXTextDspClass:noedit
-beginObjectProperties
-major 4
-minor 7
-release 0
-x 100
-y 500
-w 88
-h 20
-controlPv "$(P)$(R)TriggerMode"
-font "helvetica-medium-r-12.0"
-fontAlign "center"
-fgColor index 15
-fgAlarm
-bgColor index 12
-limitsFromDb
-nullColor index 40
-smartRefresh
-useHexPrefix
-newPos
-objType "monitors"
-noExecuteClipMask
-endObjectProperties
-
-# (Text Monitor)
-object activeXTextDspClass:noedit
-beginObjectProperties
-major 4
-minor 7
-release 0
-x 100
-y 524
-w 88
-h 20
-controlPv "$(P)$(R)AcquireTime"
-format "gfloat"
-font "helvetica-medium-r-12.0"
-fontAlign "center"
-fgColor index 15
-fgAlarm
-bgColor index 12
-limitsFromDb
-nullColor index 40
-smartRefresh
-useHexPrefix
-showUnits
-newPos
-objType "monitors"
-noExecuteClipMask
-endObjectProperties
-
-# (Static Text)
-object activeXTextClass
-beginObjectProperties
-major 4
-minor 1
-release 1
-x 100
-y 476
-w 88
+w 84
 h 20
 font "helvetica-medium-r-12.0"
 fontAlign "center"
@@ -915,7 +765,7 @@ minor 7
 release 0
 x 4
 y 500
-w 88
+w 84
 h 20
 controlPv "$(P)$(R)TriggerMode"
 font "helvetica-medium-r-12.0"
@@ -940,7 +790,7 @@ minor 7
 release 0
 x 4
 y 524
-w 88
+w 84
 h 20
 controlPv "$(P)$(R)AcquireTime"
 format "gfloat"
@@ -967,7 +817,7 @@ minor 1
 release 1
 x 4
 y 476
-w 88
+w 84
 h 20
 font "helvetica-medium-r-12.0"
 fontAlign "center"
@@ -976,60 +826,6 @@ bgColor index 3
 value {
   "ADCore"
 }
-endObjectProperties
-
-# (Text Monitor)
-object activeXTextDspClass:noedit
-beginObjectProperties
-major 4
-minor 7
-release 0
-x 196
-y 548
-w 88
-h 20
-controlPv "$(P)$(R)PulseAcquirePeriod"
-format "float"
-font "helvetica-medium-r-12.0"
-fontAlign "center"
-fgColor index 15
-fgAlarm
-bgColor index 12
-limitsFromDb
-nullColor index 40
-smartRefresh
-useHexPrefix
-showUnits
-newPos
-objType "monitors"
-noExecuteClipMask
-endObjectProperties
-
-# (Text Monitor)
-object activeXTextDspClass:noedit
-beginObjectProperties
-major 4
-minor 7
-release 0
-x 300
-y 548
-w 88
-h 20
-controlPv "$(P)$(R)PulseAcquirePeriod_RBV"
-format "gfloat"
-font "helvetica-medium-r-12.0"
-fontAlign "center"
-fgColor index 15
-fgAlarm
-bgColor index 12
-limitsFromDb
-nullColor index 40
-smartRefresh
-useHexPrefix
-showUnits
-newPos
-objType "monitors"
-noExecuteClipMask
 endObjectProperties
 
 # (Text Monitor)
@@ -1287,7 +1083,7 @@ major 4
 minor 7
 release 0
 x 500
-y 120
+y 152
 w 92
 h 20
 controlPv "$(P)$(R)TrigModeFrameStart"
@@ -1311,7 +1107,7 @@ major 4
 minor 1
 release 1
 x 360
-y 120
+y 152
 w 132
 h 20
 font "helvetica-medium-r-12.0"
@@ -1330,7 +1126,7 @@ major 4
 minor 7
 release 0
 x 600
-y 120
+y 152
 w 88
 h 20
 controlPv "$(P)$(R)TrigModeFrameStart_RBV"
@@ -1356,7 +1152,7 @@ major 4
 minor 7
 release 0
 x 500
-y 144
+y 176
 w 92
 h 20
 controlPv "$(P)$(R)TrigSrcFrameStart_RBV"
@@ -1380,7 +1176,7 @@ major 4
 minor 1
 release 1
 x 360
-y 144
+y 176
 w 132
 h 20
 font "helvetica-medium-r-12.0"
@@ -1399,7 +1195,7 @@ major 4
 minor 7
 release 0
 x 600
-y 144
+y 176
 w 88
 h 20
 controlPv "$(P)$(R)TrigSrcFrameStart"
@@ -1425,16 +1221,15 @@ major 4
 minor 7
 release 0
 x 500
-y 168
+y 200
 w 92
 h 20
-controlPv "$(P)$(R)BaslerFStartFullTrMode"
+controlPv "$(P)$(R)TrigModeFrameStart"
 format "hex"
 font "helvetica-medium-r-12.0"
 fgColor index 25
 bgColor index 5
 editable
-motifWidget
 nullColor index 40
 smartRefresh
 fastUpdate
@@ -1451,7 +1246,7 @@ major 4
 minor 1
 release 1
 x 360
-y 168
+y 200
 w 132
 h 20
 font "helvetica-medium-r-12.0"
@@ -1459,7 +1254,7 @@ fontAlign "right"
 fgColor index 14
 bgColor index 3
 value {
-  "FrStart FullTrMode"
+  "FrStart TrMode"
 }
 endObjectProperties
 
@@ -1470,10 +1265,10 @@ major 4
 minor 7
 release 0
 x 600
-y 168
+y 200
 w 88
 h 20
-controlPv "$(P)$(R)BaslerFStartFullTrMode_RBV"
+controlPv "$(P)$(R)TrigModeFrameStart_RBV"
 format "hex"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
@@ -1496,148 +1291,10 @@ major 4
 minor 7
 release 0
 x 500
-y 224
+y 108
 w 92
 h 20
-controlPv "$(P)$(R)BaslerAcqStartTrMode"
-font "helvetica-medium-r-12.0"
-fgColor index 25
-bgColor index 5
-editable
-nullColor index 40
-smartRefresh
-fastUpdate
-useHexPrefix
-newPos
-objType "controls"
-noExecuteClipMask
-endObjectProperties
-
-# (Static Text)
-object activeXTextClass
-beginObjectProperties
-major 4
-minor 1
-release 1
-x 360
-y 224
-w 132
-h 20
-font "helvetica-medium-r-12.0"
-fontAlign "right"
-fgColor index 14
-bgColor index 3
-value {
-  "AcqStart Trigger Mode"
-}
-endObjectProperties
-
-# (Text Monitor)
-object activeXTextDspClass:noedit
-beginObjectProperties
-major 4
-minor 7
-release 0
-x 600
-y 224
-w 88
-h 20
-controlPv "$(P)$(R)BaslerCalcAcqStartFullTrMode"
-format "hex"
-font "helvetica-medium-r-12.0"
-fontAlign "center"
-fgColor index 15
-fgAlarm
-bgColor index 12
-limitsFromDb
-nullColor index 40
-smartRefresh
-useHexPrefix
-newPos
-objType "monitors"
-noExecuteClipMask
-endObjectProperties
-
-# (Text Control)
-object activeXTextDspClass
-beginObjectProperties
-major 4
-minor 7
-release 0
-x 500
-y 328
-w 92
-h 20
-controlPv "$(P)$(R)BaslerAcqStopTrMode"
-font "helvetica-medium-r-12.0"
-fgColor index 25
-bgColor index 5
-editable
-nullColor index 40
-smartRefresh
-fastUpdate
-useHexPrefix
-newPos
-objType "controls"
-noExecuteClipMask
-endObjectProperties
-
-# (Static Text)
-object activeXTextClass
-beginObjectProperties
-major 4
-minor 1
-release 1
-x 360
-y 328
-w 132
-h 20
-font "helvetica-medium-r-12.0"
-fontAlign "right"
-fgColor index 14
-bgColor index 3
-value {
-  "AcqStop Trigger Mode"
-}
-endObjectProperties
-
-# (Text Monitor)
-object activeXTextDspClass:noedit
-beginObjectProperties
-major 4
-minor 7
-release 0
-x 600
-y 328
-w 88
-h 20
-controlPv "$(P)$(R)BaslerCalcAcqStopFullTrMode"
-format "hex"
-font "helvetica-medium-r-12.0"
-fontAlign "center"
-fgColor index 15
-fgAlarm
-bgColor index 12
-limitsFromDb
-nullColor index 40
-smartRefresh
-useHexPrefix
-newPos
-objType "monitors"
-noExecuteClipMask
-endObjectProperties
-
-# (Text Control)
-object activeXTextDspClass
-beginObjectProperties
-major 4
-minor 7
-release 0
-x 500
-y 192
-w 92
-h 20
-controlPv "$(P)$(R)BaslerFStartTrEvent"
+controlPv "$(P)$(R)TestImageSelector"
 format "hex"
 font "helvetica-medium-r-12.0"
 fgColor index 25
@@ -1659,7 +1316,7 @@ major 4
 minor 1
 release 1
 x 360
-y 192
+y 108
 w 132
 h 20
 font "helvetica-medium-r-12.0"
@@ -1667,7 +1324,7 @@ fontAlign "right"
 fgColor index 14
 bgColor index 3
 value {
-  "FrStart TrEvent"
+  "TestImageSelector"
 }
 endObjectProperties
 
@@ -1678,10 +1335,10 @@ major 4
 minor 7
 release 0
 x 600
-y 192
+y 108
 w 88
 h 20
-controlPv "$(P)$(R)BaslerFStartTrEvent_RBV"
+controlPv "$(P)$(R)TestImageSelector_RBV"
 format "hex"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
@@ -1729,12 +1386,13 @@ h 20
 fgColor index 14
 onColor index 6
 offColor index 3
-inconsistentColor index 5
+inconsistentColor index 40
 topShadowColor index 1
 botShadowColor index 11
 controlPv "$(P)$(R)TrigSwFrameStart"
 onLabel "On"
 offLabel "Off"
+labelType "literal"
 buttonType "push"
 3d
 font "helvetica-medium-r-12.0"
@@ -1747,11 +1405,11 @@ beginObjectProperties
 major 4
 minor 7
 release 0
-x 300
+x 324
 y 500
 w 88
 h 20
-controlPv "$(P)$(R)TrigSrcFrameStart_RBV"
+controlPv "$(P)$(R)BaslerExposureMode"
 format "hex"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
@@ -1773,37 +1431,11 @@ beginObjectProperties
 major 4
 minor 7
 release 0
-x 196
-y 500
-w 88
-h 20
-controlPv "$(P)$(R)TrigSrcFrameStart"
-format "hex"
-font "helvetica-medium-r-12.0"
-fontAlign "center"
-fgColor index 15
-fgAlarm
-bgColor index 12
-limitsFromDb
-nullColor index 40
-smartRefresh
-useHexPrefix
-newPos
-objType "monitors"
-noExecuteClipMask
-endObjectProperties
-
-# (Text Monitor)
-object activeXTextDspClass:noedit
-beginObjectProperties
-major 4
-minor 7
-release 0
-x 396
+x 420
 y 500
 w 80
 h 20
-controlPv "$(P)$(R)TrigActFrameStart_RBV"
+controlPv "$(P)$(R)BaslerExposureMode_RBV"
 format "hex"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
@@ -1825,7 +1457,7 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 396
+x 420
 y 476
 w 80
 h 20
@@ -1836,236 +1468,6 @@ bgColor index 3
 value {
   "Basler"
 }
-endObjectProperties
-
-# (Group)
-object activeGroupClass
-beginObjectProperties
-major 4
-minor 0
-release 0
-x 360
-y 248
-w 328
-h 68
-
-beginGroup
-
-# (Text Control)
-object activeXTextDspClass
-beginObjectProperties
-major 4
-minor 7
-release 0
-x 500
-y 248
-w 92
-h 20
-controlPv "$(P)$(R)BaslerAcqStartTrSrc"
-font "helvetica-medium-r-12.0"
-fgColor index 25
-bgColor index 5
-editable
-nullColor index 40
-smartRefresh
-fastUpdate
-useHexPrefix
-newPos
-objType "controls"
-noExecuteClipMask
-endObjectProperties
-
-# (Static Text)
-object activeXTextClass
-beginObjectProperties
-major 4
-minor 1
-release 1
-x 360
-y 248
-w 132
-h 20
-font "helvetica-medium-r-12.0"
-fontAlign "right"
-fgColor index 14
-bgColor index 3
-value {
-  "AcqStart Trigger Src"
-}
-endObjectProperties
-
-# (Text Monitor)
-object activeXTextDspClass:noedit
-beginObjectProperties
-major 4
-minor 7
-release 0
-x 600
-y 248
-w 88
-h 20
-controlPv "$(P)$(R)BaslerAcqStartFullTrMode"
-format "hex"
-font "helvetica-medium-r-12.0"
-fontAlign "center"
-fgColor index 15
-fgAlarm
-bgColor index 12
-limitsFromDb
-nullColor index 40
-smartRefresh
-useHexPrefix
-newPos
-objType "monitors"
-noExecuteClipMask
-endObjectProperties
-
-# (Text Control)
-object activeXTextDspClass
-beginObjectProperties
-major 4
-minor 7
-release 0
-x 500
-y 272
-w 92
-h 20
-controlPv "$(P)$(R)BaslerAcqStartFullTrMode"
-format "hex"
-font "helvetica-medium-r-12.0"
-fgColor index 25
-bgColor index 5
-editable
-motifWidget
-nullColor index 40
-smartRefresh
-fastUpdate
-useHexPrefix
-newPos
-objType "controls"
-noExecuteClipMask
-endObjectProperties
-
-# (Static Text)
-object activeXTextClass
-beginObjectProperties
-major 4
-minor 1
-release 1
-x 360
-y 272
-w 132
-h 20
-font "helvetica-medium-r-12.0"
-fontAlign "right"
-fgColor index 14
-bgColor index 3
-value {
-  "AcqStart FullTrMode"
-}
-endObjectProperties
-
-# (Text Monitor)
-object activeXTextDspClass:noedit
-beginObjectProperties
-major 4
-minor 7
-release 0
-x 600
-y 272
-w 88
-h 20
-controlPv "$(P)$(R)BaslerAcqStartFullTrMode_RBV"
-format "hex"
-font "helvetica-medium-r-12.0"
-fontAlign "center"
-fgColor index 15
-fgAlarm
-bgColor index 12
-limitsFromDb
-nullColor index 40
-smartRefresh
-useHexPrefix
-newPos
-objType "monitors"
-noExecuteClipMask
-endObjectProperties
-
-# (Text Monitor)
-object activeXTextDspClass:noedit
-beginObjectProperties
-major 4
-minor 7
-release 0
-x 600
-y 296
-w 88
-h 20
-controlPv "$(P)$(R)BaslerAcqStartTrEvent_RBV"
-format "hex"
-font "helvetica-medium-r-12.0"
-fontAlign "center"
-fgColor index 15
-fgAlarm
-bgColor index 12
-limitsFromDb
-nullColor index 40
-smartRefresh
-useHexPrefix
-newPos
-objType "monitors"
-noExecuteClipMask
-endObjectProperties
-
-# (Static Text)
-object activeXTextClass
-beginObjectProperties
-major 4
-minor 1
-release 1
-x 360
-y 296
-w 132
-h 20
-font "helvetica-medium-r-12.0"
-fontAlign "right"
-fgColor index 14
-bgColor index 3
-value {
-  "AcqStart TrEvent"
-}
-endObjectProperties
-
-# (Text Control)
-object activeXTextDspClass
-beginObjectProperties
-major 4
-minor 7
-release 0
-x 500
-y 296
-w 92
-h 20
-controlPv "$(P)$(R)BaslerAcqStartTrEvent"
-format "hex"
-font "helvetica-medium-r-12.0"
-fgColor index 25
-bgColor index 5
-editable
-nullColor index 40
-smartRefresh
-fastUpdate
-useHexPrefix
-newPos
-objType "controls"
-noExecuteClipMask
-endObjectProperties
-
-endGroup
-
-visPv "$(P)$(R)BaslerAcqStartTrMode"
-visMin "1"
-visMax "2"
 endObjectProperties
 
 # (Group)
@@ -2308,7 +1710,7 @@ x 600
 y 84
 w 88
 h 20
-controlPv "$(P)$(R)BaslerLine1GlitchFilter_RBV"
+controlPv "$(P)$(R)BaslerTestPattern_RBV"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
 fgColor index 15
@@ -2333,7 +1735,7 @@ x 500
 y 84
 w 92
 h 20
-controlPv "$(P)$(R)BaslerLine1GlitchFilter"
+controlPv "$(P)$(R)BaslerTestPattern"
 font "helvetica-medium-r-12.0"
 fgColor index 25
 bgColor index 5
@@ -2362,7 +1764,7 @@ fontAlign "right"
 fgColor index 14
 bgColor index 3
 value {
-  "Line1 Glitch Filter"
+  "BaslerTestPattern"
 }
 endObjectProperties
 
@@ -2536,76 +1938,6 @@ major 4
 minor 7
 release 0
 x 232
-y 344
-w 88
-h 20
-controlPv "$(P)$(R)ExposureMode_RBV"
-font "helvetica-medium-r-12.0"
-fontAlign "center"
-fgColor index 15
-fgAlarm
-bgColor index 12
-limitsFromDb
-nullColor index 40
-smartRefresh
-useHexPrefix
-newPos
-objType "monitors"
-noExecuteClipMask
-endObjectProperties
-
-# (Text Control)
-object activeXTextDspClass
-beginObjectProperties
-major 4
-minor 7
-release 0
-x 132
-y 344
-w 92
-h 18
-controlPv "$(P)$(R)ExposureMode"
-format "decimal"
-font "helvetica-medium-r-12.0"
-fgColor index 25
-bgColor index 5
-editable
-autoHeight
-nullColor index 40
-smartRefresh
-fastUpdate
-useHexPrefix
-newPos
-objType "controls"
-noExecuteClipMask
-endObjectProperties
-
-# (Static Text)
-object activeXTextClass
-beginObjectProperties
-major 4
-minor 1
-release 1
-x 28
-y 344
-w 100
-h 20
-font "helvetica-medium-r-12.0"
-fontAlign "right"
-fgColor index 14
-bgColor index 3
-value {
-  "Exposure Mode"
-}
-endObjectProperties
-
-# (Text Monitor)
-object activeXTextDspClass:noedit
-beginObjectProperties
-major 4
-minor 7
-release 0
-x 232
 y 368
 w 88
 h 20
@@ -2665,7 +1997,7 @@ fontAlign "right"
 fgColor index 14
 bgColor index 3
 value {
-  "Trig Source Frame Start"
+  "TrigSrcFrStart"
 }
 endObjectProperties
 
@@ -2841,12 +2173,333 @@ beginObjectProperties
 major 4
 minor 7
 release 0
-x 396
+x 420
 y 524
 w 80
 h 20
-controlPv "$(P)$(R)TrigModeFrameStart_RBV"
+controlPv "$(P)$(R)BaslerAcquirePeriod_RBV"
 format "hex"
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+fgColor index 15
+fgAlarm
+bgColor index 12
+limitsFromDb
+nullColor index 40
+smartRefresh
+useHexPrefix
+newPos
+objType "monitors"
+noExecuteClipMask
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 508
+y 524
+w 88
+h 20
+controlPv "$(P)$(R)CamAcquireTime_RBV"
+format "gfloat"
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+fgColor index 15
+fgAlarm
+bgColor index 12
+limitsFromDb
+nullColor index 40
+smartRefresh
+useHexPrefix
+showUnits
+newPos
+objType "monitors"
+noExecuteClipMask
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 508
+y 500
+w 88
+h 20
+controlPv "$(P)$(R)CamTriggerMode_RBV"
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+fgColor index 15
+fgAlarm
+bgColor index 12
+limitsFromDb
+nullColor index 40
+smartRefresh
+useHexPrefix
+newPos
+objType "monitors"
+noExecuteClipMask
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 96
+y 524
+w 84
+h 20
+controlPv "$(P)$(R)CamAcquireTime"
+format "gfloat"
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+fgColor index 15
+fgAlarm
+bgColor index 12
+limitsFromDb
+nullColor index 40
+smartRefresh
+useHexPrefix
+showUnits
+newPos
+objType "monitors"
+noExecuteClipMask
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 96
+y 500
+w 84
+h 20
+controlPv "$(P)$(R)CamTriggerMode"
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+fgColor index 15
+fgAlarm
+bgColor index 12
+limitsFromDb
+nullColor index 40
+smartRefresh
+useHexPrefix
+newPos
+objType "monitors"
+noExecuteClipMask
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 420
+y 572
+w 80
+h 20
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 3
+value {
+  "N/A"
+}
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 324
+y 572
+w 88
+h 20
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 3
+value {
+  "N/A"
+}
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 184
+y 572
+w 56
+h 20
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 3
+value {
+  "Pulse"
+}
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 184
+y 548
+w 56
+h 20
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 3
+value {
+  "External"
+}
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 184
+y 524
+w 56
+h 20
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 3
+value {
+  "FreeRun"
+}
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 420
+y 548
+w 80
+h 20
+controlPv "$(P)$(R)BaslerAcquirePeriod_RBV"
+format "hex"
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+fgColor index 15
+fgAlarm
+bgColor index 12
+limitsFromDb
+nullColor index 40
+smartRefresh
+useHexPrefix
+newPos
+objType "monitors"
+noExecuteClipMask
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 324
+y 548
+w 88
+h 20
+controlPv "$(P)$(R)BaslerAcquirePeriod"
+format "gfloat"
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+fgColor index 15
+fgAlarm
+bgColor index 12
+limitsFromDb
+nullColor index 40
+smartRefresh
+useHexPrefix
+showUnits
+newPos
+objType "monitors"
+noExecuteClipMask
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 252
+y 524
+w 68
+h 20
+controlPv "$(P)$(R)BaslerCalcAcquirePeriod"
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+fgColor index 15
+fgAlarm
+bgColor index 12
+limitsFromDb
+nullColor index 40
+smartRefresh
+useHexPrefix
+newPos
+objType "monitors"
+noExecuteClipMask
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 252
+y 476
+w 68
+h 20
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 3
+value {
+  "Basler"
+}
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 252
+y 500
+w 68
+h 20
+controlPv "$(P)$(R)BaslerCalcExposureMode"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
 fgColor index 15

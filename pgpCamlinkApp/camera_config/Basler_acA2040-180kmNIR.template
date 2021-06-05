@@ -130,8 +130,8 @@ record( stringin, "$(P)$(R)Model_RBV" )
 record( stringin, "$(P)$(R)BaslerFirmwareVersion_RBV" )
 {
   field( DTYP, "stream" )
-#  field( INP,  "@Basler.proto GetString2(\\x00,\\x00,\\x03,\\x08, \\xec) $(PORT).SER" )
-  field( INP,  "@Basler.proto GetString(\\x00,\\x00,\\x03,\\x08, \\x20) $(PORT).SER" )
+  field( INP,  "@Basler.proto GetString2(\\x00,\\x00,\\x03,\\x08, \\xec) $(PORT).SER" )
+#  field( INP,  "@Basler.proto GetString(\\x00,\\x00,\\x03,\\x08, \\x20) $(PORT).SER" )
   field( SCAN, "Passive" )
   field( PINI, "YES" )
 }
@@ -178,51 +178,51 @@ record( stringout, "$(P)$(R)BaslerUserID" )
 
 record( longin, "$(P)$(R)BaslerTempSensorBd_RBV" )
 {
-  field( DTYP, "stream" )
-  field( INP,  "@Basler.proto GetUInt32(\\x00,\\x01,\\x10,\\x08) $(PORT).SER" )
-  field( EGU,  "C" )
-  field( HIHI, "60" )   field( HHSV, "MAJOR" )
-  field( HIGH, "50" )   field( HSV,  "MINOR" )
-  #field( SCAN, "10 second" )
+	field( DTYP, "stream" )
+	field( INP,  "@Basler.proto GetUInt32(\\x00,\\x01,\\x10,\\x08) $(PORT).SER" )
+	field( EGU,  "C" )
+	field( HIHI, "60" )   field( HHSV, "MAJOR" )
+	field( HIGH, "50" )   field( HSV,  "MINOR" )
+#	field( SCAN, "10 second" )
 	field( PINI, "YES" )
 }
 
 record( longin, "$(P)$(R)BaslerTempMainBd_RBV" )
 {
-  field( DTYP, "stream" )
-  field( INP,  "@Basler.proto GetUInt32(\\x00,\\x01,\\x10,\\x28) $(PORT).SER" )
-  field( EGU,  "C" )
-  field( HIHI, "60" )   field( HHSV, "MAJOR" )
-  field( HIGH, "50" )   field( HSV,  "MINOR" )
-  #field( SCAN, "10 second" )
+	field( DTYP, "stream" )
+	field( INP,  "@Basler.proto GetUInt32(\\x00,\\x01,\\x10,\\x28) $(PORT).SER" )
+	field( EGU,  "C" )
+	field( HIHI, "60" )   field( HHSV, "MAJOR" )
+	field( HIGH, "50" )   field( HSV,  "MINOR" )
+#	field( SCAN, "10 second" )
 	field( PINI, "YES" )
 }
 
 record( longin, "$(P)$(R)BaslerTemperature_RBV" )
 {
-  field( DTYP, "stream" )
-  field( INP,  "@Basler.proto GetUInt32(\\x00,\\x01,\\x10,\\x68) $(PORT).SER" )
-  field( EGU,  "C" )
-  field( HIHI, "60" )   field( HHSV, "MAJOR" )
-  field( HIGH, "50" )   field( HSV,  "MINOR" )
-  #field( SCAN, "10 second" )
+	field( DTYP, "stream" )
+	field( INP,  "@Basler.proto GetUInt32(\\x00,\\x01,\\x10,\\x68) $(PORT).SER" )
+	field( EGU,  "C" )
+	field( HIHI, "60" )   field( HHSV, "MAJOR" )
+	field( HIGH, "50" )   field( HSV,  "MINOR" )
+#	field( SCAN, "10 second" )
 	field( PINI, "YES" )
 }
 
-record( bi, "$(P)$(R)OverTemp" )
+record( bi, "$(P)$(R)BaslerOverTemp_RBV" )
 {
-  field( DESC, "Over Temperature" )
-  field( DTYP, "stream" )
-  field( INP,  "@Basler.proto GetUInt32(\\x00,\\x01,\\x11,\\x08) $(PORT).SER" )
-	field( PINI, "YES" )
+	field( DESC, "Over Temperature" )
+	field( DTYP, "stream" )
+	field( INP,  "@Basler.proto GetUInt32(\\x00,\\x01,\\x11,\\x08) $(PORT).SER" )
+#	field( SCAN, "10 second" )
 }
 
-record( bi, "$(P)$(R)CriticalTemp" )
+record( bi, "$(P)$(R)BaslerCriticalTemp_RBV" )
 {
-  field( DESC, "Critical Temperature" )
-  field( DTYP, "stream" )
-  field( INP,  "@Basler.proto GetUInt32(\\x00,\\x01,\\x12,\\x08) $(PORT).SER" )
-	field( PINI, "YES" )
+	field( DESC, "Critical Temperature" )
+	field( DTYP, "stream" )
+	field( INP,  "@Basler.proto GetUInt32(\\x00,\\x01,\\x12,\\x08) $(PORT).SER" )
+#	field( SCAN, "10 second" )
 }
 
 record( longin, "$(P)$(R)SensorWidth" )
@@ -337,7 +337,7 @@ record( mbbi, "$(P)$(R)CLBaudRate_RBV" )
 
 record( mbbo, "$(P)$(R)CLTapGeometry" )
 {
-  field( DOL,  "1X4-1Y" )
+  field( DOL,  "4" )
   field( DESC, "The CL Tap Geometry" )
   field( DTYP, "stream" )
   field( OUT,  "@Basler.proto SetUInt32(\\x00,\\x00,\\x07,\\x24) $(PORT).SER" )
@@ -387,7 +387,7 @@ record( mbbi, "$(P)$(R)CLTapGeometry_RBV" )
 
 record( mbbo, "$(P)$(R)CLPixelClock" )
 {
-  field( DOL,  "82" )
+  field( DOL,  "5" )
   field( DESC, "The CL Pixel Clock" )
   field( DTYP, "stream" )
   field( OUT,  "@Basler.proto SetUInt32(\\x00,\\x00,\\x07,\\x44) $(PORT).SER" )
@@ -446,7 +446,7 @@ record( longout, "$(P)$(R)CLInterlineDelay" )
 
 record( mbbo, "$(P)$(R)CLConfig" )
 {
-  field( DOL,  "Medium" )
+  field( DOL,  "1" )
   field( DESC, "Camera Link configuration" )
   field( DTYP, "stream" )
   field( OUT,  "@Basler.proto GetUInt32(\\x00,\\x00,\\x07,\\x84) $(PORT).SER" )
@@ -491,7 +491,7 @@ record( mbbi, "$(P)$(R)CLConfig_RBV" )
 
 record( mbbo, "$(P)$(R)SensorBitDepth" )
 {
-  field( DOL,  "12" )
+  field( DOL,  "2" )
   field( DESC, "Sensor Bit Depth" )
   field( DTYP, "stream" )
   field( OUT,  "@Basler.proto SetUInt32(\\x00,\\x03,\\x05,\\x04) $(PORT).SER" )
@@ -846,7 +846,7 @@ record( longin, "$(P)$(R)StatAcqTrigWait" )
 
 record( mbbo, "$(P)$(R)TrigModeFrameStart" )
 {
-  field( DOL,  "ON" )
+  field( DOL,  "1" )
   field( DESC, "Trigger Mode Frame Start" )
   field( DTYP, "stream" )
   field( OUT,  "@Basler.proto SetUInt32(\\x00,\\x04,\\x02,\\x04) $(PORT).SER" )
@@ -872,7 +872,7 @@ record( mbbi, "$(P)$(R)TrigModeFrameStart_RBV" )
 
 record( mbbo, "$(P)$(R)TrigSrcFrameStart" )
 {
-  field( DOL,  "CC1" )
+  field( DOL,  "9" )
   field( DESC, "Trigger Source Frame Start" )
   field( DTYP, "stream" )
   field( OUT,  "@Basler.proto SetUInt32(\\x00,\\x04,\\x02,\\x44) $(PORT).SER" )
@@ -950,7 +950,7 @@ record( mbbi, "$(P)$(R)TrigSrcFrameStart_RBV" )
 
 record( bo, "$(P)$(R)TrigSwFrameStart" )
 {
-  field( DOL,  "OFF" )
+  field( DOL,  "0" )
   field( DESC, "Trigger Software Frame Start" )
   field( DTYP, "stream" )
   field( OUT,  "@Basler.proto SetUInt32(\\x00,\\x04,\\x02,\\x24) $(PORT).SER" )
@@ -972,7 +972,7 @@ record( bi, "$(P)$(R)TrigSwFrameStart_RBV" )
 
 record( mbbo, "$(P)$(R)TrigActFrameStart" )
 {
-  field( DOL,  "RisingEdge" )
+  field( DOL,  "0" )
   field( DESC, "Trigger Activation Frame Start" )
   field( DTYP, "stream" )
   field( OUT,  "@Basler.proto SetUInt32(\\x00,\\x04,\\x02,\\x64) $(PORT).SER" )
@@ -1010,40 +1010,69 @@ record( mbbi, "$(P)$(R)TrigActFrameStart_RBV" )
 
 
 # 4.6 Exposure Control Registers
-
-record( mbbo, "$(P)$(R)ExposureMode" )
+record( mbbi, "$(P)$(R)CamTriggerMode" )
 {
-  field( DOL,  "2" )
-  field( DESC, "Exposure Mode" )
-  field( DTYP, "stream" )
-  field( OUT,  "@Basler.proto SetUInt32(\\x00,\\x04,\\x04,\\x04) $(PORT).SER" )
-  field( DOL,  "2" )
-  field( ZRVL, 0 )
-  field( ONVL, 1 )
-  field( TWVL, 2 )
-  field( ZRST, "Off" )           # The exposure is disabled.
-  field( ONST, "Timed" )         # The exposure mode is timed.
-  field( TWST, "TriggerWidth" )  # The exposure mode is trigger width.
-  field( FLNK, "$(P)$(R)ExposureMode_RBV" )
-  field( SCAN, "Passive" )
-  field( PINI, "YES" )
+	field( FLNK, "$(P)$(R)BaslerCalcExposureMode" )
 }
 
-record( mbbi, "$(P)$(R)ExposureMode_RBV" )
+record( calc, "$(P)$(R)BaslerCalcExposureMode" )
+{
+#	field( TPRO, 2 )
+	field( DESC, "Maps ADTriggerMode to BaslerExposureMode" )
+	field( INPA, "$(P)$(R)CamTriggerMode NPP NMS" )
+	field( CALC, "A==2?2:1" )
+	field( FLNK, "$(P)$(R)BaslerExposureMode" )
+}
+
+record( mbbo, "$(P)$(R)BaslerExposureMode" )
+{
+	field( DESC, "Exposure Mode" )
+	field( DTYP, "stream" )
+	field( OMSL, "closed_loop" )
+	field( DOL,  "$(P)$(R)BaslerCalcExposureMode NPP NMS" )
+	field( OUT,  "@Basler.proto SetUInt32(\\x00,\\x04,\\x04,\\x04) $(PORT).SER" )
+	field( ZRVL, "0" )
+	field( ONVL, "1" )
+	field( TWVL, "2" )
+	field( ZRST, "Off" )           # The exposure is disabled.
+	field( ONST, "Timed" )         # The exposure mode is timed.
+	field( TWST, "TriggerWidth" )  # The exposure mode is trigger width.
+	field( FLNK, "$(P)$(R)BaslerExposureMode_RBV" )
+	field( SCAN, "Passive" )
+	field( PINI, "YES" )
+}
+
+record( mbbi, "$(P)$(R)BaslerExposureMode_RBV" )
 {
   field( DESC, "Exposure Mode readback value" )
   field( DTYP, "stream" )
   field( INP,  "@Basler.proto GetUInt32(\\x00,\\x04,\\x04,\\x04) $(PORT).SER" )
-  field( ZRVL, 0 )
-  field( ONVL, 1 )
-  field( TWVL, 2 )
+  field( ZRVL, "0" )
+  field( ONVL, "1" )
+  field( TWVL, "2" )
   field( ZRST, "Off" )           # The exposure is disabled.
   field( ONST, "Timed" )         # The exposure mode is timed.
   field( TWST, "TriggerWidth" )  # The exposure mode is trigger width.
+	field( FLNK, "$(P)$(R)BaslerCalcCamTriggerMode" )
 }
 
+record( calc, "$(P)$(R)BaslerCalcCamTriggerMode" )
+{
+#	field( TPRO, 2 )
+	field( DESC, "Map BaslerExposureMode to TriggerMode" )
+	field( INPA, "$(P)$(R)BaslerExposureMode_RBV NPP NMS" )
+	field( INPB, "$(P)$(R)CamTriggerMode NPP NMS" )
+	field( CALC, "A==2?2:(B==0?0:1)" )
+	field( FLNK, "$(P)$(R)CamTriggerMode_RBV" )
+}
 
-#--------
+# Make CamTriggerMode_RBV get it's value from BaslerCalcCamTriggerMode
+record( mbbo, "$(P)$(R)CamTriggerMode_RBV" )
+{
+#	field( TPRO, 2 )
+	field( OMSL, "closed_loop" )
+	field( DOL,  "$(P)$(R)BaslerCalcCamTriggerMode NPP MS" )
+}
 
 record( longout, "$(P)$(R)BaslerBlackLevel" )
 {
@@ -1116,34 +1145,41 @@ record( ao, "$(P)$(R)AcquirePeriod"  )
   info( archiveFields,  "PREC VAL" )
 }
 
-# Min of 0x6666666 from 0x13134 RegFixedIntervalMax
-# Min of 7017 from 0x1313C RegFixedIntervalLimit
+# Max of 0x? from 0x? RegFixedIntervalMax
+# Min of 0x? from 0x? RegFixedIntervalLimit
 record( calcout, "$(P)$(R)BaslerCalcAcquirePeriod" )
 {
   field( INPA, "$(P)$(R)AcquirePeriod" )
-  field( INPB, "1e-6" )
-  field( CALC, "MIN(A/B,7017)" )
-  field( OUT,  "$(P)$(R)BaslerAcquirePeriod PP MS" )
-  field( HOPR,  0x6666666 )
-  field( LOPR,  7017      )
+  field( INPB, "$(P)$(R)BaslerTimeBase_RBV CPP MS" )
+  field( CALC, "B?A/B:1" )
+  field( FLNK, "$(P)$(R)BaslerAcquirePeriod" )
+#	field( HOPR,  0x6666666 )
+#	field( LOPR,  7017      )
   field( EGU,  "us"       )
 }
 
 # Set the acquire period, the rep rate for image capture
-# Only works in FreeRun trigger mode
 # Argument is an integer in us
 record( longout, "$(P)$(R)BaslerAcquirePeriod" )
 {
-  field( DOL,  10000 )
   field( DESC, "Set The Frame Period" )
+  field( OMSL, "closed_loop" )
+  field( DOL,  "$(P)$(R)BaslerCalcAcquirePeriod NPP NMS" )
   field( DTYP, "stream" )
   field( OUT,  "@Basler.proto SetUInt32(\\x00,\\x04,\\x04,\\xA4) $(PORT).SER" )
   field( FLNK, "$(P)$(R)BaslerAcquirePeriod_RBV" )
-  field( HOPR,  0x6666666 )
-  field( LOPR,  7017      )
-  field( EGU,  "us"    )
-#  field( TPRO, 2 )
-  info( autosaveFields, "DESC VAL" )
+#	field( HOPR,  0x6666666 )
+#	field( LOPR,  7017      )
+	field( EGU,  "us"    )
+}
+
+record( longin, "$(P)$(R)BaslerTimeBase_RBV" )
+{
+	field( DESC, "Time Base" )
+	field( DTYP, "stream" )
+	field( INP,  "@Basler.proto GetUInt32(\\x00,\\x04,\\x04,\\x48) $(PORT).SER" )
+	field( EGU,  "ns"  )
+	field( PINI, "YES" )
 }
 
 
@@ -1197,7 +1233,7 @@ record( longin, "$(P)$(R)BaslerTestPattern_RBV" )
 
 record( mbbo, "$(P)$(R)TestImageSelector" )
 {
-  field( DOL,  "Off" )
+  field( DOL,  "0" )
   field( DESC, "Test Image Selector" )
   field( DTYP, "stream" )
   field( OUT,  "@Basler.proto SetUInt32(\\x00,\\x03,\\x01,\\x64) $(PORT).SER" )
@@ -1243,18 +1279,46 @@ record( mbbi, "$(P)$(R)TestImageSelector_RBV" )
 substitute "SER_OK_PV=$(PGP):Ch$(PGP_LANE):PgpMon:RxRemLinkReady_RBV"
 substitute "MON_PV=$(P)$(R)Manufacturer_RBV"
 include "rbvMonitor.template"
-substitute "SER_OK_PV=$(PGP):Ch$(PGP_LANE):PgpMon:RxRemLinkReady_RBV"
 substitute "MON_PV=$(P)$(R)Model_RBV"
 include "rbvMonitor.template"
-substitute "SER_OK_PV=$(PGP):Ch$(PGP_LANE):PgpMon:RxRemLinkReady_RBV"
 substitute "MON_PV=$(P)$(R)BaslerFirmwareVersion_RBV"
 include "rbvMonitor.template"
-substitute "SER_OK_PV=$(PGP):Ch$(PGP_LANE):PgpMon:RxRemLinkReady_RBV"
 substitute "MON_PV=$(P)$(R)BaslerVersion_RBV"
 include "rbvMonitor.template"
-substitute "SER_OK_PV=$(PGP):Ch$(PGP_LANE):PgpMon:RxRemLinkReady_RBV"
 substitute "MON_PV=$(P)$(R)BaslerSerialNumber_RBV"
 include "rbvMonitor.template"
-substitute "SER_OK_PV=$(PGP):Ch$(PGP_LANE):PgpMon:RxRemLinkReady_RBV"
 substitute "MON_PV=$(P)$(R)BaslerModel_RBV"
 include "rbvMonitor.template"
+substitute "MON_PV=$(P)$(R)TestImageSelector_RBV"
+include "rbvMonitor.template"
+substitute "MON_PV=$(P)$(R)BaslerTestPattern_RBV"
+include "rbvMonitor.template"
+substitute "MON_PV=$(P)$(R)BaslerTempSensorBd_RBV"
+include "rbvMonitor.template"
+substitute "MON_PV=$(P)$(R)BaslerTempMainBd_RBV"
+include "rbvMonitor.template"
+substitute "MON_PV=$(P)$(R)BaslerTemperature_RBV"
+include "rbvMonitor.template"
+substitute "MON_PV=$(P)$(R)CamlinkHTap"
+include "rbvMonitor.template"
+substitute "MON_PV=$(P)$(R)BaslerTimeBase_RBV"
+include "rbvMonitor.template"
+
+substitute "MON_PV=$(P)$(R)BaslerExposureMode"
+include "putMonitor.template"
+substitute "MON_PV=$(P)$(R)TrigModeFrameStart"
+include "putMonitor.template"
+substitute "MON_PV=$(P)$(R)TrigSrcFrameStart"
+include "putMonitor.template"
+substitute "MON_PV=$(P)$(R)TrigActFrameStart"
+include "putMonitor.template"
+substitute "MON_PV=$(P)$(R)TrigSwFrameStart"
+include "putMonitor.template"
+substitute "MON_PV=$(P)$(R)BaslerBlackLevel"
+include "putMonitor.template"
+substitute "MON_PV=$(P)$(R)SensorBitDepth"
+include "putMonitor.template"
+substitute "MON_PV=$(P)$(R)PixelFormat"
+include "putMonitor.template"
+substitute "MON_PV=$(P)$(R)BaslerAcquirePeriod"
+include "putMonitor.template"

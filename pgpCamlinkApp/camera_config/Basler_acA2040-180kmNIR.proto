@@ -24,22 +24,25 @@ ExtraInput		= Ignore;
 #FTF_A32 = 0x01;
 #FTF_A48 = 0x02;
 #FTF_A64 = 0x03;
+FTF_RD_A32 = 0x0D;
+FTF_WR_A32 = 0x05;
+FTF_RD_A0  = 0x14;
 
-# Output: FTF, Datalen, Address, Data, BCC
+# Output: 0x01, FTF, Datalen, Address32, BCC
 # FTF: FTF_WRT | FTF_A32
 # Datalen: 0x04
 # Addr: 4 byte little endian
 # Bcc: xor sum
 #
-# Input: FTF, Datalen, Data, BCC
+# Input: ACK, FTF, Datalen, Data, BCC
 # FTF: FTF_RD | FTF_A32
 # Datalen: 0x04
 # Data: 4 byte little endian
 # Bcc: xor sum
 GetUInt32
 {
-  out 0x01 0x0d 0x04 "\$4\$3\$2\$1" "%1.0<xor>";
-  in  ACK 0x01 0x14 0x04 "%#04r" "%2.0<xor>";
+  out 0x01 $FTF_RD_A32 0x04 "\$4\$3\$2\$1" "%1.0<xor>";
+  in  ACK 0x01 $FTF_RD_A0 0x04 "%#04r" "%2.0<xor>";
 }
 
 SetUInt32
@@ -47,14 +50,25 @@ SetUInt32
   outTerminator = 0x03;
   inTerminator  = "";
 
-  out 0x01 0x05 0x04 "\$4\$3\$2\$1" "%#04r" "%1.0<xor>";
+  out 0x01 $FTF_WR_A32 0x04 "\$4\$3\$2\$1" "%#04r" "%1.0<xor>";
   in  ACK;
 }
 
+# Output: 0x01, FTF, Datalen, Address32, BCC
+# FTF: FTF_WRT | FTF_CRC | FTF_A32: 0x0d
+# Datalen: 0x08
+# Addr: 4 byte little endian
+# Bcc: xor sum
+#
+# Input: ACK, FTF, Datalen, Data, BCC
+# FTF: FTF_RD | FTF_CRC | FTF_A0: 0x05
+# Datalen: 0x08
+# Data: 8 byte little endian
+# Bcc: xor sum
 GetUInt64
 {
-  out 0x01 0x0d 0x08 "\$4\$3\$2\$1" "%1.0<xor>";
-  in  ACK 0x01 0x14 0x04 "%#08r" "%2.0<xor>";
+  out 0x01 $FTF_RD_A32 0x08 "\$4\$3\$2\$1" "%1.0<xor>";
+  in  ACK 0x01 $FTF_RD_A0 0x08 "%#08r" "%2.0<xor>";
 }
 
 SetUInt64
@@ -62,20 +76,20 @@ SetUInt64
   outTerminator = 0x03;
   inTerminator  = "";
 
-  out 0x01 0x05 0x08 "\$4\$3\$2\$1" "%#08r" "%1.0<xor>";
+  out 0x01 $FTF_WR_A32 0x08 "\$4\$3\$2\$1" "%#08r" "%1.0<xor>";
   in  ACK;
 }
 
 GetString
 {
-  out 0x01 0x0d "\$5" "\$4\$3\$2\$1" "%1.0<xor>";
-  in  ACK 0x01 0x14 "\$5" "%!32s" "%2.0<xor>";
+  out 0x01 $FTF_RD_A32 "\$5" "\$4\$3\$2\$1" "%1.0<xor>";
+  in  ACK 0x01 $FTF_RD_A0 "\$5" "%!32s" "%2.0<xor>";
 }
 
 GetString2
 {
-  out 0x01 0x0d "\$5" "\$4\$3\$2\$1" "%1.0<xor>";
-  in  ACK 0x01 0x14 "\$5" "%!236s" "%2.0<xor>";
+  out 0x01 $FTF_RD_A32 "\$5" "\$4\$3\$2\$1" "%1.0<xor>";
+  in  ACK 0x01 $FTF_RD_A0 "\$5" "%!236s" "%2.0<xor>";
 }
 
 SetString
@@ -83,6 +97,6 @@ SetString
   outTerminator = 0x03;
   inTerminator  = "";
 
-  out 0x01 0x05 "\$5" "\$4\$3\$2\$1" "%32c" "%1.0<xor>";
+  out 0x01 $FTF_WR_A32 "\$5" "\$4\$3\$2\$1" "%32c" "%1.0<xor>";
   in  ACK;
 }
