@@ -203,36 +203,35 @@ void maskBit7( char* pBuf, int sBuf )
 		return;
 
 	const char*	pBufEnd	= pBuf + sBuf - 2;
-  pBuf += 3;
+	pBuf += 3;
 	while ( pBuf < pBufEnd )
 	{
-    *pBuf++ &= 0x7f;
+		*pBuf++ &= 0x7f;
 	}
 }
 
 
 bool isAscii( const char * pBuf, int sBuf )
 {
-	//if ( pBuf == NULL || sBuf == 0 )
-  //{
-  //  if ( DEBUG_PGPCL_SER >= 1 )
-  //    printf("*** isAscii: pBuf %p, sBuf %d\n", pBuf, sBuf);
-	//	return false;
-  //}
-  //
-  //const char  * pBufBeg = pBuf;
-	//const char	*	pBufEnd	= pBuf + sBuf;
-	//while ( pBuf < pBufEnd )
-	//{
-	//	char	next = *pBuf++;
-	//	//if ( next <= 0 || next >= 0x7F )
-	//	if ( next < 0 || next >= 0x7F )     // Revisit
-  //  {
-  //    if ( DEBUG_PGPCL_SER >= 1 )
-  //      printf("*** isAscii: Non ASCII character: %02x at offset %ld\n", next, pBuf - pBufBeg - 1);
-	//		return false;
-  //  }
-	//}
+	if ( pBuf == NULL || sBuf == 0 )
+	{
+		if ( DEBUG_PGPCL_SER >= 1 )
+			printf("*** isAscii: pBuf %p, sBuf %d\n", pBuf, sBuf);
+		return false;
+	}
+
+	const char  *	pBufBeg = pBuf;
+	const char	*	pBufEnd	= pBuf + sBuf;
+	while ( pBuf < pBufEnd )
+	{
+		char	next = *pBuf++;
+		if ( next < 0 || next >= 0x7F )     // Revisit
+		{
+			if ( DEBUG_PGPCL_SER >= 2 )
+				printf("*** isAscii: Non ASCII character: %02x at offset %ld\n", next, pBuf - pBufBeg - 1);
+			return false;
+		}
+	}
 	return true;
 }
 
