@@ -119,12 +119,12 @@ int pgpClSerialDev::connect( )
 		sleep(2);
 	}
 
-  if (m_pDataChan)
-  {
-    if ( DEBUG_PGPCL_SER >= 1 )
-      printf(  "%s: %s lane %u is already connected\n", functionName, m_devName.c_str(), m_lane );
-    return 0;
-  }
+  //if (m_pDataChan)
+  //{
+  //  if ( DEBUG_PGPCL_SER >= 1 )
+  //    printf(  "%s: %s lane %u is already connected\n", functionName, m_devName.c_str(), m_lane );
+  //  return 0;
+  //}
 
 	uint32_t ch = 2;	// Data channel 2 is used for pgpCamlink serial I/O
 	dest		= (0x100 * m_lane) + ch;	// Derived from python code

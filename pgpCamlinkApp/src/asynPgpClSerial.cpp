@@ -102,7 +102,11 @@ asynStatus asynPgpClSerial::ConnectCamSerial( )
 	if ( DEBUG_PGPCL_SER >= 1 )
 		printf( "%s: in thread %s ...\n", functionName, epicsThreadGetNameSelf() );
 	if ( m_fConnected )
+  {
+    if ( DEBUG_PGPCL_SER >= 1 )
+      printf("%s: DisconnectCamSerial is being called\n", functionName);
 		DisconnectCamSerial( );
+  }
 
 // asynPgpClSerial::connect not being called
 // streamDebug 1 output below
@@ -209,17 +213,26 @@ void maskBit7( char* pBuf, int sBuf )
 
 bool isAscii( const char * pBuf, int sBuf )
 {
-	if ( pBuf == NULL || sBuf == 0 )
-		return false;
-
-	const char	*	pBufEnd	= pBuf + sBuf;
-	while ( pBuf < pBufEnd )
-	{
-		char	next = *pBuf++;
-		//if ( next <= 0 || next >= 0x7F )
-		if ( next < 0 || next >= 0x7F )     // Revisit
-			return false;
-	}
+	//if ( pBuf == NULL || sBuf == 0 )
+  //{
+  //  if ( DEBUG_PGPCL_SER >= 1 )
+  //    printf("*** isAscii: pBuf %p, sBuf %d\n", pBuf, sBuf);
+	//	return false;
+  //}
+  //
+  //const char  * pBufBeg = pBuf;
+	//const char	*	pBufEnd	= pBuf + sBuf;
+	//while ( pBuf < pBufEnd )
+	//{
+	//	char	next = *pBuf++;
+	//	//if ( next <= 0 || next >= 0x7F )
+	//	if ( next < 0 || next >= 0x7F )     // Revisit
+  //  {
+  //    if ( DEBUG_PGPCL_SER >= 1 )
+  //      printf("*** isAscii: Non ASCII character: %02x at offset %ld\n", next, pBuf - pBufBeg - 1);
+	//		return false;
+  //  }
+	//}
 	return true;
 }
 
@@ -264,7 +277,9 @@ asynStatus	asynPgpClSerial::readOctet(
 		 */
 		if ( m_fConnected )
 		{
-			//nAvailToRead = m_SerDev.getNumAvailBytes();
+			nAvailToRead = m_SerDev.getNumAvailBytes();
+      if ( DEBUG_PGPCL_SER >= 1 )
+        printf("%s: nAvailToRead %d\n", functionName, nAvailToRead);
 		}
 		if( 1 || nAvailToRead > 0 )
 		{
@@ -327,7 +342,12 @@ asynStatus	asynPgpClSerial::readOctet(
 							"%s port %s: Read error: %s\n",
 							functionName, this->portName, pasynUser->errorMessage );
 				status = asynError;
-				m_fConnected = false;
+        //epicsMutexLock(m_serialLock);
+        //// TODO: Close device
+        //m_SerDev.disconnect();
+        //m_fConnected	= false;
+        //epicsMutexUnlock(m_serialLock);
+        m_fConnected	= false;
 				m_fInputFlushNeeded = true;
 				pasynManager->exceptionDisconnect( this->pasynUserSelf );
 				if ( eomReason )
@@ -413,11 +433,14 @@ asynStatus	asynPgpClSerial::readOctet(
 		callParamCallbacks();
 	}
 
-	printf( "%s: returning status %d, pBuffer '%s', pnRead %zu, eomReason %d (of %d, %d)\n",
-			functionName, status, pBuffer, *pnRead, *eomReason, ASYN_EOM_EOS, ASYN_EOM_CNT);
-	for (unsigned i = 0; i < *pnRead; ++i)
-		printf("%02hhx ", pBuffer[i]);
-	printf("\n");
+	if ( DEBUG_PGPCL_SER >= 1 )
+  {
+    printf("%s: returning status %d, pBuffer '%s', pnRead %zu, eomReason %d (of %d, %d)\n",
+           functionName, status, pBuffer, *pnRead, *eomReason, ASYN_EOM_EOS, ASYN_EOM_CNT);
+    for (unsigned i = 0; i < *pnRead; ++i)
+      printf("%02hhx ", pBuffer[i]);
+    printf("\n");
+  }
 
     return status;
 }

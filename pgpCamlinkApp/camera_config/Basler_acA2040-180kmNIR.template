@@ -309,14 +309,14 @@ record( mbbo, "$(P)$(R)CLBaudRate" )
   field( FVVL, 21 )
   field( SXVL, 22 )
   field( SVVL, 23 )
-  field( ZRST, "Baud9600" )    # The rate is 9600 baud.
-  field( ONST, "Baud19200" )   # The rate is 19200 baud.
-  field( TWST, "Baud38400" )   # The rate is 38400 baud.
-  field( THST, "Baud57600" )   # The rate is 57600 baud.
-  field( FRST, "Baud115200" )  # The rate is 115200 baud.
-  field( FVST, "Baud230400" )  # The rate is 230400 baud.
-  field( SXST, "Baud460800" )  # The rate is 460800 baud.
-  field( SVST, "Baud921600" )  # The rate is 921600 baud.
+  field( ZRST, "9600" )    # The rate is 9600 baud.
+  field( ONST, "19200" )   # The rate is 19200 baud.
+  field( TWST, "38400" )   # The rate is 38400 baud.
+  field( THST, "57600" )   # The rate is 57600 baud.
+  field( FRST, "115200" )  # The rate is 115200 baud.
+  field( FVST, "230400" )  # The rate is 230400 baud.
+  field( SXST, "460800" )  # The rate is 460800 baud.
+  field( SVST, "921600" )  # The rate is 921600 baud.
   field( FLNK, "$(P)$(R)CLBaudRate_RBV" )
 # Disabled to avoid accidental use
 	field( DISV, "0" )
@@ -335,19 +335,20 @@ record( mbbi, "$(P)$(R)CLBaudRate_RBV" )
   field( FVVL, 21 )
   field( SXVL, 22 )
   field( SVVL, 23 )
-  field( ZRST, "Baud9600" )    # The rate is 9600 baud.
-  field( ONST, "Baud19200" )   # The rate is 19200 baud.
-  field( TWST, "Baud38400" )   # The rate is 38400 baud.
-  field( THST, "Baud57600" )   # The rate is 57600 baud.
-  field( FRST, "Baud115200" )  # The rate is 115200 baud.
-  field( FVST, "Baud230400" )  # The rate is 230400 baud.
-  field( SXST, "Baud460800" )  # The rate is 460800 baud.
-  field( SVST, "Baud921600" )  # The rate is 921600 baud.
+  field( ZRST, "9600" )    # The rate is 9600 baud.
+  field( ONST, "19200" )   # The rate is 19200 baud.
+  field( TWST, "38400" )   # The rate is 38400 baud.
+  field( THST, "57600" )   # The rate is 57600 baud.
+  field( FRST, "115200" )  # The rate is 115200 baud.
+  field( FVST, "230400" )  # The rate is 230400 baud.
+  field( SXST, "460800" )  # The rate is 460800 baud.
+  field( SVST, "921600" )  # The rate is 921600 baud.
   field( PINI, "YES" )
 }
 
 record( mbbo, "$(P)$(R)CLTapGeometry" )
 {
+  field( DOL,  "1X4_1Y" )
   field( DESC, "The CL Tap Geometry" )
   field( DTYP, "stream" )
   field( OUT,  "@Basler.proto SetUInt32(\\x00,\\x00,\\x07,\\x24) $(PORT).SER" )
@@ -359,14 +360,14 @@ record( mbbo, "$(P)$(R)CLTapGeometry" )
   field( FVVL, 11 )
   field( SXVL, 12 )
   field( SVVL, 14 )
-  field( ZRST, "CLGeometry1X_1Y" )    # The tap geometry is 1X-1Y.
-  field( ONST, "CLGeometry1X2_1Y" )   # The tap geometry is 1X2-1Y.
-  field( TWST, "CLGeometry1X_2YE" )   # The tap geometry is 1X-2YE.
-  field( THST, "CLGeometry1X3_1Y" )   # The tap geometry is 1X3-1Y.
-  field( FRST, "CLGeometry1X4_1Y" )   # The tap geometry is 1X4-1Y.
-  field( FVST, "CLGeometry1X6_1Y" )   # The tap geometry is 1X6-1Y.
-  field( SXST, "CLGeometry1X8_1Y" )   # The tap geometry is 1X8-1Y.
-  field( SVST, "CLGeometry1X10_1Y" )  # The tap geometry is 1X10-1Y.
+  field( ZRST, "1X_1Y" )    # The tap geometry is 1X-1Y.
+  field( ONST, "1X2_1Y" )   # The tap geometry is 1X2-1Y.
+  field( TWST, "1X_2YE" )   # The tap geometry is 1X-2YE.
+  field( THST, "1X3_1Y" )   # The tap geometry is 1X3-1Y.
+  field( FRST, "1X4_1Y" )   # The tap geometry is 1X4-1Y.
+  field( FVST, "1X6_1Y" )   # The tap geometry is 1X6-1Y.
+  field( SXST, "1X8_1Y" )   # The tap geometry is 1X8-1Y.
+  field( SVST, "1X10_1Y" )  # The tap geometry is 1X10-1Y.
   field( FLNK, "$(P)$(R)CLTapGeometry_RBV" )
 }
 
@@ -383,19 +384,20 @@ record( mbbi, "$(P)$(R)CLTapGeometry_RBV" )
   field( FVVL, 11 )
   field( SXVL, 12 )
   field( SVVL, 14 )
-  field( ZRST, "CLGeometry1X_1Y" )    # The tap geometry is 1X-1Y.
-  field( ONST, "CLGeometry1X2_1Y" )   # The tap geometry is 1X2-1Y.
-  field( TWST, "CLGeometry1X_2YE" )   # The tap geometry is 1X-2YE.
-  field( THST, "CLGeometry1X3_1Y" )   # The tap geometry is 1X3-1Y.
-  field( FRST, "CLGeometry1X4_1Y" )   # The tap geometry is 1X4-1Y.
-  field( FVST, "CLGeometry1X6_1Y" )   # The tap geometry is 1X6-1Y.
-  field( SXST, "CLGeometry1X8_1Y" )   # The tap geometry is 1X8-1Y.
-  field( SVST, "CLGeometry1X10_1Y" )  # The tap geometry is 1X10-1Y.
+  field( ZRST, "1X_1Y" )    # The tap geometry is 1X-1Y.
+  field( ONST, "1X2_1Y" )   # The tap geometry is 1X2-1Y.
+  field( TWST, "1X_2YE" )   # The tap geometry is 1X-2YE.
+  field( THST, "1X3_1Y" )   # The tap geometry is 1X3-1Y.
+  field( FRST, "1X4_1Y" )   # The tap geometry is 1X4-1Y.
+  field( FVST, "1X6_1Y" )   # The tap geometry is 1X6-1Y.
+  field( SXST, "1X8_1Y" )   # The tap geometry is 1X8-1Y.
+  field( SVST, "1X10_1Y" )  # The tap geometry is 1X10-1Y.
 	field( PINI, "YES" )
 }
 
 record( mbbo, "$(P)$(R)CLPixelClock" )
 {
+  field( DOL,  "82" )
   field( DESC, "The CL Pixel Clock" )
   field( DTYP, "stream" )
   field( OUT,  "@Basler.proto SetUInt32(\\x00,\\x00,\\x07,\\x44) $(PORT).SER" )
@@ -407,14 +409,14 @@ record( mbbo, "$(P)$(R)CLPixelClock" )
   field( FVVL, 23 )
   field( SXVL, 24 )
   field( SVVL, 27 )
-  field( ZRST, "CLClock20" )    # The pixel clock speed is 20 MHz.
-  field( ONST, "CLClock32_5" )  # The pixel clock speed is 32.5 MHz.
-  field( TWST, "CLClock40" )    # The pixel clock speed is 40 MHz.
-  field( THST, "CLClock48" )    # The pixel clock speed is 48 MHz.
-  field( FRST, "CLClock65" )    # The pixel clock speed is 65 MHz.
-  field( FVST, "CLClock82" )    # The pixel clock speed is 82 MHz.
-  field( SXST, "CLClock82_5" )  # The pixel clock speed is 82.5 MHz.
-  field( SVST, "CLClock84" )    # The pixel clock speed is 84 MHz.
+  field( ZRST, "20" )    # The pixel clock speed is 20 MHz.
+  field( ONST, "32_5" )  # The pixel clock speed is 32.5 MHz.
+  field( TWST, "40" )    # The pixel clock speed is 40 MHz.
+  field( THST, "48" )    # The pixel clock speed is 48 MHz.
+  field( FRST, "65" )    # The pixel clock speed is 65 MHz.
+  field( FVST, "82" )    # The pixel clock speed is 82 MHz.
+  field( SXST, "82_5" )  # The pixel clock speed is 82.5 MHz.
+  field( SVST, "84" )    # The pixel clock speed is 84 MHz.
   field( FLNK, "$(P)$(R)CLPixelClock_RBV" )
 }
 
@@ -431,14 +433,15 @@ record( mbbi, "$(P)$(R)CLPixelClock_RBV" )
   field( FVVL, 23 )
   field( SXVL, 24 )
   field( SVVL, 27 )
-  field( ZRST, "CLClock20" )    # The pixel clock speed is 20 MHz.
-  field( ONST, "CLClock32_5" )  # The pixel clock speed is 32.5 MHz.
-  field( TWST, "CLClock40" )    # The pixel clock speed is 40 MHz.
-  field( THST, "CLClock48" )    # The pixel clock speed is 48 MHz.
-  field( FRST, "CLClock65" )    # The pixel clock speed is 65 MHz.
-  field( FVST, "CLClock82" )    # The pixel clock speed is 82 MHz.
-  field( SXST, "CLClock82_5" )  # The pixel clock speed is 82.5 MHz.
-  field( SVST, "CLClock84" )    # The pixel clock speed is 84 MHz.
+  field( ZRST, "20" )    # The pixel clock speed is 20 MHz.
+  field( ONST, "32_5" )  # The pixel clock speed is 32.5 MHz.
+  field( TWST, "40" )    # The pixel clock speed is 40 MHz.
+  field( THST, "48" )    # The pixel clock speed is 48 MHz.
+  field( FRST, "65" )    # The pixel clock speed is 65 MHz.
+  field( FVST, "82" )    # The pixel clock speed is 82 MHz.
+  field( SXST, "82_5" )  # The pixel clock speed is 82.5 MHz.
+  field( SVST, "84" )    # The pixel clock speed is 84 MHz.
+  field( EGU,  "MHz" )
 	field( PINI, "YES" )
 }
 
@@ -461,11 +464,11 @@ record( mbbo, "$(P)$(R)CLConfig" )
   field( TWVL, 3 )
   field( THVL, 4 )
   field( FRVL, 5 )
-  field( ZRST, "CLConfigurationBase" )      # The camera will use the base Camera Link configuration.
-  field( ONST, "CLConfigurationMedium" )    # The camera will use the medium Camera Link configuration.
-  field( TWST, "CLConfigurationFull" )      # The camera will use the full Camera Link configuration.
-  field( THST, "CLConfigurationDualBase" )  # The camera will use the dual base Camera Link configuration.
-  field( FRST, "CLConfigurationDeca" )      # The camera will use the deca Camera Link configuration.
+  field( ZRST, "Base" )      # The camera will use the base Camera Link configuration.
+  field( ONST, "Medium" )    # The camera will use the medium Camera Link configuration.
+  field( TWST, "Full" )      # The camera will use the full Camera Link configuration.
+  field( THST, "DualBase" )  # The camera will use the dual base Camera Link configuration.
+  field( FRST, "Deca" )      # The camera will use the deca Camera Link configuration.
   field( FLNK, "$(P)$(R)CLConfig_RBV" )
 # Disabled to avoid accidental use
 	field( DISV, "0" )
@@ -481,11 +484,11 @@ record( mbbi, "$(P)$(R)CLConfig_RBV" )
   field( TWVL, 3 )
   field( THVL, 4 )
   field( FRVL, 5 )
-  field( ZRST, "CLConfigurationBase" )      # The camera will use the base Camera Link configuration.
-  field( ONST, "CLConfigurationMedium" )    # The camera will use the medium Camera Link configuration.
-  field( TWST, "CLConfigurationFull" )      # The camera will use the full Camera Link configuration.
-  field( THST, "CLConfigurationDualBase" )  # The camera will use the dual base Camera Link configuration.
-  field( FRST, "CLConfigurationDeca" )      # The camera will use the deca Camera Link configuration.
+  field( ZRST, "Base" )      # The camera will use the base Camera Link configuration.
+  field( ONST, "Medium" )    # The camera will use the medium Camera Link configuration.
+  field( TWST, "Full" )      # The camera will use the full Camera Link configuration.
+  field( THST, "DualBase" )  # The camera will use the dual base Camera Link configuration.
+  field( FRST, "Deca" )      # The camera will use the deca Camera Link configuration.
   field( PINI, "YES" )
 }
 
@@ -496,6 +499,7 @@ record( mbbi, "$(P)$(R)CLConfig_RBV" )
 
 record( mbbo, "$(P)$(R)SensorBitDepth" )
 {
+  field( DOL,  "12" )
   field( DESC, "Sensor Bit Depth" )
   field( DTYP, "stream" )
   field( OUT,  "@Basler.proto SetUInt32(\\x00,\\x03,\\x05,\\x04) $(PORT).SER" )
@@ -504,11 +508,11 @@ record( mbbo, "$(P)$(R)SensorBitDepth" )
   field( TWVL, 12 )
   field( THVL, 14 )
   field( FRVL, 16 )
-  field( ZRST, "BitDepth8" )   # The sensor will produce pixel data at  8 bit depth per pixel.
-  field( ONST, "BitDepth10" )  # The sensor will produce pixel data at 10 bit depth per pixel.
-  field( TWST, "BitDepth12" )  # The sensor will produce pixel data at 12 bit depth per pixel.
-  field( THST, "BitDepth14" )  # The sensor will produce pixel data at 14 bit depth per pixel.
-  field( FRST, "BitDepth16" )  # The sensor will produce pixel data at 16 bit depth per pixel.
+  field( ZRST, "8" )   # The sensor will produce pixel data at  8 bit depth per pixel.
+  field( ONST, "10" )  # The sensor will produce pixel data at 10 bit depth per pixel.
+  field( TWST, "12" )  # The sensor will produce pixel data at 12 bit depth per pixel.
+  field( THST, "14" )  # The sensor will produce pixel data at 14 bit depth per pixel.
+  field( FRST, "16" )  # The sensor will produce pixel data at 16 bit depth per pixel.
   field( FLNK, "$(P)$(R)SensorBitDepth_RBV" )
 }
 
@@ -522,19 +526,20 @@ record( mbbi, "$(P)$(R)SensorBitDepth_RBV" )
   field( TWVL, 12 )
   field( THVL, 14 )
   field( FRVL, 16 )
-  field( ZRST, "BitDepth8" )   # The sensor will produce pixel data at  8 bit depth per pixel.
-  field( ONST, "BitDepth10" )  # The sensor will produce pixel data at 10 bit depth per pixel.
-  field( TWST, "BitDepth12" )  # The sensor will produce pixel data at 12 bit depth per pixel.
-  field( THST, "BitDepth14" )  # The sensor will produce pixel data at 14 bit depth per pixel.
-  field( FRST, "BitDepth16" )  # The sensor will produce pixel data at 16 bit depth per pixel.
+  field( ZRST, "8" )   # The sensor will produce pixel data at  8 bit depth per pixel.
+  field( ONST, "10" )  # The sensor will produce pixel data at 10 bit depth per pixel.
+  field( TWST, "12" )  # The sensor will produce pixel data at 12 bit depth per pixel.
+  field( THST, "14" )  # The sensor will produce pixel data at 14 bit depth per pixel.
+  field( FRST, "16" )  # The sensor will produce pixel data at 16 bit depth per pixel.
   	field( PINI, "YES" )
 }
 
 record( mbbo, "$(P)$(R)PixelFormat" )
 {
+  field( DOL,  "Mono12" )
   field( DESC, "Pixel Format" )
   field( DTYP, "stream" )
-  field( OUT,  "@Basler.proto SetUInt32(\\x00,\\x03,\\x00,\\x24) $(PORT).SER" )
+  field( OUT,  "@Basler.proto SetUInt64(\\x00,\\x03,\\x00,\\x24) $(PORT).SER" )
   field( ZRVL,  1 )
   field( ONVL,  3 )
   field( TWVL,  5 )
@@ -572,7 +577,7 @@ record( mbbi, "$(P)$(R)PixelFormat_RBV" )
 {
   field( DESC, "Pixel Format readback value" )
   field( DTYP, "stream" )
-  field( INP,  "@Basler.proto GetUInt32(\\x00,\\x03,\\x00,\\x24) $(PORT).SER" )
+  field( INP,  "@Basler.proto GetUInt64(\\x00,\\x03,\\x00,\\x24) $(PORT).SER" )
   field( ZRVL,  1 )
   field( ONVL,  3 )
   field( TWVL,  5 )
@@ -610,7 +615,7 @@ record( mbbo, "$(P)$(R)PixelSize" )
 {
   field( DESC, "Pixel Size" )
   field( DTYP, "stream" )
-  field( OUT,  "@Basler.proto SetUInt32(\\x00,\\x03,\\x00,\\xA4) $(PORT).SER" )
+  field( OUT,  "@Basler.proto SetUInt64(\\x00,\\x03,\\x00,\\xA4) $(PORT).SER" )
   field( ZRVL,  1 )
   field( ONVL,  2 )
   field( TWVL,  4 )
@@ -621,16 +626,16 @@ record( mbbo, "$(P)$(R)PixelSize" )
   field( SVVL, 24 )
   field( EIVL, 36 )
   field( NIVL, 48 )
-  field( ZRST, "Bpp1" )   # The pixel size is 1 bit per pixel.
-  field( ONST, "Bpp2" )   # The pixel size is 2 bits per pixel.
-  field( TWST, "Bpp4" )   # The pixel size is 4 bits per pixel.
-  field( THST, "Bpp8" )   # The pixel size is 8 bits per pixel.
-  field( FRST, "Bpp10" )  # The pixel size is 10 bits per pixel.
-  field( FVST, "Bpp12" )  # The pixel size is 12 bits per pixel.
-  field( SXST, "Bpp16" )  # The pixel size is 16 bits per pixel.
-  field( SVST, "Bpp24" )  # The pixel size is 24 bits per pixel.
-  field( EIST, "Bpp36" )  # The pixel size is 36 bits per pixel.
-  field( NIST, "Bpp48" )  # The pixel size is 48 bits per pixel.
+  field( ZRST, "1" )   # The pixel size is 1 bit per pixel.
+  field( ONST, "2" )   # The pixel size is 2 bits per pixel.
+  field( TWST, "4" )   # The pixel size is 4 bits per pixel.
+  field( THST, "8" )   # The pixel size is 8 bits per pixel.
+  field( FRST, "10" )  # The pixel size is 10 bits per pixel.
+  field( FVST, "12" )  # The pixel size is 12 bits per pixel.
+  field( SXST, "16" )  # The pixel size is 16 bits per pixel.
+  field( SVST, "24" )  # The pixel size is 24 bits per pixel.
+  field( EIST, "36" )  # The pixel size is 36 bits per pixel.
+  field( NIST, "48" )  # The pixel size is 48 bits per pixel.
   field( FLNK, "$(P)$(R)PixelSize_RBV" )
 }
 
@@ -638,7 +643,7 @@ record( mbbi, "$(P)$(R)PixelSize_RBV" )
 {
   field( DESC, "Pixel Size readback value" )
   field( DTYP, "stream" )
-  field( INP,  "@Basler.proto GetUInt32(\\x00,\\x03,\\x00,\\xA4) $(PORT).SER" )
+  field( INP,  "@Basler.proto GetUInt64(\\x00,\\x03,\\x00,\\xA4) $(PORT).SER" )
   field( ZRVL,  1 )
   field( ONVL,  2 )
   field( TWVL,  4 )
@@ -649,16 +654,16 @@ record( mbbi, "$(P)$(R)PixelSize_RBV" )
   field( SVVL, 24 )
   field( EIVL, 36 )
   field( NIVL, 48 )
-  field( ZRST, "Bpp1" )   # The pixel size is 1 bit per pixel.
-  field( ONST, "Bpp2" )   # The pixel size is 2 bits per pixel.
-  field( TWST, "Bpp4" )   # The pixel size is 4 bits per pixel.
-  field( THST, "Bpp8" )   # The pixel size is 8 bits per pixel.
-  field( FRST, "Bpp10" )  # The pixel size is 10 bits per pixel.
-  field( FVST, "Bpp12" )  # The pixel size is 12 bits per pixel.
-  field( SXST, "Bpp16" )  # The pixel size is 16 bits per pixel.
-  field( SVST, "Bpp24" )  # The pixel size is 24 bits per pixel.
-  field( EIST, "Bpp36" )  # The pixel size is 36 bits per pixel.
-  field( NIST, "Bpp48" )  # The pixel size is 48 bits per pixel.
+  field( ZRST, "1" )   # The pixel size is 1 bit per pixel.
+  field( ONST, "2" )   # The pixel size is 2 bits per pixel.
+  field( TWST, "4" )   # The pixel size is 4 bits per pixel.
+  field( THST, "8" )   # The pixel size is 8 bits per pixel.
+  field( FRST, "10" )  # The pixel size is 10 bits per pixel.
+  field( FVST, "12" )  # The pixel size is 12 bits per pixel.
+  field( SXST, "16" )  # The pixel size is 16 bits per pixel.
+  field( SVST, "24" )  # The pixel size is 24 bits per pixel.
+  field( EIST, "36" )  # The pixel size is 36 bits per pixel.
+  field( NIST, "48" )  # The pixel size is 48 bits per pixel.
   field( PINI, "YES" )
 }
 
@@ -667,6 +672,7 @@ record( mbbi, "$(P)$(R)PixelSize_RBV" )
 
 record( mbbo, "$(P)$(R)TrigModeFrameStart" )
 {
+  field( DOL,  "ON" )
   field( DESC, "Trigger Mode Frame Start" )
   field( DTYP, "stream" )
   field( OUT,  "@Basler.proto SetUInt32(\\x00,\\x04,\\x02,\\x04) $(PORT).SER" )
@@ -691,6 +697,7 @@ record( mbbi, "$(P)$(R)TrigModeFrameStart_RBV" )
 
 record( mbbo, "$(P)$(R)TrigSrcFrameStart" )
 {
+  field( DOL,  "CC1" )
   field( DESC, "Trigger Source Frame Start" )
   field( DTYP, "stream" )
   field( OUT,  "@Basler.proto SetUInt32(\\x00,\\x04,\\x02,\\x44) $(PORT).SER" )
@@ -776,6 +783,7 @@ record( bo, "$(P)$(R)TrigSwFrameStart" )
 
 record( mbbo, "$(P)$(R)TrigActFrameStart" )
 {
+  field( DOL,  "RisingEdge" )
   field( DESC, "Trigger Activation Frame Start" )
   field( DTYP, "stream" )
   field( OUT,  "@Basler.proto SetUInt32(\\x00,\\x04,\\x02,\\x64) $(PORT).SER" )
@@ -815,6 +823,7 @@ record( mbbi, "$(P)$(R)TrigActFrameStart_RBV" )
 
 record( mbbo, "$(P)$(R)ExposureMode" )
 {
+  field( DOL,  "2" )
   field( DESC, "Exposure Mode" )
   field( DTYP, "stream" )
   field( OUT,  "@Basler.proto SetUInt32(\\x00,\\x04,\\x04,\\x04) $(PORT).SER" )
@@ -844,14 +853,6 @@ record( mbbi, "$(P)$(R)ExposureMode_RBV" )
 
 #--------
 
-record( longin, "$(P)$(R)BaslerBlackLevel_RBV" )
-{
-  field( DESC, "Black Level" )
-  field( DTYP, "stream" )
-  field( INP,  "@Basler.proto GetUInt32(\\x00,\\x02,\\x02,\\x04) $(PORT).SER" )
-#  field( PINI, "YES" )
-}
-
 record( longout, "$(P)$(R)BaslerBlackLevel" )
 {
   field( DESC, "Set The Black Level" )
@@ -865,43 +866,51 @@ record( longout, "$(P)$(R)BaslerBlackLevel" )
   field( FLNK, "$(P)$(R)BaslerBlackLevel_RBV" )
 }
 
-record( mbbi, "$(P)$(R)BaslerBitsPerPixel_RBV" )
+record( longin, "$(P)$(R)BaslerBlackLevel_RBV" )
 {
-  field( DESC, "The bit depth of the pixel data" )
+  field( DESC, "Black Level" )
   field( DTYP, "stream" )
-  field( INP,  "@Basler.proto GetUInt32(\\x00,\\x03,\\x05,\\x04) $(PORT).SER" )
-  field( ZRVL,  8 )
-  field( ONVL, 10 )
-  field( TWVL, 12 )
-  field( THVL, 14 )
-  field( FRVL, 16 )
-  field( ZRST, "BitDepth8" )   # The sensor will produce pixel data at  8 bit depth per pixel.
-  field( ONST, "BitDepth10" )  # The sensor will produce pixel data at 10 bit depth per pixel.
-  field( TWST, "BitDepth12" )  # The sensor will produce pixel data at 12 bit depth per pixel.
-  field( THST, "BitDepth14" )  # The sensor will produce pixel data at 14 bit depth per pixel.
-  field( FRST, "BitDepth16" )  # The sensor will produce pixel data at 16 bit depth per pixel.
-	field( PINI, "YES" )
+  field( INP,  "@Basler.proto GetUInt32(\\x00,\\x02,\\x02,\\x04) $(PORT).SER" )
+  field( PINI, "YES" )
 }
 
-record( mbbo, "$(P)$(R)BaslerBitsPerPixel" )
-{
-  field( DESC, "Sets the bit depth of the pixel data" )
-  field( DTYP, "stream" )
-  field( OUT,  "@Basler.proto SetUInt32(\\x00,\\x03,\\x05,\\x04) $(PORT).SER" )
-  field( ZRVL,  8 )
-  field( ONVL, 10 )
-  field( TWVL, 12 )
-  field( THVL, 14 )
-  field( FRVL, 16 )
-  field( ZRST, "BitDepth8" )   # The sensor will produce pixel data at  8 bit depth per pixel.
-  field( ONST, "BitDepth10" )  # The sensor will produce pixel data at 10 bit depth per pixel.
-  field( TWST, "BitDepth12" )  # The sensor will produce pixel data at 12 bit depth per pixel.
-  field( THST, "BitDepth14" )  # The sensor will produce pixel data at 14 bit depth per pixel.
-  field( FRST, "BitDepth16" )  # The sensor will produce pixel data at 16 bit depth per pixel.
-  field( FLNK, "$(P)$(R)BaslerBitsPerPixel_RBV" )
-# Disabled to avoid accidental use
-	field( DISV, "0" )
-}
+#record( mbbi, "$(P)$(R)BaslerBitsPerPixel_RBV" )
+#{
+#  field( DESC, "The bit depth of the pixel data" )
+#  field( DTYP, "stream" )
+#  field( INP,  "@Basler.proto GetUInt32(\\x00,\\x03,\\x05,\\x04) $(PORT).SER" )
+#  field( ZRVL,  8 )
+#  field( ONVL, 10 )
+#  field( TWVL, 12 )
+#  field( THVL, 14 )
+#  field( FRVL, 16 )
+#  field( ZRST, "8" )   # The sensor will produce pixel data at  8 bit depth per pixel.
+#  field( ONST, "10" )  # The sensor will produce pixel data at 10 bit depth per pixel.
+#  field( TWST, "12" )  # The sensor will produce pixel data at 12 bit depth per pixel.
+#  field( THST, "14" )  # The sensor will produce pixel data at 14 bit depth per pixel.
+#  field( FRST, "16" )  # The sensor will produce pixel data at 16 bit depth per pixel.
+#	field( PINI, "YES" )
+#}
+#
+#record( mbbo, "$(P)$(R)BaslerBitsPerPixel" )
+#{
+#  field( DESC, "Sets the bit depth of the pixel data" )
+#  field( DTYP, "stream" )
+#  field( OUT,  "@Basler.proto SetUInt32(\\x00,\\x03,\\x05,\\x04) $(PORT).SER" )
+#  field( ZRVL,  8 )
+#  field( ONVL, 10 )
+#  field( TWVL, 12 )
+#  field( THVL, 14 )
+#  field( FRVL, 16 )
+#  field( ZRST, "8" )   # The sensor will produce pixel data at  8 bit depth per pixel.
+#  field( ONST, "10" )  # The sensor will produce pixel data at 10 bit depth per pixel.
+#  field( TWST, "12" )  # The sensor will produce pixel data at 12 bit depth per pixel.
+#  field( THST, "14" )  # The sensor will produce pixel data at 14 bit depth per pixel.
+#  field( FRST, "16" )  # The sensor will produce pixel data at 16 bit depth per pixel.
+#  field( FLNK, "$(P)$(R)BaslerBitsPerPixel_RBV" )
+## Disabled to avoid accidental use
+#	field( DISV, "0" )
+#}
 
 record( ao, "$(P)$(R)AcquirePeriod"  )
 {
@@ -991,7 +1000,11 @@ record( longin, "$(P)$(R)BaslerTestPattern_RBV" )
   field( TPRO, 2 )
 }
 
+substitute "MON_PV=$(P)$(R)Manufacturer_RBV"
+include "rbvMonitor.template"
 substitute "MON_PV=$(P)$(R)Model_RBV"
+include "rbvMonitor.template"
+substitute "MON_PV=$(P)$(R)BaslerModel_RBV"
 include "rbvMonitor.template"
 substitute "MON_PV=$(P)$(R)BaslerSerialNumber_RBV"
 include "rbvMonitor.template"
