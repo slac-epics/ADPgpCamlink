@@ -3,8 +3,8 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 1036
-y 178
+x 575
+y 176
 w 770
 h 807
 font "helvetica-medium-r-12.0"
@@ -605,7 +605,6 @@ y 128
 w 108
 h 20
 controlPv "$(CAM):CamlinkBaudRate"
-format "hex"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
 fgColor index 15
@@ -613,7 +612,7 @@ fgAlarm
 bgColor index 12
 limitsFromDb
 nullColor index 0
-useHexPrefix
+showUnits
 newPos
 objType "monitors"
 noExecuteClipMask
