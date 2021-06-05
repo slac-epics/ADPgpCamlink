@@ -341,12 +341,15 @@ asynStatus	asynPgpClSerial::readOctet(
 							"%s port %s: Read error: %s\n",
 							functionName, this->portName, pasynUser->errorMessage );
 				status = asynError;
-        //epicsMutexLock(m_serialLock);
-        //// TODO: Close device
-        //m_SerDev.disconnect();
-        //m_fConnected	= false;
-        //epicsMutexUnlock(m_serialLock);
-        m_fConnected	= false;
+#if 0
+				//epicsMutexLock(m_serialLock);
+				//// TODO: Close device
+				//m_SerDev.disconnect();
+				//m_fConnected	= false;
+				//epicsMutexUnlock(m_serialLock);
+#else
+				m_fConnected	= false;
+#endif
 				m_fInputFlushNeeded = true;
 				pasynManager->exceptionDisconnect( this->pasynUserSelf );
 				if ( eomReason )
