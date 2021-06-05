@@ -413,11 +413,11 @@ asynStatus	asynPgpClSerial::readOctet(
 		callParamCallbacks();
 	}
 
-  printf("%s: returning status %d, pBuffer '%s', pnRead %zu, eomReason %d (of %d, %d)\n",
-         functionName, status, pBuffer, *pnRead, *eomReason, ASYN_EOM_EOS, ASYN_EOM_CNT);
-  for (unsigned i = 0; i < *pnRead; ++i)
-    printf("%02hhx ", pBuffer[i]);
-  printf("\n");
+	printf( "%s: returning status %d, pBuffer '%s', pnRead %zu, eomReason %d (of %d, %d)\n",
+			functionName, status, pBuffer, *pnRead, *eomReason, ASYN_EOM_EOS, ASYN_EOM_CNT);
+	for (unsigned i = 0; i < *pnRead; ++i)
+		printf("%02hhx ", pBuffer[i]);
+	printf("\n");
 
     return status;
 }
@@ -499,6 +499,9 @@ asynStatus	asynPgpClSerial::writeOctet(
 			asynPrint(	pasynUser,	ASYN_TRACE_FLOW,
 						"%s: wrote %zu to %s\n",
 						functionName, *pnWritten, this->portName );
+			for (unsigned i = 0; i < *pnWritten; ++i)
+				printf("%02hhx ", pBuffer[i]);
+			printf("\n");
 		}
 	}
 	else
