@@ -529,11 +529,11 @@ record( mbbi, "$(P)$(R)SensorBitDepth_RBV" )
 
 record( mbbo, "$(P)$(R)PixelFormat" )
 {
-  field( DOL,  "Mono12" )
+	field( DOL,  "2" )
+	field( PINI, "YES" )
   field( DESC, "Pixel Format" )
   field( DTYP, "stream" )
-#  field( OUT,  "@Basler.proto SetUInt64(\\x00,\\x03,\\x00,\\x24) $(PORT).SER" )
-  field( OUT,  "@Basler.proto SetUInt32(\\x00,\\x03,\\x00,\\x24) $(PORT).SER" )
+  field( OUT,  "@Basler.proto SetUInt64(\\x00,\\x03,\\x00,\\x24) $(PORT).SER" )
   field( ZRVL,  1 )
   field( ONVL,  3 )
   field( TWVL,  5 )
@@ -573,8 +573,7 @@ record( mbbi, "$(P)$(R)PixelFormat_RBV" )
 {
   field( DESC, "Pixel Format readback value" )
   field( DTYP, "stream" )
-#  field( INP,  "@Basler.proto GetUInt64(\\x00,\\x03,\\x00,\\x24) $(PORT).SER" )
-  field( INP,  "@Basler.proto GetUInt32(\\x00,\\x03,\\x00,\\x24) $(PORT).SER" )
+  field( INP,  "@Basler.proto GetUInt64(\\x00,\\x03,\\x00,\\x24) $(PORT).SER" )
   field( ZRVL,  1 )
   field( ONVL,  3 )
   field( TWVL,  5 )
@@ -611,8 +610,7 @@ record( mbbo, "$(P)$(R)PixelSize" )
 {
   field( DESC, "Pixel Size" )
   field( DTYP, "stream" )
-#  field( OUT,  "@Basler.proto SetUInt64(\\x00,\\x03,\\x00,\\xA4) $(PORT).SER" )
-  field( OUT,  "@Basler.proto SetUInt32(\\x00,\\x03,\\x00,\\xA4) $(PORT).SER" )
+  field( OUT,  "@Basler.proto SetUInt64(\\x00,\\x03,\\x00,\\xA4) $(PORT).SER" )
   field( ZRVL,  1 )
   field( ONVL,  2 )
   field( TWVL,  4 )
@@ -642,8 +640,7 @@ record( mbbi, "$(P)$(R)PixelSize_RBV" )
 {
   field( DESC, "Pixel Size readback value" )
   field( DTYP, "stream" )
-#  field( INP,  "@Basler.proto GetUInt64(\\x00,\\x03,\\x00,\\xA4) $(PORT).SER" )
-  field( INP,  "@Basler.proto GetUInt32(\\x00,\\x03,\\x00,\\xA4) $(PORT).SER" )
+  field( INP,  "@Basler.proto GetUInt64(\\x00,\\x03,\\x00,\\xA4) $(PORT).SER" )
   field( ZRVL,  1 )
   field( ONVL,  2 )
   field( TWVL,  4 )
@@ -1020,6 +1017,7 @@ record( mbbo, "$(P)$(R)ExposureMode" )
   field( DESC, "Exposure Mode" )
   field( DTYP, "stream" )
   field( OUT,  "@Basler.proto SetUInt32(\\x00,\\x04,\\x04,\\x04) $(PORT).SER" )
+  field( DOL,  "2" )
   field( ZRVL, 0 )
   field( ONVL, 1 )
   field( TWVL, 2 )
@@ -1069,6 +1067,7 @@ record( longin, "$(P)$(R)BaslerBlackLevel_RBV" )
   field( INP,  "@Basler.proto GetUInt32(\\x00,\\x02,\\x02,\\x04) $(PORT).SER" )
 }
 
+# SensorBitDepth: Base address 0x30500, manual pg 44
 #record( mbbi, "$(P)$(R)BaslerBitsPerPixel_RBV" )
 #{
 #  field( DESC, "The bit depth of the pixel data" )
@@ -1084,7 +1083,7 @@ record( longin, "$(P)$(R)BaslerBlackLevel_RBV" )
 #  field( TWST, "12" )  # The sensor will produce pixel data at 12 bit depth per pixel.
 #  field( THST, "14" )  # The sensor will produce pixel data at 14 bit depth per pixel.
 #  field( FRST, "16" )  # The sensor will produce pixel data at 16 bit depth per pixel.
-  field( SCAN, "Passive" )
+#  field( SCAN, "Passive" )
 #	field( PINI, "YES" )
 #}
 #
