@@ -202,7 +202,7 @@ void maskBit7( char* pBuf, int sBuf )
 	if ( pBuf == NULL || sBuf == 0 )
 		return;
 
-	const char*	pBufEnd	= pBuf + sBuf - 2;
+	const char*	pBufEnd	= pBuf + sBuf - 2; // 1; // Include checksum
 	pBuf += 3;
 	while ( pBuf < pBufEnd )
 	{

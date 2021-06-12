@@ -7,29 +7,29 @@
 
 record( seq, "$(P)$(R)ReConfigSeq" )
 {
-#  field( DLY0, "0.0" ) field( DOL0, "1" ) field( LNK0, "$(P)$(R)BaslerAccessPrivilege.PROC CA NMS" )
-#  field( DLY1, "0.1" ) field( DOL1, "1" ) field( LNK1, "$(P)$(R)BaslerExposureValue_RBV.PROC CA NMS" )
-#  field( DLY2, "0.1" ) field( DOL2, "1" ) field( LNK2, "$(P)$(R)BaslerAcqStartFullTrMode_RBV.PROC CA NMS" )
-#  field( DLY3, "0.1" ) field( DOL3, "1" ) field( LNK3, "$(P)$(R)BaslerAcqStopFullTrMode_RBV.PROC CA NMS" )
-#  field( DLY5, "0.1" ) field( DOL5, "0" ) field( LNK0, "$(P)$(R)BaslerFStartFullTrMode_RBV.PROC CA NMS" )
-#  field( DLY6, "0.1" ) field( DOL6, "1" ) field( LNK6, "$(P)$(R)BaslerLine1GlitchFilter.PROC CA NMS" )
-#  field( DLY7, "0.1" ) field( DOL7, "1" ) field( LNK7, "$(P)$(R)BaslerFStartTrSrc.PROC CA NMS" )
-#  field( DLY8, "0.1" ) field( DOL4, "1" ) field( LNK8, "$(P)$(R)BaslerHeartbeatTimeout_RBV.PROC CA NMS" )
+#	field( DLY0, "0.0" ) field( DOL0, "1" ) field( LNK0, "$(P)$(R)BaslerAccessPrivilege.PROC CA NMS" )
+#	field( DLY1, "0.1" ) field( DOL1, "1" ) field( LNK1, "$(P)$(R)BaslerExposureValue_RBV.PROC CA NMS" )
+#	field( DLY2, "0.1" ) field( DOL2, "1" ) field( LNK2, "$(P)$(R)BaslerAcqStartFullTrMode_RBV.PROC CA NMS" )
+#	field( DLY3, "0.1" ) field( DOL3, "1" ) field( LNK3, "$(P)$(R)BaslerAcqStopFullTrMode_RBV.PROC CA NMS" )
+#	field( DLY5, "0.1" ) field( DOL5, "0" ) field( LNK0, "$(P)$(R)BaslerFStartFullTrMode_RBV.PROC CA NMS" )
+#	field( DLY6, "0.1" ) field( DOL6, "1" ) field( LNK6, "$(P)$(R)BaslerLine1GlitchFilter.PROC CA NMS" )
+#	field( DLY7, "0.1" ) field( DOL7, "1" ) field( LNK7, "$(P)$(R)BaslerFStartTrSrc.PROC CA NMS" )
+#	field( DLY8, "0.1" ) field( DOL4, "1" ) field( LNK8, "$(P)$(R)BaslerHeartbeatTimeout_RBV.PROC CA NMS" )
 	field( TPRO, 1 )
 	field( FLNK, "$(P)$(R)ReConfigSeq2" )
 }
 record( seq, "$(P)$(R)ReConfigSeq2" )
 {
 
-#  field( DLY1, "0.1" ) field( DOL1, "1" ) field( LNK1, "$(P)$(R)Model_RBV.PROC CA NMS" )
-#  field( DLY2, "0.1" ) field( DOL2, "1" ) field( LNK2, "$(P)$(R)Manufacturer_RBV.PROC CA NMS" )
-#  field( DLY3, "0.1" ) field( DOL3, "1" ) field( LNK3, "$(P)$(R)BaslerSerialNumber_RBV.PROC CA NMS" )
-#  field( DLY4, "0.1" ) field( DOL4, "1" ) field( LNK4, "$(P)$(R)BaslerFirmwareVersion_RBV.PROC CA NMS" )
-#  field( DLY5, "0.0" ) field( DOL5, "1" ) field( LNK5, "$(P)$(R)BaslerModel_RBV.PROC CA NMS" )
-#  field( DLY6, "0.1" ) field( DOL6, "1" ) field( LNK6, "$(P)$(R)BaslerTempMainBd_RBV.PROC CA NMS" )
-#  field( DLY7, "0.1" ) field( DOL7, "1" ) field( LNK7, "$(P)$(R)BaslerTempSensorBd_RBV.PROC CA NMS" )
-#  field( DLY8, "0.1" ) field( DOL8, "1" ) field( LNK8, "$(P)$(R)BaslerTemperature_RBV.PROC CA NMS" )
-#  field( FLNK, "$(P)$(R)ReConfigSeq3" )
+#	field( DLY1, "0.1" ) field( DOL1, "1" ) field( LNK1, "$(P)$(R)Model_RBV.PROC CA NMS" )
+#	field( DLY2, "0.1" ) field( DOL2, "1" ) field( LNK2, "$(P)$(R)Manufacturer_RBV.PROC CA NMS" )
+#	field( DLY3, "0.1" ) field( DOL3, "1" ) field( LNK3, "$(P)$(R)BaslerSerialNumber_RBV.PROC CA NMS" )
+#	field( DLY4, "0.1" ) field( DOL4, "1" ) field( LNK4, "$(P)$(R)BaslerFirmwareVersion_RBV.PROC CA NMS" )
+#	field( DLY5, "0.0" ) field( DOL5, "1" ) field( LNK5, "$(P)$(R)BaslerModel_RBV.PROC CA NMS" )
+#	field( DLY6, "0.1" ) field( DOL6, "1" ) field( LNK6, "$(P)$(R)BaslerTempMainBd_RBV.PROC CA NMS" )
+#	field( DLY7, "0.1" ) field( DOL7, "1" ) field( LNK7, "$(P)$(R)BaslerTempSensorBd_RBV.PROC CA NMS" )
+#	field( DLY8, "0.1" ) field( DOL8, "1" ) field( LNK8, "$(P)$(R)BaslerTemperature_RBV.PROC CA NMS" )
+#	field( FLNK, "$(P)$(R)ReConfigSeq3" )
 }
 
 record( stringin, "$(P)$(R)CamModel" )
@@ -107,6 +107,27 @@ record( longout, "$(P)$(R)SizeY" )
 	field( VAL, "256" )
 }
 
+# Debugging:
+record( longout, "$(P)$(R)BaslerTestAdx" )
+{
+	field( VAL, "0" )
+	field( FLNK, "$(P)$(R)BaslerTestValue_RBV" )
+	field( SCAN, "Passive" )
+}
+record( longout, "$(P)$(R)BaslerTestValue" )
+{
+	field( DTYP, "stream" )
+	field( OUT,  "@Basler.proto SetTest($(P)$(R)) $(PORT).SER" )
+	field( FLNK, "$(P)$(R)BaslerTestValue_RBV" )
+	field( SCAN, "Passive" )
+}
+record( longin, "$(P)$(R)BaslerTestValue_RBV" )
+{
+	field( DTYP, "stream" )
+	field( INP,  "@Basler.proto GetTest($(P)$(R)) $(PORT).SER" )
+}
+
+
 # 4.1 Device Information Registers
 
 # Update fields for ADCore records that we get via GenCP
@@ -131,7 +152,7 @@ record( stringin, "$(P)$(R)BaslerFirmwareVersion_RBV" )
 {
 	field( DTYP, "stream" )
 	field( INP,  "@Basler.proto GetString2(\\x00,\\x00,\\x03,\\x08, \\xec) $(PORT).SER" )
-#  field( INP,  "@Basler.proto GetString(\\x00,\\x00,\\x03,\\x08, \\x20) $(PORT).SER" )
+#	field( INP,  "@Basler.proto GetString(\\x00,\\x00,\\x03,\\x08, \\x20) $(PORT).SER" )
 	field( SCAN, "Passive" )
 	field( PINI, "YES" )
 }
@@ -176,6 +197,7 @@ record( stringout, "$(P)$(R)BaslerUserID" )
 	field( TPRO, 2 )
 }
 
+# Not implemented
 record( longin, "$(P)$(R)BaslerTempSensorBd_RBV" )
 {
 	field( DTYP, "stream" )
@@ -187,6 +209,7 @@ record( longin, "$(P)$(R)BaslerTempSensorBd_RBV" )
 	field( PINI, "YES" )
 }
 
+# Not implemented
 record( longin, "$(P)$(R)BaslerTempMainBd_RBV" )
 {
 	field( DTYP, "stream" )
@@ -198,6 +221,7 @@ record( longin, "$(P)$(R)BaslerTempMainBd_RBV" )
 	field( PINI, "YES" )
 }
 
+# Not implemented
 record( longin, "$(P)$(R)BaslerTemperature_RBV" )
 {
 	field( DTYP, "stream" )
@@ -209,6 +233,7 @@ record( longin, "$(P)$(R)BaslerTemperature_RBV" )
 	field( PINI, "YES" )
 }
 
+# Not implemented
 record( bi, "$(P)$(R)BaslerOverTemp_RBV" )
 {
 	field( DESC, "Over Temperature" )
@@ -217,6 +242,7 @@ record( bi, "$(P)$(R)BaslerOverTemp_RBV" )
 #	field( SCAN, "10 second" )
 }
 
+# Not implemented
 record( bi, "$(P)$(R)BaslerCriticalTemp_RBV" )
 {
 	field( DESC, "Critical Temperature" )
@@ -258,6 +284,9 @@ record( bi, "$(P)$(R)RegistersValid" )
 	field( DESC, "Device Registers Valid" )
 	field( DTYP, "stream" )
 	field( INP,  "@Basler.proto GetUInt32(\\x00,\\x01,\\x00,\\x68) $(PORT).SER" )
+	field( ZNAM, "NO" )
+	field( ONAM, "YES"  )
+	field( SCAN, "Passive" )
 	field( PINI, "YES" )
 }
 
@@ -270,6 +299,7 @@ record( mbbi, "$(P)$(R)BaslerLastError_RBV" )
 	field( ONVL, 1 )  field( ONST, "Overtrigger" )
 	field( TWVL, 2 )  field( TWST, "Userset" )
 	field( THVL, 3 )  field( THST, "Invalid parameter"   )
+	field( SCAN, "Passive" )
 	field( PINI, "YES" )
 }
 
@@ -280,6 +310,7 @@ record( bo, "$(P)$(R)BaslerClearLastError" )
 	field( OUT,  "@Basler.proto SetUInt32(\\x00,\\x01,\\x30,\\x24) $(PORT).SER" )
 	field( ZNAM, "Cleared" )
 	field( ONAM, "Clear"  )
+	field( FLNK, "$(P)$(R)BaslerLastError_RBV" )
 }
 
 
@@ -383,6 +414,7 @@ record( mbbi, "$(P)$(R)CLTapGeometry_RBV" )
 	field( FVST, "1X6-1Y" )   # The tap geometry is 1X6-1Y.
 	field( SXST, "1X8-1Y" )   # The tap geometry is 1X8-1Y.
 	field( SVST, "1X10-1Y" )  # The tap geometry is 1X10-1Y.
+#	field( PINI, "YES" )
 }
 
 record( mbbo, "$(P)$(R)CLPixelClock" )
@@ -433,8 +465,10 @@ record( mbbi, "$(P)$(R)CLPixelClock_RBV" )
 	field( FVST, "82 MHz" )    # The pixel clock speed is 82 MHz.
 	field( SXST, "82.5 MHz" )  # The pixel clock speed is 82.5 MHz.
 	field( SVST, "84 MHz" )    # The pixel clock speed is 84 MHz.
+#	field( PINI, "YES" )
 }
 
+# Not implemented:
 record( longout, "$(P)$(R)CLInterlineDelay" )
 {
 	field( DESC, "CL Interline Delay" )
@@ -444,7 +478,7 @@ record( longout, "$(P)$(R)CLInterlineDelay" )
 	field( DISV, "0" )
 }
 
-record( mbbo, "$(P)$(R)CLConfig" )
+record( mbbo, "$(P)$(R)BaslerCLConfig" )
 {
 	field( DOL,  "1" )
 	field( DESC, "Camera Link configuration" )
@@ -460,12 +494,14 @@ record( mbbo, "$(P)$(R)CLConfig" )
 	field( TWST, "Full" )      # The camera will use the full Camera Link configuration.
 	field( THST, "DualBase" )  # The camera will use the dual base Camera Link configuration.
 	field( FRST, "Deca" )      # The camera will use the deca Camera Link configuration.
-	field( FLNK, "$(P)$(R)CLConfig_RBV" )
+	field( FLNK, "$(P)$(R)BaslerCLConfig_RBV" )
+	field( SCAN, "Passive" )
+	field( PINI, "YES" )
 # Disabled to avoid accidental use
 	field( DISV, "0" )
 }
 
-record( mbbi, "$(P)$(R)CLConfig_RBV" )
+record( mbbi, "$(P)$(R)BaslerCLConfig_RBV" )
 {
 	field( DESC, "Camera Link configuration" )
 	field( DTYP, "stream" )
@@ -489,10 +525,40 @@ record( mbbi, "$(P)$(R)CLConfig_RBV" )
 
 # 4.4 Image Format Registers
 
-record( mbbo, "$(P)$(R)SensorBitDepth" )
+# Not implemented
+record( mbbo, "$(P)$(R)SensorDigitizationTaps" )
+{
+#	field( DOL,  "0" )
+	field( DESC, "Sensor Digitization Taps" )
+	field( DTYP, "stream" )
+	field( OUT,  "@Basler.proto SetUInt32(\\x00,\\x03,\\x00,\\x04) $(PORT).SER" )
+	field( ZRVL, 0 )
+	field( ONVL, 3 )
+	field( ZRST, "One" )   # One tap is used to read pixel data out of the imaging sensor.
+	field( ONST, "Four" )  # Four taps are used to read pixel data out of the imaging sensor.
+	field( FLNK, "$(P)$(R)SensorDigitizationTaps_RBV" )
+# Disabled to avoid accidental use
+	field( DISV, "0" )
+#	field( SCAN, "Passive" )
+#	field( PINI, "YES" )
+}
+
+record( mbbi, "$(P)$(R)SensorDigitizationTaps_RBV" )
+{
+	field( DESC, "Sensor Digitization Taps" )
+	field( DTYP, "stream" )
+	field( INP,  "@Basler.proto GetUInt32(\\x00,\\x03,\\x00,\\x04) $(PORT).SER" )
+	field( ZRVL, 0 )
+	field( ONVL, 3 )
+	field( ZRST, "One" )   # One tap is used to read pixel data out of the imaging sensor.
+	field( ONST, "Four" )  # Four taps are used to read pixel data out of the imaging sensor.
+}
+
+# SensorBitDepth: Base address 0x30500, manual pg 44
+record( mbbo, "$(P)$(R)BaslerBitsPerPixel" )
 {
 	field( DOL,  "2" )
-	field( DESC, "Sensor Bit Depth" )
+	field( DESC, "Sets the bit depth of the pixel data" )
 	field( DTYP, "stream" )
 	field( OUT,  "@Basler.proto SetUInt32(\\x00,\\x03,\\x05,\\x04) $(PORT).SER" )
 	field( ZRVL,  8 )
@@ -505,14 +571,16 @@ record( mbbo, "$(P)$(R)SensorBitDepth" )
 	field( TWST, "12" )  # The sensor will produce pixel data at 12 bit depth per pixel.
 	field( THST, "14" )  # The sensor will produce pixel data at 14 bit depth per pixel.
 	field( FRST, "16" )  # The sensor will produce pixel data at 16 bit depth per pixel.
-	field( FLNK, "$(P)$(R)SensorBitDepth_RBV" )
+	field( FLNK, "$(P)$(R)BaslerBitsPerPixel_RBV" )
 	field( SCAN, "Passive" )
 	field( PINI, "YES" )
+## Disabled to avoid accidental use
+#	field( DISV, "0" )
 }
 
-record( mbbi, "$(P)$(R)SensorBitDepth_RBV" )
+record( mbbi, "$(P)$(R)BaslerBitsPerPixel_RBV" )
 {
-	field( DESC, "Sensor Bit Depth readback value" )
+	field( DESC, "The bit depth of the pixel data" )
 	field( DTYP, "stream" )
 	field( INP,  "@Basler.proto GetUInt32(\\x00,\\x03,\\x05,\\x04) $(PORT).SER" )
 	field( ZRVL,  8 )
@@ -525,6 +593,8 @@ record( mbbi, "$(P)$(R)SensorBitDepth_RBV" )
 	field( TWST, "12" )  # The sensor will produce pixel data at 12 bit depth per pixel.
 	field( THST, "14" )  # The sensor will produce pixel data at 14 bit depth per pixel.
 	field( FRST, "16" )  # The sensor will produce pixel data at 16 bit depth per pixel.
+#	field( SCAN, "Passive" )
+#	field( PINI, "YES" )
 }
 
 record( mbbo, "$(P)$(R)PixelFormat" )
@@ -604,10 +674,13 @@ record( mbbi, "$(P)$(R)PixelFormat_RBV" )
 	field( TVST, "BayerRG12" )  # The pixel format is Bayer RG 12.
 	field( TTST, "BayerGB12" )  # The pixel format is Bayer GB 12.
 	field( FTST, "BayerBG12" )  # The pixel format is Bayer BG 12.
+#	field( PINI, "YES" )
 }
 
+# This value must always be in agreement with the Pixel Format value.
 record( mbbo, "$(P)$(R)PixelSize" )
 {
+	field( DOL,  "5" )
 	field( DESC, "Pixel Size" )
 	field( DTYP, "stream" )
 	field( OUT,  "@Basler.proto SetUInt64(\\x00,\\x03,\\x00,\\xA4) $(PORT).SER" )
@@ -661,6 +734,81 @@ record( mbbi, "$(P)$(R)PixelSize_RBV" )
 	field( SVST, "24" )  # The pixel size is 24 bits per pixel.
 	field( EIST, "36" )  # The pixel size is 36 bits per pixel.
 	field( NIST, "48" )  # The pixel size is 48 bits per pixel.
+#	field( PINI, "YES" )
+}
+
+record( longout, "$(P)$(R)BinningHorizontal" )
+{
+	field( DESC, "Horizontal binning" )
+	field( DTYP, "stream" )
+	field( OUT,  "@Basler.proto SetUInt32(\\x00,\\x03,\\x03,\\x24) $(PORT).SER" )
+	field( FLNK, "$(P)$(R)BinningHorizontal_RBV" )
+#	field( SCAN, "Passive" )
+#	field( PINI, "YES" )
+}
+
+record( longin, "$(P)$(R)BinningHorizontal_RBV" )
+{
+	field( DESC, "Horizontal binning" )
+	field( DTYP, "stream" )
+	field( INP,  "@Basler.proto GetUInt32(\\x00,\\x03,\\x03,\\x24) $(PORT).SER" )
+#	field( PINI, "YES" )
+}
+
+record( longout, "$(P)$(R)BinningVertical" )
+{
+	field( DESC, "Vertical binning" )
+	field( DTYP, "stream" )
+	field( OUT,  "@Basler.proto SetUInt32(\\x00,\\x03,\\x03,\\x44) $(PORT).SER" )
+	field( FLNK, "$(P)$(R)BinningVertical_RBV" )
+#	field( SCAN, "Passive" )
+#	field( PINI, "YES" )
+}
+
+record( longin, "$(P)$(R)BinningVertical_RBV" )
+{
+	field( DESC, "Vertical binning" )
+	field( DTYP, "stream" )
+	field( INP,  "@Basler.proto GetUInt32(\\x00,\\x03,\\x03,\\x44) $(PORT).SER" )
+#	field( PINI, "YES" )
+}
+
+# Not implemented
+record( longout, "$(P)$(R)DecimationHorizontal" )
+{
+	field( DESC, "Horizontal decimation" )
+	field( DTYP, "stream" )
+	field( OUT,  "@Basler.proto SetUInt32(\\x00,\\x03,\\x03,\\xA4) $(PORT).SER" )
+	field( FLNK, "$(P)$(R)DecimationHorizontal_RBV" )
+#	field( SCAN, "Passive" )
+#	field( PINI, "YES" )
+# Disabled to avoid accidental use
+	field( DISV, "0" )
+}
+
+record( longin, "$(P)$(R)DecimationHorizontal_RBV" )
+{
+	field( DESC, "Horizontal decimation" )
+	field( DTYP, "stream" )
+	field( INP,  "@Basler.proto GetUInt32(\\x00,\\x03,\\x03,\\xA4) $(PORT).SER" )
+}
+
+record( longout, "$(P)$(R)DecimationVertical" )
+{
+	field( DESC, "Vertical decimation" )
+	field( DTYP, "stream" )
+	field( OUT,  "@Basler.proto SetUInt32(\\x00,\\x03,\\x03,\\xC4) $(PORT).SER" )
+	field( FLNK, "$(P)$(R)DecimationVertical_RBV" )
+#	field( SCAN, "Passive" )
+#	field( PINI, "YES" )
+}
+
+record( longin, "$(P)$(R)DecimationVertical_RBV" )
+{
+	field( DESC, "Vertical decimation" )
+	field( DTYP, "stream" )
+	field( INP,  "@Basler.proto GetUInt32(\\x00,\\x03,\\x03,\\xC4) $(PORT).SER" )
+#	field( PINI, "YES" )
 }
 
 
@@ -676,6 +824,8 @@ record( mbbo, "$(P)$(R)TrigModeAcqStart" )
 	field( ZRST, "OFF" )  # The trigger mode is set to off.
 	field( ONST, "ON" )   # The trigger mode is set to on.
 	field( FLNK, "$(P)$(R)TrigModeAcqStart_RBV" )
+#	field( SCAN, "Passive" )
+#	field( PINI, "YES" )
 }
 
 record( mbbi, "$(P)$(R)TrigModeAcqStart_RBV" )
@@ -687,29 +837,32 @@ record( mbbi, "$(P)$(R)TrigModeAcqStart_RBV" )
 	field( ONVL,  1 )
 	field( ZRST, "OFF" )  # The trigger mode is set to off.
 	field( ONST, "ON" )   # The trigger mode is set to on.
-	field( SCAN, "Passive" )
-	field( PINI, "YES" )
+#	field( PINI, "YES" )
 }
 
 record( longout, "$(P)$(R)AcqFrameCount" )
 {
-	field( DESC, "If the Acquisition Start Trigger Mode" )
+	field( DESC, "Acquisition Frame Count" )
 	field( DTYP, "stream" )
 	field( OUT,  "@Basler.proto SetUInt32(\\x00,\\x04,\\x00,\\xA4) $(PORT).SER" )
-}
-
-record( longin, "$(P)$(R)AcqFrameCount_RBV" )
-{
-	field( DESC, "If the Acquisition Start Trigger Mode" )
-	field( DTYP, "stream" )
-	field( INP,  "@Basler.proto SetUInt32(\\x00,\\x04,\\x00,\\xA4) $(PORT).SER" )
+	field( HOPR,  127 )
+	field( LOPR,  1   )
+	field( FLNK, "$(P)$(R)AcqFrameCount_RBV" )
 	field( SCAN, "Passive" )
 	field( PINI, "YES" )
 }
 
+record( longin, "$(P)$(R)AcqFrameCount_RBV" )
+{
+	field( DESC, "Acquisition Frame Count" )
+	field( DTYP, "stream" )
+	field( INP,  "@Basler.proto GetUInt32(\\x00,\\x04,\\x00,\\xA4) $(PORT).SER" )
+#	field( PINI, "YES" )
+}
+
 record( mbbo, "$(P)$(R)TrigSrcAcqStart" )
 {
-	field( DESC, "If the Trigger Source Acquisition Start" )
+	field( DESC, "Trigger Source Acquisition Start" )
 	field( DTYP, "stream" )
 	field( OUT,  "@Basler.proto SetUInt32(\\x00,\\x04,\\x01,\\x44) $(PORT).SER" )
 	field( ZRVL,  0 )
@@ -743,11 +896,13 @@ record( mbbo, "$(P)$(R)TrigSrcAcqStart" )
 	field( TTST, "ShaftEncoder" )        # A signal output from the shaft encoder module will be used as the trigger signal.
 	field( FTST, "FrequencyConverter" )  # A signal output from the frequency converter module will be used as the trigger signal.
 	field( FLNK, "$(P)$(R)TrigSrcAcqStart_RBV" )
+	field( SCAN, "Passive" )
+	field( PINI, "YES" )
 }
 
 record( mbbi, "$(P)$(R)TrigSrcAcqStart_RBV" )
 {
-	field( DESC, "If the Trigger Source Acquisition Start" )
+	field( DESC, "Trigger Source Acquisition Start" )
 	field( DTYP, "stream" )
 	field( INP,  "@Basler.proto GetUInt32(\\x00,\\x04,\\x01,\\x44) $(PORT).SER" )
 	field( ZRVL,  0 )
@@ -780,13 +935,12 @@ record( mbbi, "$(P)$(R)TrigSrcAcqStart_RBV" )
 	field( TVST, "CC4" )                 # A signal input into CC 4 in the Camera Link interface will be used as the trigger signal.
 	field( TTST, "ShaftEncoder" )        # A signal output from the shaft encoder module will be used as the trigger signal.
 	field( FTST, "FrequencyConverter" )  # A signal output from the frequency converter module will be used as the trigger signal.
-	field( SCAN, "Passive" )
-	field( PINI, "YES" )
+#	field( PINI, "YES" )
 }
 
 record( bo, "$(P)$(R)TrigSwAcqStart" )
 {
-	field( DESC, "If the Trigger Mode Acquisition Start" )
+	field( DESC, "Trigger Software Acquisition Start" )
 	field( DTYP, "stream" )
 	field( OUT,  "@Basler.proto SetUInt32(\\x00,\\x04,\\x01,\\x24) $(PORT).SER" )
 	field( ZNAM, "OFF" )
@@ -809,6 +963,8 @@ record( mbbo, "$(P)$(R)TrigActAcqStart" )
 	field( THST, "LevelHigh" )    # The trigger signal is considered valid as long as it is high.
 	field( FRST, "LevelLow" )     # The trigger signal is considered valid as long as it is low.
 	field( FLNK, "$(P)$(R)TrigActAcqStart_RBV" )
+	field( SCAN, "Passive" )
+	field( PINI, "YES" )
 }
 
 record( mbbi, "$(P)$(R)TrigActAcqStart_RBV" )
@@ -826,8 +982,7 @@ record( mbbi, "$(P)$(R)TrigActAcqStart_RBV" )
 	field( TWST, "AnyEdge" )      # The trigger signal is considered valid both on the rising edge and on the falling edge of the signal.
 	field( THST, "LevelHigh" )    # The trigger signal is considered valid as long as it is high.
 	field( FRST, "LevelLow" )     # The trigger signal is considered valid as long as it is low.
-	field( SCAN, "Passive" )
-	field( PINI, "YES" )
+#	field( PINI, "YES" )
 }
 
 record( longout, "$(P)$(R)TrigDelayRawAcqStart" )
@@ -842,11 +997,12 @@ record( longin, "$(P)$(R)StatAcqTrigWait" )
 	field( DESC, "Status Acquisition Trigger Wait" )
 	field( DTYP, "stream" )
 	field( INP,  "@Basler.proto GetUInt32(\\x00,\\x04,\\x06,\\x08) $(PORT).SER" )
+	field( SCAN, "Passive" )
+	field( PINI, "YES" )
 }
 
 record( mbbo, "$(P)$(R)TrigModeFrameStart" )
 {
-	field( DOL,  "1" )
 	field( DESC, "Trigger Mode Frame Start" )
 	field( DTYP, "stream" )
 	field( OUT,  "@Basler.proto SetUInt32(\\x00,\\x04,\\x02,\\x04) $(PORT).SER" )
@@ -855,8 +1011,8 @@ record( mbbo, "$(P)$(R)TrigModeFrameStart" )
 	field( ZRST, "OFF" )  # The trigger mode is set to off.
 	field( ONST, "ON" )   # The trigger mode is set to on.
 	field( FLNK, "$(P)$(R)TrigModeFrameStart_RBV" )
-	field( SCAN, "Passive" )
-	field( PINI, "YES" )
+#	field( SCAN, "Passive" )
+#	field( PINI, "YES" )
 }
 
 record( mbbi, "$(P)$(R)TrigModeFrameStart_RBV" )
@@ -868,11 +1024,11 @@ record( mbbi, "$(P)$(R)TrigModeFrameStart_RBV" )
 	field( ONVL,  1 )
 	field( ZRST, "OFF" )  # The trigger mode is set to off.
 	field( ONST, "ON" )   # The trigger mode is set to on.
+#	field( PINI, "YES" )
 }
 
 record( mbbo, "$(P)$(R)TrigSrcFrameStart" )
 {
-	field( DOL,  "9" )
 	field( DESC, "Trigger Source Frame Start" )
 	field( DTYP, "stream" )
 	field( OUT,  "@Basler.proto SetUInt32(\\x00,\\x04,\\x02,\\x44) $(PORT).SER" )
@@ -946,6 +1102,7 @@ record( mbbi, "$(P)$(R)TrigSrcFrameStart_RBV" )
 	field( TVST, "CC4" )                 # A signal input into CC 4 in the Camera Link interface will be used as the trigger signal.
 	field( TTST, "ShaftEncoder" )        # A signal output from the shaft encoder module will be used as the trigger signal.
 	field( FTST, "FrequencyConverter" )  # A signal output from the frequency converter module will be used as the trigger signal.
+#	field( PINI, "YES" )
 }
 
 record( bo, "$(P)$(R)TrigSwFrameStart" )
@@ -968,6 +1125,7 @@ record( bi, "$(P)$(R)TrigSwFrameStart_RBV" )
 	field( INP,  "@Basler.proto SetUInt32(\\x00,\\x04,\\x02,\\x24) $(PORT).SER" )
 	field( ZNAM, "OFF" )
 	field( ONAM, "ON"  )
+#	field( PINI, "YES" )
 }
 
 record( mbbo, "$(P)$(R)TrigActFrameStart" )
@@ -1006,10 +1164,44 @@ record( mbbi, "$(P)$(R)TrigActFrameStart_RBV" )
 	field( TWST, "AnyEdge" )      # The trigger signal is considered valid both on the rising edge and on the falling edge of the signal.
 	field( THST, "LevelHigh" )    # The trigger signal is considered valid as long as it is high.
 	field( FRST, "LevelLow" )     # The trigger signal is considered valid as long as it is low.
+#	field( PINI, "YES" )
+}
+
+record( longout, "$(P)$(R)TrigDelayRawFrameStart" )
+{
+	field( DESC, "Trigger Delay Raw Frame Start" )
+	field( DTYP, "stream" )
+	field( OUT,  "@Basler.proto SetUInt32(\\x00,\\x04,\\x02,\\x84) $(PORT).SER" )
+}
+
+record( longin, "$(P)$(R)StatFrameTrigWait" )
+{
+	field( DESC, "Status Frame Trigger Wait" )
+	field( DTYP, "stream" )
+	field( INP,  "@Basler.proto GetUInt32(\\x00,\\x04,\\x06,\\x68) $(PORT).SER" )
+#	field( SCAN, "Passive" )
+#	field( PINI, "YES" )
+}
+
+record( longout, "$(P)$(R)ExposureOverlapTimeMaxRaw" )
+{
+	field( DESC, "Exposure Overlap Time Max Raw" )
+	field( DTYP, "stream" )
+	field( OUT,  "@Basler.proto SetUInt32(\\x00,\\x04,\\xE0,\\x04) $(PORT).SER" )
+}
+
+record( longin, "$(P)$(R)ReadoutTimeRaw" )
+{
+	field( DESC, "Readout Time Raw" )
+	field( DTYP, "stream" )
+	field( INP,  "@Basler.proto GetUInt32(\\x00,\\x04,\\xE0,\\x28) $(PORT).SER" )
+#	field( SCAN, "Passive" )
+#	field( PINI, "YES" )
 }
 
 
 # 4.6 Exposure Control Registers
+
 record( mbbi, "$(P)$(R)CamTriggerMode" )
 {
 	field( FLNK, "$(P)$(R)BaslerCalcExposureMode" )
@@ -1029,7 +1221,8 @@ record( mbbo, "$(P)$(R)BaslerExposureMode" )
 	field( DESC, "Exposure Mode" )
 	field( DTYP, "stream" )
 	field( OMSL, "closed_loop" )
-	field( DOL,  "$(P)$(R)BaslerCalcExposureMode NPP NMS" )
+#	field( DOL,  "$(P)$(R)BaslerCalcExposureMode NPP NMS" )
+	field( DOL,  "2" )
 	field( OUT,  "@Basler.proto SetUInt32(\\x00,\\x04,\\x04,\\x04) $(PORT).SER" )
 	field( ZRVL, "0" )
 	field( ONVL, "1" )
@@ -1054,6 +1247,7 @@ record( mbbi, "$(P)$(R)BaslerExposureMode_RBV" )
 	field( ONST, "Timed" )         # The exposure mode is timed.
 	field( TWST, "TriggerWidth" )  # The exposure mode is trigger width.
 	field( FLNK, "$(P)$(R)BaslerCalcCamTriggerMode" )
+	field( PINI, "YES" )
 }
 
 record( calc, "$(P)$(R)BaslerCalcCamTriggerMode" )
@@ -1072,69 +1266,83 @@ record( mbbo, "$(P)$(R)CamTriggerMode_RBV" )
 #	field( TPRO, 2 )
 	field( OMSL, "closed_loop" )
 	field( DOL,  "$(P)$(R)BaslerCalcCamTriggerMode NPP MS" )
+#	field( PINI, "YES" )
 }
 
-record( longout, "$(P)$(R)BaslerBlackLevel" )
+record( longout, "$(P)$(R)ExposureTimeRaw" )
 {
-	field( DESC, "Set The Black Level" )
+	field( DESC, "Exposure Time Raw" )
 	field( DTYP, "stream" )
-	field( OUT,  "@Basler.proto SetUInt32(\\x00,\\x02,\\x02,\\x04) $(PORT).SER" )
-	field( HOPR, 4096 )
-	field( DRVH, 4096 )
-	field( LOPR, 0    )
-	field( DRVL, 0    )
-	info( autosaveFields, "DESC VAL" )
-	field( FLNK, "$(P)$(R)BaslerBlackLevel_RBV" )
-	field( SCAN, "Passive" )
+	field( OUT,  "@Basler.proto SetUInt32(\\x00,\\x04,\\x04,\\x64) $(PORT).SER" )
+	field( FLNK, "$(P)$(R)ExposureTimeRaw_RBV" )
+}
+
+record( longin, "$(P)$(R)ExposureTimeRaw_RBV" )
+{
+	field( DESC, "Exposure Time Raw" )
+	field( DTYP, "stream" )
+	field( INP,  "@Basler.proto GetUInt32(\\x00,\\x04,\\x04,\\x64) $(PORT).SER" )
+#	field( PINI, "YES" )
+}
+
+record( longin, "$(P)$(R)StatusExposureActive" )
+{
+	field( DESC, "Status Exposure Active" )
+	field( DTYP, "stream" )
+	field( INP,  "@Basler.proto GetUInt32(\\x00,\\x04,\\x06,\\xC8) $(PORT).SER" )
+}
+
+
+# 4.7 Time Base Register
+
+record( longin, "$(P)$(R)BaslerTimeBase_RBV" )
+{
+	field( DESC, "Time Base" )
+	field( DTYP, "stream" )
+	field( INP,  "@Basler.proto GetUInt32(\\x00,\\x04,\\x04,\\x48) $(PORT).SER" )
+	field( EGU,  "ns"  )
 	field( PINI, "YES" )
 }
 
-record( longin, "$(P)$(R)BaslerBlackLevel_RBV" )
+
+# 4.8 Frame Period Registers
+
+record( bo, "$(P)$(R)AcqFramePeriodEnable" )
 {
-	field( DESC, "Black Level" )
+	field( DESC, "Acquisition Frame Period Enable" )
 	field( DTYP, "stream" )
-	field( INP,  "@Basler.proto GetUInt32(\\x00,\\x02,\\x02,\\x04) $(PORT).SER" )
+	field( OUT,  "@Basler.proto SetUInt32(\\x00,\\x04,\\x04,\\x84) $(PORT).SER" )
+	field( ZNAM, "OFF" )
+	field( ONAM, "ON"  )
+	field( FLNK, "$(P)$(R)AcqFramePeriodEnable_RBV" )
 }
 
-# SensorBitDepth: Base address 0x30500, manual pg 44
-#record( mbbi, "$(P)$(R)BaslerBitsPerPixel_RBV" )
-#{
-#  field( DESC, "The bit depth of the pixel data" )
-#  field( DTYP, "stream" )
-#  field( INP,  "@Basler.proto GetUInt32(\\x00,\\x03,\\x05,\\x04) $(PORT).SER" )
-#  field( ZRVL,  8 )
-#  field( ONVL, 10 )
-#  field( TWVL, 12 )
-#  field( THVL, 14 )
-#  field( FRVL, 16 )
-#  field( ZRST, "8" )   # The sensor will produce pixel data at  8 bit depth per pixel.
-#  field( ONST, "10" )  # The sensor will produce pixel data at 10 bit depth per pixel.
-#  field( TWST, "12" )  # The sensor will produce pixel data at 12 bit depth per pixel.
-#  field( THST, "14" )  # The sensor will produce pixel data at 14 bit depth per pixel.
-#  field( FRST, "16" )  # The sensor will produce pixel data at 16 bit depth per pixel.
-#  field( SCAN, "Passive" )
+record( bi, "$(P)$(R)AcqFramePeriodEnable_RBV" )
+{
+	field( DESC, "Acquisition Frame Period Enable" )
+	field( DTYP, "stream" )
+	field( INP,  "@Basler.proto GetUInt32(\\x00,\\x04,\\x04,\\x84) $(PORT).SER" )
+	field( ZNAM, "OFF" )
+	field( ONAM, "ON"  )
 #	field( PINI, "YES" )
-#}
-#
-#record( mbbo, "$(P)$(R)BaslerBitsPerPixel" )
-#{
-#  field( DESC, "Sets the bit depth of the pixel data" )
-#  field( DTYP, "stream" )
-#  field( OUT,  "@Basler.proto SetUInt32(\\x00,\\x03,\\x05,\\x04) $(PORT).SER" )
-#  field( ZRVL,  8 )
-#  field( ONVL, 10 )
-#  field( TWVL, 12 )
-#  field( THVL, 14 )
-#  field( FRVL, 16 )
-#  field( ZRST, "8" )   # The sensor will produce pixel data at  8 bit depth per pixel.
-#  field( ONST, "10" )  # The sensor will produce pixel data at 10 bit depth per pixel.
-#  field( TWST, "12" )  # The sensor will produce pixel data at 12 bit depth per pixel.
-#  field( THST, "14" )  # The sensor will produce pixel data at 14 bit depth per pixel.
-#  field( FRST, "16" )  # The sensor will produce pixel data at 16 bit depth per pixel.
-#  field( FLNK, "$(P)$(R)BaslerBitsPerPixel_RBV" )
-## Disabled to avoid accidental use
-#	field( DISV, "0" )
-#}
+}
+
+record( longout, "$(P)$(R)AcqFramePeriodRaw" )
+{
+	field( DESC, "Acquisition Frame Period Raw" )
+	field( DTYP, "stream" )
+	field( OUT,  "@Basler.proto SetUInt32(\\x00,\\x04,\\x04,\\xA4) $(PORT).SER" )
+	field( HOPR,  0x3ffffff )
+	field( LOPR,  1         )
+	field( FLNK, "$(P)$(R)AcqFramePeriodRaw_RBV" )
+}
+
+record( longin, "$(P)$(R)AcqFramePeriodRaw_RBV" )
+{
+	field( DESC, "Acquisition Frame Period Raw" )
+	field( DTYP, "stream" )
+	field( INP,  "@Basler.proto GetUInt32(\\x00,\\x04,\\x04,\\xA4) $(PORT).SER" )
+}
 
 record( ao, "$(P)$(R)AcquirePeriod"  )
 {
@@ -1173,16 +1381,6 @@ record( longout, "$(P)$(R)BaslerAcquirePeriod" )
 	field( EGU,  "us"    )
 }
 
-record( longin, "$(P)$(R)BaslerTimeBase_RBV" )
-{
-	field( DESC, "Time Base" )
-	field( DTYP, "stream" )
-	field( INP,  "@Basler.proto GetUInt32(\\x00,\\x04,\\x04,\\x48) $(PORT).SER" )
-	field( EGU,  "ns"  )
-	field( PINI, "YES" )
-}
-
-
 # Read AcquirePeriod, the rep rate for image capture
 # Only relevant in FreeRun trigger mode
 # Reply value is an integer in us
@@ -1208,30 +1406,65 @@ record( ai, "$(P)$(R)AcquirePeriod_RBV"    )
 	field( DISA, "0" )
 }
 
+record( longin, "$(P)$(R)ResFramePeriodRaw" )
+{
+	field( DESC, "Resulting Frame Period Raw" )
+	field( DTYP, "stream" )
+	field( INP,  "@Basler.proto GetUInt32(\\x00,\\x04,\\x05,\\x08) $(PORT).SER" )
+}
+
+# Not implemented
+record( longout, "$(P)$(R)AcqLinePeriodRaw" )
+{
+	field( DESC, "Acquisition Line Period Raw" )
+	field( DTYP, "stream" )
+	field( OUT,  "@Basler.proto SetUInt32(\\x00,\\x04,\\x05,\\x24) $(PORT).SER" )
+	field( FLNK, "$(P)$(R)AcqLinePeriodRaw_RBV" )
+}
+
+record( longin, "$(P)$(R)AcqLinePeriodRaw_RBV" )
+{
+	field( DESC, "Acquisition Line Period Raw" )
+	field( DTYP, "stream" )
+	field( INP,  "@Basler.proto GetUInt32(\\x00,\\x04,\\x05,\\x24) $(PORT).SER" )
+#	field( PINI, "YES" )
+}
+
+
+# 4.9 Sequencer Control Registers
+# TBC
+
+# -----
+
+record( longout, "$(P)$(R)BaslerBlackLevel" )
+{
+	field( DESC, "Set The Black Level" )
+	field( DTYP, "stream" )
+	field( OUT,  "@Basler.proto SetUInt32(\\x00,\\x02,\\x02,\\x04) $(PORT).SER" )
+	field( HOPR, 4096 )
+	field( DRVH, 4096 )
+	field( LOPR, 0    )
+	field( DRVL, 0    )
+	info( autosaveFields, "DESC VAL" )
+	field( FLNK, "$(P)$(R)BaslerBlackLevel_RBV" )
+	field( SCAN, "Passive" )
+	field( PINI, "YES" )
+}
+
+record( longin, "$(P)$(R)BaslerBlackLevel_RBV" )
+{
+	field( DESC, "Black Level" )
+	field( DTYP, "stream" )
+	field( INP,  "@Basler.proto GetUInt32(\\x00,\\x02,\\x02,\\x04) $(PORT).SER" )
+	field( PINI, "YES" )
+}
+
 record( ao, "$(P)$(R)CamProcDelay" )
 {
 	field( DOL,  "3.0e-3" )
 }
 
-record( longout, "$(P)$(R)BaslerTestPattern" )
-{
-	field( DOL,  "0" )
-	field( DESC, "Select test pattern.  0 = Off" )
-	field( DTYP, "stream" )
-	field( OUT,  "@Basler.proto SetUInt32(\\x00,\\x03,\\x01,\\x64) $(PORT).SER" )
-	field( FLNK, "$(P)$(R)BaslerTestPattern_RBV" )
-	field( TPRO, 2 )
-}
-
-record( longin, "$(P)$(R)BaslerTestPattern_RBV" )
-{
-	field( DESC, "Select test pattern.  0 = Off" )
-	field( DTYP, "stream" )
-	field( INP,  "@Basler.proto GetUInt32(\\x00,\\x03,\\x01,\\x64) $(PORT).SER" )
-	field( TPRO, 2 )
-}
-
-record( mbbo, "$(P)$(R)TestImageSelector" )
+record( mbbo, "$(P)$(R)BaslerTestPattern" )
 {
 	field( DOL,  "0" )
 	field( DESC, "Test Image Selector" )
@@ -1251,11 +1484,12 @@ record( mbbo, "$(P)$(R)TestImageSelector" )
 	field( FRST, "Testimage4" )  # The camera will generate and output test image 4.
 	field( FVST, "Testimage5" )  # The camera will generate and output test image 5.
 	field( SXST, "Testimage6" )  # The camera will generate and output test image 6.
-	field( FLNK, "$(P)$(R)TestImageSelector_RBV" )
+	field( FLNK, "$(P)$(R)BaslerTestPattern_RBV" )
+	field( SCAN, "Passive" )
 	field( PINI, "YES" )
 }
 
-record( mbbi, "$(P)$(R)TestImageSelector_RBV" )
+record( mbbi, "$(P)$(R)BaslerTestPattern_RBV" )
 {
 	field( DESC, "The Test Image Selector" )
 	field( DTYP, "stream" )
@@ -1274,51 +1508,61 @@ record( mbbi, "$(P)$(R)TestImageSelector_RBV" )
 	field( FRST, "Testimage4" )  # The camera will generate and output test image 4.
 	field( FVST, "Testimage5" )  # The camera will generate and output test image 5.
 	field( SXST, "Testimage6" )  # The camera will generate and output test image 6.
+#	field( SCAN, "Passive" )
+#	field( PINI, "YES" )
 }
 
-substitute "SER_OK_PV=$(PGP):Ch$(PGP_LANE):PgpMon:RxRemLinkReady_RBV"
-substitute "MON_PV=$(P)$(R)Manufacturer_RBV"
-include "rbvMonitor.template"
-substitute "MON_PV=$(P)$(R)Model_RBV"
-include "rbvMonitor.template"
-substitute "MON_PV=$(P)$(R)BaslerFirmwareVersion_RBV"
-include "rbvMonitor.template"
-substitute "MON_PV=$(P)$(R)BaslerVersion_RBV"
-include "rbvMonitor.template"
-substitute "MON_PV=$(P)$(R)BaslerSerialNumber_RBV"
-include "rbvMonitor.template"
-substitute "MON_PV=$(P)$(R)BaslerModel_RBV"
-include "rbvMonitor.template"
-substitute "MON_PV=$(P)$(R)TestImageSelector_RBV"
-include "rbvMonitor.template"
-substitute "MON_PV=$(P)$(R)BaslerTestPattern_RBV"
-include "rbvMonitor.template"
-substitute "MON_PV=$(P)$(R)BaslerTempSensorBd_RBV"
-include "rbvMonitor.template"
-substitute "MON_PV=$(P)$(R)BaslerTempMainBd_RBV"
-include "rbvMonitor.template"
-substitute "MON_PV=$(P)$(R)BaslerTemperature_RBV"
-include "rbvMonitor.template"
-substitute "MON_PV=$(P)$(R)CamlinkHTap"
-include "rbvMonitor.template"
-substitute "MON_PV=$(P)$(R)BaslerTimeBase_RBV"
-include "rbvMonitor.template"
+## Something about the following causes LastUserError to go to InvalidParameter
+## Only way out that I've found is to power cycle the camera
+#substitute "SER_OK_PV=$(PGP):Ch$(PGP_LANE):PgpMon:RxRemLinkReady_RBV"
+#substitute "MON_PV=$(P)$(R)Manufacturer_RBV"
+#include "rbvMonitor.template"
+#substitute "MON_PV=$(P)$(R)Model_RBV"
+#include "rbvMonitor.template"
+#substitute "MON_PV=$(P)$(R)BaslerFirmwareVersion_RBV"
+#include "rbvMonitor.template"
+#substitute "MON_PV=$(P)$(R)BaslerVersion_RBV"
+#include "rbvMonitor.template"
+#substitute "MON_PV=$(P)$(R)BaslerSerialNumber_RBV"
+#include "rbvMonitor.template"
+#substitute "MON_PV=$(P)$(R)BaslerModel_RBV"
+#include "rbvMonitor.template"
+#substitute "MON_PV=$(P)$(R)BaslerTestPattern_RBV"
+#include "rbvMonitor.template"
+## substitute "MON_PV=$(P)$(R)BaslerTempSensorBd_RBV"
+## include "rbvMonitor.template"
+## substitute "MON_PV=$(P)$(R)BaslerTempMainBd_RBV"
+## include "rbvMonitor.template"
+## substitute "MON_PV=$(P)$(R)BaslerTemperature_RBV"
+## include "rbvMonitor.template"
+#substitute "MON_PV=$(P)$(R)CamlinkHTap"
+#include "rbvMonitor.template"
+#substitute "MON_PV=$(P)$(R)BaslerTimeBase_RBV"
+#include "rbvMonitor.template"
 
-substitute "MON_PV=$(P)$(R)BaslerExposureMode"
-include "putMonitor.template"
-substitute "MON_PV=$(P)$(R)TrigModeFrameStart"
-include "putMonitor.template"
-substitute "MON_PV=$(P)$(R)TrigSrcFrameStart"
-include "putMonitor.template"
-substitute "MON_PV=$(P)$(R)TrigActFrameStart"
-include "putMonitor.template"
-substitute "MON_PV=$(P)$(R)TrigSwFrameStart"
-include "putMonitor.template"
-substitute "MON_PV=$(P)$(R)BaslerBlackLevel"
-include "putMonitor.template"
-substitute "MON_PV=$(P)$(R)SensorBitDepth"
-include "putMonitor.template"
-substitute "MON_PV=$(P)$(R)PixelFormat"
-include "putMonitor.template"
-substitute "MON_PV=$(P)$(R)BaslerAcquirePeriod"
-include "putMonitor.template"
+#substitute "MON_PV=$(P)$(R)BaslerExposureMode"
+#include "putMonitor.template"
+#substitute "MON_PV=$(P)$(R)TrigModeFrameStart"
+#include "putMonitor.template"
+#substitute "MON_PV=$(P)$(R)TrigSrcFrameStart"
+#include "putMonitor.template"
+#substitute "MON_PV=$(P)$(R)TrigActFrameStart"
+#include "putMonitor.template"
+#substitute "MON_PV=$(P)$(R)TrigSwFrameStart"
+#include "putMonitor.template"
+##substitute "MON_PV=$(P)$(R)TrigModeAcqStart"
+##include "putMonitor.template"
+##substitute "MON_PV=$(P)$(R)TrigSrcAcqStart"
+##include "putMonitor.template"
+##substitute "MON_PV=$(P)$(R)TrigActAcqStart"
+##include "putMonitor.template"
+##substitute "MON_PV=$(P)$(R)TrigSwAcqStart"
+##include "putMonitor.template"
+#substitute "MON_PV=$(P)$(R)BaslerBlackLevel"
+#include "putMonitor.template"
+#substitute "MON_PV=$(P)$(R)BaslerBitsPerPixel"
+#include "putMonitor.template"
+#substitute "MON_PV=$(P)$(R)PixelFormat"
+#include "putMonitor.template"
+#substitute "MON_PV=$(P)$(R)BaslerAcquirePeriod"
+#include "putMonitor.template"

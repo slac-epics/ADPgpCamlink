@@ -9,12 +9,10 @@
 # Successful replies start w/ an ACK, hex 0x06, followed by reply content, if any
 # Unsuccesful commands reply w/ a NAK, hex 0x15
 #
-Terminator    = 0x03;
-#PeekSize		= 0;
-ReplyTimeout	= 500;
-ReadTimeout		= 500;
-WriteTimeout	= 500;
-ExtraInput		= Ignore;
+
+## Basler Binary Frame Start and End values
+BFS = 0x01;  # SOH
+BFE = 0x03;  # ETX
 
 ## Basler FTF field
 #FTF_RD  = 0x08;
@@ -28,75 +26,87 @@ FTF_RD_A32 = 0x0D;
 FTF_WR_A32 = 0x05;
 FTF_RD_A0  = 0x14;
 
-# Output: 0x01, FTF, Datalen, Address32, BCC
+outTerminator = $BFE;
+inTerminator  = "";  # Any inTerminator value may appear in the data, so
+                     # specify it explicitly in the 'in' protocols
+#PeekSize		   = 0;
+ReplyTimeout	= 500;
+ReadTimeout		= 500;
+WriteTimeout	= 500;
+ExtraInput		= Ignore;
+
+# Output: BFS, FTF, Datalen, Address32, BCC, (BFE)
 # FTF: FTF_WRT | FTF_A32
 # Datalen: 0x04
 # Addr: 4 byte little endian
 # Bcc: xor sum
 #
-# Input: ACK, FTF, Datalen, Data, BCC
+# Input: ACK, BFS, FTF, Datalen, Data, BCC, BFE
 # FTF: FTF_RD | FTF_A32
 # Datalen: 0x04
 # Data: 4 byte little endian
 # Bcc: xor sum
 GetUInt32
 {
-	out 0x01 $FTF_RD_A32 0x04 "\$4\$3\$2\$1" "%1.0<xor>";
-	in  ACK 0x01 $FTF_RD_A0 0x04 "%#04r" "%2.0<xor>";
+	out $BFS $FTF_RD_A32 0x04 "\$4\$3\$2\$1" "%1.0<xor>";
+	in  ACK $BFS $FTF_RD_A0 0x04 "%#04r" "%2.0<xor>" $BFE;
 }
 
 SetUInt32
 {
-	outTerminator = 0x03;
-	inTerminator  = "";
-
-	out 0x01 $FTF_WR_A32 0x04 "\$4\$3\$2\$1" "%#04r" "%1.0<xor>";
+	out $BFS $FTF_WR_A32 0x04 "\$4\$3\$2\$1" "%#0.4r" "%1.0<xor>";
 	in  ACK;
 }
 
-# Output: 0x01, FTF, Datalen, Address32, BCC
+# Output: BFS, FTF, Datalen, Address32, BCC, (BFE)
 # FTF: FTF_WRT | FTF_CRC | FTF_A32: 0x0d
 # Datalen: 0x08
 # Addr: 4 byte little endian
 # Bcc: xor sum
 #
-# Input: ACK, FTF, Datalen, Data, BCC
+# Input: ACK, BFS, FTF, Datalen, Data, BCC, BFE
 # FTF: FTF_RD | FTF_CRC | FTF_A0: 0x05
 # Datalen: 0x08
 # Data: 8 byte little endian
 # Bcc: xor sum
 GetUInt64
 {
-	out 0x01 $FTF_RD_A32 0x08 "\$4\$3\$2\$1" "%1.0<xor>";
-	in  ACK 0x01 $FTF_RD_A0 0x08 "%#08r" "%2.0<xor>";
+	out $BFS $FTF_RD_A32 0x08 "\$4\$3\$2\$1" "%1.0<xor>";
+	in  ACK $BFS $FTF_RD_A0 0x08 "%#08r" "%2.0<xor>" $BFE;
 }
 
 SetUInt64
 {
-	outTerminator = 0x03;
-	inTerminator  = "";
-
-	out 0x01 $FTF_WR_A32 0x08 "\$4\$3\$2\$1" "%#08r" "%1.0<xor>";
+	out $BFS $FTF_WR_A32 0x08 "\$4\$3\$2\$1" "%#0.8r" "%1.0<xor>";
 	in  ACK;
 }
 
 GetString
 {
-	out 0x01 $FTF_RD_A32 "\$5" "\$4\$3\$2\$1" "%1.0<xor>";
-	in  ACK 0x01 $FTF_RD_A0 "\$5" "%!32s" "%2.0<xor>";
+	out $BFS $FTF_RD_A32 "\$5" "\$4\$3\$2\$1" "%1.0<xor>";
+	in  ACK $BFS $FTF_RD_A0 "\$5" "%!32s" "%2.0<xor>" $BFE;
 }
 
 GetString2
 {
-	out 0x01 $FTF_RD_A32 "\$5" "\$4\$3\$2\$1" "%1.0<xor>";
-	in  ACK 0x01 $FTF_RD_A0 "\$5" "%!236s" "%2.0<xor>";
+	out $BFS $FTF_RD_A32 "\$5" "\$4\$3\$2\$1" "%1.0<xor>";
+	in  ACK $BFS $FTF_RD_A0 "\$5" "%!236s" "%2.0<xor>" $BFE;
 }
 
 SetString
 {
-	outTerminator = 0x03;
-	inTerminator  = "";
+	out $BFS $FTF_WR_A32 "\$5" "\$4\$3\$2\$1" "%32c" "%1.0<xor>";
+	in  ACK;
+}
 
-	out 0x01 $FTF_WR_A32 "\$5" "\$4\$3\$2\$1" "%32c" "%1.0<xor>";
+GetTest
+{
+	out $BFS $FTF_RD_A32 0x04 "%(\$1BaslerTestAdx)#0.4r" "%1.0<xor>";
+	in  ACK $BFS $FTF_RD_A0 0x04 "%#04r" "%2.0<xor>" $BFE;
+}
+
+SetTest
+{
+	out $BFS $FTF_WR_A32 0x04 "%(\$1BaslerTestAdx)#0.4r" "%#0.4r" "%1.0<xor>";
 	in  ACK;
 }
