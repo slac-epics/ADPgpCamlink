@@ -184,7 +184,7 @@ record( longout, "$(P)$(R)Feb$(F):FCh0:SerThrottle" )
 	field( FLNK, "$(P)$(R)Feb$(F):FCh0:SerThrottle_RBV" )
 	field( DISV, "0" )
 	field( SDIS, "$(P)$(R)PgpMon:RxRemLinkReady_RBV CP" )
-	info( autosaveFields, "" )
+	info( autosaveFields, "VAL" )
 }
 
 record( longin, "$(P)$(R)Feb$(F):FCh0:TapCount_RBV" )
