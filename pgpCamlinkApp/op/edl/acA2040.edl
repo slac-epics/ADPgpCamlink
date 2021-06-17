@@ -3,9 +3,9 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 515
-y 101
-w 700
+x 243
+y 113
+w 730
 h 624
 font "helvetica-medium-r-12.0"
 ctlFont "helvetica-medium-r-12.0"
@@ -24,25 +24,6 @@ showGrid
 snapToGrid
 gridSize 4
 endScreenProperties
-
-# (Static Text)
-object activeXTextClass
-beginObjectProperties
-major 4
-minor 1
-release 1
-x 4
-y 4
-w 136
-h 20
-font "helvetica-medium-r-12.0"
-fontAlign "right"
-fgColor index 14
-bgColor index 3
-value {
-  "Model"
-}
-endObjectProperties
 
 # (Text Monitor)
 object activeXTextDspClass:noedit
@@ -143,7 +124,7 @@ release 0
 x 132
 y 140
 w 92
-h 20
+h 18
 controlPv "$(P)$(R)BaslerBlackLevel"
 format "decimal"
 font "helvetica-medium-r-12.0"
@@ -230,32 +211,6 @@ objType "monitors"
 noExecuteClipMask
 endObjectProperties
 
-# (Text Control)
-object activeXTextDspClass
-beginObjectProperties
-major 4
-minor 7
-release 0
-x 132
-y 268
-w 92
-h 20
-controlPv "$(P)$(R)CLPixelClock"
-format "decimal"
-font "helvetica-medium-r-12.0"
-fgColor index 25
-bgColor index 5
-editable
-autoHeight
-nullColor index 40
-smartRefresh
-fastUpdate
-useHexPrefix
-newPos
-objType "controls"
-noExecuteClipMask
-endObjectProperties
-
 # (Static Text)
 object activeXTextClass
 beginObjectProperties
@@ -281,9 +236,9 @@ beginObjectProperties
 major 4
 minor 7
 release 0
-x 112
+x 144
 y 88
-w 240
+w 248
 h 20
 controlPv "$(P)$(R)BaslerFirmwareVersion_RBV"
 font "helvetica-medium-r-12.0"
@@ -298,25 +253,6 @@ useHexPrefix
 newPos
 objType "monitors"
 noExecuteClipMask
-endObjectProperties
-
-# (Static Text)
-object activeXTextClass
-beginObjectProperties
-major 4
-minor 1
-release 1
-x 4
-y 88
-w 104
-h 20
-font "helvetica-medium-r-12.0"
-fontAlign "right"
-fgColor index 14
-bgColor index 3
-value {
-  "Firmware Version"
-}
 endObjectProperties
 
 # (Text Monitor)
@@ -555,7 +491,7 @@ fontAlign "right"
 fgColor index 14
 bgColor index 3
 value {
-  "Sensor Bit Depth"
+  "BaslerBitsPerPixel"
 }
 endObjectProperties
 
@@ -581,25 +517,6 @@ smartRefresh
 useHexPrefix
 newPos
 objType "monitors"
-endObjectProperties
-
-# (Static Text)
-object activeXTextClass
-beginObjectProperties
-major 4
-minor 1
-release 1
-x 4
-y 116
-w 136
-h 20
-font "helvetica-medium-r-12.0"
-fontAlign "right"
-fgColor index 14
-bgColor index 3
-value {
-  "Model ID"
-}
 endObjectProperties
 
 # (Text Monitor)
@@ -852,25 +769,6 @@ newPos
 objType "monitors"
 endObjectProperties
 
-# (Static Text)
-object activeXTextClass
-beginObjectProperties
-major 4
-minor 1
-release 1
-x 4
-y 32
-w 136
-h 20
-font "helvetica-medium-r-12.0"
-fontAlign "right"
-fgColor index 14
-bgColor index 3
-value {
-  "Manufacturer"
-}
-endObjectProperties
-
 # (Text Monitor)
 object activeXTextDspClass:noedit
 beginObjectProperties
@@ -944,30 +842,6 @@ visMin "0"
 visMax "1"
 endObjectProperties
 
-# (Text Control)
-object activeXTextDspClass
-beginObjectProperties
-major 4
-minor 7
-release 0
-x 500
-y 136
-w 92
-h 20
-controlPv "$(P)$(R)TrigSrcAcqStart"
-font "helvetica-medium-r-12.0"
-fgColor index 25
-bgColor index 5
-editable
-nullColor index 40
-smartRefresh
-fastUpdate
-useHexPrefix
-newPos
-objType "controls"
-noExecuteClipMask
-endObjectProperties
-
 # (Static Text)
 object activeXTextClass
 beginObjectProperties
@@ -1013,30 +887,6 @@ objType "monitors"
 noExecuteClipMask
 endObjectProperties
 
-# (Text Control)
-object activeXTextDspClass
-beginObjectProperties
-major 4
-minor 7
-release 0
-x 500
-y 208
-w 92
-h 20
-controlPv "$(P)$(R)TrigSrcFrameStart"
-font "helvetica-medium-r-12.0"
-fgColor index 25
-bgColor index 5
-editable
-nullColor index 40
-smartRefresh
-fastUpdate
-useHexPrefix
-newPos
-objType "controls"
-noExecuteClipMask
-endObjectProperties
-
 # (Static Text)
 object activeXTextClass
 beginObjectProperties
@@ -1079,31 +929,6 @@ smartRefresh
 useHexPrefix
 newPos
 objType "monitors"
-noExecuteClipMask
-endObjectProperties
-
-# (Text Control)
-object activeXTextDspClass
-beginObjectProperties
-major 4
-minor 7
-release 0
-x 500
-y 184
-w 92
-h 20
-controlPv "$(P)$(R)TrigModeFrameStart"
-format "hex"
-font "helvetica-medium-r-12.0"
-fgColor index 25
-bgColor index 5
-editable
-nullColor index 40
-smartRefresh
-fastUpdate
-useHexPrefix
-newPos
-objType "controls"
 noExecuteClipMask
 endObjectProperties
 
@@ -1228,9 +1053,9 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 360
+x 392
 y 88
-w 132
+w 100
 h 20
 font "helvetica-medium-r-12.0"
 fontAlign "right"
@@ -1617,31 +1442,6 @@ objType "monitors"
 noExecuteClipMask
 endObjectProperties
 
-# (Text Control)
-object activeXTextDspClass
-beginObjectProperties
-major 4
-minor 7
-release 0
-x 132
-y 244
-w 92
-h 20
-controlPv "$(P)$(R)CLTapGeometry"
-font "helvetica-medium-r-12.0"
-fgColor index 25
-bgColor index 5
-editable
-autoHeight
-nullColor index 40
-smartRefresh
-fastUpdate
-useHexPrefix
-newPos
-objType "controls"
-noExecuteClipMask
-endObjectProperties
-
 # (Static Text)
 object activeXTextClass
 beginObjectProperties
@@ -1683,32 +1483,6 @@ smartRefresh
 useHexPrefix
 newPos
 objType "monitors"
-noExecuteClipMask
-endObjectProperties
-
-# (Text Control)
-object activeXTextDspClass
-beginObjectProperties
-major 4
-minor 7
-release 0
-x 132
-y 320
-w 92
-h 18
-controlPv "$(P)$(R)PixelFormat"
-format "decimal"
-font "helvetica-medium-r-12.0"
-fgColor index 25
-bgColor index 5
-editable
-autoHeight
-nullColor index 40
-smartRefresh
-fastUpdate
-useHexPrefix
-newPos
-objType "controls"
 noExecuteClipMask
 endObjectProperties
 
@@ -1756,32 +1530,6 @@ objType "monitors"
 noExecuteClipMask
 endObjectProperties
 
-# (Text Control)
-object activeXTextDspClass
-beginObjectProperties
-major 4
-minor 7
-release 0
-x 500
-y 232
-w 92
-h 20
-controlPv "$(P)$(R)TrigActFrameStart"
-format "decimal"
-font "helvetica-medium-r-12.0"
-fgColor index 25
-bgColor index 5
-editable
-autoHeight
-nullColor index 40
-smartRefresh
-fastUpdate
-useHexPrefix
-newPos
-objType "controls"
-noExecuteClipMask
-endObjectProperties
-
 # (Static Text)
 object activeXTextClass
 beginObjectProperties
@@ -1801,32 +1549,6 @@ value {
 }
 endObjectProperties
 
-# (Text Control)
-object activeXTextDspClass
-beginObjectProperties
-major 4
-minor 7
-release 0
-x 132
-y 296
-w 92
-h 20
-controlPv "$(P)$(R)BaslerBitsPerPixel"
-format "decimal"
-font "helvetica-medium-r-12.0"
-fgColor index 25
-bgColor index 5
-editable
-autoHeight
-nullColor index 40
-smartRefresh
-fastUpdate
-useHexPrefix
-newPos
-objType "controls"
-noExecuteClipMask
-endObjectProperties
-
 # (Static Text)
 object activeXTextClass
 beginObjectProperties
@@ -1844,32 +1566,6 @@ bgColor index 3
 value {
   "Exposure Mode"
 }
-endObjectProperties
-
-# (Text Control)
-object activeXTextDspClass
-beginObjectProperties
-major 4
-minor 7
-release 0
-x 132
-y 344
-w 92
-h 20
-controlPv "$(P)$(R)BaslerExposureMode"
-format "decimal"
-font "helvetica-medium-r-12.0"
-fgColor index 25
-bgColor index 5
-editable
-autoHeight
-nullColor index 40
-smartRefresh
-fastUpdate
-useHexPrefix
-newPos
-objType "controls"
-noExecuteClipMask
 endObjectProperties
 
 # (Text Monitor)
@@ -2251,75 +1947,6 @@ major 4
 minor 7
 release 0
 x 232
-y 392
-w 88
-h 20
-controlPv "$(P)$(R)AcqFramePeriodEnable_RBV"
-format "hex"
-font "helvetica-medium-r-12.0"
-fontAlign "center"
-fgColor index 15
-fgAlarm
-bgColor index 12
-limitsFromDb
-nullColor index 40
-smartRefresh
-useHexPrefix
-newPos
-objType "monitors"
-noExecuteClipMask
-endObjectProperties
-
-# (Text Control)
-object activeXTextDspClass
-beginObjectProperties
-major 4
-minor 7
-release 0
-x 132
-y 392
-w 92
-h 20
-controlPv "$(P)$(R)AcqFramePeriodEnable"
-font "helvetica-medium-r-12.0"
-fgColor index 25
-bgColor index 5
-editable
-nullColor index 40
-smartRefresh
-fastUpdate
-useHexPrefix
-newPos
-objType "controls"
-noExecuteClipMask
-endObjectProperties
-
-# (Static Text)
-object activeXTextClass
-beginObjectProperties
-major 4
-minor 1
-release 1
-x -16
-y 392
-w 144
-h 20
-font "helvetica-medium-r-12.0"
-fontAlign "right"
-fgColor index 14
-bgColor index 3
-value {
-  "AcqFrame Period Enable"
-}
-endObjectProperties
-
-# (Text Monitor)
-object activeXTextDspClass:noedit
-beginObjectProperties
-major 4
-minor 7
-release 0
-x 232
 y 368
 w 88
 h 20
@@ -2347,7 +1974,7 @@ release 0
 x 132
 y 368
 w 92
-h 20
+h 18
 controlPv "$(P)$(R)ExposureTimeRaw"
 format "decimal"
 font "helvetica-medium-r-12.0"
@@ -2355,6 +1982,7 @@ fgColor index 25
 bgColor index 5
 editable
 autoHeight
+motifWidget
 nullColor index 40
 smartRefresh
 fastUpdate
@@ -2409,30 +2037,6 @@ objType "monitors"
 noExecuteClipMask
 endObjectProperties
 
-# (Text Control)
-object activeXTextDspClass
-beginObjectProperties
-major 4
-minor 7
-release 0
-x 500
-y 112
-w 92
-h 20
-controlPv "$(P)$(R)TrigModeAcqStart"
-font "helvetica-medium-r-12.0"
-fgColor index 25
-bgColor index 5
-editable
-nullColor index 40
-smartRefresh
-fastUpdate
-useHexPrefix
-newPos
-objType "controls"
-noExecuteClipMask
-endObjectProperties
-
 # (Static Text)
 object activeXTextClass
 beginObjectProperties
@@ -2478,30 +2082,6 @@ objType "monitors"
 noExecuteClipMask
 endObjectProperties
 
-# (Text Control)
-object activeXTextDspClass
-beginObjectProperties
-major 4
-minor 7
-release 0
-x 500
-y 160
-w 92
-h 20
-controlPv "$(P)$(R)TrigActAcqStart"
-font "helvetica-medium-r-12.0"
-fgColor index 25
-bgColor index 5
-editable
-nullColor index 40
-smartRefresh
-fastUpdate
-useHexPrefix
-newPos
-objType "controls"
-noExecuteClipMask
-endObjectProperties
-
 # (Static Text)
 object activeXTextClass
 beginObjectProperties
@@ -2532,7 +2112,6 @@ y 264
 w 88
 h 20
 controlPv "$(P)$(R)AcqFrameCount_RBV"
-format "hex"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
 fgColor index 15
@@ -2541,7 +2120,6 @@ bgColor index 12
 limitsFromDb
 nullColor index 40
 smartRefresh
-useHexPrefix
 newPos
 objType "monitors"
 noExecuteClipMask
@@ -2740,7 +2318,7 @@ minor 1
 release 0
 x 404
 y 424
-w 92
+w 60
 h 20
 fgColor index 14
 onColor index 6
@@ -2790,16 +2368,16 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x -12
+x 0
 y 416
-w 144
+w 124
 h 20
 font "helvetica-medium-r-12.0"
 fontAlign "right"
 fgColor index 14
 bgColor index 3
 value {
-  "Status Trig Wait: Acq, Frm"
+  "StatusFrameTrigWait"
 }
 endObjectProperties
 
@@ -2852,31 +2430,6 @@ smartRefresh
 useHexPrefix
 newPos
 objType "monitors"
-noExecuteClipMask
-endObjectProperties
-
-# (Text Control)
-object activeXTextDspClass
-beginObjectProperties
-major 4
-minor 7
-release 0
-x 132
-y 220
-w 92
-h 20
-controlPv "$(P)$(R)BaslerCLConfig"
-font "helvetica-medium-r-12.0"
-fgColor index 25
-bgColor index 5
-editable
-autoHeight
-nullColor index 40
-smartRefresh
-fastUpdate
-useHexPrefix
-newPos
-objType "controls"
 noExecuteClipMask
 endObjectProperties
 
@@ -2936,7 +2489,6 @@ y 288
 w 88
 h 20
 controlPv "$(P)$(R)AcqFramePeriodEnable_RBV"
-format "hex"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
 fgColor index 15
@@ -2945,33 +2497,8 @@ bgColor index 12
 limitsFromDb
 nullColor index 40
 smartRefresh
-useHexPrefix
 newPos
 objType "monitors"
-noExecuteClipMask
-endObjectProperties
-
-# (Text Control)
-object activeXTextDspClass
-beginObjectProperties
-major 4
-minor 7
-release 0
-x 500
-y 288
-w 92
-h 20
-controlPv "$(P)$(R)AcqFramePeriodEnable"
-font "helvetica-medium-r-12.0"
-fgColor index 25
-bgColor index 5
-editable
-nullColor index 40
-smartRefresh
-fastUpdate
-useHexPrefix
-newPos
-objType "controls"
 noExecuteClipMask
 endObjectProperties
 
@@ -2990,7 +2517,7 @@ fontAlign "right"
 fgColor index 14
 bgColor index 3
 value {
-  "AcqFrame PdEnb"
+  "AcqFramePeriodEnable"
 }
 endObjectProperties
 
@@ -3013,7 +2540,6 @@ bgColor index 12
 limitsFromDb
 nullColor index 40
 smartRefresh
-useHexPrefix
 newPos
 objType "monitors"
 noExecuteClipMask
@@ -3059,7 +2585,7 @@ fontAlign "right"
 fgColor index 14
 bgColor index 3
 value {
-  "AcqFrame Pd Raw"
+  "AcqFrame Period Raw"
 }
 endObjectProperties
 
@@ -3097,7 +2623,7 @@ minor 1
 release 0
 x 600
 y 424
-w 28
+w 36
 h 20
 fgColor index 14
 onColor index 6
@@ -3110,5 +2636,380 @@ onLabel "Rereading..."
 offLabel "Regs"
 3d
 font "helvetica-medium-r-10.0"
+endObjectProperties
+
+# (Message Button)
+object activeMessageButtonClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 4
+y 32
+w 136
+h 20
+fgColor index 14
+onColor index 6
+offColor index 3
+topShadowColor index 1
+botShadowColor index 11
+controlPv "$(P)$(R)Manufacturer_RBV.PROC"
+pressValue "1"
+onLabel "Rereading Mfg..."
+offLabel "Manufacturer"
+3d
+font "helvetica-medium-r-12.0"
+endObjectProperties
+
+# (Message Button)
+object activeMessageButtonClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 4
+y 4
+w 136
+h 20
+fgColor index 14
+onColor index 6
+offColor index 3
+topShadowColor index 1
+botShadowColor index 11
+controlPv "$(P)$(R)Model_RBV.PROC"
+pressValue "1"
+onLabel "Rereading Model..."
+offLabel "Model"
+3d
+font "helvetica-medium-r-12.0"
+endObjectProperties
+
+# (Menu Button)
+object activeMenuButtonClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 500
+y 160
+w 92
+h 20
+fgColor index 25
+bgColor index 5
+inconsistentColor index 40
+topShadowColor index 1
+botShadowColor index 11
+controlPv "$(P)$(R)TrigActAcqStart"
+indicatorPv "$(P)$(R)TrigActAcqStart_RBV"
+font "helvetica-medium-r-12.0"
+endObjectProperties
+
+# (Menu Button)
+object activeMenuButtonClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 500
+y 184
+w 92
+h 20
+fgColor index 25
+bgColor index 5
+inconsistentColor index 40
+topShadowColor index 1
+botShadowColor index 11
+controlPv "$(P)$(R)TrigModeFrameStart"
+indicatorPv "$(P)$(R)TrigModeFrameStart_RBV"
+font "helvetica-medium-r-12.0"
+endObjectProperties
+
+# (Menu Button)
+object activeMenuButtonClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 500
+y 208
+w 92
+h 20
+fgColor index 25
+bgColor index 5
+inconsistentColor index 40
+topShadowColor index 1
+botShadowColor index 11
+controlPv "$(P)$(R)TrigSrcFrameStart"
+indicatorPv "$(P)$(R)TrigSrcFrameStart_RBV"
+font "helvetica-medium-r-12.0"
+endObjectProperties
+
+# (Menu Button)
+object activeMenuButtonClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 500
+y 232
+w 92
+h 20
+fgColor index 25
+bgColor index 5
+inconsistentColor index 40
+topShadowColor index 1
+botShadowColor index 11
+controlPv "$(P)$(R)TrigActFrameStart"
+indicatorPv "$(P)$(R)TrigActFrameStart_RBV"
+font "helvetica-medium-r-12.0"
+endObjectProperties
+
+# (Menu Button)
+object activeMenuButtonClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 500
+y 112
+w 92
+h 20
+fgColor index 25
+bgColor index 5
+inconsistentColor index 40
+topShadowColor index 1
+botShadowColor index 11
+controlPv "$(P)$(R)TrigModeAcqStart"
+indicatorPv "$(P)$(R)TrigModeAcqStart_RBV"
+font "helvetica-medium-r-12.0"
+endObjectProperties
+
+# (Menu Button)
+object activeMenuButtonClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 500
+y 136
+w 92
+h 20
+fgColor index 25
+bgColor index 5
+inconsistentColor index 40
+topShadowColor index 1
+botShadowColor index 11
+controlPv "$(P)$(R)TrigSrcAcqStart"
+indicatorPv "$(P)$(R)TrigSrcAcqStart_RBV"
+font "helvetica-medium-r-12.0"
+endObjectProperties
+
+# (Menu Button)
+object activeMenuButtonClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 500
+y 288
+w 92
+h 20
+fgColor index 25
+bgColor index 5
+inconsistentColor index 40
+topShadowColor index 1
+botShadowColor index 11
+controlPv "$(P)$(R)AcqFramePeriodEnable"
+indicatorPv "$(P)$(R)AcqFramePeriodEnable_RBV"
+font "helvetica-medium-r-12.0"
+endObjectProperties
+
+# (Message Button)
+object activeMessageButtonClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 464
+y 424
+w 36
+h 20
+fgColor index 14
+onColor index 6
+offColor index 3
+topShadowColor index 1
+botShadowColor index 11
+controlPv "$(P)$(R)BaslerLastError_RBV.PROC"
+pressValue "1"
+onLabel "Rereading..."
+offLabel "ReRd"
+3d
+font "helvetica-medium-r-10.0"
+endObjectProperties
+
+# (Menu Button)
+object activeMenuButtonClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 132
+y 220
+w 92
+h 20
+fgColor index 25
+bgColor index 5
+inconsistentColor index 40
+topShadowColor index 1
+botShadowColor index 11
+controlPv "$(P)$(R)BaslerCLConfig"
+indicatorPv "$(P)$(R)BaslerCLConfig_RBV"
+font "helvetica-medium-r-12.0"
+endObjectProperties
+
+# (Menu Button)
+object activeMenuButtonClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 132
+y 244
+w 92
+h 20
+fgColor index 25
+bgColor index 5
+inconsistentColor index 40
+topShadowColor index 1
+botShadowColor index 11
+controlPv "$(P)$(R)CLTapGeometry"
+indicatorPv "$(P)$(R)CLTapGeometry_RBV"
+font "helvetica-medium-r-12.0"
+endObjectProperties
+
+# (Menu Button)
+object activeMenuButtonClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 132
+y 268
+w 92
+h 20
+fgColor index 25
+bgColor index 5
+inconsistentColor index 40
+topShadowColor index 1
+botShadowColor index 11
+controlPv "$(P)$(R)CLPixelClock"
+indicatorPv "$(P)$(R)CLPixelClock_RBV"
+font "helvetica-medium-r-12.0"
+endObjectProperties
+
+# (Menu Button)
+object activeMenuButtonClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 132
+y 296
+w 92
+h 20
+fgColor index 25
+bgColor index 5
+inconsistentColor index 40
+topShadowColor index 1
+botShadowColor index 11
+controlPv "$(P)$(R)BaslerBitsPerPixel"
+indicatorPv "$(P)$(R)BaslerBitsPerPixel_RBV"
+font "helvetica-medium-r-12.0"
+endObjectProperties
+
+# (Menu Button)
+object activeMenuButtonClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 132
+y 320
+w 92
+h 20
+fgColor index 25
+bgColor index 5
+inconsistentColor index 40
+topShadowColor index 1
+botShadowColor index 11
+controlPv "$(P)$(R)PixelFormat"
+indicatorPv "$(P)$(R)PixelFormat_RBV"
+font "helvetica-medium-r-12.0"
+endObjectProperties
+
+# (Menu Button)
+object activeMenuButtonClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 132
+y 344
+w 92
+h 20
+fgColor index 25
+bgColor index 5
+inconsistentColor index 40
+topShadowColor index 1
+botShadowColor index 11
+controlPv "$(P)$(R)BaslerExposureMode"
+indicatorPv "$(P)$(R)BaslerExposureMode_RBV"
+font "helvetica-medium-r-12.0"
+endObjectProperties
+
+# (Message Button)
+object activeMessageButtonClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 4
+y 88
+w 136
+h 20
+fgColor index 14
+onColor index 6
+offColor index 3
+topShadowColor index 1
+botShadowColor index 11
+controlPv "$(P)$(R)BaslerFirmwareVersion_RBV.PROC"
+pressValue "1"
+onLabel "Rereading Firmware..."
+offLabel "Firmware Version"
+3d
+font "helvetica-medium-r-12.0"
+endObjectProperties
+
+# (Message Button)
+object activeMessageButtonClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 4
+y 116
+w 136
+h 20
+fgColor index 14
+onColor index 6
+offColor index 3
+topShadowColor index 1
+botShadowColor index 11
+controlPv "$(P)$(R)BaslerModel_RBV.PROC"
+pressValue "1"
+onLabel "Rereading Model..."
+offLabel "Basler Model"
+3d
+font "helvetica-medium-r-12.0"
 endObjectProperties
 

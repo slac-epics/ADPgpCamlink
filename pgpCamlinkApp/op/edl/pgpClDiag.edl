@@ -3,8 +3,8 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 495
-y 180
+x 2797
+y 110
 w 929
 h 800
 font "helvetica-medium-r-8.0"
@@ -3827,5 +3827,95 @@ numDsps 1
 displayFileName {
   0 "ADPgpCamlinkScreens/ClinkLaneDiag.edl"
 }
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 228
+y 324
+w 76
+h 18
+controlPv "$(P)$(R)Feb$(CH):FCh0:TapCount"
+format "decimal"
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+fgColor index 25
+fgAlarm
+bgColor index 5
+editable
+autoHeight
+motifWidget
+limitsFromDb
+nullColor index 40
+smartRefresh
+fastUpdate
+useHexPrefix
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Menu Button)
+object activeMenuButtonClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 228
+y 252
+w 76
+h 18
+fgColor index 14
+bgColor index 3
+inconsistentColor index 40
+topShadowColor index 1
+botShadowColor index 11
+controlPv "$(P)$(R)Feb$(CH):FCh0:LinkMode"
+indicatorPv "$(P)$(R)Feb$(CH):FCh0:LinkMode_RBV"
+font "helvetica-medium-r-12.0"
+endObjectProperties
+
+# (Menu Button)
+object activeMenuButtonClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 228
+y 276
+w 76
+h 18
+fgColor index 14
+bgColor index 3
+inconsistentColor index 40
+topShadowColor index 1
+botShadowColor index 11
+controlPv "$(P)$(R)Feb$(CH):FCh0:DataMode"
+indicatorPv "$(P)$(R)Feb$(CH):FCh0:DataMode_RBV"
+font "helvetica-medium-r-12.0"
+endObjectProperties
+
+# (Menu Button)
+object activeMenuButtonClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 228
+y 300
+w 76
+h 18
+fgColor index 14
+bgColor index 3
+inconsistentColor index 40
+topShadowColor index 1
+botShadowColor index 11
+controlPv "$(P)$(R)Feb$(CH):FCh0:FrameMode"
+indicatorPv "$(P)$(R)Feb$(CH):FCh0:FrameMode_RBV"
+font "helvetica-medium-r-12.0"
 endObjectProperties
 
