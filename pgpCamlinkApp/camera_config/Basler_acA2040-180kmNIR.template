@@ -299,7 +299,7 @@ record( mbbi, "$(P)$(R)BaslerLastError_RBV" )
 	field( ONVL, 1 )  field( ONST, "Overtrigger" )
 	field( TWVL, 2 )  field( TWST, "Userset" )
 	field( THVL, 3 )  field( THST, "Invalid parameter"   )
-	field( SCAN, "Passive" )
+	field( SCAN, "1 second" )
 	field( PINI, "YES" )
 }
 
@@ -321,6 +321,7 @@ record( mbbo, "$(P)$(R)CLBaudRate" )
 	field( DESC, "CL Serial Port Baud Rate" )
 	field( DTYP, "stream" )
 	field( OUT,  "@Basler.proto SetUInt32(\\x00,\\x00,\\x07,\\x04) $(PORT).SER" )
+	field( DOL,  0 )
 	field( ZRVL, 15 )
 	field( ONVL, 17 )
 	field( TWVL, 18 )
@@ -338,8 +339,6 @@ record( mbbo, "$(P)$(R)CLBaudRate" )
 	field( SXST, "460800" )  # The rate is 460800 baud.
 	field( SVST, "921600" )  # The rate is 921600 baud.
 	field( FLNK, "$(P)$(R)CLBaudRate_RBV" )
-# Disabled to avoid accidental use
-	field( DISV, "0" )
 }
 
 record( mbbi, "$(P)$(R)CLBaudRate_RBV" )
@@ -420,7 +419,7 @@ record( mbbi, "$(P)$(R)CLTapGeometry_RBV" )
 record( mbbo, "$(P)$(R)CLPixelClock" )
 {
 	field( DOL,  "5" )
-	field( DESC, "The CL Pixel Clock" )
+	field( DESC, "Camlink Pixel Clock" )
 	field( DTYP, "stream" )
 	field( OUT,  "@Basler.proto SetUInt32(\\x00,\\x00,\\x07,\\x44) $(PORT).SER" )
 	field( ZRVL,  1 )
@@ -465,7 +464,6 @@ record( mbbi, "$(P)$(R)CLPixelClock_RBV" )
 	field( FVST, "82 MHz" )    # The pixel clock speed is 82 MHz.
 	field( SXST, "82.5 MHz" )  # The pixel clock speed is 82.5 MHz.
 	field( SVST, "84 MHz" )    # The pixel clock speed is 84 MHz.
-#	field( PINI, "YES" )
 }
 
 # Not implemented:
@@ -497,8 +495,6 @@ record( mbbo, "$(P)$(R)BaslerCLConfig" )
 	field( FLNK, "$(P)$(R)BaslerCLConfig_RBV" )
 	field( SCAN, "Passive" )
 	field( PINI, "YES" )
-# Disabled to avoid accidental use
-	field( DISV, "0" )
 }
 
 record( mbbi, "$(P)$(R)BaslerCLConfig_RBV" )
@@ -538,7 +534,7 @@ record( mbbo, "$(P)$(R)SensorDigitizationTaps" )
 	field( ONST, "Four" )  # Four taps are used to read pixel data out of the imaging sensor.
 	field( FLNK, "$(P)$(R)SensorDigitizationTaps_RBV" )
 # Disabled to avoid accidental use
-	field( DISV, "0" )
+#	field( DISV, "0" )
 #	field( SCAN, "Passive" )
 #	field( PINI, "YES" )
 }
@@ -857,7 +853,7 @@ record( longin, "$(P)$(R)AcqFrameCount_RBV" )
 	field( DESC, "Acquisition Frame Count" )
 	field( DTYP, "stream" )
 	field( INP,  "@Basler.proto GetUInt32(\\x00,\\x04,\\x00,\\xA4) $(PORT).SER" )
-#	field( PINI, "YES" )
+	field( SCAN, "1 second" )
 }
 
 record( mbbo, "$(P)$(R)TrigSrcAcqStart" )
@@ -952,6 +948,7 @@ record( mbbo, "$(P)$(R)TrigActAcqStart" )
 	field( DESC, "Trigger Activation Acquisition Start" )
 	field( DTYP, "stream" )
 	field( OUT,  "@Basler.proto SetUInt32(\\x00,\\x04,\\x01,\\x64) $(PORT).SER" )
+	field( DOL,  0 )
 	field( ZRVL, 0 )
 	field( ONVL, 1 )
 	field( TWVL, 2 )
@@ -1003,6 +1000,7 @@ record( longin, "$(P)$(R)StatAcqTrigWait" )
 
 record( mbbo, "$(P)$(R)TrigModeFrameStart" )
 {
+	field( DOL,  "1" )
 	field( DESC, "Trigger Mode Frame Start" )
 	field( DTYP, "stream" )
 	field( OUT,  "@Basler.proto SetUInt32(\\x00,\\x04,\\x02,\\x04) $(PORT).SER" )
@@ -1011,8 +1009,8 @@ record( mbbo, "$(P)$(R)TrigModeFrameStart" )
 	field( ZRST, "OFF" )  # The trigger mode is set to off.
 	field( ONST, "ON" )   # The trigger mode is set to on.
 	field( FLNK, "$(P)$(R)TrigModeFrameStart_RBV" )
-#	field( SCAN, "Passive" )
-#	field( PINI, "YES" )
+	field( SCAN, "Passive" )
+	field( PINI, "YES" )
 }
 
 record( mbbi, "$(P)$(R)TrigModeFrameStart_RBV" )
@@ -1024,11 +1022,11 @@ record( mbbi, "$(P)$(R)TrigModeFrameStart_RBV" )
 	field( ONVL,  1 )
 	field( ZRST, "OFF" )  # The trigger mode is set to off.
 	field( ONST, "ON" )   # The trigger mode is set to on.
-#	field( PINI, "YES" )
 }
 
 record( mbbo, "$(P)$(R)TrigSrcFrameStart" )
 {
+	field( DOL,  "9" )
 	field( DESC, "Trigger Source Frame Start" )
 	field( DTYP, "stream" )
 	field( OUT,  "@Basler.proto SetUInt32(\\x00,\\x04,\\x02,\\x44) $(PORT).SER" )
@@ -1102,7 +1100,6 @@ record( mbbi, "$(P)$(R)TrigSrcFrameStart_RBV" )
 	field( TVST, "CC4" )                 # A signal input into CC 4 in the Camera Link interface will be used as the trigger signal.
 	field( TTST, "ShaftEncoder" )        # A signal output from the shaft encoder module will be used as the trigger signal.
 	field( FTST, "FrequencyConverter" )  # A signal output from the frequency converter module will be used as the trigger signal.
-#	field( PINI, "YES" )
 }
 
 record( bo, "$(P)$(R)TrigSwFrameStart" )
@@ -1125,7 +1122,6 @@ record( bi, "$(P)$(R)TrigSwFrameStart_RBV" )
 	field( INP,  "@Basler.proto SetUInt32(\\x00,\\x04,\\x02,\\x24) $(PORT).SER" )
 	field( ZNAM, "OFF" )
 	field( ONAM, "ON"  )
-#	field( PINI, "YES" )
 }
 
 record( mbbo, "$(P)$(R)TrigActFrameStart" )
@@ -1164,7 +1160,6 @@ record( mbbi, "$(P)$(R)TrigActFrameStart_RBV" )
 	field( TWST, "AnyEdge" )      # The trigger signal is considered valid both on the rising edge and on the falling edge of the signal.
 	field( THST, "LevelHigh" )    # The trigger signal is considered valid as long as it is high.
 	field( FRST, "LevelLow" )     # The trigger signal is considered valid as long as it is low.
-#	field( PINI, "YES" )
 }
 
 record( longout, "$(P)$(R)TrigDelayRawFrameStart" )
@@ -1247,7 +1242,6 @@ record( mbbi, "$(P)$(R)BaslerExposureMode_RBV" )
 	field( ONST, "Timed" )         # The exposure mode is timed.
 	field( TWST, "TriggerWidth" )  # The exposure mode is trigger width.
 	field( FLNK, "$(P)$(R)BaslerCalcCamTriggerMode" )
-	field( PINI, "YES" )
 }
 
 record( calc, "$(P)$(R)BaslerCalcCamTriggerMode" )
@@ -1266,7 +1260,6 @@ record( mbbo, "$(P)$(R)CamTriggerMode_RBV" )
 #	field( TPRO, 2 )
 	field( OMSL, "closed_loop" )
 	field( DOL,  "$(P)$(R)BaslerCalcCamTriggerMode NPP MS" )
-#	field( PINI, "YES" )
 }
 
 record( longout, "$(P)$(R)ExposureTimeRaw" )
@@ -1485,7 +1478,6 @@ record( mbbo, "$(P)$(R)BaslerTestPattern" )
 	field( FVST, "Testimage5" )  # The camera will generate and output test image 5.
 	field( SXST, "Testimage6" )  # The camera will generate and output test image 6.
 	field( FLNK, "$(P)$(R)BaslerTestPattern_RBV" )
-	field( SCAN, "Passive" )
 	field( PINI, "YES" )
 }
 
@@ -1508,61 +1500,82 @@ record( mbbi, "$(P)$(R)BaslerTestPattern_RBV" )
 	field( FRST, "Testimage4" )  # The camera will generate and output test image 4.
 	field( FVST, "Testimage5" )  # The camera will generate and output test image 5.
 	field( SXST, "Testimage6" )  # The camera will generate and output test image 6.
-#	field( SCAN, "Passive" )
-#	field( PINI, "YES" )
 }
 
 ## Something about the following causes LastUserError to go to InvalidParameter
 ## Only way out that I've found is to power cycle the camera
-#substitute "SER_OK_PV=$(PGP):Ch$(PGP_LANE):PgpMon:RxRemLinkReady_RBV"
-#substitute "MON_PV=$(P)$(R)Manufacturer_RBV"
-#include "rbvMonitor.template"
-#substitute "MON_PV=$(P)$(R)Model_RBV"
-#include "rbvMonitor.template"
-#substitute "MON_PV=$(P)$(R)BaslerFirmwareVersion_RBV"
-#include "rbvMonitor.template"
-#substitute "MON_PV=$(P)$(R)BaslerVersion_RBV"
-#include "rbvMonitor.template"
-#substitute "MON_PV=$(P)$(R)BaslerSerialNumber_RBV"
-#include "rbvMonitor.template"
-#substitute "MON_PV=$(P)$(R)BaslerModel_RBV"
-#include "rbvMonitor.template"
-#substitute "MON_PV=$(P)$(R)BaslerTestPattern_RBV"
-#include "rbvMonitor.template"
-## substitute "MON_PV=$(P)$(R)BaslerTempSensorBd_RBV"
-## include "rbvMonitor.template"
-## substitute "MON_PV=$(P)$(R)BaslerTempMainBd_RBV"
-## include "rbvMonitor.template"
-## substitute "MON_PV=$(P)$(R)BaslerTemperature_RBV"
-## include "rbvMonitor.template"
-#substitute "MON_PV=$(P)$(R)CamlinkHTap"
-#include "rbvMonitor.template"
-#substitute "MON_PV=$(P)$(R)BaslerTimeBase_RBV"
-#include "rbvMonitor.template"
+substitute "SER_OK_PV=$(PGP):Ch$(PGP_LANE):PgpMon:RxRemLinkReady_RBV"
+substitute "MON_PV=$(P)$(R)Manufacturer_RBV"
+include "rbvMonitor.template"
+substitute "MON_PV=$(P)$(R)Model_RBV"
+include "rbvMonitor.template"
+substitute "MON_PV=$(P)$(R)BaslerFirmwareVersion_RBV"
+include "rbvMonitor.template"
+substitute "MON_PV=$(P)$(R)BaslerVersion_RBV"
+include "rbvMonitor.template"
+substitute "MON_PV=$(P)$(R)BaslerSerialNumber_RBV"
+include "rbvMonitor.template"
+substitute "MON_PV=$(P)$(R)BaslerModel_RBV"
+include "rbvMonitor.template"
+substitute "MON_PV=$(P)$(R)BaslerTestPattern_RBV"
+include "rbvMonitor.template"
+substitute "MON_PV=$(P)$(R)CamlinkHTap"
+include "rbvMonitor.template"
+substitute "MON_PV=$(P)$(R)BaslerTimeBase_RBV"
+include "rbvMonitor.template"
 
-#substitute "MON_PV=$(P)$(R)BaslerExposureMode"
+substitute "MON_PV=$(P)$(R)BaslerExposureMode"
 #include "putMonitor.template"
-#substitute "MON_PV=$(P)$(R)TrigModeFrameStart"
+substitute "MON_PV=$(P)$(R)TrigModeFrameStart"
 #include "putMonitor.template"
-#substitute "MON_PV=$(P)$(R)TrigSrcFrameStart"
+substitute "MON_PV=$(P)$(R)TrigSrcFrameStart"
 #include "putMonitor.template"
-#substitute "MON_PV=$(P)$(R)TrigActFrameStart"
+substitute "MON_PV=$(P)$(R)TrigActFrameStart"
 #include "putMonitor.template"
-#substitute "MON_PV=$(P)$(R)TrigSwFrameStart"
+substitute "MON_PV=$(P)$(R)TrigSwFrameStart"
 #include "putMonitor.template"
-##substitute "MON_PV=$(P)$(R)TrigModeAcqStart"
-##include "putMonitor.template"
-##substitute "MON_PV=$(P)$(R)TrigSrcAcqStart"
-##include "putMonitor.template"
-##substitute "MON_PV=$(P)$(R)TrigActAcqStart"
-##include "putMonitor.template"
-##substitute "MON_PV=$(P)$(R)TrigSwAcqStart"
-##include "putMonitor.template"
-#substitute "MON_PV=$(P)$(R)BaslerBlackLevel"
+substitute "MON_PV=$(P)$(R)TrigModeAcqStart"
 #include "putMonitor.template"
-#substitute "MON_PV=$(P)$(R)BaslerBitsPerPixel"
+substitute "MON_PV=$(P)$(R)TrigSrcAcqStart"
 #include "putMonitor.template"
-#substitute "MON_PV=$(P)$(R)PixelFormat"
+#substitute "MON_PV=$(P)$(R)TrigActAcqStart"
 #include "putMonitor.template"
-#substitute "MON_PV=$(P)$(R)BaslerAcquirePeriod"
+substitute "MON_PV=$(P)$(R)TrigSwAcqStart"
 #include "putMonitor.template"
+substitute "MON_PV=$(P)$(R)BaslerBlackLevel"
+#include "putMonitor.template"
+substitute "MON_PV=$(P)$(R)BaslerBitsPerPixel"
+#include "putMonitor.template"
+substitute "MON_PV=$(P)$(R)BaslerCLConfig"
+#include "putMonitor.template"
+substitute "MON_PV=$(P)$(R)BaslerBitsPerPixel"
+#include "putMonitor.template"
+substitute "MON_PV=$(P)$(R)CLBaudRate"
+#include "putMonitor.template"
+substitute "MON_PV=$(P)$(R)CLPixelClock"
+#include "putMonitor.template"
+substitute "MON_PV=$(P)$(R)PixelFormat"
+#include "putMonitor.template"
+substitute "MON_PV=$(P)$(R)BaslerExposureMode"
+#include "putMonitor.template"
+substitute "MON_PV=$(P)$(R)BaslerAcquirePeriod"
+#include "putMonitor.template"
+
+# Temp hack while putMonitor PVs are disabled
+# Add rbvMonitor for these PVs which would otherwise get reread when putMonitor sets the value
+substitute "MON_PV=$(P)$(R)BaslerBitsPerPixel_RBV"
+include "rbvMonitor.template"
+substitute "MON_PV=$(P)$(R)BaslerCLConfig_RBV"
+include "rbvMonitor.template"
+substitute "MON_PV=$(P)$(R)BaslerBitsPerPixel_RBV"
+include "rbvMonitor.template"
+substitute "MON_PV=$(P)$(R)CLBaudRate_RBV"
+include "rbvMonitor.template"
+substitute "MON_PV=$(P)$(R)CLPixelClock_RBV"
+include "rbvMonitor.template"
+substitute "MON_PV=$(P)$(R)PixelFormat_RBV"
+include "rbvMonitor.template"
+substitute "MON_PV=$(P)$(R)BaslerExposureMode_RBV"
+include "rbvMonitor.template"
+substitute "MON_PV=$(P)$(R)BaslerAcquirePeriod_RBV"
+include "rbvMonitor.template"
