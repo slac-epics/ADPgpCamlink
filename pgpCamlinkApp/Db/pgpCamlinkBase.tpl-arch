@@ -1,36 +1,30 @@
 # pgpCamlinkBase.tpl-arch
-$(P)$(R)CamAcquireTimeCalc.VAL	1	monitor
-$(P)$(R)CamHwHROI_RBV.VAL	1	monitor
-$(P)$(R)CamHwVROI_RBV.VAL	1	monitor
-$(P)$(R)CamMode_RBV.VAL	1	monitor
-$(P)$(R)CamClass.VAL	1	monitor
-$(P)$(R)CamDrvVersion.VAL	1	monitor
-$(P)$(R)PgpAxiVersion.VAL	1	monitor
-$(P)$(R)CamLibVersion.VAL	1	monitor
-$(P)$(R)CamInfo.VAL	1	monitor
-$(P)$(R)CamTrigLevel.VAL
-$(P)$(R)CamTriggerMode.DESC
-$(P)$(R)CamTriggerMode_RBV.DESC
-$(CAM):CamTrigDelay.EGU
-$(CAM):CamTrigDelay.HOPR
-$(CAM):CamTrigDelay.LOPR
-$(CAM):CamTrigDelay.VAL
-$(CAM):CamTrigDelayCalc.EGU
-$(CAM):CamTrigDelayCalc.VAL
-$(CAM):CamDelayScale.EGU
-$(CAM):CamDelayScale.VAL
-$(CAM):CamTrigDelay_RBV.EGU
-$(CAM):CamTrigDelay_RBV.VAL
-$(P)$(R)CamEventCode.VAL
-$(P)$(R)CamEventCode_RBV.VAL
-$(P)$(R)CamRepRate_RBV.VAL
-$(P)$(R)CamRepDur.VAL
-$(P)$(R)BeamEventCode.VAL
-$(P)$(R)BeamEventCode_RBV.VAL
-$(P)$(R)BeamRepRate_RBV.VAL
-$(P)$(R)BeamRepDur.VAL
-$(P)$(R)SyncTotalCnt.VAL
-$(P)$(R)SyncBadTSCnt.VAL
-$(P)$(R)SyncBadSyncCnt.VAL
-$(P)$(R)PgpCoreFpgaVersion.VAL
-$(P)$(R)PgpFebFpgaVersion.VAL
+$(CAM):AcquireTime.VAL	1	monitor
+$(CAM):BeamEventCode_RBV.VAL		1	monitor
+$(CAM):BeamEventCode.VAL		1	monitor
+$(CAM):BeamRepDur.VAL		1	monitor
+$(CAM):BeamRepRate_RBV.VAL		10 scan
+$(CAM):CamAcquireTimeCalc.VAL	1	monitor
+$(CAM):CamClass.VAL	1	monitor
+$(CAM):CamDelayScale.EGU		1	monitor
+$(CAM):CamDelayScale.VAL		1	monitor
+$(CAM):CamDrvVersion.VAL	1	monitor
+$(CAM):CamEventCode_RBV.VAL		1	monitor
+$(CAM):CamEventCode.VAL		1	monitor
+$(CAM):CamHwHROI_RBV.VAL	1	monitor
+$(CAM):CamHwVROI_RBV.VAL	1	monitor
+$(CAM):CamInfo.VAL	1	monitor
+$(CAM):CamLibVersion.VAL	1	monitor
+$(CAM):CamMode_RBV.VAL	1	monitor
+$(CAM):CamRepDur.VAL		1	monitor
+$(CAM):CamRepRate_RBV.VAL		10	scan
+$(CAM):CamTrigDelay_RBV.VAL		1	monitor
+$(CAM):CamTrigDelay.VAL		1	monitor
+$(CAM):CamTrigLevel.VAL		1	monitor
+$(CAM):Gain.VAL		1	monitor
+$(CAM):PgpAxiVersion.VAL	1	monitor
+$(CAM):PgpCoreFpgaVersion.VAL		1	monitor
+$(CAM):PgpFebFpgaVersion.VAL		1	monitor
+$(CAM):SyncBadSyncCnt.VAL		1	monitor
+$(CAM):SyncBadTSCnt.VAL		1	monitor
+$(CAM):SyncTotalCnt.VAL		1	monitor
