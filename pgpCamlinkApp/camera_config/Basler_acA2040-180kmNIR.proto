@@ -36,16 +36,21 @@ WriteTimeout	= 500;
 ExtraInput		= Ignore;
 
 # Output: BFS, FTF, Datalen, Address32, BCC, (BFE)
-# FTF: FTF_WRT | FTF_A32
-# Datalen: 0x04
-# Addr: 4 byte little endian
-# Bcc: xor sum
+# BFS:		0x01
+# FTF:		0x0D	FTF_RD | FTF_A32
+# Datalen:	0x04
+# Addr:		4 byte little endian
+# Bcc:		xor sum
+# BFE:		0x03
 #
 # Input: ACK, BFS, FTF, Datalen, Data, BCC, BFE
-# FTF: FTF_RD | FTF_A32
-# Datalen: 0x04
-# Data: 4 byte little endian
-# Bcc: xor sum
+# ACK:		0x06
+# BFS:		0x01
+# FTF:		0x14	FTF_RD_A0
+# Datalen:	0x04
+# Data:		4 byte little endian
+# Bcc:		xor sum
+# BFE:		0x03
 GetUInt32
 {
 	out $BFS $FTF_RD_A32 0x04 "\$4\$3\$2\$1" "%1.0<xor>";
@@ -59,16 +64,21 @@ SetUInt32
 }
 
 # Output: BFS, FTF, Datalen, Address32, BCC, (BFE)
-# FTF: FTF_WRT | FTF_CRC | FTF_A32: 0x0d
-# Datalen: 0x08
-# Addr: 4 byte little endian
-# Bcc: xor sum
+# BFS:		0x01
+# FTF:		0x0D	FTF_RD | FTF_A32
+# Datalen:	0x08
+# Addr:		4 byte little endian
+# Bcc:		xor sum
+# BFE:		0x03
 #
 # Input: ACK, BFS, FTF, Datalen, Data, BCC, BFE
-# FTF: FTF_RD | FTF_CRC | FTF_A0: 0x05
-# Datalen: 0x08
-# Data: 8 byte little endian
-# Bcc: xor sum
+# ACK:		0x06
+# BFS:		0x01
+# FTF:		0x14	FTF_RD_A0
+# Datalen:	0x08
+# Data:		8 byte little endian
+# Bcc:		xor sum
+# BFE:		0x03
 GetUInt64
 {
 	out $BFS $FTF_RD_A32 0x08 "\$4\$3\$2\$1" "%1.0<xor>";
