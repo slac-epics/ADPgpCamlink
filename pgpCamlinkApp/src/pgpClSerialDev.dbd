@@ -1,4 +1,5 @@
 
 registrar(	pgpClSerialConfigRegister		)
 variable(	DEBUG_PGPCL_SER,	int	)
+variable(	DEBUG_PGPCL_MASKBIT7,	int	)
 

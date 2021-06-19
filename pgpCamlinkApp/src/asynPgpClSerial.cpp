@@ -26,6 +26,7 @@
 #include "ClSerialSlave.h"
 
 extern int	DEBUG_PGPCL_SER;
+int	DEBUG_PGPCL_MASKBIT7	= 1;
 
 #define	MAX_ADDR		1
 #define	MAX_PARAM		100
@@ -292,7 +293,7 @@ asynStatus	asynPgpClSerial::readOctet(
 						"%s: %s nToRead %d\n", functionName, this->portName, nToRead );
 
 			epicsMutexLock(m_serialLock);
-			if ( DEBUG_PGPCL_SER >= 3 )
+			if ( DEBUG_PGPCL_SER >= 4 )
 				printf( "%s: %s Have serial lock, reading %d ...\n", functionName, this->portName, nToRead );
 			if ( m_fConnected )
 			{
@@ -304,7 +305,7 @@ asynStatus	asynPgpClSerial::readOctet(
 			else
 				nRead = 0;
 			epicsMutexUnlock(m_serialLock);
-			if ( DEBUG_PGPCL_SER >= 3 )
+			if ( DEBUG_PGPCL_SER >= 4 )
 				printf( "%s: %s Released serial lock, read %d ...\n", functionName, this->portName, nRead );
 		}
 		else
@@ -326,12 +327,15 @@ asynStatus	asynPgpClSerial::readOctet(
 		if( nRead > 0 )
 		{
 			static bool reminded = false;
-			if (!reminded)
+			if ( DEBUG_PGPCL_MASKBIT7 )
 			{
-				printf("%s: Revisit line %d hack to mask off bit 7\n", functionName, __LINE__);
-				reminded = true;
+				if (!reminded)
+				{
+					printf("%s: Revisit line %d hack to mask off bit 7\n", functionName, __LINE__);
+					reminded = true;
+				}
+				maskBit7(pBuffer, nRead);
 			}
-			maskBit7(pBuffer, nRead);
 
 			// Make sure we have a valid ascii response, and not garbage on the camlink Rx/Tx lines
 			if ( 0 && isAscii( pBuffer, nRead ) == false )
@@ -406,12 +410,15 @@ asynStatus	asynPgpClSerial::readOctet(
 						functionName, this->portName, nRead, nAvailToRead );
 
 		static bool reminded = false;
-		if (!reminded)
+		if ( DEBUG_PGPCL_MASKBIT7 )
 		{
-			printf("%s: Revisit line %d hack to mask off bit 7\n", functionName, __LINE__);
-			reminded = true;
+			if (!reminded)
+			{
+				printf("%s: Revisit line %d hack to mask off bit 7\n", functionName, __LINE__);
+				reminded = true;
+			}
+			maskBit7(pBuffer, nRead);
 		}
-		maskBit7(pBuffer, nRead);
 
 		if ( isAscii( pBuffer, nRead ) )
 		{
@@ -424,7 +431,13 @@ asynStatus	asynPgpClSerial::readOctet(
 		else
 		{
 			if ( DEBUG_PGPCL_SER >= 3 )
+			{
 				printf( "%s: %s Read %zu\n", functionName, this->portName, *pnRead );
+				printf( "%s: ", functionName );
+				for (unsigned i = 0; i < *pnRead; ++i)
+					printf("%02hhx ", pBuffer[i]);
+				printf("\n");
+			}
 			asynPrint(		pasynUser, ASYN_TRACE_FLOW,
 							"%s: %s read %zu, status %d\n",
 							functionName, this->portName, *pnRead, status );
@@ -435,13 +448,10 @@ asynStatus	asynPgpClSerial::readOctet(
 		callParamCallbacks();
 	}
 
-	if ( DEBUG_PGPCL_SER >= 3 )
+	if ( DEBUG_PGPCL_SER >= 4 )
 	{
 		printf(	"%s: returning status %d, pBuffer '%s', pnRead %zu, eomReason %d (of %d, %d)\n",
 				functionName, status, pBuffer, *pnRead, *eomReason, ASYN_EOM_EOS, ASYN_EOM_CNT);
-		for (unsigned i = 0; i < *pnRead; ++i)
-			printf("%02hhx ", pBuffer[i]);
-		printf("\n");
 	}
 
     return status;
@@ -516,21 +526,22 @@ asynStatus	asynPgpClSerial::writeOctet(
 			asynPrint(	pasynUser,	ASYN_TRACE_FLOW,
 						"%s: wrote %zu to %s: %s\n",
 						functionName, *pnWritten, this->portName, pBuffer	);
-			asynPrintIO(pasynUser, ASYN_TRACEIO_DRIVER, pBuffer, *pnWritten,
-						"%s: %s wrote %zu\n", functionName, this->portName, *pnWritten );
 		}
 		else
 		{
+			if ( DEBUG_PGPCL_SER >= 3 )
+			{
+				printf("%s: ", functionName);
+				for (unsigned i = 0; i < *pnWritten; ++i)
+					printf("%02hhx ", pBuffer[i]);
+				printf("\n");
+			}
 			asynPrint(	pasynUser,	ASYN_TRACE_FLOW,
 						"%s: wrote %zu to %s\n",
 						functionName, *pnWritten, this->portName );
 		}
-		if ( DEBUG_PGPCL_SER >= 3 )
-		{
-			for (unsigned i = 0; i < *pnWritten; ++i)
-				printf("%02hhx ", pBuffer[i]);
-			printf("\n");
-		}
+		asynPrintIO(pasynUser, ASYN_TRACEIO_DRIVER, pBuffer, *pnWritten,
+					"%s: %s wrote %zu\n", functionName, this->portName, *pnWritten );
 	}
 	else
 	{
@@ -722,4 +733,5 @@ extern "C"
 {
 	epicsExportRegistrar( pgpClSerialConfigRegister );
 	epicsExportAddress( int, DEBUG_PGPCL_SER );
+	epicsExportAddress( int, DEBUG_PGPCL_MASKBIT7 );
 }
