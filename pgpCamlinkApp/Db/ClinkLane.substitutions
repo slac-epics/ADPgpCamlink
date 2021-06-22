@@ -91,7 +91,7 @@ file boolDevRogue.template
 	}
 	{
 		NAME	= "Feb$(F):FCh0:EnableTrig",
-		PATH	= "ClinkDevRoot.ClinkFeb[0].TrigCtrl[0].EnableTrig"
+		PATH	= "ClinkDevRoot.ClinkFeb[$(F)].TrigCtrl[0].EnableTrig"
 		DESC	= "Enables the Feb Trigger Output"
 		DOL		= "1"
 		PINI	= "YES"
