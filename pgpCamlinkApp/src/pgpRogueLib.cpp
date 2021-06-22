@@ -523,6 +523,8 @@ void pgpRogueLib::FebFpgaReload()
 			printf( "Initiating Feb[%zu] FpgaReload\n", lane );
 			snprintf( febVarPath, 256, pszVarPathFpgaReload, lane );
 			setVariable( febVarPath, 1 );
+			sleep(0.2);
+			setVariable( febVarPath, 0 );
 		}
 	}
 
