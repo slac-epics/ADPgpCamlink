@@ -838,6 +838,7 @@ record( mbbi, "$(P)$(R)TrigModeAcqStart_RBV" )
 
 record( longout, "$(P)$(R)AcqFrameCount" )
 {
+	field( DOL,  "1" )
 	field( DESC, "Acquisition Frame Count" )
 	field( DTYP, "stream" )
 	field( OUT,  "@Basler.proto SetUInt32(\\x00,\\x04,\\x00,\\xA4) $(PORT).SER" )
@@ -853,7 +854,6 @@ record( longin, "$(P)$(R)AcqFrameCount_RBV" )
 	field( DESC, "Acquisition Frame Count" )
 	field( DTYP, "stream" )
 	field( INP,  "@Basler.proto GetUInt32(\\x00,\\x04,\\x00,\\xA4) $(PORT).SER" )
-	field( SCAN, "1 second" )
 }
 
 record( mbbo, "$(P)$(R)TrigSrcAcqStart" )
@@ -1264,6 +1264,7 @@ record( mbbo, "$(P)$(R)CamTriggerMode_RBV" )
 
 record( longout, "$(P)$(R)ExposureTimeRaw" )
 {
+	field( DOL,  "100" )
 	field( DESC, "Exposure Time Raw" )
 	field( DTYP, "stream" )
 	field( OUT,  "@Basler.proto SetUInt32(\\x00,\\x04,\\x04,\\x64) $(PORT).SER" )
@@ -1290,11 +1291,11 @@ record( longin, "$(P)$(R)StatusExposureActive" )
 
 record( longin, "$(P)$(R)BaslerTimeBase_RBV" )
 {
-	field( DESC, "Time Base" )
+	field( DESC, "TimeBase for delays and exposure" )
 	field( DTYP, "stream" )
 	field( INP,  "@Basler.proto GetUInt32(\\x00,\\x04,\\x04,\\x48) $(PORT).SER" )
 	field( EGU,  "ns"  )
-	field( PINI, "YES" )
+#	field( PINI, "YES" )
 }
 
 
@@ -1322,6 +1323,7 @@ record( bi, "$(P)$(R)AcqFramePeriodEnable_RBV" )
 
 record( longout, "$(P)$(R)AcqFramePeriodRaw" )
 {
+	field( DOL,  "100" )
 	field( DESC, "Acquisition Frame Period Raw" )
 	field( DTYP, "stream" )
 	field( OUT,  "@Basler.proto SetUInt32(\\x00,\\x04,\\x04,\\xA4) $(PORT).SER" )
@@ -1351,7 +1353,7 @@ record( ao, "$(P)$(R)AcquirePeriod"  )
 record( calcout, "$(P)$(R)BaslerCalcAcquirePeriod" )
 {
 	field( INPA, "$(P)$(R)AcquirePeriod" )
-	field( INPB, "$(P)$(R)BaslerTimeBase_RBV CPP MS" )
+	field( INPB, "$(P)$(R)BaslerTimeBase_RBV CPP NMS" )
 	field( CALC, "B?A/B:1" )
 	field( FLNK, "$(P)$(R)BaslerAcquirePeriod" )
 #	field( HOPR,  0x6666666 )
@@ -1469,14 +1471,12 @@ record( mbbo, "$(P)$(R)BaslerTestPattern" )
 	field( THVL, 3 )
 	field( FRVL, 4 )
 	field( FVVL, 5 )
-	field( SXVL, 6 )
 	field( ZRST, "Off" )         # The test image function is off and the camera will operate normally.
-	field( ONST, "Testimage1" )  # The camera will generate and output test image 1.
-	field( TWST, "Testimage2" )  # The camera will generate and output test image 2.
-	field( THST, "Testimage3" )  # The camera will generate and output test image 3.
-	field( FRST, "Testimage4" )  # The camera will generate and output test image 4.
-	field( FVST, "Testimage5" )  # The camera will generate and output test image 5.
-	field( SXST, "Testimage6" )  # The camera will generate and output test image 6.
+	field( ONST, "8BitFixed" )   # 8  Bit Fixed  Diaganol Gray Gradient
+	field( TWST, "8BitMoving" )  # 8  Bit Moving Diaganol Gray Gradient
+	field( THST, "12BitMoving" ) # 12 Bit Moving Diaganol Gray Gradient
+	field( FRST, "8BitProc" )    # 8  Bit Moving Diaganol Gray Gradient w/ digital processing features
+	field( FVST, "12BitProc" )   # 12 Bit Moving Diaganol Gray Gradient w/ digital processing features
 	field( FLNK, "$(P)$(R)BaslerTestPattern_RBV" )
 	field( PINI, "YES" )
 }
@@ -1492,14 +1492,12 @@ record( mbbi, "$(P)$(R)BaslerTestPattern_RBV" )
 	field( THVL, 3 )
 	field( FRVL, 4 )
 	field( FVVL, 5 )
-	field( SXVL, 6 )
 	field( ZRST, "Off" )         # The test image function is off and the camera will operate normally.
-	field( ONST, "Testimage1" )  # The camera will generate and output test image 1.
-	field( TWST, "Testimage2" )  # The camera will generate and output test image 2.
-	field( THST, "Testimage3" )  # The camera will generate and output test image 3.
-	field( FRST, "Testimage4" )  # The camera will generate and output test image 4.
-	field( FVST, "Testimage5" )  # The camera will generate and output test image 5.
-	field( SXST, "Testimage6" )  # The camera will generate and output test image 6.
+	field( ONST, "8BitFixed" )   # 8  Bit Fixed  Diaganol Gray Gradient
+	field( TWST, "8BitMoving" )  # 8  Bit Moving Diaganol Gray Gradient
+	field( THST, "12BitMoving" ) # 12 Bit Moving Diaganol Gray Gradient
+	field( FRST, "8BitProc" )    # 8  Bit Moving Diaganol Gray Gradient w/ digital processing features
+	field( FVST, "12BitProc" )   # 12 Bit Moving Diaganol Gray Gradient w/ digital processing features
 }
 
 ## Something about the following causes LastUserError to go to InvalidParameter
@@ -1522,7 +1520,7 @@ include "rbvMonitor.template"
 substitute "MON_PV=$(P)$(R)CamlinkHTap"
 include "rbvMonitor.template"
 substitute "MON_PV=$(P)$(R)BaslerTimeBase_RBV"
-include "rbvMonitor.template"
+#include "rbvMonitor.template"
 
 substitute "MON_PV=$(P)$(R)BaslerExposureMode"
 #include "putMonitor.template"
