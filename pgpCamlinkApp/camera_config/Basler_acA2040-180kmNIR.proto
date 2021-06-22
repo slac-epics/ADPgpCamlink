@@ -57,6 +57,17 @@ GetUInt32
 	in  ACK $BFS $FTF_RD_A0 0x04 "%#04r" "%2.0<xor>" $BFE;
 }
 
+# Output: BFS, FTF, Datalen, Address32, BCC, (BFE)
+# BFS:		0x01
+# FTF:		0x05	FTF_WR | FTF_A32
+# Datalen:	0x04
+# Addr:		4 byte little endian
+# Data:		4 byte little endian
+# Bcc:		xor sum
+# BFE:		0x03
+#
+# Input: ACK
+# ACK:		0x06
 SetUInt32
 {
 	out $BFS $FTF_WR_A32 0x04 "\$4\$3\$2\$1" "%#0.4r" "%1.0<xor>";
