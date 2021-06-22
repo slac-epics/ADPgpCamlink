@@ -299,7 +299,7 @@ record( mbbi, "$(P)$(R)BaslerLastError_RBV" )
 	field( ONVL, 1 )  field( ONST, "Overtrigger" )
 	field( TWVL, 2 )  field( TWST, "Userset" )
 	field( THVL, 3 )  field( THST, "Invalid parameter"   )
-	field( SCAN, "1 second" )
+#	field( SCAN, "1 second" )
 	field( PINI, "YES" )
 }
 
@@ -1536,7 +1536,7 @@ substitute "MON_PV=$(P)$(R)TrigModeAcqStart"
 #include "putMonitor.template"
 substitute "MON_PV=$(P)$(R)TrigSrcAcqStart"
 #include "putMonitor.template"
-#substitute "MON_PV=$(P)$(R)TrigActAcqStart"
+substitute "MON_PV=$(P)$(R)TrigActAcqStart"
 #include "putMonitor.template"
 substitute "MON_PV=$(P)$(R)TrigSwAcqStart"
 #include "putMonitor.template"
@@ -1561,11 +1561,29 @@ substitute "MON_PV=$(P)$(R)BaslerAcquirePeriod"
 
 # Temp hack while putMonitor PVs are disabled
 # Add rbvMonitor for these PVs which would otherwise get reread when putMonitor sets the value
+substitute "MON_PV=$(P)$(R)BaslerExposureMode_RBV"
+include "rbvMonitor.template"
+substitute "MON_PV=$(P)$(R)TrigModeFrameStart_RBV"
+include "rbvMonitor.template"
+substitute "MON_PV=$(P)$(R)TrigSrcFrameStart_RBV"
+include "rbvMonitor.template"
+substitute "MON_PV=$(P)$(R)TrigActFrameStart_RBV"
+include "rbvMonitor.template"
+substitute "MON_PV=$(P)$(R)TrigSwFrameStart_RBV"
+include "rbvMonitor.template"
+substitute "MON_PV=$(P)$(R)TrigModeAcqStart_RBV"
+include "rbvMonitor.template"
+substitute "MON_PV=$(P)$(R)TrigSrcAcqStart_RBV"
+include "rbvMonitor.template"
+substitute "MON_PV=$(P)$(R)TrigActAcqStart_RBV"
+include "rbvMonitor.template"
+substitute "MON_PV=$(P)$(R)TrigSwAcqStart_RBV"
+include "rbvMonitor.template"
+substitute "MON_PV=$(P)$(R)BaslerBlackLevel_RBV"
+include "rbvMonitor.template"
 substitute "MON_PV=$(P)$(R)BaslerBitsPerPixel_RBV"
 include "rbvMonitor.template"
 substitute "MON_PV=$(P)$(R)BaslerCLConfig_RBV"
-include "rbvMonitor.template"
-substitute "MON_PV=$(P)$(R)BaslerBitsPerPixel_RBV"
 include "rbvMonitor.template"
 substitute "MON_PV=$(P)$(R)CLBaudRate_RBV"
 include "rbvMonitor.template"
