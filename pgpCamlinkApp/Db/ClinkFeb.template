@@ -327,6 +327,8 @@ record( bi, "$(P)$(R)Feb$(F):FCh0:Running" )
 	field( SCAN, "$(SCAN=1 second)" )
 	field( ZNAM, "Stopped" )
 	field( ONAM, "Running"  )
+	field( ZSV,  "MAJOR" )
+	field( OSV,  "NO_ALARM"  )
 	field( DISV, "0" )
 	field( SDIS, "$(P)$(R)PgpMon:RxRemLinkReady_RBV CP" )
 }
