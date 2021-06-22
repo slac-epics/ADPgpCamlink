@@ -196,9 +196,9 @@ pgpCamlink::pgpCamlink(
 		m_BinY(				1					),
 		m_BinYReq(			1					),
 		m_MinX(				0					),
-		m_MinXReq(			1					),
+		m_MinXReq(			0					),
 		m_MinY(				0					),
-		m_MinYReq(			1					),
+		m_MinYReq(			0					),
 		m_SizeX(			sizeX				),
 		m_SizeXReq(			sizeX				),
 		m_SizeY(			sizeY				),
@@ -1429,6 +1429,14 @@ NDArray * pgpCamlink::AllocNDArray( )
 	pNDArray->dims[1].size		= GetSizeY();
 	pNDArray->dims[1].offset	= GetMinY();
 	pNDArray->dims[1].binning	= GetBinY();
+	if( pNDArray->dims[0].size > m_ClMaxWidth - pNDArray->dims[0].offset )
+	if( pNDArray->dims[0].size > m_ClMaxWidth - pNDArray->dims[0].offset )
+		pNDArray->dims[0].size = m_ClMaxWidth - pNDArray->dims[0].offset;
+		pNDArray->dims[0].size = m_ClMaxWidth - pNDArray->dims[0].offset;
+	if( pNDArray->dims[1].size > m_ClMaxWidth - pNDArray->dims[1].offset )
+	if( pNDArray->dims[1].size > m_ClMaxWidth - pNDArray->dims[1].offset )
+		pNDArray->dims[1].size = m_ClMaxWidth - pNDArray->dims[1].offset;
+		pNDArray->dims[1].size = m_ClMaxWidth - pNDArray->dims[1].offset;
 	if ( DEBUG_PGP_CAMLINK >= 4 )
 		printf(	"%s: %u bit pixels, %zux%zu from offset (%zu,%zu)\n",	functionName, m_ClNumBits,
 				pNDArray->dims[0].size,		pNDArray->dims[1].size,
@@ -1466,20 +1474,25 @@ int pgpCamlink::LoadNDArray(
 	}
 	CONTEXT_TIMER( "LoadNDArray" );
 
-
 #if 1
-	uint8_t			*	pRawData	= pImageCbInfo->m_ImageDataPtr->begin().ptr();
-	//epicsUInt8		*	pDmaBuffer	= (epicsUInt8 *) pRawData;
 	epicsUInt8		*	pArrayData	= (epicsUInt8 *) pNDArray->pData;
-	ris::FrameIterator	pPixelSrc	= pImageCbInfo->m_ImageDataPtr->begin();
-	//epicsUInt8		*	pPixelDst	= pArrayData;
-	size_t	nCopied	= 0;
-	while ( nCopied < (m_ClCurWidth * m_ClCurHeight) )
+	ris::FrameIterator	itPixelSrc	= pImageCbInfo->m_ImageDataPtr->begin();
+	uint32_t			sLeft		= pImageCbInfo->m_ImageDataPtr->size();
+	uint32_t			sCopy;
+	do
 	{
-		std::memcpy( pArrayData, pRawData, pImageCbInfo->m_ImageDataPtr->size() );
-		pPixelSrc += pImageCbInfo->m_ImageDataPtr->size();
-		nCopied += pImageCbInfo->m_ImageDataPtr->size();
-	}
+		uint8_t	*	pRawData	= itPixelSrc.ptr();
+		sCopy		= (sLeft > itPixelSrc.remBuffer()) ? itPixelSrc.remBuffer() : sLeft;
+		if ( DEBUG_PGP_CAMLINK >= 6 )
+		{
+			printf( "%s: memcpy to %p size %u bytes from %p\n", functionName,
+					pArrayData, sCopy, pRawData );
+		}
+		std::memcpy( pArrayData, pRawData, sCopy );
+		pArrayData	+= sCopy;
+		itPixelSrc	+= sCopy;
+		sLeft		-= sCopy;
+	}	while ( sLeft > 0 && sCopy > 0 );
 #else
 	unsigned int	nBytesPerPx = m_ClNumBits > 8 ? 2 : 1;
 	ris::FrameIterator	pDmaBuffer	= pImageCbInfo->m_ImageDataPtr->begin();
@@ -2016,12 +2029,13 @@ asynStatus pgpCamlink::readFloat64(	asynUser *	pasynUser, epicsFloat64	value )
 #endif
 
 // TODO: Don't think we need this function as it's main purpose is to query params from ADCore
+// Gets invoked for POOL_ALLOC_BUFFERS and POOL_FREE_BUFFERS which are hanled by the base class
 asynStatus pgpCamlink::readInt32(	asynUser *	pasynUser, epicsInt32	* pValueRet )
 {
     static const char	*	functionName	= "pgpCamlink::readInt32";
     const char			*	reasonName		= "unknownReason";
 	getParamName( 0, pasynUser->reason, &reasonName );
-	if ( DEBUG_PGP_CAMLINK >= 5 )
+	if ( DEBUG_PGP_CAMLINK >= 6 )
 		printf(	"%s: Reason %d %s\n", functionName, pasynUser->reason, reasonName );
 	asynPrint(	pasynUser,	ASYN_TRACE_FLOW,
 				"%s: Reason %d %s\n", functionName, pasynUser->reason, reasonName );
