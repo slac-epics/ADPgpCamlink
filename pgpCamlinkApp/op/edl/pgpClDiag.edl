@@ -3,8 +3,8 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 2797
-y 110
+x 153
+y 77
 w 929
 h 800
 font "helvetica-medium-r-8.0"
@@ -730,35 +730,6 @@ objType "monitors"
 noExecuteClipMask
 endObjectProperties
 
-# (Text Control)
-object activeXTextDspClass
-beginObjectProperties
-major 4
-minor 7
-release 0
-x 544
-y 668
-w 76
-h 18
-controlPv "$(PGP):XpmMini:HwEnable"
-format "decimal"
-font "helvetica-medium-r-12.0"
-fontAlign "center"
-fgColor index 25
-fgAlarm
-bgColor index 5
-editable
-autoHeight
-limitsFromDb
-nullColor index 40
-smartRefresh
-fastUpdate
-useHexPrefix
-newPos
-objType "controls"
-noExecuteClipMask
-endObjectProperties
-
 # (Static Text)
 object activeXTextClass
 beginObjectProperties
@@ -800,35 +771,6 @@ nullColor index 40
 smartRefresh
 newPos
 objType "monitors"
-noExecuteClipMask
-endObjectProperties
-
-# (Text Control)
-object activeXTextDspClass
-beginObjectProperties
-major 4
-minor 7
-release 0
-x 544
-y 692
-w 76
-h 18
-controlPv "$(PGP):XpmMini:Config_L0Select_Enabled"
-format "decimal"
-font "helvetica-medium-r-12.0"
-fontAlign "center"
-fgColor index 25
-fgAlarm
-bgColor index 5
-editable
-autoHeight
-limitsFromDb
-nullColor index 40
-smartRefresh
-fastUpdate
-useHexPrefix
-newPos
-objType "controls"
 noExecuteClipMask
 endObjectProperties
 
@@ -3916,6 +3858,46 @@ topShadowColor index 1
 botShadowColor index 11
 controlPv "$(P)$(R)Feb$(CH):FCh0:FrameMode"
 indicatorPv "$(P)$(R)Feb$(CH):FCh0:FrameMode_RBV"
+font "helvetica-medium-r-12.0"
+endObjectProperties
+
+# (Menu Button)
+object activeMenuButtonClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 544
+y 668
+w 76
+h 18
+fgColor index 14
+bgColor index 3
+inconsistentColor index 40
+topShadowColor index 1
+botShadowColor index 11
+controlPv "$(PGP):XpmMini:HwEnable"
+indicatorPv "$(PGP):XpmMini:HwEnable_RBV"
+font "helvetica-medium-r-12.0"
+endObjectProperties
+
+# (Menu Button)
+object activeMenuButtonClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 544
+y 692
+w 76
+h 18
+fgColor index 14
+bgColor index 3
+inconsistentColor index 40
+topShadowColor index 1
+botShadowColor index 11
+controlPv "$(PGP):XpmMini:Config_L0Select_Enabled"
+indicatorPv "$(PGP):XpmMini:Config_L0Select_Enabled_RBV"
 font "helvetica-medium-r-12.0"
 endObjectProperties
 
