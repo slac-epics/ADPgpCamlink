@@ -90,7 +90,7 @@ file boolDevRogue.template
 		SCAN	= "\$(SCAN=1 second)"
 	}
 	{
-		NAME	= "Feb$(F):FCh0:EnableTrig",
+		NAME	= "Feb$(F):EnableTrig",
 		PATH	= "ClinkDevRoot.ClinkFeb[$(F)].TrigCtrl[0].EnableTrig"
 		DESC	= "Enables the Feb Trigger Output"
 		DOL		= "1"
@@ -101,7 +101,7 @@ file boolDevRogue.template
 		SDIS	= "$(P)$(R)PgpMon:RxRemLinkReady_RBV CP"
 	}
 	{
-		NAME	= "Feb$(F):FCh0:InvCC",
+		NAME	= "Feb$(F):InvCC",
 		PATH	= "ClinkDevRoot.ClinkFeb[$(F)].TrigCtrl[0].InvCC"
 		DESC	= "Inverts the Camlink CC control lines"
 		ZNAM	= "Normal"
@@ -136,14 +136,14 @@ file liDevRogue.template
 		SCAN	= "\$(SCAN=1 second)"
 	}
 	{
-		NAME	= "Feb$(F):FCh0:DropCount",
+		NAME	= "Feb$(F):DropCount",
 		PATH	= "ClinkDevRoot.ClinkFeb[$(F)].ClinkTop.Ch[0].DropCount",
 		SCAN	= "\$(SCAN=1 second)"
 		DISV	= "0"
 		SDIS	= "$(P)$(R)PgpMon:RxRemLinkReady_RBV CP"
 	}
 	{
-		NAME	= "Feb$(F):FCh0:FrameCount",
+		NAME	= "Feb$(F):FrameCount",
 		PATH	= "ClinkDevRoot.ClinkFeb[$(F)].ClinkTop.Ch[0].FrameCount",
 		SCAN	= "\$(SCAN=1 second)"
 		DISV	= "0"
@@ -160,17 +160,17 @@ file liDevRogue.template
 		SCAN	= "\$(SCAN=1 second)"
 	}
 	{
-		NAME	= "Feb$(F):FCh0:TrigCnt",
+		NAME	= "Feb$(F):TrigCnt",
 		PATH	= "ClinkDevRoot.ClinkFeb[$(F)].TrigCtrl[0].TrigCnt"
-		DESC	= "Feb$(F) FCh0 TriggerCtrl count"
+		DESC	= "Feb$(F) TriggerCtrl count"
 		SCAN	= "\$(SCAN=1 second)"
 		DISV	= "0"
 		SDIS	= "$(P)$(R)PgpMon:RxRemLinkReady_RBV CP"
 	}
 	{
-		NAME	= "Feb$(F):FCh0:TrigRate",
+		NAME	= "Feb$(F):TrigRate",
 		PATH	= "ClinkDevRoot.ClinkFeb[$(F)].TrigCtrl[0].TrigRate"
-		DESC	= "Feb$(F) FCh0 TriggerCtrl rate"
+		DESC	= "Feb$(F) TriggerCtrl rate"
 		SCAN	= "\$(SCAN=1 second)"
 		DISV	= "0"
 		EGU     = "Hz"
@@ -332,7 +332,7 @@ file longDevRogue.template
 		PINI	= "YES"
 	}
 	{
-		NAME	= "Feb$(F):FCh0:SwControlValue",
+		NAME	= "Feb$(F):SwControlValue",
 		PATH	= "ClinkDevRoot.ClinkFeb[$(F)].ClinkTop.Ch[0].SwControlValue"
 		DESC	= "Software camera control bit values"
 		DOL		= "0"
@@ -342,7 +342,7 @@ file longDevRogue.template
 		SDIS	= "$(P)$(R)PgpMon:RxRemLinkReady_RBV CP"
 	}
 	{
-		NAME	= "Feb$(F):FCh0:SwControlEn",
+		NAME	= "Feb$(F):SwControlEn",
 		PATH	= "ClinkDevRoot.ClinkFeb[$(F)].ClinkTop.Ch[0].SwControlEn"
 		DESC	= "Lane A SW camera control bit enable mask"
 		DOL		= "0"

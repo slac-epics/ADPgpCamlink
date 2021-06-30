@@ -265,7 +265,7 @@ x 140
 y 488
 w 80
 h 20
-controlPv "$(P)$(R)Feb$(CH):FCh0:DropCount_RBV"
+controlPv "$(P)$(R)Feb$(CH):DropCount_RBV"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
 fgColor index 15
@@ -296,7 +296,7 @@ fgColor index 14
 bgColor index 0
 useDisplayBg
 value {
-  "FCh0:DropCount"
+  "DropCount"
 }
 endObjectProperties
 
@@ -391,7 +391,7 @@ x 140
 y 584
 w 80
 h 20
-controlPv "$(P)$(R)Feb$(CH):FCh0:InvCC_RBV"
+controlPv "$(P)$(R)Feb$(CH):InvCC_RBV"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
 fgColor index 15
@@ -421,7 +421,7 @@ fgColor index 14
 bgColor index 0
 useDisplayBg
 value {
-  "FCh0:InvCC"
+  "InvCC"
 }
 endObjectProperties
 
@@ -675,7 +675,7 @@ x 140
 y 704
 w 80
 h 20
-controlPv "$(P)$(R)Feb$(CH):FCh0:TrigCnt_RBV"
+controlPv "$(P)$(R)Feb$(CH):TrigCnt_RBV"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
 fgColor index 15
@@ -706,7 +706,7 @@ fgColor index 14
 bgColor index 0
 useDisplayBg
 value {
-  "FCh0:TrigCnt"
+  "TrigCnt"
 }
 endObjectProperties
 
@@ -720,7 +720,7 @@ x 140
 y 728
 w 80
 h 20
-controlPv "$(P)$(R)Feb$(CH):FCh0:TrigRate_RBV"
+controlPv "$(P)$(R)Feb$(CH):TrigRate_RBV"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
 fgColor index 15
@@ -751,7 +751,7 @@ fgColor index 14
 bgColor index 0
 useDisplayBg
 value {
-  "FCh0:TrigRate"
+  "TrigRate"
 }
 endObjectProperties
 
@@ -1086,8 +1086,8 @@ bgColor index 3
 inconsistentColor index 40
 topShadowColor index 1
 botShadowColor index 11
-controlPv "$(P)$(R)Feb$(CH):FCh0:InvCC"
-indicatorPv "$(P)$(R)Feb$(CH):FCh0:InvCC_RBV"
+controlPv "$(P)$(R)Feb$(CH):InvCC"
+indicatorPv "$(P)$(R)Feb$(CH):InvCC_RBV"
 font "helvetica-medium-r-12.0"
 endObjectProperties
 
@@ -2376,7 +2376,7 @@ x 140
 y 512
 w 80
 h 20
-controlPv "$(P)$(R)Feb$(CH):FCh0:FrameCount_RBV"
+controlPv "$(P)$(R)Feb$(CH):FrameCount_RBV"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
 fgColor index 15
@@ -2407,7 +2407,7 @@ fgColor index 14
 bgColor index 0
 useDisplayBg
 value {
-  "FCh0:FrameCount"
+  "FrameCount"
 }
 endObjectProperties
 
@@ -2864,7 +2864,7 @@ fgColor index 14
 bgColor index 0
 useDisplayBg
 value {
-  "FCh0:DataEn"
+  "DataEn"
 }
 endObjectProperties
 
@@ -2883,8 +2883,8 @@ bgColor index 3
 inconsistentColor index 40
 topShadowColor index 1
 botShadowColor index 11
-controlPv "$(P)$(R)Feb$(CH):FCh0:EnableTrig"
-indicatorPv "$(P)$(R)Feb$(CH):FCh0:EnableTrig_RBV"
+controlPv "$(P)$(R)Feb$(CH):EnableTrig"
+indicatorPv "$(P)$(R)Feb$(CH):EnableTrig_RBV"
 font "helvetica-medium-r-12.0"
 endObjectProperties
 
@@ -2898,7 +2898,7 @@ x 140
 y 536
 w 80
 h 20
-controlPv "$(P)$(R)Feb$(CH):FCh0:EnableTrig_RBV"
+controlPv "$(P)$(R)Feb$(CH):EnableTrig_RBV"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
 fgColor index 15
@@ -2928,7 +2928,7 @@ fgColor index 14
 bgColor index 0
 useDisplayBg
 value {
-  "FCh0:EnableTrig"
+  "EnableTrig"
 }
 endObjectProperties
 
@@ -2963,7 +2963,7 @@ fgColor index 14
 bgColor index 0
 useDisplayBg
 value {
-  "FCh0:TapCount"
+  "TapCount"
 }
 endObjectProperties
 
@@ -2977,7 +2977,7 @@ x 140
 y 340
 w 80
 h 20
-controlPv "$(P)$(R)Feb$(CH):FCh0:TapCount_RBV"
+controlPv "$(P)$(R)Feb$(CH):TapCount_RBV"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
 fgColor index 15
@@ -3007,7 +3007,7 @@ fgColor index 14
 bgColor index 0
 useDisplayBg
 value {
-  "FCh0:FrameMode"
+  "FrameMode"
 }
 endObjectProperties
 
@@ -3021,7 +3021,7 @@ x 140
 y 316
 w 80
 h 20
-controlPv "$(P)$(R)Feb$(CH):FCh0:FrameMode_RBV"
+controlPv "$(P)$(R)Feb$(CH):FrameMode_RBV"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
 fgColor index 15
@@ -3045,7 +3045,7 @@ x 228
 y 244
 w 76
 h 18
-controlPv "$(P)$(R)Feb$(CH):FCh0:BaudRate"
+controlPv "$(P)$(R)Feb$(CH):BaudRate"
 format "decimal"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
@@ -3081,7 +3081,7 @@ fgColor index 14
 bgColor index 0
 useDisplayBg
 value {
-  "FCh0:DataMode"
+  "DataMode"
 }
 endObjectProperties
 
@@ -3095,7 +3095,7 @@ x 140
 y 292
 w 80
 h 20
-controlPv "$(P)$(R)Feb$(CH):FCh0:DataMode_RBV"
+controlPv "$(P)$(R)Feb$(CH):DataMode_RBV"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
 fgColor index 15
@@ -3125,7 +3125,7 @@ fgColor index 14
 bgColor index 0
 useDisplayBg
 value {
-  "FCh0:LinkMode"
+  "LinkMode"
 }
 endObjectProperties
 
@@ -3139,7 +3139,7 @@ x 140
 y 268
 w 80
 h 20
-controlPv "$(P)$(R)Feb$(CH):FCh0:LinkMode_RBV"
+controlPv "$(P)$(R)Feb$(CH):LinkMode_RBV"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
 fgColor index 15
@@ -3169,7 +3169,7 @@ fgColor index 14
 bgColor index 0
 useDisplayBg
 value {
-  "FCh0:BaudRate"
+  "BaudRate"
 }
 endObjectProperties
 
@@ -3183,7 +3183,7 @@ x 140
 y 244
 w 80
 h 20
-controlPv "$(P)$(R)Feb$(CH):FCh0:BaudRate_RBV"
+controlPv "$(P)$(R)Feb$(CH):BaudRate_RBV"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
 fgColor index 15
@@ -3228,7 +3228,7 @@ x 228
 y 340
 w 76
 h 18
-controlPv "$(P)$(R)Feb$(CH):FCh0:TapCount"
+controlPv "$(P)$(R)Feb$(CH):TapCount"
 format "decimal"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
@@ -3263,8 +3263,8 @@ bgColor index 3
 inconsistentColor index 40
 topShadowColor index 1
 botShadowColor index 11
-controlPv "$(P)$(R)Feb$(CH):FCh0:LinkMode"
-indicatorPv "$(P)$(R)Feb$(CH):FCh0:LinkMode_RBV"
+controlPv "$(P)$(R)Feb$(CH):LinkMode"
+indicatorPv "$(P)$(R)Feb$(CH):LinkMode_RBV"
 font "helvetica-medium-r-12.0"
 endObjectProperties
 
@@ -3283,8 +3283,8 @@ bgColor index 3
 inconsistentColor index 40
 topShadowColor index 1
 botShadowColor index 11
-controlPv "$(P)$(R)Feb$(CH):FCh0:DataMode"
-indicatorPv "$(P)$(R)Feb$(CH):FCh0:DataMode_RBV"
+controlPv "$(P)$(R)Feb$(CH):DataMode"
+indicatorPv "$(P)$(R)Feb$(CH):DataMode_RBV"
 font "helvetica-medium-r-12.0"
 endObjectProperties
 
@@ -3303,8 +3303,8 @@ bgColor index 3
 inconsistentColor index 40
 topShadowColor index 1
 botShadowColor index 11
-controlPv "$(P)$(R)Feb$(CH):FCh0:FrameMode"
-indicatorPv "$(P)$(R)Feb$(CH):FCh0:FrameMode_RBV"
+controlPv "$(P)$(R)Feb$(CH):FrameMode"
+indicatorPv "$(P)$(R)Feb$(CH):FrameMode_RBV"
 font "helvetica-medium-r-12.0"
 endObjectProperties
 

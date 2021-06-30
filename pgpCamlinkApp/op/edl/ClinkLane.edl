@@ -194,7 +194,7 @@ x 140
 y 180
 w 80
 h 20
-controlPv "$(P)$(R)Feb$(CH):FCh0:InvCC_RBV"
+controlPv "$(P)$(R)Feb$(CH):InvCC_RBV"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
 fgColor index 15
@@ -224,7 +224,7 @@ fgColor index 14
 bgColor index 0
 useDisplayBg
 value {
-  "FCh0:InvCC"
+  "InvCC"
 }
 endObjectProperties
 
@@ -478,7 +478,7 @@ x 140
 y 228
 w 80
 h 20
-controlPv "$(P)$(R)Feb$(CH):FCh0:TrigCnt_RBV"
+controlPv "$(P)$(R)Feb$(CH):TrigCnt_RBV"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
 fgColor index 15
@@ -509,7 +509,7 @@ fgColor index 14
 bgColor index 0
 useDisplayBg
 value {
-  "FCh0:TrigCnt"
+  "TrigCnt"
 }
 endObjectProperties
 
@@ -523,7 +523,7 @@ x 140
 y 252
 w 80
 h 20
-controlPv "$(P)$(R)Feb$(CH):FCh0:TrigRate_RBV"
+controlPv "$(P)$(R)Feb$(CH):TrigRate_RBV"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
 fgColor index 15
@@ -554,7 +554,7 @@ fgColor index 14
 bgColor index 0
 useDisplayBg
 value {
-  "FCh0:TrigRate"
+  "TrigRate"
 }
 endObjectProperties
 
@@ -663,8 +663,8 @@ bgColor index 3
 inconsistentColor index 40
 topShadowColor index 1
 botShadowColor index 11
-controlPv "$(P)$(R)Feb$(CH):FCh0:InvCC"
-indicatorPv "$(P)$(R)Feb$(CH):FCh0:InvCC_RBV"
+controlPv "$(P)$(R)Feb$(CH):InvCC"
+indicatorPv "$(P)$(R)Feb$(CH):InvCC_RBV"
 font "helvetica-medium-r-12.0"
 endObjectProperties
 
@@ -782,7 +782,7 @@ fgColor index 14
 bgColor index 0
 useDisplayBg
 value {
-  "FCh0:Mask"
+  "Mask"
 }
 endObjectProperties
 
@@ -796,7 +796,7 @@ x 140
 y 276
 w 80
 h 20
-controlPv "$(P)$(R)Feb$(CH):FCh0:Mask_RBV"
+controlPv "$(P)$(R)Feb$(CH):Mask_RBV"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
 fgColor index 15
@@ -821,7 +821,7 @@ x 228
 y 276
 w 76
 h 18
-controlPv "$(P)$(R)Feb$(CH):FCh0:Mask"
+controlPv "$(P)$(R)Feb$(CH):Mask"
 format "decimal"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
@@ -857,7 +857,7 @@ fgColor index 14
 bgColor index 0
 useDisplayBg
 value {
-  "FCh0:Map"
+  "Map"
 }
 endObjectProperties
 
@@ -871,7 +871,7 @@ x 140
 y 300
 w 80
 h 20
-controlPv "$(P)$(R)Feb$(CH):FCh0:Map_RBV"
+controlPv "$(P)$(R)Feb$(CH):Map_RBV"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
 fgColor index 15
@@ -901,7 +901,7 @@ fgColor index 14
 bgColor index 0
 useDisplayBg
 value {
-  "FCh0:PulseWidthRaw"
+  "PulseWidthRaw"
 }
 endObjectProperties
 
@@ -915,7 +915,7 @@ x 140
 y 348
 w 80
 h 20
-controlPv "$(P)$(R)Feb$(CH):FCh0:PulseWidthRaw_RBV"
+controlPv "$(P)$(R)Feb$(CH):PulseWidthRaw_RBV"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
 fgColor index 15
@@ -939,7 +939,7 @@ x 228
 y 348
 w 76
 h 18
-controlPv "$(P)$(R)Feb$(CH):FCh0:PulseWidthRaw"
+controlPv "$(P)$(R)Feb$(CH):PulseWidthRaw"
 format "decimal"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
@@ -969,7 +969,7 @@ x 228
 y 324
 w 76
 h 18
-controlPv "$(P)$(R)Feb$(CH):FCh0:PulseWidth"
+controlPv "$(P)$(R)Feb$(CH):PulseWidth"
 format "decimal"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
@@ -999,7 +999,7 @@ x 140
 y 324
 w 80
 h 20
-controlPv "$(P)$(R)Feb$(CH):FCh0:PulseWidth_RBV"
+controlPv "$(P)$(R)Feb$(CH):PulseWidth_RBV"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
 fgColor index 15
@@ -1030,7 +1030,7 @@ fgColor index 14
 bgColor index 0
 useDisplayBg
 value {
-  "FCh0:PulseWidth"
+  "PulseWidth"
 }
 endObjectProperties
 
@@ -1049,8 +1049,8 @@ bgColor index 3
 inconsistentColor index 40
 topShadowColor index 1
 botShadowColor index 11
-controlPv "$(P)$(R)Feb$(CH):FCh0:Map"
-indicatorPv "$(P)$(R)Feb$(CH):FCh0:Map_RBV"
+controlPv "$(P)$(R)Feb$(CH):Map"
+indicatorPv "$(P)$(R)Feb$(CH):Map_RBV"
 font "helvetica-medium-r-12.0"
 endObjectProperties
 

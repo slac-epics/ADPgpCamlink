@@ -911,7 +911,7 @@ x 600
 y 152
 w 108
 h 20
-controlPv "$(PGP):Ch$(CH):Feb$(CH):FCh0:TapCount_RBV"
+controlPv "$(PGP):Ch$(CH):Feb$(CH):TapCount_RBV"
 format "hex"
 font "helvetica-medium-r-12.0"
 fontAlign "center"

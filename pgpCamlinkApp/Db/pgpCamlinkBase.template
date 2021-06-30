@@ -63,7 +63,7 @@ record( stringin, "$(P)$(R)CamModelScreen" )
 
 record( longout, "$(P)$(R)CamlinkBaudRate" )
 {
-	field( OUT,  "$(PGP):Ch$(PGP_LANE):Feb$(PGP_LANE):FCh0:BaudRate CPP MS" )
+	field( OUT,  "$(PGP):Ch$(PGP_LANE):Feb$(PGP_LANE):BaudRate CPP MS" )
 	field( EGU,  "bps" )
 	info( autosaveFields, "" )
 }
@@ -72,7 +72,7 @@ record( longout, "$(P)$(R)CamlinkBaudRate" )
 # 0: 'Disable', 1: 'Base', 2: 'Medium', 3: 'Full', 4: 'Deca'
 record( mbbo, "$(P)$(R)CamlinkLinkMode" )
 {
-	field( OUT,  "$(PGP):Ch$(PGP_LANE):Feb$(PGP_LANE):FCh0:LinkMode" )
+	field( OUT,  "$(PGP):Ch$(PGP_LANE):Feb$(PGP_LANE):LinkMode" )
 	field( ZRVL, "0" ) field( ZRST, "Disable" )
 	field( ONVL, "1" ) field( ONST, "Base" )
 	field( TWVL, "2" ) field( TWST, "Medium" )
@@ -85,7 +85,7 @@ record( mbbo, "$(P)$(R)CamlinkLinkMode" )
 # 4: '14Bit', 5: '16Bit', 6: '24Bit', 7: '30Bit', 8: '36Bit' 
 record( mbbo, "$(P)$(R)CamlinkDataMode" )
 {
-	field( OUT,  "$(PGP):Ch$(PGP_LANE):Feb$(PGP_LANE):FCh0:DataMode" )
+	field( OUT,  "$(PGP):Ch$(PGP_LANE):Feb$(PGP_LANE):DataMode" )
 	field( ZRVL, "0" ) field( ZRST, "None" )
 	field( ONVL, "1" ) field( ONST, "8 Bit" )
 	field( TWVL, "2" ) field( TWST, "10 Bit" )
@@ -101,7 +101,7 @@ record( mbbo, "$(P)$(R)CamlinkDataMode" )
 # 0: 'None', 1: 'Line', 2: 'Frame'
 record( mbbo, "$(P)$(R)CamlinkFrameMode" )
 {
-	field( OUT,  "$(PGP):Ch$(PGP_LANE):Feb$(PGP_LANE):FCh0:FrameMode" )
+	field( OUT,  "$(PGP):Ch$(PGP_LANE):Feb$(PGP_LANE):FrameMode" )
 	field( ZRVL, "0" ) field( ZRST, "None" )
 	field( ONVL, "1" ) field( ONST, "Line" )
 	field( TWVL, "2" ) field( TWST, "Frame" )
@@ -110,18 +110,18 @@ record( mbbo, "$(P)$(R)CamlinkFrameMode" )
 record( longout, "$(P)$(R)CamlinkHTap" )
 {
 	field( DESC, "Camlink horizontal taps" )
-	field( OUT,  "$(PGP):Ch$(PGP_LANE):Feb$(PGP_LANE):FCh0:TapCount" )
+	field( OUT,  "$(PGP):Ch$(PGP_LANE):Feb$(PGP_LANE):TapCount" )
 }
 
 record( longout, "$(P)$(R)CamlinkTrigMask" )
 {
 	field( DESC, "Sets trigger mask on 4-bit camCtrl bus" )
-	field( OUT,  "$(PGP):Ch$(PGP_LANE):Feb$(PGP_LANE):FCh0:TrigMask" )
+	field( OUT,  "$(PGP):Ch$(PGP_LANE):Feb$(PGP_LANE):TrigMask" )
 }
 
 record( bo, "$(P)$(R)CamlinkInvCC" )
 {
-	field( OUT,  "$(PGP):Ch$(PGP_LANE):Feb$(PGP_LANE):FCh0:InvCC" )
+	field( OUT,  "$(PGP):Ch$(PGP_LANE):Feb$(PGP_LANE):InvCC" )
 	field( ZNAM, "Normal" )
 	field( ONAM, "Invert" )
 }
@@ -156,7 +156,7 @@ record( calcout, "$(P)$(R)CamAcquireTimeCalc" )
 	field( CALC, "FLOOR(A*B)" )
 	field( PREC, "4" )
 	field( EGU,  "us" )
-	field( OUT,  "$(PGP):Ch$(PGP_LANE):Feb$(PGP_LANE):FCh0:PulseWidth CA NMS" )
+	field( OUT,  "$(PGP):Ch$(PGP_LANE):Feb$(PGP_LANE):PulseWidth CA NMS" )
 	info( archiveFields,  "VAL" )
 }
 # CamAcquireTime_RBV (Exposure Time)
@@ -164,7 +164,7 @@ record( calcout, "$(P)$(R)CamAcquireTimeCalc" )
 # which maps it to ADCore's ADAcquireTime parameter
 record( calc, "$(P)$(R)CamAcquireTime_RBV" )
 {
-	field( INPA, "$(PGP):Ch$(PGP_LANE):Feb$(PGP_LANE):FCh0:PulseWidth_RBV CPP MS" )
+	field( INPA, "$(PGP):Ch$(PGP_LANE):Feb$(PGP_LANE):PulseWidth_RBV CPP MS" )
 #	field( INPB, "$(CAM):CamDelayScale NPP MS" )
 	field( INPB, "1000000" )
 	field( CALC, "A/B" )
@@ -619,7 +619,7 @@ record( longin, "$(P)$(R)CamEventCode_RBV" )
 
 record( ai, "$(P)$(R)CamRepRate_RBV" )
 {
-	field( INP,  "$(PGP):Ch$(PGP_LANE):Feb$(PGP_LANE):FCh0:TrigRate_RBV CPP MS" )
+	field( INP,  "$(PGP):Ch$(PGP_LANE):Feb$(PGP_LANE):TrigRate_RBV CPP MS" )
 	field( EGU,  "Hz" )
 	field( PREC, "1" )
 	field( FLNK, "$(P)$(R)CamRepDur" )
