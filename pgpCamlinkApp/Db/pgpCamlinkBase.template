@@ -194,6 +194,10 @@ record( ai, "$(P)$(R)AcquireTime_RBV" )
 # ADCore record names, as these are used to communicate ROI settings between
 # ADCore, framegrabber API, and the camera specific ROI PV's.
 # Same logic applies to the other HW ROI related PV's
+record( longout, "$(P)$(R)MinX" )
+{
+	field( FLNK, "$(P)$(R)CamMinX" )
+}
 record( longin, "$(P)$(R)CamMinX" )
 {
 	field( DTYP, "asynInt32" )
@@ -207,6 +211,11 @@ record( longout, "$(P)$(R)CamMinX_RBV" )
 	field( OMSL, "closed_loop" )
 	field( DOL,  "$(P)$(R)CamMinX CPP MS" )
 	field( OUT,  "@asyn($(PORT),$(ADDR=0),$(TIMEOUT=1))CLCAM_MIN_X" )
+	field( FLNK, "$(P)$(R)MinX_RBV" )
+}
+record( longout, "$(P)$(R)BinX" )
+{
+	field( FLNK, "$(P)$(R)CamBinX" )
 }
 record( longin, "$(P)$(R)CamBinX" )
 {
@@ -221,6 +230,11 @@ record( longout, "$(P)$(R)CamBinX_RBV" )
 	field( OMSL, "closed_loop" )
 	field( DOL,  "$(P)$(R)CamBinX CPP MS" )
 	field( OUT,  "@asyn($(PORT),$(ADDR=0),$(TIMEOUT=1))CLCAM_BIN_X" )
+	field( FLNK, "$(P)$(R)BinX_RBV" )
+}
+record( longout, "$(P)$(R)SizeX" )
+{
+	field( FLNK, "$(P)$(R)CamSizeX" )
 }
 record( longin, "$(P)$(R)CamSizeX" )
 {
@@ -235,7 +249,12 @@ record( longout, "$(P)$(R)CamSizeX_RBV" )
 	field( OMSL, "closed_loop" )
 	field( DOL,  "$(P)$(R)CamSizeX CPP MS" )
 	field( OUT,  "@asyn($(PORT),$(ADDR=0),$(TIMEOUT=1))CLCAM_SIZE_X" )
+	field( FLNK, "$(P)$(R)SizeX_RBV" )
 	info( autosaveFields, "" )
+}
+record( longout, "$(P)$(R)MinY" )
+{
+	field( FLNK, "$(P)$(R)CamMinY" )
 }
 record( longin, "$(P)$(R)CamMinY" )
 {
@@ -250,7 +269,12 @@ record( longout, "$(P)$(R)CamMinY_RBV" )
 	field( OMSL, "closed_loop" )
 	field( DOL,  "$(P)$(R)CamMinY CPP MS" )
 	field( OUT,  "@asyn($(PORT),$(ADDR=0),$(TIMEOUT=1))CLCAM_MIN_Y" )
+	field( FLNK, "$(P)$(R)MinY_RBV" )
 	info( autosaveFields, "" )
+}
+record( longout, "$(P)$(R)BinY" )
+{
+	field( FLNK, "$(P)$(R)CamBinY" )
 }
 record( longin, "$(P)$(R)CamBinY" )
 {
@@ -265,7 +289,12 @@ record( longout, "$(P)$(R)CamBinY_RBV" )
 	field( OMSL, "closed_loop" )
 	field( DOL,  "$(P)$(R)CamBinY CPP MS" )
 	field( OUT,  "@asyn($(PORT),$(ADDR=0),$(TIMEOUT=1))CLCAM_BIN_Y" )
+	field( FLNK, "$(P)$(R)BinY_RBV" )
 	info( autosaveFields, "" )
+}
+record( longout, "$(P)$(R)SizeY" )
+{
+	field( FLNK, "$(P)$(R)CamSizeY" )
 }
 record( longin, "$(P)$(R)CamSizeY" )
 {
@@ -280,6 +309,7 @@ record( longout, "$(P)$(R)CamSizeY_RBV" )
 	field( OMSL, "closed_loop" )
 	field( DOL,  "$(P)$(R)CamSizeY CPP MS" )
 	field( OUT,  "@asyn($(PORT),$(ADDR=0),$(TIMEOUT=1))CLCAM_SIZE_Y" )
+	field( FLNK, "$(P)$(R)SizeY_RBV" )
 	info( autosaveFields, "" )
 }
 
