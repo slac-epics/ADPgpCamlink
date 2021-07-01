@@ -3,8 +3,8 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 1123
-y 168
+x 1135
+y 44
 w 720
 h 640
 font "helvetica-medium-r-8.0"
@@ -782,7 +782,7 @@ fgColor index 14
 bgColor index 0
 useDisplayBg
 value {
-  "Mask"
+  "TrigMask"
 }
 endObjectProperties
 
@@ -796,7 +796,7 @@ x 140
 y 276
 w 80
 h 20
-controlPv "$(P)$(R)Feb$(CH):Mask_RBV"
+controlPv "$(P)$(R)Feb$(CH):TrigMask_RBV"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
 fgColor index 15
@@ -821,7 +821,7 @@ x 228
 y 276
 w 76
 h 18
-controlPv "$(P)$(R)Feb$(CH):Mask"
+controlPv "$(P)$(R)Feb$(CH):TrigMask"
 format "decimal"
 font "helvetica-medium-r-12.0"
 fontAlign "center"

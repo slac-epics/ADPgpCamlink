@@ -3,8 +3,8 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 153
-y 77
+x 1930
+y 124
 w 929
 h 800
 font "helvetica-medium-r-8.0"
@@ -1160,14 +1160,14 @@ minor 1
 release 1
 x 320
 y 52
-w 137
+w 38
 h 14
 font "helvetica-bold-r-12.0"
 fontAlign "center"
 fgColor index 14
 bgColor index 3
 value {
-  "PgpRxAxisMon[0].Ch[1]"
+  "PgpRx"
 }
 autoSize
 endObjectProperties
