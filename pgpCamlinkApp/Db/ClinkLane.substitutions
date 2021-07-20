@@ -376,6 +376,7 @@ file longDevRogue.template
 		NAME	= "EvrV2:TriggerDelay",
 		PATH	= "ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TriggerEventManager.EvrV2CoreTriggers.EvrV2TriggerReg[$(L)].Delay"
 		DOL		= "0"
+		EGU		= "1/125MHz"
 		PINI	= "YES"
 	}
 }
