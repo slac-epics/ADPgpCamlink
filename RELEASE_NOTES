@@ -1,6 +1,15 @@
 #
 # SLAC RELEASE_NOTES
 #
+R1.2.0 2021-07-19 Bruce Hill
+	Add support for Basler_acA2040-180kmNIR camera.
+	Fix image copy for frames > 2MB.
+	Fix hard coded lane 0 on Feb EnableTrig and DOL needs to be 0 for Trig Source
+	Change some mbbi input widgets to menu buttons
+	Eliminate redundant FCh0: sequence in PV names.
+	Add an UnknownModel.edl screen and make it default if not specified.
+	Fix limit fields for mbbo records
+
 R1.1.0 2021-05-24 Bruce Hill
 	New version for cameralink firmware v7.1.1.
 	FEB units need new firmware and fiber link moving from
