@@ -369,16 +369,7 @@ pgpRogueLib::pgpRogueLib(
 	ConfigureLclsTimingV1();
 
 	LoadConfigFile( "db/defaults_LCLS-I.txt", 0.003 );
-#if 0 // Don't think we need these Opal specific config files
-	if ( FebReady(0) )
-		LoadConfigFile( "db/cfgFeb0Opal1000.txt", 0.002 );
-	if ( FebReady(1) )
-		LoadConfigFile( "db/cfgFeb1Opal1000.txt", 0.002 );
-	if ( FebReady(2) )
-		LoadConfigFile( "db/cfgFeb2Opal1000.txt", 0.002 );
-	if ( FebReady(3) )
-		LoadConfigFile( "db/cfgFeb3Opal1000.txt", 0.002 );
-#endif
+	//LoadConfigFile( "cfg/defaults_LCLS-I.cfg", 0.003 );
 
 	// Misc python resets, etc
 #if 1
