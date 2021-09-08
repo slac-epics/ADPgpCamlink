@@ -1,6 +1,9 @@
 #
 # SLAC RELEASE_NOTES
 #
+R1.3.0 2021-09-01 Bruce Hill
+	Update to rogue/v5.9.0-0.1.0 and rogueAddrMap.h for cameralink-gateway/7.6.2
+
 R1.2.0 2021-07-19 Bruce Hill
 	Add support for Basler_acA2040-180kmNIR camera.
 	Fix image copy for frames > 2MB.
