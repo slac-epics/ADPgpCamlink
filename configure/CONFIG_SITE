@@ -52,7 +52,7 @@ endif
 
 #ROGUE_DIR=/reg/neh/home/bhill/git-wa-neh/slaclab/rogue-git
 #ROGUE_DIR=/reg/neh/home/bhill/git-wa-neh/slaclab/rogue-no-python-git
-ROGUE_DIR=$(PACKAGE_SITE_TOP)/rogue/v5.9.0-0.1.0/$(T_A)
+ROGUE_DIR=$(PACKAGE_SITE_TOP)/rogue/v5.9.3-0.1.0/$(T_A)
 
 # Specify buildroot version for linuxRT toolchain
 BUILDROOT	:= buildroot-2019.08-x86_64
