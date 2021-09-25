@@ -14,6 +14,8 @@ include $(TOP)/configure/CONFIG
 # db templates
 DB += pgpCamlinkBase.template
 DB += ClinkPcie.template
+DB += SfpEnums.template
+DB += SfpTransceiver.db
 DB += TriggerEventManager.template
 DB += ClinkFeb.template
 DB += ClinkLane.db

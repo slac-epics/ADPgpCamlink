@@ -1,0 +1,133 @@
+# Sfp Ethernet Transceiver firmware module
+# Based on SFF-8472 Rev 12.3.2 (15MARCH2021)
+# https://members.snia.org/document/dl/27187
+
+# Required macros
+#	P		EPICS Prefix1
+#	R		EPICS Prefix2
+#	PTOP	Pyrogue path top
+#	N		Sfp number
+
+file SfpEnums.template
+{
+	{
+		P		= "\$(P)"
+	}
+}
+
+file liDevRogue.template
+{
+	{
+		NAME	= "Sfp$(N):Diagnostics0"
+		PATH	= "$(PTOP).Sfp[$(N)].Diagnostics[0]"
+		PYPV	= "$(PTOP):Sfp[$(N)]:Diagnostics[0]"
+		DESC	= "Temperature MSB"
+		SCAN	= "1 second"
+		SDIS	= "$(P)$(R)Sfp$(N):Empty"
+	}
+	{
+		PATH	= "$(PTOP).Sfp[$(N)].Diagnostics[1]"
+		NAME	= "Sfp$(N):Diagnostics1"
+		PYPV	= "$(PTOP):Sfp[$(N)]:Diagnostics[1]"
+		DESC	= "Temperature LSB"
+		SCAN	= "1 second"
+		SDIS	= "$(P)$(R)Sfp$(N):Empty"
+	}
+	{
+		PATH	= "$(PTOP).Sfp[$(N)].Diagnostics[2]"
+		NAME	= "Sfp$(N):Diagnostics2"
+		PYPV	= "$(PTOP):Sfp[$(N)]:Diagnostics[2]"
+		DESC	= "Vcc Supply Voltage MSB"
+		SCAN	= "1 second"
+		SDIS	= "$(P)$(R)Sfp$(N):Empty"
+	}
+	{
+		PATH	= "$(PTOP).Sfp[$(N)].Diagnostics[3]"
+		NAME	= "Sfp$(N):Diagnostics3"
+		PYPV	= "$(PTOP):Sfp[$(N)]:Diagnostics[3]"
+		DESC	= "Vcc Supply Voltage LSB"
+		SCAN	= "1 second"
+		SDIS	= "$(P)$(R)Sfp$(N):Empty"
+	}
+	{
+		PATH	= "$(PTOP).Sfp[$(N)].Diagnostics[4]"
+		NAME	= "Sfp$(N):Diagnostics4"
+		PYPV	= "$(PTOP):Sfp[$(N)]:Diagnostics[4]"
+		DESC	= "TX Bias Current MSB"
+		SCAN	= "1 second"
+		SDIS	= "$(P)$(R)Sfp$(N):Empty"
+	}
+	{
+		PATH	= "$(PTOP).Sfp[$(N)].Diagnostics[5]"
+		NAME	= "Sfp$(N):Diagnostics5"
+		PYPV	= "$(PTOP):Sfp[$(N)]:Diagnostics[5]"
+		DESC	= "TX Bias Current LSB"
+		SCAN	= "1 second"
+		SDIS	= "$(P)$(R)Sfp$(N):Empty"
+	}
+	{
+		PATH	= "$(PTOP).Sfp[$(N)].Diagnostics[6]"
+		NAME	= "Sfp$(N):Diagnostics6"
+		PYPV	= "$(PTOP):Sfp[$(N)]:Diagnostics[6]"
+		DESC	= "TX Power MSB"
+		SCAN	= "1 second"
+		SDIS	= "$(P)$(R)Sfp$(N):Empty"
+	}
+	{
+		PATH	= "$(PTOP).Sfp[$(N)].Diagnostics[7]"
+		NAME	= "Sfp$(N):Diagnostics7"
+		PYPV	= "$(PTOP):Sfp[$(N)]:Diagnostics[7]"
+		DESC	= "TX Power LSB"
+		SCAN	= "1 second"
+		SDIS	= "$(P)$(R)Sfp$(N):Empty"
+	}
+	{
+		PATH	= "$(PTOP).Sfp[$(N)].Diagnostics[8]"
+		NAME	= "Sfp$(N):Diagnostics8"
+		PYPV	= "$(PTOP):Sfp[$(N)]:Diagnostics[8]"
+		DESC	= "RX Power MSB"
+		SCAN	= "1 second"
+		SDIS	= "$(P)$(R)Sfp$(N):Empty"
+	}
+	{
+		PATH	= "$(PTOP).Sfp[$(N)].Diagnostics[9]"
+		NAME	= "Sfp$(N):Diagnostics9"
+		PYPV	= "$(PTOP):Sfp[$(N)]:Diagnostics[9]"
+		DESC	= "RX Power LSB"
+		SCAN	= "1 second"
+		SDIS	= "$(P)$(R)Sfp$(N):Empty"
+	}
+	{
+		PATH	= "$(PTOP).Sfp[$(N)].Diagnostics[10]"
+		NAME	= "Sfp$(N):Diagnostics10"
+		PYPV	= "$(PTOP):Sfp[$(N)]:Diagnostics[10]"
+		DESC	= "Laser Temp MSB"
+		SCAN	= "1 second"
+		SDIS	= "$(P)$(R)Sfp$(N):Empty"
+	}
+	{
+		PATH	= "$(PTOP).Sfp[$(N)].Diagnostics[11]"
+		NAME	= "Sfp$(N):Diagnostics11"
+		PYPV	= "$(PTOP):Sfp[$(N)]:Diagnostics[11]"
+		DESC	= "Laser Temp LSB"
+		SCAN	= "1 second"
+		SDIS	= "$(P)$(R)Sfp$(N):Empty"
+	}
+	{
+		PATH	= "$(PTOP).Sfp[$(N)].Diagnostics[12]"
+		NAME	= "Sfp$(N):Diagnostics12"
+		PYPV	= "$(PTOP):Sfp[$(N)]:Diagnostics[12]"
+		DESC	= "TEC Current MSB"
+		SCAN	= "1 second"
+		SDIS	= "$(P)$(R)Sfp$(N):Empty"
+	}
+	{
+		PATH	= "$(PTOP).Sfp[$(N)].Diagnostics[13]"
+		NAME	= "Sfp$(N):Diagnostics13"
+		PYPV	= "$(PTOP):Sfp[$(N)]:Diagnostics[13]"
+		DESC	= "TEC Current LSB"
+		SCAN	= "1 second"
+		SDIS	= "$(P)$(R)Sfp$(N):Empty"
+	}
+}
+

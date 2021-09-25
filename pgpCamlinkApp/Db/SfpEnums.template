@@ -1,0 +1,154 @@
+# Sfp Ethernet Transceiver firmware PVs
+# Based on SFF-8472 Rev 12.3.2 (15MARCH2021)
+# https://members.snia.org/document/dl/27187
+#
+# Only one per Sfp
+#
+# Required macros:
+#	P				- Prefix
+#	R				- Region, common asyn PV prefix is $(P)$(R)
+#	B				- PGP Board number
+#	L				- PGP Lane number
+#	N				- SFP number
+#	PTOP			- Rogue Path Top for Sfp modules
+#
+# Optional macros
+#
+record( calc, "$(P)$(R)Sfp$(N):Empty" )
+{
+	field( INPA, "$(P)$(R)Sfp$(N):Type_RBV.SEVR CPP NMS" )
+	field( CALC, "A!=0" )
+}
+
+record( mbbi, "$(P)$(R)Sfp$(N):Type_RBV" )
+{
+	field( DESC, "Type of SFP transceiver" )
+	field( DTYP, "RogueMBBI" )
+	field( INP,  "@B$(B) L$(L) $(PTOP).Sfp[$(N)].Identifier" )
+	field( SCAN, "10 second" )
+	field( SDIS, "$(P)$(R)PgpMon:RxRemLinkReady_RBV CP" )
+#{
+	field( ZRVL, "0" ) field( ZRST, "Unspecified" )
+	field( ONVL, "3" ) field( ONST, "SFP" )
+	field( TWVL, "12") field( TWST, "QSFP" )
+	field( THVL, "13") field( THST, "QSFP+" )
+	field( FRVL, "30") field( FRST, "QSFP+" )
+	field( FVVL, "23") field( FVST, "microQSFP" )
+	field( SXVL, "24") field( SXST, "QSFP-DD" )
+	field( SVVL, "25") field( SVST, "OSFP" )
+	field( EIVL, "26") field( EIST, "SFP-DD" )
+	field( NIVL, "27") field( NIST, "DSFP" )
+	field( TEVL, "28") field( TEST, "MiniLinkx4" )
+	field( TWVL, "29") field( TWST, "MiniLinkx8" )
+#	field( XXVL, "0") field( XXST, "Unspecified" )
+#	field( XXVL, "1") field( XXST, "GBIC" )
+#	field( XXVL, "2") field( XXST, "Motherboard" )
+#	field( XXVL, "3") field( XXST, "SFP" )
+#	field( XXVL, "4") field( XXST, "XBI" )
+#	field( XXVL, "5") field( XXST, "XENPAK" )
+#	field( XXVL, "6") field( XXST, "XFP" )
+#	field( XXVL, "7") field( XXST, "XFF" )
+#	field( XXVL, "8") field( XXST, "XFP-E" )
+#	field( XXVL, "9") field( XXST, "XPAK" )
+#	field( XXVL, "10") field( XXST, "X2" )
+#	field( XXVL, "11") field( XXST, "DWDM-SFP" )
+#	field( XXVL, "12") field( XXST, "QSFP" )
+#	field( XXVL, "13") field( XXST, "QSFP+" )
+#	field( XXVL, "14") field( XXST, "CXP" )
+#	field( XXVL, "15") field( XXST, "HD-4X" )
+#	field( XXVL, "16") field( XXST, "HD-8X" )
+#	field( XXVL, "17") field( XXST, "QSFP28" )
+#	field( XXVL, "18") field( XXST, "CXP28" )
+#	field( XXVL, "19") field( XXST, "CDFP-Style1/2" )
+#	field( XXVL, "20") field( XXST, "HD-4X-Fanout" )
+#	field( XXVL, "21") field( XXST, "HD-8X-Fanout" )
+#	field( XXVL, "22") field( XXST, "CDFP-Style3" )
+#	field( XXVL, "23") field( XXST, "microQSFP" )
+#	field( XXVL, "24") field( XXST, "QSFP-DD" )
+#	field( XXVL, "25") field( XXST, "OSFP" )
+#	field( XXVL, "26") field( XXST, "SFP-DD" )
+#	field( XXVL, "27") field( XXST, "DSFP" )
+#	field( XXVL, "28") field( XXST, "MiniLinkx4" )
+#	field( XXVL, "29") field( XXST, "MiniLinkx8" )
+#	field( XXVL, "30") field( XXST, "QSFP+" )
+#}
+	info( autosaveFields, "" )
+}
+# Python path
+alias( "$(P)$(R)Sfp$(N):Type_RBV", "$(P)$(R)$(PTOP):Sfp[$(N)]:Identifier" )
+
+record( mbbi, "$(P)$(R)Sfp$(N):Connector_RBV" )
+{
+	field( DESC, "Type of Connector" )
+	field( DTYP, "RogueMBBI" )
+	field( INP,  "@B$(B) L$(L) $(PTOP).Sfp[$(N)].Connector" )
+	field( SDIS, "$(P)$(R)Sfp$(N):Empty" )
+	field( PINI, "YES" )
+#{
+	field( ZRVL, "0" ) field( ZRST, "Unspecified" )
+	field( ONVL, "1" ) field( ONST, "SC" )
+	field( TWVL, "2" ) field( TWST, "FC Style1 copper" )
+	field( THVL, "3" ) field( THST, "FC Style2 copper" )
+#	field( XXVL, "4" ) field( XXST, "BNC/TNC" )
+#	field( XXVL, "5" ) field( XXST, "FC coaxial headers" )
+#	field( XXVL, "6" ) field( XXST, "Fiber Jack" )
+	field( FVVL, "7" ) field( FVST, "LC" )
+#	field( XXVL, "8" ) field( XXST, "MT-RJ" )
+#	field( XXVL, "9" ) field( XXST, "MU" )
+#	field( XXVL, "10" ) field( XXST, "SG" )
+#	field( XXVL, "11" ) field( XXST, "Optical pigtail" )
+#	field( XXVL, "12" ) field( XXST, "MPO 1x12" )
+#	field( XXVL, "13" ) field( XXST, "MPO 2x16" )
+#	field( XXVL, "32" ) field( XXST, "HSSDC II" )
+#	field( XXVL, "33" ) field( XXST, "Copper Pigtail" )
+#	field( XXVL, "34" ) field( XXST, "RJ45" )
+#	field( XXVL, "35" ) field( XXST, "No separable connector" )
+#	field( XXVL, "36" ) field( XXST, "MXC 2x16" )
+#	field( XXVL, "37" ) field( XXST, "CS optical connector" )
+#	field( XXVL, "38" ) field( XXST, "SN" )
+#	field( XXVL, "39" ) field( XXST, "MPO 2x12" )
+#	field( XXVL, "40" ) field( XXST, "MPO 1x16" )
+#}
+	info( autosaveFields, "" )
+}
+# Python path
+alias( "$(P)$(R)Sfp$(N):Connector_RBV", "$(P)$(R)$(PTOP):Sfp[$(N)]:Connector" )
+
+record( calc, "$(P)$(R)Sfp$(N):RxWatts_RBV" )
+{
+	field( INPA, "$(P)$(R)Sfp$(N):Diagnostics8 CPP MS" )  # RX Power MSB
+	field( INPB, "$(P)$(R)Sfp$(N):Diagnostics9 CPP MS" )  # RX Power LSB
+	field( CALC, "((A<<8)|B)*0.001" )
+	field( EGU,  "mW" )
+}
+
+record( calc, "$(P)$(R)Sfp$(N):RxPower_RBV" )
+{
+	field( INPA, "$(P)$(R)Sfp$(N):RxWatts_RBV CPP MS" )
+	field( CALC, "10*LOG(A!=0?A:0.0001)" )
+	field( EGU,  "dBm" )
+}
+
+record( calc, "$(P)$(R)Sfp$(N):TxWatts_RBV" )
+{
+	field( INPA, "$(P)$(R)Sfp$(N):Diagnostics6 CPP MS" )  # TX Power MSB
+	field( INPB, "$(P)$(R)Sfp$(N):Diagnostics7 CPP MS" )  # TX Power LSB
+	field( CALC, "((A<<8)|B)*0.001" )
+	field( EGU,  "mW" )
+}
+
+record( calc, "$(P)$(R)Sfp$(N):TxPower_RBV" )
+{
+	field( INPA, "$(P)$(R)Sfp$(N):TxWatts_RBV CPP MS" )
+	field( CALC, "10*LOG(A!=0?A:0.0001)" )
+	field( EGU,  "dBm" )
+}
+
+record( calc, "$(P)$(R)Sfp$(N):Temperture_RBV" )
+{
+	field( INPA, "$(P)$(R)Sfp$(N):Diagnostics0 CPP MS" )  # Temperature MSB
+	field( INPB, "$(P)$(R)Sfp$(N):Diagnostics1 CPP MS" )  # Temperature LSB
+	field( CALC, "((A<<8)|B)/256" )
+	field( EGU,  "C" )
+}
+
