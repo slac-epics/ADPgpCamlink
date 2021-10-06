@@ -26,7 +26,7 @@ record( mbbi, "$(P)$(R)Sfp$(N):Type_RBV" )
 	field( DTYP, "RogueMBBI" )
 	field( INP,  "@B$(B) L$(L) $(PTOP).Sfp[$(N)].Identifier" )
 	field( SCAN, "10 second" )
-	field( SDIS, "$(P)$(R)PgpMon:RxRemLinkReady_RBV CP" )
+	field( SDIS, "$(P)$(R)Sfp$(N):Empty" )
 #{
 	field( ZRVL, "0" ) field( ZRST, "Unspecified" )
 	field( ONVL, "3" ) field( ONST, "SFP" )
@@ -118,7 +118,7 @@ record( calc, "$(P)$(R)Sfp$(N):RxWatts_RBV" )
 {
 	field( INPA, "$(P)$(R)Sfp$(N):Diagnostics8 CPP MS" )  # RX Power MSB
 	field( INPB, "$(P)$(R)Sfp$(N):Diagnostics9 CPP MS" )  # RX Power LSB
-	field( CALC, "((A<<8)|B)*0.001" )
+	field( CALC, "((A<<8)|B)*0.0001" )
 	field( EGU,  "mW" )
 }
 
@@ -133,7 +133,7 @@ record( calc, "$(P)$(R)Sfp$(N):TxWatts_RBV" )
 {
 	field( INPA, "$(P)$(R)Sfp$(N):Diagnostics6 CPP MS" )  # TX Power MSB
 	field( INPB, "$(P)$(R)Sfp$(N):Diagnostics7 CPP MS" )  # TX Power LSB
-	field( CALC, "((A<<8)|B)*0.001" )
+	field( CALC, "((A<<8)|B)*0.0001" )
 	field( EGU,  "mW" )
 }
 
