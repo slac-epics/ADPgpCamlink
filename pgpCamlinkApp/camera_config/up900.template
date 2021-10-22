@@ -318,12 +318,12 @@ record( aSub, "$(P)$(R)Up900Shutter_ASub" )
 {
 	field( SCAN,	"Passive" )
 	field( SNAM,	"Up900Shutter_Process" )
-	field( FTA,		"DOUBLE")	field( INPA,	"$(P)$(R)CamAcquireTime		  PP  MS" )
-	field( FTB,		"LONG"	)	field( INPB,	"$(P)$(R)CamTriggerMode		  PP  MS" )
+	field( FTA,		"DOUBLE")	field( INPA,	"$(P)$(R)CamAcquireTime PP MS" )
+	field( FTB,		"LONG"	)	field( INPB,	"$(P)$(R)CamTriggerMode PP MS" )
 	field( FTC,		"DOUBLE")	field( INPC,	"$(PW_SCALE=1e9)" )
 
-	field( FTVA,	"LONG"	)	field( OUTA,	"$(P)$(R)Up900RawShutterSpeed PP  MS" )
-	field( FTVB,	"LONG"	)	field( OUTB,	"$(P)$(R)Up900RawShutterMode  PP  MS" )
+	field( FTVA,	"LONG"	)	field( OUTA,	"$(P)$(R)Up900RawShutterSpeed PP MS" )
+	field( FTVB,	"LONG"	)	field( OUTB,	"$(P)$(R)Up900RawShutterMode  PP MS" )
 	field( FTVC,	"DOUBLE")	field( OUTC,	"$(PGP):Ch$(PGP_LANE):Feb$(PGP_LANE):PulseWidth CA NMS" )
 }
 
@@ -336,8 +336,8 @@ record( aSub, "$(P)$(R)Up900Shutter_RBV_ASub" )
 	field( FTC,		"DOUBLE")	field( INPC,	"$(PGP):Ch$(PGP_LANE):Feb$(PGP_LANE):PulseWidth_RBV CPP MS" )
 	field( FTD,		"DOUBLE")	field( INPD,	"$(PW_SCALE=1e9)" )
 
-	field( FTVA,	"DOUBLE")	field( OUTA,	"$(P)$(R)CamAcquireTime_RBV  PP  MS" )
-	field( FTVB,	"LONG"	)	field( OUTB,	"$(P)$(R)CamTriggerMode_RBV  PP  MS" )
+	field( FTVA,	"DOUBLE")	field( OUTA,	"$(P)$(R)CamAcquireTime_RBV PP MS" )
+	field( FTVB,	"LONG"	)	field( OUTB,	"$(P)$(R)CamTriggerMode_RBV PP MS" )
 }
 
 
