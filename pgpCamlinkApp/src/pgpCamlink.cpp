@@ -1755,9 +1755,11 @@ int	pgpCamlink::RequestMinX(	size_t	value	)
 	{
 		m_MinXReq	= value;
 		m_fReconfig	= true;
+		// Update the AreaDetector parameter
+		setIntegerParam( SerMinX,	m_MinXReq	);
 		if ( DEBUG_PGP_CAMLINK >= 2 )
 		{
-			printf(	"%s: Requesting MinX %zu ...\n", functionName, value );
+			printf(	"%s: Requesting MinX %zu ...\n", functionName, m_MinXReq );
 		}
 	}
 	return asynSuccess;
