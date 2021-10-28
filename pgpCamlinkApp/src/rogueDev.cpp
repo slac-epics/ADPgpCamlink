@@ -73,8 +73,7 @@ rogueDev::rogueDev(
 	int						board,					// board
 	int						lane,					// channel
 	const char			*	modelName,
-	const char			*	clMode,
-	bool					fLcls2Timing		)
+	const char			*	clMode	)
 	:
 		m_fExitApp(			false			    ),
 		m_fReconfig(		false			    ),
@@ -82,7 +81,6 @@ rogueDev::rogueDev(
 		m_pRogueLib(				NULL				),
 		m_board(			board				),
 		m_lane(				lane				),	// TODO: Nuke
-		m_fLcls2Timing(		fLcls2Timing		),
 		m_RogueName(		rogueName			),
 		m_ConfigFile(							),
 		m_DrvVersion(							),
@@ -129,7 +127,6 @@ int rogueDev::CreateRogue(
 	const char *	clMode,
 	size_t			sizeX,
 	size_t			sizeY,
-	bool			fLcls2Timing,
 	int				maxBuffers,
 	size_t			maxMemory,
 	int				priority,
@@ -169,7 +166,7 @@ int rogueDev::CreateRogue(
     if ( DEBUG_PGP_ROGUE >= 1 )
         cout << "Creating rogueDev: " << string(rogueName) << endl;
     rogueDev	* pRogue = new rogueDev(	rogueName, board, lane, modelName,
-											clMode, fLcls2Timing );
+											clMode );
     assert( pRogue != NULL );
 
     int	status	= pRogue->ConnectRogue( );
@@ -821,21 +818,14 @@ unsigned int rogueDev::GetTraceLevel()
 extern "C" int
 rogueDevConfig(
 	const char	*	rogueName,
-	int				board,
-//	int				lane,
-//	const char	*	modelName,
-//	const char	*	clMode,
-//	size_t			sizeX,
-//	size_t			sizeY,
-	bool			fLcls2Timing )
+	int				board )
 {
     if (  rogueName == NULL || strlen(rogueName) == 0 )
     {
         errlogPrintf( "NULL or zero length camera name.\nUsage: rogueDevConfig(name,board,chan,config)\n");
         return  -1;
     }
-    if ( rogueDev::CreateRogue(	rogueName, board, 0, "noModel", "Base",
-									10, 10, fLcls2Timing ) != 0 )
+    if ( rogueDev::CreateRogue(	rogueName, board, 0, "noModel", "Base", 10, 10 ) != 0 )
     {
         errlogPrintf( "rogueDevConfig failed for camera %s!\n", rogueName );
 		if ( DEBUG_PGP_ROGUE >= 4 )
@@ -1028,15 +1018,14 @@ void pgpLoadConfigRegister(void)
 //	int rogueDevConfig( const char * rogueName, int board, int lane, const char * modelName )
 static const iocshArg		rogueDevConfigArg0	= { "name",			iocshArgString };
 static const iocshArg		rogueDevConfigArg1	= { "board",		iocshArgInt };
-static const iocshArg		rogueDevConfigArg2	= { "fLcls2Timing",	iocshArgInt };
-static const iocshArg	*	rogueDevConfigArgs[3]	=
+static const iocshArg	*	rogueDevConfigArgs[2]	=
 {
-	&rogueDevConfigArg0, &rogueDevConfigArg1, &rogueDevConfigArg2
+	&rogueDevConfigArg0, &rogueDevConfigArg1
 };
-static const iocshFuncDef   rogueDevConfigFuncDef	= { "rogueDevConfig", 3, rogueDevConfigArgs };
+static const iocshFuncDef   rogueDevConfigFuncDef	= { "rogueDevConfig", 2, rogueDevConfigArgs };
 static int  rogueDevConfigCallFunc( const iocshArgBuf * args )
 {
-    return rogueDevConfig(	args[0].sval, args[1].ival, args[2].ival );
+    return rogueDevConfig(	args[0].sval, args[1].ival );
 }
 void rogueDevConfigRegister(void)
 {

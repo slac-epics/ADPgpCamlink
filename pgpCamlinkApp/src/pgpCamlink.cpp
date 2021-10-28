@@ -150,7 +150,6 @@ pgpCamlink::pgpCamlink(
 	const char			*	clMode,
 	size_t					sizeX,
 	size_t					sizeY,
-	bool					fLcls2Timing,
 	int						maxBuffers,				// 0 = unlimited
 	size_t					maxMemory,				// 0 = unlimited
 	int						priority,				// 0 = default 50, high is 90
@@ -169,7 +168,6 @@ pgpCamlink::pgpCamlink(
 		m_pDev(				NULL				),
 		m_board(			board				),
 		m_lane(				lane				),
-		m_fLcls2Timing(		fLcls2Timing		),
 		m_pNDArray(			NULL				),
 		m_priorTimeStamp(						),
 		m_CameraClass(							),
@@ -325,7 +323,6 @@ int pgpCamlink::CreateCamera(
 	const char *	clMode,
 	size_t			sizeX,
 	size_t			sizeY,
-	bool			fLcls2Timing,
 	int				maxBuffers,
 	size_t			maxMemory,
 	int				priority,
@@ -365,7 +362,7 @@ int pgpCamlink::CreateCamera(
     if ( DEBUG_PGP_CAMLINK >= 1 )
         cout << "Creating pgpCamlink: " << string(cameraName) << endl;
     pgpCamlink	* pCamera = new pgpCamlink(	cameraName, board, lane, modelName,
-											clMode, sizeX, sizeY, fLcls2Timing ,
+											clMode, sizeX, sizeY,
 											maxBuffers, maxMemory, priority, stackSize	);
     assert( pCamera != NULL );
 
@@ -2281,8 +2278,7 @@ pgpCamlinkConfig(
 	const char	*	modelName,
 	const char	*	clMode,
 	size_t			sizeX,
-	size_t			sizeY,
-	bool			fLcls2Timing )
+	size_t			sizeY )
 {
     if (  cameraName == NULL || strlen(cameraName) == 0 )
     {
@@ -2300,7 +2296,7 @@ pgpCamlinkConfig(
         return  -1;
     }
     if ( pgpCamlink::CreateCamera(	cameraName, board, lane, modelName, clMode,
-									sizeX, sizeY, fLcls2Timing ) != 0 )
+									sizeX, sizeY ) != 0 )
     {
         errlogPrintf( "pgpCamlinkConfig failed for camera %s, config %s, mode %s!\n", cameraName, modelName, clMode );
 		if ( DEBUG_PGP_CAMLINK >= 4 )
@@ -2319,7 +2315,6 @@ pgpCamlinkConfigFull(
 	const char	*	clMode,
 	size_t			sizeX,
 	size_t			sizeY,
-	bool			fLcls2Timing,
 	int				maxBuffers,				// 0 = unlimited
 	size_t			maxMemory,				// 0 = unlimited
 	int				priority,				// 0 = default 50, high is 90
@@ -2342,7 +2337,7 @@ pgpCamlinkConfigFull(
     }
 
     if ( pgpCamlink::CreateCamera(	cameraName, board, lane, modelName, clMode,
-									sizeX, sizeY, fLcls2Timing ) != 0 )
+									sizeX, sizeY ) != 0 )
     {
         errlogPrintf( "pgpCamlinkConfig failed for camera %s!\n", cameraName );
 		if ( DEBUG_PGP_CAMLINK >= 4 )
@@ -2404,17 +2399,16 @@ static const iocshArg		pgpCamlinkConfigArg3	= { "modelName",	iocshArgString };
 static const iocshArg		pgpCamlinkConfigArg4	= { "clMode",		iocshArgString };
 static const iocshArg		pgpCamlinkConfigArg5	= { "sizeX",		iocshArgInt };
 static const iocshArg		pgpCamlinkConfigArg6	= { "sizeX",		iocshArgInt };
-static const iocshArg		pgpCamlinkConfigArg7	= { "fLcls2Timing",	iocshArgInt };
-static const iocshArg	*	pgpCamlinkConfigArgs[8]	=
+static const iocshArg	*	pgpCamlinkConfigArgs[7]	=
 {
 	&pgpCamlinkConfigArg0, &pgpCamlinkConfigArg1, &pgpCamlinkConfigArg2, &pgpCamlinkConfigArg3,
-	&pgpCamlinkConfigArg4, &pgpCamlinkConfigArg5, &pgpCamlinkConfigArg6, &pgpCamlinkConfigArg7
+	&pgpCamlinkConfigArg4, &pgpCamlinkConfigArg5, &pgpCamlinkConfigArg6
 };
-static const iocshFuncDef   pgpCamlinkConfigFuncDef	= { "pgpCamlinkConfig", 8, pgpCamlinkConfigArgs };
+static const iocshFuncDef   pgpCamlinkConfigFuncDef	= { "pgpCamlinkConfig", 7, pgpCamlinkConfigArgs };
 static int  pgpCamlinkConfigCallFunc( const iocshArgBuf * args )
 {
     return pgpCamlinkConfig(	args[0].sval, args[1].ival, args[2].ival, args[3].sval,
-								args[4].sval, args[5].ival, args[6].ival, args[7].ival );
+								args[4].sval, args[5].ival, args[6].ival  );
 }
 void pgpCamlinkConfigRegister(void)
 {
@@ -2430,21 +2424,20 @@ static const iocshArg		pgpCamlinkConfigFullArg3	= { "cfgFile",		iocshArgString }
 static const iocshArg		pgpCamlinkConfigFullArg4	= { "clMode",		iocshArgString };
 static const iocshArg		pgpCamlinkConfigFullArg5	= { "sizeX",		iocshArgInt };
 static const iocshArg		pgpCamlinkConfigFullArg6	= { "sizeX",		iocshArgInt };
-static const iocshArg		pgpCamlinkConfigFullArg7	= { "fLcls2Timing",	iocshArgInt };
-static const iocshArg		pgpCamlinkConfigFullArg8	= { "maxBuffers",	iocshArgInt };
-static const iocshArg		pgpCamlinkConfigFullArg9	= { "maxMemory",	iocshArgInt };
-static const iocshArg		pgpCamlinkConfigFullArg10	= { "priority",		iocshArgInt };
-static const iocshArg		pgpCamlinkConfigFullArg11	= { "stackSize",	iocshArgInt };
+static const iocshArg		pgpCamlinkConfigFullArg7	= { "maxBuffers",	iocshArgInt };
+static const iocshArg		pgpCamlinkConfigFullArg8	= { "maxMemory",	iocshArgInt };
+static const iocshArg		pgpCamlinkConfigFullArg9	= { "priority",		iocshArgInt };
+static const iocshArg		pgpCamlinkConfigFullArg10	= { "stackSize",	iocshArgInt };
 // There has to be a better way to handle triggerPV, delayPV, and syncPV
 //static const iocshArg		pgpCamlinkConfigFullArgX	= { "triggerPV",	iocshArgString };
 //static const iocshArg		pgpCamlinkConfigFullArgX	= { "delayPV",		iocshArgString };
 //static const iocshArg		pgpCamlinkConfigFullArgX	= { "syncPV",		iocshArgString };
-static const iocshArg	*	pgpCamlinkConfigFullArgs[12]	=
+static const iocshArg	*	pgpCamlinkConfigFullArgs[11]	=
 {
 	&pgpCamlinkConfigFullArg0, &pgpCamlinkConfigFullArg1, &pgpCamlinkConfigFullArg2,
 	&pgpCamlinkConfigFullArg3, &pgpCamlinkConfigFullArg4, &pgpCamlinkConfigFullArg5,
 	&pgpCamlinkConfigFullArg6, &pgpCamlinkConfigFullArg7, &pgpCamlinkConfigFullArg8,
-	&pgpCamlinkConfigFullArg9, &pgpCamlinkConfigFullArg10, &pgpCamlinkConfigFullArg11
+	&pgpCamlinkConfigFullArg9, &pgpCamlinkConfigFullArg10
 };
 static const iocshFuncDef   pgpCamlinkConfigFullFuncDef	= { "pgpCamlinkConfigFull", 12, pgpCamlinkConfigFullArgs };
 static int  pgpCamlinkConfigFullCallFunc( const iocshArgBuf * args )
@@ -2452,7 +2445,7 @@ static int  pgpCamlinkConfigFullCallFunc( const iocshArgBuf * args )
     return pgpCamlinkConfigFull(
 		args[0].sval, args[1].ival, args[2].ival, args[3].sval, args[4].sval,
 		args[5].ival, args[6].ival, args[7].ival, args[8].ival, args[9].ival,
-		args[10].ival, args[11].ival );
+		args[10].ival );
 }
 void pgpCamlinkConfigFullRegister(void)
 {

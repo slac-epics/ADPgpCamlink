@@ -79,7 +79,6 @@ public:		//	Public member functions
 				const char			*	clMode,
 				size_t					sizeX,
 				size_t					sizeY,
-				bool					fLcls2Timing,
 				int						maxBuffers	= 0,	// 0 = unlimited
 				size_t					maxMemory	= 0,	// 0 = unlimited
 				int						priority	= 0,	// 0 = default 50, high is 90
@@ -379,7 +378,6 @@ public:		//	Public class functions
 				const char			*	clMode,
 				size_t					sizeX,
 				size_t					sizeY,
-				bool					fLcls2Timing,
 				int						maxBuffers	= 0,	// 0 = unlimited
 				size_t					maxMemory	= 0,	// 0 = unlimited
 				int						priority	= 0,	// 0 = default 50, high is 90
@@ -424,7 +422,6 @@ private:	//	Private member variables
 
 	unsigned int	m_board;		// index of Pgpcamlink card
 	unsigned int	m_lane;			// lane on  Pgpcamlink card
-	bool			m_fLcls2Timing;	// true to initialize w/ LCLS2 timing, false for LCLS1
 
 	NDArray		*	m_pNDArray;
 	epicsTimeStamp	m_priorTimeStamp;	// Last timestamp for this event number
@@ -600,8 +597,7 @@ extern "C" int	pgpCamlinkConfig(
 	const char	*	modelName,
 	const char	*	clMode,
 	size_t			sizeX,
-	size_t			sizeY,
-	bool			fLcls2Timing );
+	size_t			sizeY );
 extern "C" int	pgpCamlinkConfigFull(
 	const char	*	cameraName,
 	int				board,
@@ -610,7 +606,6 @@ extern "C" int	pgpCamlinkConfigFull(
 	const char	*	clMode,
 	size_t			sizeX,
 	size_t			sizeY,
-	bool			fLcls2Timing,
 	int				maxBuffers,		// 0 = unlimited
 	size_t			maxMemory,		// 0 = unlimited
 	int				priority,		// 0 = default 50, high is 90

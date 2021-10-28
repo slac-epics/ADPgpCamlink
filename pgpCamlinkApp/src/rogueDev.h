@@ -38,8 +38,7 @@ public:		//	Public member functions
 				int						board,
 				int						lane,
 				const char			*	modelName,
-				const char			*	clMode,
-				bool					fLcls2Timing
+				const char			*	clMode
 				);
 
 	/// Destructor
@@ -172,7 +171,6 @@ public:		//	Public class functions
 				const char			*	clMode,
 				size_t					sizeX,
 				size_t					sizeY,
-				bool					fLcls2Timing,
 				int						maxBuffers	= 0,	// 0 = unlimited
 				size_t					maxMemory	= 0,	// 0 = unlimited
 				int						priority	= 0,	// 0 = default 50, high is 90
@@ -212,7 +210,6 @@ private:	//	Private member variables
 
 	unsigned int	m_board;		// index of Pgpcamlink card
 	unsigned int	m_lane;			// lane on  Pgpcamlink card
-	bool			m_fLcls2Timing;	// true to initialize w/ LCLS2 timing, false for LCLS1
 
 	std::string		m_RogueClass;	// Manufacturer of camera
 //	std::string		m_BuildStamp;	// camera info string
@@ -250,12 +247,6 @@ extern int				DEBUG_PGP_ROGUE;
 /* "C" linkage Configuration functions for iocsh */
 extern "C" int	rogueDevConfig(
 	const char	*	rogueName,
-	int				board,
-//	int				lane,
-//	const char	*	modelName,
-//	const char	*	clMode,
-//	size_t			sizeX,
-//	size_t			sizeY,
-	bool			fLcls2Timing );
+	int				board );
 
 #endif	/*	PGP_ROGUE_H	*/
