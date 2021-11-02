@@ -95,6 +95,10 @@ public:		//	Public member functions
 
 	void FebPllConfig();
 
+	void GetEventBuilderBlowoffPath( unsigned int triggerNum, std::string & retPath );
+	void GetEventBuilderSoftRstPath( unsigned int triggerNum, std::string & retPath );
+	void GetTriggerMasterEnablePath( unsigned int triggerNum, std::string & retPath );
+
 	bool FebReady( size_t iFeb );
 
 	void ResetCounters();

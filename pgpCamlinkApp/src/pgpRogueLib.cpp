@@ -118,43 +118,81 @@ void pgpRogueLib::ResetCounters( )
 	setVariable( "ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TimingFrameRx.ClearRxCounters", 0 );
 }
 
+void pgpRogueLib::GetEventBuilderBlowoffPath( unsigned int triggerNum, std::string & retPath )
+{
+#ifdef SUPPORT_CLINK
+	char		varPath[256];
+	const char * pszBlowoff		 = "ClinkDevRoot.ClinkPcie.Application.AppLane[%u].EventBuilder.Blowoff";
+	snprintf( varPath, 256, pszBlowoff, triggerNum );
+	retPath	= varPath;
+#else  /* not SUPPORT_CLINK */
+	retPath = "Top.BatcherEventBuilder.Blowoff";
+#endif  /* SUPPORT_CLINK */
+}
+
+
+void pgpRogueLib::GetTriggerMasterEnablePath( unsigned int triggerNum, std::string & retPath )
+{
+	char		varPath[256];
+#ifdef SUPPORT_CLINK
+	const char * pszMasterEnable = "ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TriggerEventManager.TriggerEventBuffer[%u].MasterEnable";
+#else  /* not SUPPORT_CLINK */
+	const char * pszMasterEnable = "Top.TriggerEventManager.TriggerEventBuffer[%u].MasterEnable";
+#endif  /* SUPPORT_CLINK */
+
+	snprintf( varPath, 256, pszMasterEnable, triggerNum );
+	retPath	= varPath;
+}
+
+
+void pgpRogueLib::GetEventBuilderSoftRstPath( unsigned int triggerNum, std::string & retPath )
+{
+#ifdef SUPPORT_CLINK
+	char		varPath[256];
+	const char * pszSoftRst		 = "ClinkDevRoot.ClinkPcie.Application.AppLane[%u].EventBuilder.SoftRst";
+	snprintf( varPath, 256, pszSoftRst, triggerNum );
+	retPath	= varPath;
+#else  /* not SUPPORT_CLINK */
+	retPath = "Top.BatcherEventBuilder.SoftRst";
+#endif  /* SUPPORT_CLINK */
+}
+
+
 int		pgpRogueLib::setTriggerEnable( unsigned int triggerNum, bool fEnable )
 {
-	int			status	= 0;
-	char		varPath[256];
+	int				status	= 0;
+	std::string		varPath;
 	const char * pszFifoReset	 = "ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TriggerEventManager.TriggerEventBuffer[%u].FifoReset";
-	const char * pszMasterEnable = "ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TriggerEventManager.TriggerEventBuffer[%u].MasterEnable";
-	const char * pszBlowoff		 = "ClinkDevRoot.ClinkPcie.Application.AppLane[%u].EventBuilder.Blowoff";
-	const char * pszSoftRst		 = "ClinkDevRoot.ClinkPcie.Application.AppLane[%u].EventBuilder.SoftRst";
 	if ( fEnable )
 	{
 		// Clear Blowoff
-		snprintf( varPath, 256, pszBlowoff, triggerNum );
-		setVariable( varPath,	0 );
+		GetEventBuilderBlowoffPath( 0, varPath );
+		setVariable( varPath.c_str(),	0 );
 
 		// Toggle FifoReset
-		snprintf( varPath, 256, pszFifoReset, triggerNum );
-		setVariable( varPath,	1 );
-		setVariable( varPath,	0 );
+		char	fifoResetPath[256];
+		snprintf( fifoResetPath, 256, pszFifoReset, triggerNum );
+		setVariable( fifoResetPath,	1 );
+		setVariable( fifoResetPath,	0 );
 
 		// Toggle SoftRst
-		snprintf( varPath, 256, pszSoftRst, triggerNum );
-		setVariable( varPath,	1 );
-		setVariable( varPath,	0 );
+		GetEventBuilderSoftRstPath( 0, varPath );
+		setVariable( varPath.c_str(),	1 );
+		setVariable( varPath.c_str(),	0 );
 
 		// Set Trigger MasterEnable
-		snprintf( varPath, 256, pszMasterEnable, triggerNum );
-		setVariable( varPath,	1 );
+		GetTriggerMasterEnablePath( triggerNum, varPath );
+		setVariable( varPath.c_str(),	1 );
 	}
 	else
 	{
 		// Clear Trigger MasterEnable
-		snprintf( varPath, 256, pszMasterEnable, triggerNum );
-		setVariable( varPath,	0 );
+		GetTriggerMasterEnablePath( triggerNum, varPath );
+		setVariable( varPath.c_str(),	0 );
 
 		// Set Blowoff
-		snprintf( varPath, 256, pszBlowoff, triggerNum );
-		setVariable( varPath,	1 );
+		GetEventBuilderBlowoffPath( triggerNum, varPath );
+		setVariable( varPath.c_str(),	1 );
 	}
 	return status;
 }
@@ -227,7 +265,7 @@ pgpRogueLib::pgpRogueLib(
 			printf("pgpRogueLib: -- Core Axi Version --\n");
 			printf("firmwareVersion : %x\n", vsn.firmwareVersion);
 			printf("buildString     : %s\n", vsn.buildString); 
-			printf("upTimeCount     : %u\n", vsn.upTimeCount);
+			//printf("upTimeCount     : %u\n", vsn.upTimeCount);
 			//printf("deviceId        : %x\n", vsn.deviceId);
 			//printf("buildString     : %s\n", vsn.buildString);
 
@@ -246,7 +284,7 @@ pgpRogueLib::pgpRogueLib(
 	//m_pRogueLib = rogueAddrMap::create();
 
 	//
-	// Connect DATACHAN 0 ClinkDev KCU1500 Register Access
+	// Connect DATACHAN 0 KCU1500 Register Access
 	//
 	m_pAxiMemMap		= rogue::hardware::axi::AxiMemMap::create( m_devName );
 	m_pClMemMaster		= ClMemoryMaster::create( );
@@ -303,7 +341,7 @@ pgpRogueLib::pgpRogueLib(
 
 	// Force an initial read of all variables
 #if 1
-	printf( "%s: Reading %zu variables\n", functionName, (getVariableList()).size() );
+	printf( "%s: Reading %zu variables\n", functionName, getVariableList().size() );
 	try
 	{
 		readAll();
@@ -328,7 +366,7 @@ pgpRogueLib::pgpRogueLib(
 		printf( "%s unknown error!\n", functionName );
 	}
 #if 1
-	printf( "%s: Read %zu variables\n", functionName, (getVariableList()).size() );
+	printf( "%s: Read %zu variables\n", functionName, getVariableList().size() );
 #else
 	printf( "%s: Read %zu variables\n", functionName, (m_pRogueLib->getVariableList()).size() );
 #endif
@@ -904,8 +942,6 @@ void pgpRogueLib::dumpVariables( const char * pszFilePath, bool fWritableOnly, b
 			printf( "%s: NULL pVar!\n", functionName );
 			continue;
 		}
-		std::string	pathName = pVar->path();
-		//printf( "%s: Checking %s for ClinkFeb...\n", functionName, pathName.c_str() );
 		if ( pVar->path().find( "ClinkFeb" ) != std::string::npos )
 		{
 			if ( pVar->path().find( "ClinkFeb[0]" ) != std::string::npos )
@@ -923,7 +959,6 @@ void pgpRogueLib::dumpVariables( const char * pszFilePath, bool fWritableOnly, b
 		}
 		try
 		{
-			//printf( "%s: Dumping %s\n", functionName, pVar->path().c_str() );
 			if ( not fWritableOnly or pVar->mode() != std::string("RO") )
 			{
 				//	pVar->setLogLevel( rogue::Logging::Debug );
@@ -1082,15 +1117,16 @@ void pgpRogueLib::showVariableList( bool verbose )
 	printf( "%s: %zu variables\n", functionName, mapVars.size() );
 	for ( mapVarPtr_t::const_iterator vit = mapVars.begin(); vit != mapVars.end(); ++vit )
 	{
-#if 0
-		showVariable( vit->first, verbose );
-#else
 		rogue::interfaces::memory::VariablePtr	pVar	= vit->second;
 		if ( ! pVar )
 		{
 			printf( "%s Error: Variable %s not found!\n", functionName, vit->first.c_str() );
 			continue;
 		}
+
+#if 0
+		showVariable( vit->first, verbose );
+#else
 		if ( pVar->path().find( "ClinkFeb" ) != std::string::npos )
 		{
 			if ( pVar->path().find( "ClinkFeb[0]" ) != std::string::npos )
