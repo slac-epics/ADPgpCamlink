@@ -38,6 +38,8 @@
 // ADPgpCamlink headers
 #include "pgpRogueLib.h"
 
+#define SUPPORT_CLINK	1
+
 using namespace	std;
 namespace rim = rogue::interfaces::memory;
 
@@ -552,8 +554,8 @@ void pgpRogueLib::FebFpgaReload()
 			printf( "Initiating Feb[%zu] FpgaReload\n", lane );
 			snprintf( febVarPath, 256, pszVarPathFpgaReload, lane );
 			setVariable( febVarPath, 1 );
-			sleep(0.2);
-			setVariable( febVarPath, 0 );
+			//sleep(0.2);
+			//setVariable( febVarPath, 0 );
 		}
 	}
 

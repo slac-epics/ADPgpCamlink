@@ -212,7 +212,7 @@ private:	//	Private member variables
 	bool			m_fLcls2Timing;	// true to initialize w/ LCLS2 timing, false for LCLS1
 
 	std::string		m_RogueClass;	// Manufacturer of camera
-	std::string		m_BuildStamp;	// camera info string
+//	std::string		m_BuildStamp;	// camera info string
 	std::string		m_RogueModel;	// model name as reported by camera
 	std::string		m_RogueName;	// name of this camera, must be unique
 	std::string		m_ConfigFile;	// current configuration file for camera
