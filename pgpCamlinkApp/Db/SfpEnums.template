@@ -14,19 +14,29 @@
 #
 # Optional macros
 #
-record( calc, "$(P)$(R)Sfp$(N):Empty" )
+record( calcout, "$(P)$(R)Feb$(F):Sfp$(N):CalcEmpty" )
 {
-	field( INPA, "$(P)$(R)Sfp$(N):Type_RBV.SEVR CPP NMS" )
-	field( CALC, "A!=0" )
+	field( INPA, "$(P)$(R)Feb$(F):Sfp$(N):Type_RBV.SEVR CPP NMS" )
+	field( INPB, "$(P)$(R)PgpMon:RxRemLinkReady_RBV CPP NMS" )
+	field( CALC, "A!=0||B==0" )
+	field( PINI, "YES" )
+	field( OUT,  "$(P)$(R)Feb$(F):Sfp$(N):Empty CA NMS" )
+}
+record( bo, "$(P)$(R)Feb$(F):Sfp$(N):Empty" )
+{
+	field( DOL,  "1" )
+	field( ZNAM, "Full" )
+	field( ONAM, "Empty" )
 }
 
-record( mbbi, "$(P)$(R)Sfp$(N):Type_RBV" )
+record( mbbi, "$(P)$(R)Feb$(F):Sfp$(N):Type_RBV" )
 {
 	field( DESC, "Type of SFP transceiver" )
 	field( DTYP, "RogueMBBI" )
 	field( INP,  "@B$(B) L$(L) $(PTOP).Sfp[$(N)].Identifier" )
 	field( SCAN, "10 second" )
-	field( SDIS, "$(P)$(R)Sfp$(N):Empty" )
+	field( DISV, "1" )
+	field( SDIS, "$(P)$(R)Feb$(F):Sfp$(N):Empty CP" )
 #{
 	field( ZRVL, "0" ) field( ZRST, "Unspecified" )
 	field( ONVL, "3" ) field( ONST, "SFP" )
@@ -75,14 +85,15 @@ record( mbbi, "$(P)$(R)Sfp$(N):Type_RBV" )
 	info( autosaveFields, "" )
 }
 # Python path
-alias( "$(P)$(R)Sfp$(N):Type_RBV", "$(P)$(R)$(PTOP):Sfp[$(N)]:Identifier" )
+alias( "$(P)$(R)Feb$(F):Sfp$(N):Type_RBV", "$(P)$(R)$(PTOP):Sfp[$(N)]:Identifier" )
 
-record( mbbi, "$(P)$(R)Sfp$(N):Connector_RBV" )
+record( mbbi, "$(P)$(R)Feb$(F):Sfp$(N):Connector_RBV" )
 {
 	field( DESC, "Type of Connector" )
 	field( DTYP, "RogueMBBI" )
 	field( INP,  "@B$(B) L$(L) $(PTOP).Sfp[$(N)].Connector" )
-	field( SDIS, "$(P)$(R)Sfp$(N):Empty" )
+	field( DISV, "1" )
+	field( SDIS, "$(P)$(R)Feb$(F):Sfp$(N):Empty CP" )
 	field( PINI, "YES" )
 #{
 	field( ZRVL, "0" ) field( ZRST, "Unspecified" )
@@ -112,46 +123,46 @@ record( mbbi, "$(P)$(R)Sfp$(N):Connector_RBV" )
 	info( autosaveFields, "" )
 }
 # Python path
-alias( "$(P)$(R)Sfp$(N):Connector_RBV", "$(P)$(R)$(PTOP):Sfp[$(N)]:Connector" )
+alias( "$(P)$(R)Feb$(F):Sfp$(N):Connector_RBV", "$(P)$(R)$(PTOP):Sfp[$(N)]:Connector" )
 
-record( calc, "$(P)$(R)Sfp$(N):RxWatts_RBV" )
+record( calc, "$(P)$(R)Feb$(F):Sfp$(N):RxWatts_RBV" )
 {
-	field( INPA, "$(P)$(R)Sfp$(N):Diagnostics8 CPP MS" )  # RX Power MSB
-	field( INPB, "$(P)$(R)Sfp$(N):Diagnostics9 CPP MS" )  # RX Power LSB
+	field( INPA, "$(P)$(R)Feb$(F):Sfp$(N):Diagnostics8 CPP MS" )  # RX Power MSB
+	field( INPB, "$(P)$(R)Feb$(F):Sfp$(N):Diagnostics9 CPP MS" )  # RX Power LSB
 	field( CALC, "((A<<8)|B)*0.0001" )
 	field( EGU,  "mW" )
 	field( PREC, "1" )
 }
 
-record( calc, "$(P)$(R)Sfp$(N):RxPower_RBV" )
+record( calc, "$(P)$(R)Feb$(F):Sfp$(N):RxPower_RBV" )
 {
-	field( INPA, "$(P)$(R)Sfp$(N):RxWatts_RBV CPP MS" )
+	field( INPA, "$(P)$(R)Feb$(F):Sfp$(N):RxWatts_RBV CPP MS" )
 	field( CALC, "10*LOG(A!=0?A:0.0001)" )
 	field( EGU,  "dBm" )
 	field( PREC, "1" )
 }
 
-record( calc, "$(P)$(R)Sfp$(N):TxWatts_RBV" )
+record( calc, "$(P)$(R)Feb$(F):Sfp$(N):TxWatts_RBV" )
 {
-	field( INPA, "$(P)$(R)Sfp$(N):Diagnostics6 CPP MS" )  # TX Power MSB
-	field( INPB, "$(P)$(R)Sfp$(N):Diagnostics7 CPP MS" )  # TX Power LSB
+	field( INPA, "$(P)$(R)Feb$(F):Sfp$(N):Diagnostics6 CPP MS" )  # TX Power MSB
+	field( INPB, "$(P)$(R)Feb$(F):Sfp$(N):Diagnostics7 CPP MS" )  # TX Power LSB
 	field( CALC, "((A<<8)|B)*0.0001" )
 	field( EGU,  "mW" )
 	field( PREC, "1" )
 }
 
-record( calc, "$(P)$(R)Sfp$(N):TxPower_RBV" )
+record( calc, "$(P)$(R)Feb$(F):Sfp$(N):TxPower_RBV" )
 {
-	field( INPA, "$(P)$(R)Sfp$(N):TxWatts_RBV CPP MS" )
+	field( INPA, "$(P)$(R)Feb$(F):Sfp$(N):TxWatts_RBV CPP MS" )
 	field( CALC, "10*LOG(A!=0?A:0.0001)" )
 	field( EGU,  "dBm" )
 	field( PREC, "1" )
 }
 
-record( calc, "$(P)$(R)Sfp$(N):Temperture_RBV" )
+record( calc, "$(P)$(R)Feb$(F):Sfp$(N):Temperture_RBV" )
 {
-	field( INPA, "$(P)$(R)Sfp$(N):Diagnostics0 CPP MS" )  # Temperature MSB
-	field( INPB, "$(P)$(R)Sfp$(N):Diagnostics1 CPP MS" )  # Temperature LSB
+	field( INPA, "$(P)$(R)Feb$(F):Sfp$(N):Diagnostics0 CPP MS" )  # Temperature MSB
+	field( INPB, "$(P)$(R)Feb$(F):Sfp$(N):Diagnostics1 CPP MS" )  # Temperature LSB
 	field( CALC, "((A<<8)|B)/256" )
 	field( EGU,  "C" )
 }

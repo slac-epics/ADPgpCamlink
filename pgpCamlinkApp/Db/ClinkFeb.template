@@ -48,7 +48,7 @@ record( longin, "$(P)$(R)Feb$(F):BaudRate_RBV" )
 # TODO Use mbbo w/ enumerated baud rates
 record( longout, "$(P)$(R)Feb$(F):BaudRate" )
 {
-	field( TPRO, "2" )
+#	field( TPRO, "2" )
 	field( DTYP, "RogueLO" )
 	field( OUT,  "@B$(B) L$(L) ClinkDevRoot.ClinkFeb[$(F)].ClinkTop.Ch[0].BaudRate" )
 	field( EGU,  "bps" )
@@ -135,6 +135,8 @@ record( mbbo, "$(P)$(R)Feb$(F):DataMode" )
 	field( SXVL, "6" ) field( SXST, "24 Bit" )
 	field( SVVL, "7" ) field( SVST, "30 Bit" )
 	field( EIVL, "8" ) field( EIST, "36 Bit" )
+	field( DISV, "0" )
+	field( SDIS, "$(P)$(R)PgpMon:RxRemLinkReady_RBV CP" )
 }
 
 # Camlink Frame Mode
@@ -163,6 +165,8 @@ record( mbbo, "$(P)$(R)Feb$(F):FrameMode" )
 	field( ZRVL, "0" ) field( ZRST, "None" )
 	field( ONVL, "1" ) field( ONST, "Line" )
 	field( TWVL, "2" ) field( TWST, "Frame" )
+	field( DISV, "0" )
+	field( SDIS, "$(P)$(R)PgpMon:RxRemLinkReady_RBV CP" )
 }
 
 record( longin, "$(P)$(R)Feb$(F):SerThrottle_RBV" )

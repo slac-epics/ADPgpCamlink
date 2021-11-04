@@ -2,9 +2,9 @@
 
 file SfpTransceiver.db
 {
-#	{ PTOP	= "ClinkDevRoot.ClinkFeb[$(F)]", R = "\$(R)Feb$(F):", N = "0" }
+#	{ PTOP	= "ClinkDevRoot.ClinkFeb[$(F)]", R = "\$(R)", N = "0" }
 # Only adding Sfp 1 as that's the only one we typically populate
-	{ PTOP	= "ClinkDevRoot.ClinkFeb[$(F)]", R = "\$(R)Feb$(F):", N = "1" }
+	{ PTOP	= "ClinkDevRoot.ClinkFeb[$(F)]", R = "\$(R)", N = "1" }
 # Empty transceivers cause long delays for current firmware so we don't monitor them
 #	{ PTOP	= "ClinkDevRoot.ClinkFeb[$(F)]", R = "\$(R)Feb$(F):", N = "2" }
 #	{ PTOP	= "ClinkDevRoot.ClinkFeb[$(F)]", R = "\$(R)Feb$(F):", N = "3" }
