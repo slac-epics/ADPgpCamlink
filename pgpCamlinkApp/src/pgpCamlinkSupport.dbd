@@ -5,6 +5,10 @@ registrar(	ResetImageTimingRegister		)
 registrar(	ShowImageTimingRegister			)
 registrar(	ShowAllCamerasRegister			)
 
+# Camera specific support functions
+function( Up900Shutter_Process )
+function( Up900Shutter_RBV_Process )
+
 variable(	DEBUG_PGP_CAMLINK,	int	)
 
 include "pgpClSerialDev.dbd"

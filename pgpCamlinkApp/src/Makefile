@@ -23,6 +23,7 @@ LIB_SRCS		+= ImageStream.cpp
 LIB_SRCS		+= pgpClDev.cpp
 LIB_SRCS		+= pgpClSerialDev.cpp
 LIB_SRCS		+= asynPgpClSerial.cpp
+LIB_SRCS		+= aSubs.cpp
 
 #LIB_LIBS		+= asyn
 #LIB_LIBS		+= $(EPICS_BASE_IOC_LIBS)
