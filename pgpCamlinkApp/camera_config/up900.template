@@ -2,6 +2,12 @@
 # EPICS database for
 # UNIQ UP900/UP900CL Camera
 #
+# Required macros:
+#	P			PV prefix part 1 $P$R
+#	R			PV prefix part 2 $P$R
+#	PGP_PV		PV prefix for rogue register PVs
+#	PGP_LANE	PGP_LANE number 0-3
+#
 
 record( stringin, "$(P)$(R)CamModel" )
 {
@@ -359,6 +365,12 @@ record( ao, "$(P)$(R)XmitRate" )
     info( autosaveFields, "VAL" )
 }   
 
+# Set SerThrottle to 30000
+record( longout, "$(P)$(R)Up900:SerThrottle" )
+{
+	field( DOL,  "30000" )
+	field( OUT,  "$(P)$(R)Feb$(PGP_LANE):SerThrottle" )
+}
 
 # Possible TODO: Add support for
 #	WB,WB?	Set and read white balance, Color cameras only
