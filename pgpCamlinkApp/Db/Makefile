@@ -19,6 +19,7 @@ DB += SfpTransceiver.db
 DB += TriggerEventManager.template
 DB += ClinkFeb.template
 DB += ClinkLane.db
+DB += ClinkLaneMonitor.template
 DB += roguePcie.db
 DB += putMonitor.template
 DB += rbvMonitor.template

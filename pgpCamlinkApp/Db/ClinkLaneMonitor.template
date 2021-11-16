@@ -1,0 +1,26 @@
+# PV Monitors for each Clink Lane
+#
+# Required macros:
+#	P				- Prefix
+#	R				- Region, common camera PV prefix is $(P)$(R)
+#	F				- FEb number
+
+# Put monitors
+substitute "MON_SCAN=1 second"
+substitute "MON_DISABLED=1"
+substitute "MON_PV=$(P)$(R)Feb$(F):BaudRate"
+include "putMonitor.template"
+substitute "MON_PV=$(P)$(R)Feb$(F):DataEn"
+include "putMonitor.template"
+substitute "MON_PV=$(P)$(R)Feb$(F):DataMode"
+include "putMonitor.template"
+substitute "MON_PV=$(P)$(R)Feb$(F):EnableTrig"
+include "putMonitor.template"
+substitute "MON_PV=$(P)$(R)Feb$(F):FrameMode"
+include "putMonitor.template"
+substitute "MON_PV=$(P)$(R)Feb$(F):InvCC"
+include "putMonitor.template"
+substitute "MON_PV=$(P)$(R)Feb$(F):LinkMode"
+include "putMonitor.template"
+substitute "MON_PV=$(P)$(R)Feb$(F):TapCount"
+include "putMonitor.template"

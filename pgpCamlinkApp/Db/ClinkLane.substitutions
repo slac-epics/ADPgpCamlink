@@ -1,5 +1,15 @@
 # clinkLane.substitutions
 
+file ClinkFeb.template
+{
+	{ P = "\$(P)", R = "\$(R)", N = "1" }
+}
+
+file ClinkLaneMonitor.template
+{
+	{ P = "\$(P)", R = "\$(R)" }
+}
+
 file SfpTransceiver.db
 {
 #	{ PTOP	= "ClinkDevRoot.ClinkFeb[$(F)]", R = "\$(R)", N = "0" }
