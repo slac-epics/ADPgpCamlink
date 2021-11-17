@@ -1,0 +1,102 @@
+#
+# EPICS database for
+# Imperx Cheetah Pregius C1921 Camera
+#
+# Required macros:
+#	P			PV prefix part 1 $P$R
+#	R			PV prefix part 2 $P$R
+#	PGP_PV		PV prefix for rogue register PVs
+#	PGP_LANE	PGP_LANE number 0-3
+#
+
+record( stringin, "$(P)$(R)CamModel" )
+{
+	field( VAL,  "C1921" )
+	field( PINI, "YES" )
+}
+
+record( stringin, "$(P)$(R)CamModelScreen" )
+{
+	field( VAL,  "ADPgpCamlinkScreens/ImperxC1921.edl" )
+	field( PINI, "YES" )
+}
+
+# Camlink settings
+record( longout, "$(P)$(R)CamlinkBaudRate" )
+{
+	field( DOL,  "115200" )
+	field( OMSL, "closed_loop" )
+	field( HIGH, "115201" )
+	field( HSV,  "MINOR" )
+	field( LOW,  "115199" )
+	field( LSV,  "MINOR" )
+	field( PINI, "YES" )
+}
+record( mbbo, "$(P)$(R)CamlinkLinkMode" )
+{
+	field( DOL,  "3" )
+	field( TWSV, "MINOR" )
+	field( ZRSV, "MINOR" )
+	field( PINI, "YES" )
+}
+record( mbbo, "$(P)$(R)CamlinkDataMode" )
+{
+	field( DOL,  "2" ) # 10 Bit
+	field( ONSV, "MINOR" )
+	field( TWSV, "NO_ALARM" )
+	field( THSV, "MINOR" )
+	field( FRSV, "MINOR" )
+	field( FVSV, "MINOR" )
+	field( PINI, "YES" )
+}
+record( mbbo, "$(P)$(R)CamlinkFrameMode" )
+{
+	field( DOL,  "2" )
+	field( THSV, "MINOR" )
+	field( ONSV, "MINOR" )
+	field( PINI, "YES" )
+}
+record( longout, "$(P)$(R)CamlinkHTap" )
+{
+	field( DOL,  "8" )
+	field( HIGH, "10" )
+	field( HSV,  "MINOR" )
+	field( LOW,  "9" )
+	field( LSV,  "MINOR" )
+	field( PINI, "YES" )
+}
+record( longout, "$(P)$(R)CamlinkTrigMask" )
+{
+	field( DOL,  "1" )	# Trigger on CC1
+	field( OMSL, "closed_loop" )
+	field( PINI, "YES" )
+}
+record( bo, "$(P)$(R)CamlinkInvCC" )
+{
+	field( DOL,  "0" )
+	field( PINI, "YES" )
+}
+
+
+# Possible TODO: Add support for
+
+# Include a serialMonitor.template monitor
+# This should be the first PV you process in the CamReConfigSeq
+substitute "MON_SCAN=10 second"
+#substitute "SER_OK_PV= $(P)$(R)Up900Report"
+#include "serialMonitor.template"
+
+# 1 second RBV monitors
+substitute "MON_SCAN=1 second"
+
+# 10 second RBV monitors
+substitute "MON_SCAN=10 second"
+substitute "MON_DISABLED=0"
+#substitute "MON_PV= $(P)$(R)Up900RawShutterSpeed_RBV"
+#include "rbvMonitor.template"
+
+# Put monitors
+substitute "MON_SCAN=1 second"
+substitute "MON_DISABLED=1"
+#substitute "MON_PV= $(P)$(R)Up900SetGain"
+#include "putMonitor.template"

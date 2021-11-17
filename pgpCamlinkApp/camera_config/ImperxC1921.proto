@@ -1,0 +1,35 @@
+#
+# Imperx Serial Protocol
+#
+# TODO: Replace all of this cloned up900.proto w/ Imperx equivalents
+# Write Messages: 7 bytes
+#	Byte 1:	0x57
+#	Byte 2:	Addr MSB
+#	Byte 3:	Addr LSB
+#	Byte 4:	Data Byte 4 (MSB)
+#	Byte 5:	Data Byte 3
+#	Byte 6:	Data Byte 2
+#	Byte 7:	Data Byte 1 (LSB)
+#
+# Successful replies start w/ an ACK, hex 0x06, followed by reply content, if any
+# Unsuccesful commands reply w/ a NAK, hex 0x15, followed by a one byte error code
+#
+#InTerminator	= CR;
+#OutTerminator	= CR;
+#PeekSize		= 0;
+#ReplyTimeout	= 800;
+#ReadTimeout		= 100;
+#WriteTimeout	= 500;
+ExtraInput		= Ignore;
+
+SetReg
+{
+    out "W%02r\$1%04r\$2";    in  ACK "@\"%#s";
+}
+
+GetInt
+{
+    out "R%02r\$1";    in  ACK "%04r";
+#   @init { out "R%02r\$1";    in  ACK "%04r"; }
+}
+

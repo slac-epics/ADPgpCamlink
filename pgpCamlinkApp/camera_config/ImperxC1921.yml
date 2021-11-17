@@ -1,0 +1,79 @@
+##################################################################################################
+# 1944 (H) x 1472 (V)
+##################################################################################################
+# 2 Byte x 1944 x 1472 = 5723136 Byte Images
+# 5723136 Byte Images x 120 Hz = 5.494 Gb/s
+##################################################################################################
+# 1 Byte x 1944 x 1472 = 2861568 Byte Images
+# 2861568 Byte Images x 120 Hz = 2.747 Gb/s
+##################################################################################################
+# https://www.imperx.com/cmos-cameras/c1921/
+# https://www.imperx.com/download/335/spec-sheets/20491/cl_c1921_r2_2019_w.pdf
+# https://www.imperx.com/wp-content/uploads/downloads/Cheetah_Pregius_CL_User_Manual_rev.1.3_f.pdf
+##################################################################################################
+ClinkTop:
+###################
+  PllConfig[:]: '50MHz'
+  ###################
+  Ch[0]:
+    ################################################################
+    # Camera Link Base and Medium support 8, 10, or 12-bit output
+    # whereas Camera Link Full only supports 8 or 10 bits per pixel.
+    ################################################################
+    # LinkMode: Base
+    # TapCount: 2 # Base (2 taps or 3 taps)
+    # DataMode: 12Bit
+    ################################################################
+    # LinkMode: Medium
+    # TapCount: 4 # Medium (4 taps)
+    # DataMode: 12Bit
+    ################################################################
+    LinkMode: Full
+    TapCount: 8 # Full (8 taps)
+    DataMode: 10Bit
+    ################################################################
+    FrameMode: Frame
+    DataEn: True
+    Blowoff: False
+    BaudRate: 115200 # units of bps
+    SerThrottle: 10000 # (30ms x 1us throttle rate) = 10000
+    SwControlValue: 0x0
+    SwControlEn: 0x0
+    ###################
+    UartImperxC1921: # Imperx C1921
+      #######################################
+      Trg_Mode_En: '1' # 0x1 - trigger is enabled; camera in trigger mode
+      Trg_Inp_Sel: '3' # 0x3 - computer; camera expects trigger from CC1 via Camera Link cable.
+      Trg_Edg_Sel: '0' # 0x0 - rising edge
+      Trg_Dbn_Tim: '1' # Selects trigger signal de-bounce time in micro-seconds.
+      Trg_Flt_Tim: '5' # Selects Filter time in micro-seconds. Any pulse shorter than the selected time is ignored.
+      Trg_Ovr_Sel: '0' # 0x0 - ignore next trigger
+      Trg_Mod_Sel: '1' # 0x1 - fast triggering
+      Trg_Frm_Cap: '1' # Selects number of frames captured after each trigger signal
+      Trg_Exp_Del: '1' # Selects delay in microseconds between trigger signal and beginning of exposure
+      Trg_Str_En:  '0' # 0x0 - disable Trigger Strobe
+      Exp_Ctl_Mod: '1' # 0x1 - pulse width - for triggering
+      ################################################################
+      # Camera Link Base and Medium support 8, 10, or 12-bit output
+      # whereas Camera Link Full only supports 8 or 10 bits per pixel.
+      ################################################################
+      # A2D_Bits:    '2' # 0x2 - 12 bits
+      # Bit_Dpt_Sel: '2' # 0x2 - 12 bits
+      # Dat_Fmt_Sel: '0' # 0x0 - Base (2 taps)
+      ################################################################
+      # A2D_Bits:    '2' # 0x2 - 12 bits
+      # Bit_Dpt_Sel: '2' # 0x2 - 12 bits
+      # Dat_Fmt_Sel: '2' # 0x2 - Medium (4 taps)
+      ################################################################
+      A2D_Bits:    '1' # 0x1 - 10 bits
+      Bit_Dpt_Sel: '1' # 0x1 - 10 bits
+      Dat_Fmt_Sel: '3' # 0x3 - Full (8 taps)
+      ################################################################
+###################
+TrigCtrl[0]:
+  EnableTrig: True
+  InvCC: False # Active High Pulse
+  TrigMap: ChA # ChA = pgpTrigger(0)
+  TrigPulseWidth: 32.768 # units of us
+  TrigMask: 0x1 # CC1 trigger
+###################
