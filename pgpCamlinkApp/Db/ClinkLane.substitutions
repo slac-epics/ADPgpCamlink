@@ -162,6 +162,13 @@ file liDevRogue.template
 		SDIS	= "$(P)$(R)PgpMon:RxRemLinkReady_RBV CP"
 	}
 	{
+		NAME	= "Feb$(F):FrameSize",
+		PATH	= "ClinkDevRoot.ClinkFeb[$(F)].ClinkTop.Ch[0].FrameSize",
+		SCAN	= "\$(SCAN=1 second)"
+		DISV	= "0"
+		SDIS	= "$(P)$(R)PgpMon:RxRemLinkReady_RBV CP"
+	}
+	{
 		NAME	= "Feb$(F):FrameCount",
 		PATH	= "ClinkDevRoot.ClinkFeb[$(F)].ClinkTop.Ch[0].FrameCount",
 		SCAN	= "\$(SCAN=1 second)"

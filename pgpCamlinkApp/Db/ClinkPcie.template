@@ -23,6 +23,29 @@ record( waveform, "$(P)$(R)PgpAxiVersion" )
 	info( archiveFields,  "VAL" )
 }
 
+record( mbbi, "$(P)$(R)AxiPcieCore:PCIE_HW_TYPE_G" )
+{
+	field( DTYP, "RogueMBBI" )
+	field( INP,  "@B$(B) L$(L) ClinkDevRoot.ClinkPcie.AxiPcieCore.AxiVersion.PCIE_HW_TYPE_G" )
+	field( ZRVL, "0"  ) field( ZRST, "Undefined" )
+	field( ONVL, "1"  ) field( ONST, "AlphaDataKu3" )
+	field( TWVL, "2"  ) field( TWST, "BittWareXupVv8" )
+	field( THVL, "3"  ) field( THST, "SlacPgpCardG3" )
+	field( FRVL, "4"  ) field( FRST, "SlacPgpCardG4" )
+	field( FVVL, "5"  ) field( FVST, "XilinxAc701" )
+	field( SXVL, "6"  ) field( SXST, "XilinxAlveoU50" )
+	field( SVVL, "7"  ) field( SVST, "XilinxAlveoU200" )
+	field( EIVL, "8"  ) field( EIST, "XilinxAlveoU250" )
+	field( NIVL, "9"  ) field( NIST, "XilinxAlveoU280" )
+	field( TEVL, "10" ) field( TEST, "XilinxKc705" )
+	field( ELVL, "11" ) field( ELST, "XilinxKcu105" )
+	field( TVVL, "12" ) field( TVST, "XilinxKcu116" )
+	field( TTVL, "13" ) field( TTST, "XilinxKcu1500" )
+	field( FTVL, "14" ) field( FTST, "XilinxVcu128" )
+	field( FFVL, "15" ) field( FFST, "Unused" )
+	info( autosaveFields, "" )
+}
+
 record( mbbi, "$(P)$(R)Timing:ClkSel_RBV" )
 {
 	field( DTYP, "RogueMBBI" )
