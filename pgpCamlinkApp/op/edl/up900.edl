@@ -3,8 +3,8 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 1985
-y 1172
+x 3594
+y 1426
 w 700
 h 600
 font "helvetica-medium-r-12.0"
@@ -1160,7 +1160,7 @@ x 328
 y 276
 w 108
 h 20
-controlPv "$(P)$(R)Up900RawShutterMode"
+controlPv "$(P)$(R)Up900RawShutterMode_RBV"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
 fgColor index 15
@@ -1194,30 +1194,22 @@ value {
 }
 endObjectProperties
 
-# (Text Control)
-object activeXTextDspClass
+# (Menu Button)
+object activeMenuButtonClass
 beginObjectProperties
 major 4
-minor 7
+minor 0
 release 0
 x 216
 y 276
 w 100
-h 18
-controlPv "$(P)$(R)Up900RawShutterMode"
-format "decimal"
-font "helvetica-medium-r-12.0"
+h 20
 fgColor index 25
-fgAlarm
 bgColor index 5
-editable
-autoHeight
-nullColor index 40
-smartRefresh
-fastUpdate
-useHexPrefix
-newPos
-objType "controls"
-noExecuteClipMask
+inconsistentColor index 5
+topShadowColor index 1
+botShadowColor index 11
+controlPv "$(P)$(R)Up900RawShutterMode"
+font "helvetica-bold-r-12.0"
 endObjectProperties
 

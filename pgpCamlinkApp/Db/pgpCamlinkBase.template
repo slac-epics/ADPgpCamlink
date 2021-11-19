@@ -107,6 +107,7 @@ record( mbbo, "$(P)$(R)CamlinkFrameMode" )
 	field( TWVL, "2" ) field( TWST, "Frame" )
 }
 
+# DOL field set in $MODEL.template
 record( longout, "$(P)$(R)CamlinkHTap" )
 {
 	field( DESC, "Camlink horizontal taps" )

@@ -34,7 +34,7 @@ record( longout, "$(P)$(R)CamlinkBaudRate" )
 }
 record( mbbo, "$(P)$(R)CamlinkDataMode" )
 {
-	field( DOL,  "3" )
+	field( DOL,  "3" ) # 12 Bit
 	field( TWSV, "MINOR" )
 	field( FRSV, "MINOR" )
 	field( PINI, "YES" )
@@ -55,10 +55,10 @@ record( mbbo, "$(P)$(R)CamlinkLinkMode" )
 }
 record( longout, "$(P)$(R)CamlinkHTap" )
 {
-	field( DOL,  "2" )
-	field( HIGH, "3" )
+	field( DOL,  "1" )
+	field( HIGH, "2" )
 	field( HSV,  "MINOR" )
-	field( LOW,  "1" )
+	field( LOW,  "0" )
 	field( LSV,  "MINOR" )
 	field( PINI, "YES" )
 }
@@ -78,7 +78,7 @@ record( seq, "$(P)$(R)Up900DoReport" )
 {
 	field( DESC,	"Do delayed report" )
 	field( DOL1,    "0" )
-	field( DLY1,    "2" )
+	field( DLY1,    "10" )
 	field( LNK1,    "$(P)$(R)Up900Report PP" )
 }
 
@@ -94,6 +94,7 @@ record( longin,	"$(P)$(R)Up900Reference_RBV" )
 	field( DESC,	"Reference from camera report" )
 	field( DTYP,	"stream" )
 	field( INP,		"@up900.proto ReadReference $(PORT).SER" )
+	field( PINI, "YES" )
 #	field( SCAN,	"I/O Intr" )
 }
 
@@ -102,6 +103,7 @@ record( longin,	"$(P)$(R)Up900DoubleSpeed_RBV" )
 	field( DESC,	"DblSpd from camera report" )
 	field( DTYP,	"stream" )
 	field( INP,		"@up900.proto ReadDoubleSpeed $(PORT).SER" )
+	field( PINI, "YES" )
 #	field( SCAN,	"I/O Intr" )
 }
 
@@ -391,7 +393,7 @@ substitute "MON_SCAN=1 second"
 
 # 10 second RBV monitors
 substitute "MON_SCAN=10 second"
-substitute "MON_DISABLED=1"
+substitute "MON_DISABLED=0"
 substitute "MON_PV= $(P)$(R)Up900RawShutterSpeed_RBV"
 include "rbvMonitor.template"
 substitute "MON_PV= $(P)$(R)Up900Gain_RBV"
