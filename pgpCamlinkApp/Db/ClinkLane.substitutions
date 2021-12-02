@@ -289,6 +289,13 @@ file liDevRogue.template
 		DISV	= "0"
 		SDIS	= "$(P)$(R)PgpMon:RxRemLinkReady_RBV CP"
 	}
+	{
+		NAME	= "Feb$(F):FrameSize",
+		PATH	= "ClinkDevRoot.ClinkFeb[$(F)].ClinkTop.Ch[0].FrameSize"
+		SCAN	= "\$(SCAN=1 second)"
+		DISV	= "0"
+		SDIS	= "$(P)$(R)PgpMon:RxRemLinkReady_RBV CP"
+	}
 }
 
 file loDevRogue.template
@@ -382,6 +389,38 @@ file longDevRogue.template
 		PATH	= "ClinkDevRoot.ClinkFeb[$(F)].ClinkTop.RstPll"
 		PINI	= ""
 		SAVE	= ""
+		DISV	= "0"
+		SDIS	= "$(P)$(R)PgpMon:RxRemLinkReady_RBV CP"
+	}
+	{
+		NAME	= "Feb$(F):HSkip",
+		PATH	= "ClinkDevRoot.ClinkFeb[$(F)].ClinkTop.Ch[0].HSkip"
+		PINI	= "YES"
+		SAVE	= "VAL"
+		DISV	= "0"
+		SDIS	= "$(P)$(R)PgpMon:RxRemLinkReady_RBV CP"
+	}
+	{
+		NAME	= "Feb$(F):HActive",
+		PATH	= "ClinkDevRoot.ClinkFeb[$(F)].ClinkTop.Ch[0].HActive"
+		PINI	= "YES"
+		SAVE	= "VAL"
+		DISV	= "0"
+		SDIS	= "$(P)$(R)PgpMon:RxRemLinkReady_RBV CP"
+	}
+	{
+		NAME	= "Feb$(F):VSkip",
+		PATH	= "ClinkDevRoot.ClinkFeb[$(F)].ClinkTop.Ch[0].VSkip"
+		PINI	= "YES"
+		SAVE	= "VAL"
+		DISV	= "0"
+		SDIS	= "$(P)$(R)PgpMon:RxRemLinkReady_RBV CP"
+	}
+	{
+		NAME	= "Feb$(F):VActive",
+		PATH	= "ClinkDevRoot.ClinkFeb[$(F)].ClinkTop.Ch[0].VActive"
+		PINI	= "YES"
+		SAVE	= "VAL"
 		DISV	= "0"
 		SDIS	= "$(P)$(R)PgpMon:RxRemLinkReady_RBV CP"
 	}
