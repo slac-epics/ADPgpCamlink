@@ -1465,6 +1465,10 @@ Frame: 2D pixel array\
      "ClinkDevRoot.ClinkFeb[0].ClinkTop.Ch[0].FrameCount	UInt32	0x100124	0x24	RO	[0]	[32]	0	4294967295	None	False	True	2	False	False	0	True	True	SRPv3[0]	ClinkDevRoot.ClinkFeb[0].ClinkTop.Ch[0].FrameCount	0x4	0	32	32	0	Frame counter|"\
      "ClinkDevRoot.ClinkFeb[0].ClinkTop.Ch[0].DropCount	UInt32	0x100128	0x28	RO	[0]	[32]	0	4294967295	None	False	True	2	False	False	0	True	True	SRPv3[0]	ClinkDevRoot.ClinkFeb[0].ClinkTop.Ch[0].DropCount	0x4	0	32	32	0	Drop counter|"\
      "ClinkDevRoot.ClinkFeb[0].ClinkTop.Ch[0].FrameSize	UInt32	0x10012c	0x2c	RO	[0]	[32]	0	4294967295	None	False	True	2	False	False	0	True	True	SRPv3[0]	ClinkDevRoot.ClinkFeb[0].ClinkTop.Ch[0].FrameSize	0x4	0	32	32	0	Camera Image size|"\
+     "ClinkDevRoot.ClinkFeb[0].ClinkTop.Ch[0].HSkip	UInt16	0x100130	0x30	RW	[0]	[16]	0	65535	None	False	True	2	False	False	0	True	True	SRPv3[0]	ClinkDevRoot.ClinkFeb[0].ClinkTop.Ch[0].HSkip	0x4	0	16	16	0	# of cycle to skip from the start of CLINK LineValid (LV)|"\
+     "ClinkDevRoot.ClinkFeb[0].ClinkTop.Ch[0].HActive	UInt16	0x100134	0x34	RW	[0]	[16]	0	65535	None	False	True	2	False	False	0	True	True	SRPv3[0]	ClinkDevRoot.ClinkFeb[0].ClinkTop.Ch[0].HActive	0x4	0	16	16	0	# of active cycle after HSkip while CLINK LineValid (LV) is active|"\
+     "ClinkDevRoot.ClinkFeb[0].ClinkTop.Ch[0].VSkip	UInt16	0x100138	0x38	RW	[0]	[16]	0	65535	None	False	True	2	False	False	0	True	True	SRPv3[0]	ClinkDevRoot.ClinkFeb[0].ClinkTop.Ch[0].VSkip	0x4	0	16	16	0	# of lines to skip from the start of CLINK FrameValid (FV)|"\
+     "ClinkDevRoot.ClinkFeb[0].ClinkTop.Ch[0].VActive	UInt16	0x10013c	0x3c	RW	[0]	[16]	0	65535	None	False	True	2	False	False	0	True	True	SRPv3[0]	ClinkDevRoot.ClinkFeb[0].ClinkTop.Ch[0].VActive	0x4	0	16	16	0	# of active lines after VSkip while CLINK FrameValid (FV) is active|"\
      "ClinkDevRoot.ClinkFeb[0].ClinkTop.Pll[0].PHASE_MUX[0]	UInt3	0x101020	0x20	RW	[13]	[3]	0	7	None	False	True	2	False	False	0	True	True	SRPv3[0]	ClinkDevRoot.ClinkFeb[0].ClinkTop.Pll[0].PHASE_MUX[0]	0x4	0	3	3	0	\
 Chooses an initial phase offset for the clock output, the\
 resolution is equal to 1/8 VCO period. Not available in\
@@ -2751,6 +2755,10 @@ Frame: 2D pixel array\
      "ClinkDevRoot.ClinkFeb[1].ClinkTop.Ch[0].FrameCount	UInt32	0x100124	0x24	RO	[0]	[32]	0	4294967295	None	False	True	2	False	False	0	True	True	SRPv3[1]	ClinkDevRoot.ClinkFeb[1].ClinkTop.Ch[0].FrameCount	0x4	0	32	32	0	Frame counter|"\
      "ClinkDevRoot.ClinkFeb[1].ClinkTop.Ch[0].DropCount	UInt32	0x100128	0x28	RO	[0]	[32]	0	4294967295	None	False	True	2	False	False	0	True	True	SRPv3[1]	ClinkDevRoot.ClinkFeb[1].ClinkTop.Ch[0].DropCount	0x4	0	32	32	0	Drop counter|"\
      "ClinkDevRoot.ClinkFeb[1].ClinkTop.Ch[0].FrameSize	UInt32	0x10012c	0x2c	RO	[0]	[32]	0	4294967295	None	False	True	2	False	False	0	True	True	SRPv3[1]	ClinkDevRoot.ClinkFeb[1].ClinkTop.Ch[0].FrameSize	0x4	0	32	32	0	Camera Image size|"\
+     "ClinkDevRoot.ClinkFeb[1].ClinkTop.Ch[0].HSkip	UInt16	0x100130	0x30	RW	[0]	[16]	0	65535	None	False	True	2	False	False	0	True	True	SRPv3[1]	ClinkDevRoot.ClinkFeb[1].ClinkTop.Ch[0].HSkip	0x4	0	16	16	0	# of cycle to skip from the start of CLINK LineValid (LV)|"\
+     "ClinkDevRoot.ClinkFeb[1].ClinkTop.Ch[0].HActive	UInt16	0x100134	0x34	RW	[0]	[16]	0	65535	None	False	True	2	False	False	0	True	True	SRPv3[1]	ClinkDevRoot.ClinkFeb[1].ClinkTop.Ch[0].HActive	0x4	0	16	16	0	# of active cycle after HSkip while CLINK LineValid (LV) is active|"\
+     "ClinkDevRoot.ClinkFeb[1].ClinkTop.Ch[0].VSkip	UInt16	0x100138	0x38	RW	[0]	[16]	0	65535	None	False	True	2	False	False	0	True	True	SRPv3[1]	ClinkDevRoot.ClinkFeb[1].ClinkTop.Ch[0].VSkip	0x4	0	16	16	0	# of lines to skip from the start of CLINK FrameValid (FV)|"\
+     "ClinkDevRoot.ClinkFeb[1].ClinkTop.Ch[0].VActive	UInt16	0x10013c	0x3c	RW	[0]	[16]	0	65535	None	False	True	2	False	False	0	True	True	SRPv3[1]	ClinkDevRoot.ClinkFeb[1].ClinkTop.Ch[0].VActive	0x4	0	16	16	0	# of active lines after VSkip while CLINK FrameValid (FV) is active|"\
      "ClinkDevRoot.ClinkFeb[1].ClinkTop.Pll[0].PHASE_MUX[0]	UInt3	0x101020	0x20	RW	[13]	[3]	0	7	None	False	True	2	False	False	0	True	True	SRPv3[1]	ClinkDevRoot.ClinkFeb[1].ClinkTop.Pll[0].PHASE_MUX[0]	0x4	0	3	3	0	\
 Chooses an initial phase offset for the clock output, the\
 resolution is equal to 1/8 VCO period. Not available in\
@@ -4037,6 +4045,10 @@ Frame: 2D pixel array\
      "ClinkDevRoot.ClinkFeb[2].ClinkTop.Ch[0].FrameCount	UInt32	0x100124	0x24	RO	[0]	[32]	0	4294967295	None	False	True	2	False	False	0	True	True	SRPv3[2]	ClinkDevRoot.ClinkFeb[2].ClinkTop.Ch[0].FrameCount	0x4	0	32	32	0	Frame counter|"\
      "ClinkDevRoot.ClinkFeb[2].ClinkTop.Ch[0].DropCount	UInt32	0x100128	0x28	RO	[0]	[32]	0	4294967295	None	False	True	2	False	False	0	True	True	SRPv3[2]	ClinkDevRoot.ClinkFeb[2].ClinkTop.Ch[0].DropCount	0x4	0	32	32	0	Drop counter|"\
      "ClinkDevRoot.ClinkFeb[2].ClinkTop.Ch[0].FrameSize	UInt32	0x10012c	0x2c	RO	[0]	[32]	0	4294967295	None	False	True	2	False	False	0	True	True	SRPv3[2]	ClinkDevRoot.ClinkFeb[2].ClinkTop.Ch[0].FrameSize	0x4	0	32	32	0	Camera Image size|"\
+     "ClinkDevRoot.ClinkFeb[2].ClinkTop.Ch[0].HSkip	UInt16	0x100130	0x30	RW	[0]	[16]	0	65535	None	False	True	2	False	False	0	True	True	SRPv3[2]	ClinkDevRoot.ClinkFeb[2].ClinkTop.Ch[0].HSkip	0x4	0	16	16	0	# of cycle to skip from the start of CLINK LineValid (LV)|"\
+     "ClinkDevRoot.ClinkFeb[2].ClinkTop.Ch[0].HActive	UInt16	0x100134	0x34	RW	[0]	[16]	0	65535	None	False	True	2	False	False	0	True	True	SRPv3[2]	ClinkDevRoot.ClinkFeb[2].ClinkTop.Ch[0].HActive	0x4	0	16	16	0	# of active cycle after HSkip while CLINK LineValid (LV) is active|"\
+     "ClinkDevRoot.ClinkFeb[2].ClinkTop.Ch[0].VSkip	UInt16	0x100138	0x38	RW	[0]	[16]	0	65535	None	False	True	2	False	False	0	True	True	SRPv3[2]	ClinkDevRoot.ClinkFeb[2].ClinkTop.Ch[0].VSkip	0x4	0	16	16	0	# of lines to skip from the start of CLINK FrameValid (FV)|"\
+     "ClinkDevRoot.ClinkFeb[2].ClinkTop.Ch[0].VActive	UInt16	0x10013c	0x3c	RW	[0]	[16]	0	65535	None	False	True	2	False	False	0	True	True	SRPv3[2]	ClinkDevRoot.ClinkFeb[2].ClinkTop.Ch[0].VActive	0x4	0	16	16	0	# of active lines after VSkip while CLINK FrameValid (FV) is active|"\
      "ClinkDevRoot.ClinkFeb[2].ClinkTop.Pll[0].PHASE_MUX[0]	UInt3	0x101020	0x20	RW	[13]	[3]	0	7	None	False	True	2	False	False	0	True	True	SRPv3[2]	ClinkDevRoot.ClinkFeb[2].ClinkTop.Pll[0].PHASE_MUX[0]	0x4	0	3	3	0	\
 Chooses an initial phase offset for the clock output, the\
 resolution is equal to 1/8 VCO period. Not available in\
@@ -5323,6 +5335,10 @@ Frame: 2D pixel array\
      "ClinkDevRoot.ClinkFeb[3].ClinkTop.Ch[0].FrameCount	UInt32	0x100124	0x24	RO	[0]	[32]	0	4294967295	None	False	True	2	False	False	0	True	True	SRPv3[3]	ClinkDevRoot.ClinkFeb[3].ClinkTop.Ch[0].FrameCount	0x4	0	32	32	0	Frame counter|"\
      "ClinkDevRoot.ClinkFeb[3].ClinkTop.Ch[0].DropCount	UInt32	0x100128	0x28	RO	[0]	[32]	0	4294967295	None	False	True	2	False	False	0	True	True	SRPv3[3]	ClinkDevRoot.ClinkFeb[3].ClinkTop.Ch[0].DropCount	0x4	0	32	32	0	Drop counter|"\
      "ClinkDevRoot.ClinkFeb[3].ClinkTop.Ch[0].FrameSize	UInt32	0x10012c	0x2c	RO	[0]	[32]	0	4294967295	None	False	True	2	False	False	0	True	True	SRPv3[3]	ClinkDevRoot.ClinkFeb[3].ClinkTop.Ch[0].FrameSize	0x4	0	32	32	0	Camera Image size|"\
+     "ClinkDevRoot.ClinkFeb[3].ClinkTop.Ch[0].HSkip	UInt16	0x100130	0x30	RW	[0]	[16]	0	65535	None	False	True	2	False	False	0	True	True	SRPv3[3]	ClinkDevRoot.ClinkFeb[3].ClinkTop.Ch[0].HSkip	0x4	0	16	16	0	# of cycle to skip from the start of CLINK LineValid (LV)|"\
+     "ClinkDevRoot.ClinkFeb[3].ClinkTop.Ch[0].HActive	UInt16	0x100134	0x34	RW	[0]	[16]	0	65535	None	False	True	2	False	False	0	True	True	SRPv3[3]	ClinkDevRoot.ClinkFeb[3].ClinkTop.Ch[0].HActive	0x4	0	16	16	0	# of active cycle after HSkip while CLINK LineValid (LV) is active|"\
+     "ClinkDevRoot.ClinkFeb[3].ClinkTop.Ch[0].VSkip	UInt16	0x100138	0x38	RW	[0]	[16]	0	65535	None	False	True	2	False	False	0	True	True	SRPv3[3]	ClinkDevRoot.ClinkFeb[3].ClinkTop.Ch[0].VSkip	0x4	0	16	16	0	# of lines to skip from the start of CLINK FrameValid (FV)|"\
+     "ClinkDevRoot.ClinkFeb[3].ClinkTop.Ch[0].VActive	UInt16	0x10013c	0x3c	RW	[0]	[16]	0	65535	None	False	True	2	False	False	0	True	True	SRPv3[3]	ClinkDevRoot.ClinkFeb[3].ClinkTop.Ch[0].VActive	0x4	0	16	16	0	# of active lines after VSkip while CLINK FrameValid (FV) is active|"\
      "ClinkDevRoot.ClinkFeb[3].ClinkTop.Pll[0].PHASE_MUX[0]	UInt3	0x101020	0x20	RW	[13]	[3]	0	7	None	False	True	2	False	False	0	True	True	SRPv3[3]	ClinkDevRoot.ClinkFeb[3].ClinkTop.Pll[0].PHASE_MUX[0]	0x4	0	3	3	0	\
 Chooses an initial phase offset for the clock output, the\
 resolution is equal to 1/8 VCO period. Not available in\
