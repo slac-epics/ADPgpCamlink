@@ -283,6 +283,7 @@ record( longout, "$(P)$(R)Up900RawShutterSpeed" )
 {
 	field( DESC,	"Numeric shutter value" )
 	field( DTYP,	"stream" )
+	field( DOL,     "15" )
 	field( OUT,		"@up900.proto SetShutterSpeed $(PORT).SER" )
 	field( DRVL,    "0" )
 	field( DRVH,    "15" )
@@ -326,8 +327,8 @@ record( aSub, "$(P)$(R)Up900Shutter_ASub" )
 {
 	field( SCAN,	"Passive" )
 	field( SNAM,	"Up900Shutter_Process" )
-	field( FTA,		"DOUBLE")	field( INPA,	"$(P)$(R)CamAcquireTime PP MS" )
-	field( FTB,		"LONG"	)	field( INPB,	"$(P)$(R)CamTriggerMode PP MS" )
+	field( FTA,		"DOUBLE")	field( INPA,	"$(P)$(R)AcquireTime PP MS" )
+	field( FTB,		"LONG"	)	field( INPB,	"$(P)$(R)TriggerMode PP MS" )
 	field( FTC,		"DOUBLE")	field( INPC,	"$(PW_SCALE=1e9)" )
 
 	field( FTVA,	"LONG"	)	field( OUTA,	"$(P)$(R)Up900RawShutterSpeed PP MS" )
