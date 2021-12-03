@@ -15,6 +15,8 @@
 
 using namespace		std;
 
+extern int		DEBUG_PGP_CAMLINK;
+
 #if 0
 extern "C" long Up900Shutter_Init(	aSubRecord	*	pSub	)
 {
@@ -45,6 +47,7 @@ extern "C" long Up900Shutter_Init(	aSubRecord	*	pSub	)
 //
 extern "C" long Up900Shutter_Process( aSubRecord	*	pSub	)
 {
+    static const char	*	functionName = "Up900Shutter_Process";
 	int			status		= 0;
 
 	// Get input value pointers
@@ -63,6 +66,7 @@ extern "C" long Up900Shutter_Process( aSubRecord	*	pSub	)
 	double		acquireTime 	= *pAcquireTimeVal;
 	epicsInt32	triggerMode 	= *pTriggerModeVal;
 	double		pulseScale  	= *pPulseWidthScale;
+	double		pulseWidthVal	= acquireTime * pulseScale;
 	epicsInt32	rawShutterSpeed	= 0;
 	epicsInt32	rawShutterMode	= 0;
 	switch ( triggerMode )
@@ -112,11 +116,15 @@ extern "C" long Up900Shutter_Process( aSubRecord	*	pSub	)
 		// External trigger mode
 		rawShutterMode  = 0;	// AM, Async Triggered Mode
 		rawShutterSpeed = 15;	// Pulse Width Mode
-		if ( pPulseWidthVal  != NULL )
-			*pPulseWidthVal = acquireTime * pulseScale;
 		break;
 	}
 
+    if ( DEBUG_PGP_CAMLINK >= 2 )
+		printf( "%s: acquireTime=%f, pw=%.0f, triggerMode=%d, rawShutterSpeed=%d, rawShutterMode=%d\n", functionName,
+				acquireTime, pulseWidthVal, triggerMode, rawShutterSpeed, rawShutterMode	);
+
+	if ( pPulseWidthVal  != NULL )
+		*pPulseWidthVal = pulseWidthVal;
 	if ( pRawShutterSpeed != NULL )
 		*pRawShutterSpeed = rawShutterSpeed;
 	if ( pRawShutterMode  != NULL )
@@ -139,8 +147,11 @@ extern "C" long Up900Shutter_Process( aSubRecord	*	pSub	)
 //
 extern "C" long Up900Shutter_RBV_Process( aSubRecord	*	pSub	)
 {
+    static const char	*	functionName = "Up900Shutter_RBV_Process";
 	int			status		= 0;
 	double		acquireTime	= 0;
+	epicsInt32	triggerMode = 2;
+	epicsInt32	rawShutterSpeed	= 15;
 
 	// Get input value pointers
 	epicsInt32	*	pRawShutterSpeed	= static_cast<epicsInt32 *>( pSub->a );
@@ -154,10 +165,13 @@ extern "C" long Up900Shutter_RBV_Process( aSubRecord	*	pSub	)
 
 	if ( pRawShutterMode == NULL )
 		return 0;
-	if ( *pRawShutterMode == 0 )
+	rawShutterSpeed = *pRawShutterSpeed;
+
+	if ( *pRawShutterMode == 1 )
 	{
 		//	NM, Normal FreeRun Mode
-		switch ( *pRawShutterSpeed )
+		triggerMode = 0;	// FreeRun
+		switch ( rawShutterSpeed )
 		{
 			default:
 			case 0:		acquireTime	= 1.0/15;		break;
@@ -180,14 +194,14 @@ extern "C" long Up900Shutter_RBV_Process( aSubRecord	*	pSub	)
 		if ( pAcquireTimeVal != NULL )
 			*pAcquireTimeVal	= acquireTime;
 		if ( pTriggerModeVal != NULL )
-			*pTriggerModeVal	= 0;	// FreeRun
+			*pTriggerModeVal	= triggerMode;	// FreeRun
 	}
 	else
 	{
-		epicsInt32	triggerMode = 1;	// External
+		triggerMode = 2;	// External
 
 		//	AM, Async Triggered Mode
-		switch ( *pRawShutterSpeed )
+		switch ( rawShutterSpeed )
 		{
 			default:
 			case 0:		acquireTime	= 10.0;			break;
@@ -216,6 +230,9 @@ extern "C" long Up900Shutter_RBV_Process( aSubRecord	*	pSub	)
 		if ( pTriggerModeVal != NULL )
 			*pTriggerModeVal	= triggerMode;
 	}
+
+    if ( DEBUG_PGP_CAMLINK >= 2 )
+		printf( "%s: rawShutterSpeed %d, acquireTime=%f, triggerMode=%d\n", functionName, acquireTime, triggerMode );
 
 	return status;
 }
