@@ -19,6 +19,9 @@ include $(CONFIG)/CONFIG
 # Override the Base definition:
 INSTALL_LOCATION = $(TOP)
 
+# Add support for building *.cfg files from *.sub-cfg
+CFG += RULES_CFG
+
 # CONFIG_SITE files contain other build configuration settings
 include $(TOP)/configure/CONFIG_SITE
 -include $(TOP)/configure/CONFIG_SITE.$(EPICS_HOST_ARCH).Common
