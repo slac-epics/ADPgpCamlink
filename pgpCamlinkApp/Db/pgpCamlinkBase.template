@@ -640,6 +640,8 @@ substitute "MON_PV=$(P)$(R)CamlinkInvCC"
 include "putMonitor.template"
 substitute "MON_PV=$(PGP):Ch$(PGP_LANE):EventBuilder:Bypass"
 include "putMonitor.template"
+substitute "MON_PV=$(P)$(R)CamlinkHTap"
+include "putMonitor.template"
 
 record( longin, "$(P)$(R)CamEventCode_RBV" )
 {

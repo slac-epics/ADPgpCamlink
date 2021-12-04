@@ -113,14 +113,18 @@ record( ao, "$(P)$(R)Gain" )
 	field( LOPR,	"0.0" )
 	field( EGU,     "%" )
 	field( PREC,    "2" )
+	field( FLNK,	"$(P)$(R)CamGain" )
 }
 record( ao, "$(P)$(R)CamGain" )
 {
+	field( DOL,		"$(P)$(R)Gain" )
+	field( OMSL,	"closed_loop" )
 	field( HOPR,	"100.0" )
 	field( LOPR,	"0.0" )
 	field( EGU,     "%" )
 	field( PREC,    "2" )
 	field( FLNK,	"$(P)$(R)Up900CalcGain" )
+	info( autosaveFields, "VAL" )
 }
 record( calc, "$(P)$(R)Up900CalcGain" )
 {
@@ -140,6 +144,7 @@ record( ao, "$(P)$(R)Up900Gain" )
 	field( DRVL,	"0" )
 	field( HOPR,	"1023" )
 	field( LOPR,	"0" )
+	field( PREC,    "0" )
 	field( FLNK,	"$(P)$(R)Up900Gain_RBV" )
 }
 
@@ -163,6 +168,7 @@ record( ao, "$(P)$(R)CamGain_RBV" )
 #	field( TPRO, 2 )
 	field( EGU,  "%" )
 	field( PREC, "2" )
+	field( OUT,  "$(P)$(R)Gain_RBV PP MS" )
 }
 
 record( ao, "$(P)$(R)CamAcquireTime" )
@@ -409,7 +415,7 @@ include "rbvMonitor.template"
 # Put monitors
 substitute "MON_SCAN=1 second"
 substitute "MON_DISABLED=1"
-substitute "MON_PV= $(P)$(R)Up900SetGain"
+substitute "MON_PV= $(P)$(R)Up900Gain"
 include "putMonitor.template"
 substitute "MON_PV= $(P)$(R)Up900RawShutterSpeed"
 include "putMonitor.template"
