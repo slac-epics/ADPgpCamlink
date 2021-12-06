@@ -64,13 +64,13 @@ record( longout, "$(P)$(R)CamlinkHTap" )
 }
 record( longout, "$(P)$(R)CamlinkTrigMask" )
 {
-	field( DOL,  "1" )
-	field( OMSL, "closed_loop" )
+	field( DOL,  "2" )	# Trigger on CC2
+#	field( OMSL, "closed_loop" )
 	field( PINI, "YES" )
 }
 record( bo, "$(P)$(R)CamlinkInvCC" )
 {
-	field( DOL,  "0" )
+	field( DOL,  "1" )
 	field( PINI, "YES" )
 }
 
