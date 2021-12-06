@@ -137,6 +137,7 @@ record( mbbo, "$(P)$(R)Feb$(F):DataMode" )
 	field( EIVL, "8" ) field( EIST, "36 Bit" )
 	field( DISV, "0" )
 	field( SDIS, "$(P)$(R)PgpMon:RxRemLinkReady_RBV CP" )
+	field( FLNK, "$(P)$(R)Feb$(F):DataMode_RBV" )
 }
 
 # Camlink Frame Mode
@@ -166,6 +167,7 @@ record( mbbo, "$(P)$(R)Feb$(F):FrameMode" )
 	field( ONVL, "1" ) field( ONST, "Line" )
 	field( TWVL, "2" ) field( TWST, "Frame" )
 	field( DISV, "0" )
+	field( FLNK, "$(P)$(R)Feb$(F):FrameMode_RBV" )
 	field( SDIS, "$(P)$(R)PgpMon:RxRemLinkReady_RBV CP" )
 }
 
