@@ -1429,14 +1429,10 @@ NDArray * pgpCamlink::AllocNDArray( )
 	pNDArray->dims[1].size		= GetSizeY();
 	pNDArray->dims[1].offset	= GetMinY();
 	pNDArray->dims[1].binning	= GetBinY();
-	if( pNDArray->dims[0].size > m_ClMaxWidth - pNDArray->dims[0].offset )
-	if( pNDArray->dims[0].size > m_ClMaxWidth - pNDArray->dims[0].offset )
-		pNDArray->dims[0].size = m_ClMaxWidth - pNDArray->dims[0].offset;
-		pNDArray->dims[0].size = m_ClMaxWidth - pNDArray->dims[0].offset;
-	if( pNDArray->dims[1].size > m_ClMaxWidth - pNDArray->dims[1].offset )
-	if( pNDArray->dims[1].size > m_ClMaxWidth - pNDArray->dims[1].offset )
-		pNDArray->dims[1].size = m_ClMaxWidth - pNDArray->dims[1].offset;
-		pNDArray->dims[1].size = m_ClMaxWidth - pNDArray->dims[1].offset;
+	if( pNDArray->dims[0].size > m_ClMaxWidth  - pNDArray->dims[0].offset )
+		pNDArray->dims[0].size = m_ClMaxWidth  - pNDArray->dims[0].offset;
+	if( pNDArray->dims[1].size > m_ClMaxHeight - pNDArray->dims[1].offset )
+		pNDArray->dims[1].size = m_ClMaxHeight - pNDArray->dims[1].offset;
 	if ( DEBUG_PGP_CAMLINK >= 4 )
 		printf(	"%s: %u bit pixels, %zux%zu from offset (%zu,%zu)\n",	functionName, m_ClNumBits,
 				pNDArray->dims[0].size,		pNDArray->dims[1].size,
