@@ -264,8 +264,6 @@ int rogueDev::ShowReport( int level )
 		cout	<< "\t\tType: "			<< m_RogueClass
 				<< " "					<< m_RogueModel
 				<< ", configuration: " 	<< m_ConfigFile << endl;
-		cout	<< "\t\tMax Res: "		<< m_ClMaxWidth << " x " << m_ClMaxHeight
-				<< endl;
 	}
 	if ( level >= 3 && m_pRogueLib )
 	{
@@ -309,6 +307,19 @@ int rogueDev::ShowPgpVariable( const char * pszVarPath, int level )
 	m_pRogueLib->showVariable( pszVarPath, level != 0 );
 	return 0;
 }
+
+int rogueDev::pgpLoadConfig( const char * pszFilename, double stepDelay )
+{
+	const char	*	functionName = "pgpRogueDev::pgpLoadConfig";
+	if ( m_pRogueLib == NULL )
+	{
+		printf( "%s error: %s PGP Dev not configured!\n", functionName, m_RogueName.c_str() );
+		return -1;
+	}
+	m_pRogueLib->LoadConfigFile( pszFilename, stepDelay );
+	return 0;
+}
+
 
 void rogueDev::ExitHook(void * arg)
 {
@@ -788,8 +799,8 @@ void rogueDev::report( FILE * fp, int details )
 		fprintf( fp, "  Lane:              %u\n",   m_lane );
 
 //		fprintf( fp, "  Sensor bits:       %u\n",   m_ClNumBits );
-		fprintf( fp, "  Sensor width:      %zd\n",  m_ClMaxWidth );
-		fprintf( fp, "  Sensor height:     %zd\n",  m_ClMaxHeight );
+//		fprintf( fp, "  Sensor width:      %zd\n",  m_ClMaxWidth );
+//		fprintf( fp, "  Sensor height:     %zd\n",  m_ClMaxHeight );
 //		fprintf( fp, "  Horiz taps:        %d\n",   m_ClHTaps );
 //		fprintf( fp, "  Vert  taps:        %d\n",   m_ClVTaps );
 //		fprintf( fp, "  Mode:              %s\n",   CamlinkModeToString( m_CamlinkMode ) );
@@ -954,6 +965,27 @@ int ShowPgpVariable( const char * pszCamName, const char * pszVarPath, int level
 	return pRogue->ShowPgpVariable( pszVarPath, level );
 }
 
+extern "C"
+int pgpLoadConfig( uint32_t iBoard, const char * pszFilename, double stepDelay )
+{
+	const char	*	functionName = "pgpLoadConfig";
+	if ( pszFilename == NULL )
+	{
+		printf( "Usage: %s boardNum Filename\n", functionName );
+		printf( "Example: %s 0 db/adcDelay.cfg\n", functionName );
+		return -1;
+	}
+
+	rogueDev	*	pRogue = rogueDev::RogueFindByBoard( iBoard );
+	if ( pRogue == NULL )
+	{
+		printf( "%s error: Rogue board %u not found!\n", functionName, iBoard );
+		return -1;
+	}
+
+	return pRogue->pgpLoadConfig( pszFilename, stepDelay );
+}
+
 // Register function:
 //		int ShowPgpVar( camName, varName, level )
 static const iocshArg		ShowPgpVarArg0		= { "camName",		iocshArgString };
@@ -971,6 +1003,25 @@ static int  ShowPgpVarCallFunc( const iocshArgBuf * args )
 void ShowPgpVarRegister(void)
 {
 	iocshRegister( &ShowPgpVarFuncDef, reinterpret_cast<iocshCallFunc>(ShowPgpVarCallFunc) );
+}
+
+// Register function:
+//		int pgpLoadConfig( camName, fileName, stepDelay )
+static const iocshArg		pgpLoadConfigArg0		= { "boardNum",		iocshArgInt };
+static const iocshArg		pgpLoadConfigArg1		= { "fileName",		iocshArgString };
+static const iocshArg		pgpLoadConfigArg2		= { "stepDelay",	iocshArgDouble };
+static const iocshArg	*	pgpLoadConfigArgs[3]	=
+{
+	&pgpLoadConfigArg0, &pgpLoadConfigArg1, &pgpLoadConfigArg2
+};
+static const iocshFuncDef   pgpLoadConfigFuncDef	= { "pgpLoadConfig", 3, pgpLoadConfigArgs };
+static int  pgpLoadConfigCallFunc( const iocshArgBuf * args )
+{
+	return static_cast<int>( pgpLoadConfig( args[0].ival, args[1].sval, args[2].dval ) );
+}
+void pgpLoadConfigRegister(void)
+{
+	iocshRegister( &pgpLoadConfigFuncDef, reinterpret_cast<iocshCallFunc>(pgpLoadConfigCallFunc) );
 }
 
 // Register Function:
@@ -999,5 +1050,6 @@ extern "C"
 	epicsExportRegistrar( SetPgpVarRegister );
 	epicsExportRegistrar( ShowAllRogueRegister );
 	epicsExportRegistrar( ShowPgpVarRegister );
+	epicsExportRegistrar( pgpLoadConfigRegister );
 	epicsExportAddress( int, DEBUG_PGP_ROGUE );
 }

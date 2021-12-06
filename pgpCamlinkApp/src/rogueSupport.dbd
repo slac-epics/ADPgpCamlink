@@ -4,6 +4,7 @@ registrar(	rogueDevConfigRegister		)
 registrar(	SetPgpVarRegister			)
 registrar(	ShowAllRogueRegister		)
 registrar(	ShowPgpVarRegister			)
+registrar(	pgpLoadConfigRegister		)
 
 variable(	DEBUG_PGP_ROGUE,	int		)
 
