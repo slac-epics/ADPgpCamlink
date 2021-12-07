@@ -617,7 +617,7 @@ void pgpRogueLib::FebPllConfig()
 		setVariable( "ClinkDevRoot.ClinkFeb[0].ClinkTop.RstPll",		1 );
 
 		sleep(1);
-		LoadConfigFile( "db/cfgFeb0Pll85MHz.txt", 0.0025 );
+//		LoadConfigFile( "db/cfgFeb0Pll85MHz.txt", 0.0025 );
 		sleep(1);
 
 		// Enable Pll
@@ -638,7 +638,7 @@ void pgpRogueLib::FebPllConfig()
 		setVariable( "ClinkDevRoot.ClinkFeb[1].ClinkTop.Ch[1].CntRst",	0 );
 		setVariable( "ClinkDevRoot.ClinkFeb[1].ClinkTop.RstPll",		1 );
 		sleep(1);
-		LoadConfigFile( "db/cfgFeb1Pll85MHz.txt", 0.0025 );
+//		LoadConfigFile( "db/cfgFeb1Pll85MHz.txt", 0.0025 );
 		sleep(1);
 		setVariable( "ClinkDevRoot.ClinkFeb[1].ClinkTop.RstPll",		0 );
 		setVariable( "ClinkDevRoot.ClinkFeb[1].ClinkTop.CntRst",		1 );
@@ -657,7 +657,7 @@ void pgpRogueLib::FebPllConfig()
 		setVariable( "ClinkDevRoot.ClinkFeb[2].ClinkTop.Ch[1].CntRst",	0 );
 		setVariable( "ClinkDevRoot.ClinkFeb[2].ClinkTop.RstPll",		1 );
 		sleep(1);
-		LoadConfigFile( "db/cfgFeb2Pll85MHz.txt", 0.0025 );
+//		LoadConfigFile( "db/cfgFeb2Pll85MHz.txt", 0.0025 );
 		sleep(1);
 		setVariable( "ClinkDevRoot.ClinkFeb[2].ClinkTop.RstPll",		0 );
 		setVariable( "ClinkDevRoot.ClinkFeb[2].ClinkTop.CntRst",		1 );
@@ -676,7 +676,7 @@ void pgpRogueLib::FebPllConfig()
 		setVariable( "ClinkDevRoot.ClinkFeb[3].ClinkTop.Ch[1].CntRst",	0 );
 		setVariable( "ClinkDevRoot.ClinkFeb[3].ClinkTop.RstPll",		1 );
 		sleep(1);
-		LoadConfigFile( "db/cfgFeb3Pll85MHz.txt", 0.0025 );
+//		LoadConfigFile( "db/cfgFeb3Pll85MHz.txt", 0.0025 );
 		sleep(1);
 		setVariable( "ClinkDevRoot.ClinkFeb[3].ClinkTop.RstPll",		0 );
 		setVariable( "ClinkDevRoot.ClinkFeb[3].ClinkTop.CntRst",		1 );
