@@ -57,13 +57,32 @@ record( stringin, "$(P)$(R)CamModelScreen" )
 	field( PINI, "NO" )
 }
 
+# The CamReConfigCount PV gets incremented each time the driver reconfigures the camera.
+# The FNLK record, CamReConfigSeq, should be implemented by each
+# camera model.db file to trigger processing of serial commands
+# to read camera settings and status.
+# Note: Serial commands for AcquireTime, TriggerMode, etc that get updated
+# in response to user changes to settings typically do not need to get
+# re-read in response to a reconfigure.
+record( longout, $(P)$(R)CamReConfigCount )
+{
+# TODO: Implement support for tracking configuration count and CamReConfigSeq
+#	field( DTYP, "asynInt32" )
+#	field( OUT,  "@asyn($(PORT),$(ADDR=0),$(TIMEOUT=1))CAM_RECFG_CNT" )
+#	field( SCAN, "I/O Intr" )
+	field( FLNK, "$(P)$(R)CamReConfigSeq" )
+}
+record( seq, $(P)$(R)CamReConfigSeq )
+{
+}
+
 #
 # Camlink settings
 #
 
 record( longout, "$(P)$(R)CamlinkBaudRate" )
 {
-	field( OUT,  "$(PGP):Ch$(PGP_LANE):Feb$(PGP_LANE):BaudRate CPP MS" )
+	field( OUT,  "$(PGP):Ch$(PGP_LANE):Feb$(PGP_LANE):BaudRate CA MS" )
 	field( EGU,  "bps" )
 	info( autosaveFields, "" )
 }
@@ -72,7 +91,7 @@ record( longout, "$(P)$(R)CamlinkBaudRate" )
 # 0: 'Disable', 1: 'Base', 2: 'Medium', 3: 'Full', 4: 'Deca'
 record( mbbo, "$(P)$(R)CamlinkLinkMode" )
 {
-	field( OUT,  "$(PGP):Ch$(PGP_LANE):Feb$(PGP_LANE):LinkMode" )
+	field( OUT,  "$(PGP):Ch$(PGP_LANE):Feb$(PGP_LANE):LinkMode CA MS" )
 	field( ZRVL, "0" ) field( ZRST, "Disable" )
 	field( ONVL, "1" ) field( ONST, "Base" )
 	field( TWVL, "2" ) field( TWST, "Medium" )
@@ -85,7 +104,7 @@ record( mbbo, "$(P)$(R)CamlinkLinkMode" )
 # 4: '14Bit', 5: '16Bit', 6: '24Bit', 7: '30Bit', 8: '36Bit' 
 record( mbbo, "$(P)$(R)CamlinkDataMode" )
 {
-	field( OUT,  "$(PGP):Ch$(PGP_LANE):Feb$(PGP_LANE):DataMode" )
+	field( OUT,  "$(PGP):Ch$(PGP_LANE):Feb$(PGP_LANE):DataMode CA MS" )
 	field( ZRVL, "0" ) field( ZRST, "None" )
 	field( ONVL, "1" ) field( ONST, "8 Bit" )
 	field( TWVL, "2" ) field( TWST, "10 Bit" )
@@ -101,7 +120,7 @@ record( mbbo, "$(P)$(R)CamlinkDataMode" )
 # 0: 'None', 1: 'Line', 2: 'Frame'
 record( mbbo, "$(P)$(R)CamlinkFrameMode" )
 {
-	field( OUT,  "$(PGP):Ch$(PGP_LANE):Feb$(PGP_LANE):FrameMode" )
+	field( OUT,  "$(PGP):Ch$(PGP_LANE):Feb$(PGP_LANE):FrameMode CA MS" )
 	field( ZRVL, "0" ) field( ZRST, "None" )
 	field( ONVL, "1" ) field( ONST, "Line" )
 	field( TWVL, "2" ) field( TWST, "Frame" )
@@ -111,18 +130,37 @@ record( mbbo, "$(P)$(R)CamlinkFrameMode" )
 record( longout, "$(P)$(R)CamlinkHTap" )
 {
 	field( DESC, "Camlink horizontal taps" )
-	field( OUT,  "$(PGP):Ch$(PGP_LANE):Feb$(PGP_LANE):TapCount" )
+	field( PINI, "YES" )
+	field( OUT,  "$(PGP):Ch$(PGP_LANE):Feb$(PGP_LANE):TapCount CA MS" )
+}
+record( longin, "$(P)$(R)CamlinkHTap_RBV" )
+{
+	field( INP,  "$(PGP):Ch$(PGP_LANE):Feb$(PGP_LANE):TapCount_RBV CPP MS" )
+}
+
+record( longout, "$(P)$(R)CamlinkVTap" )
+{
+	field( DESC, "Camlink vertical taps" )
+	field( DOL,  "1" )
+	field( OMSL, "closed_loop" )
+	field( PINI, "YES" )
+#	field( OUT,  "$(PGP):Ch$(PGP_LANE):Feb$(PGP_LANE):VTapCount CA MS" )
+}
+record( longin, "$(P)$(R)CamlinkVTap_RBV" )
+{
+#	field( INP,  "$(PGP):Ch$(PGP_LANE):Feb$(PGP_LANE):TapCount_RBV CPP MS" )
+	field( INP,  "$(P)$(R)CamlinkVTap CPP MS" )
 }
 
 record( longout, "$(P)$(R)CamlinkTrigMask" )
 {
 	field( DESC, "Sets trigger mask on 4-bit camCtrl bus" )
-	field( OUT,  "$(PGP):Ch$(PGP_LANE):Feb$(PGP_LANE):TrigMask" )
+	field( OUT,  "$(PGP):Ch$(PGP_LANE):Feb$(PGP_LANE):TrigMask CA MS" )
 }
 
 record( bo, "$(P)$(R)CamlinkInvCC" )
 {
-	field( OUT,  "$(PGP):Ch$(PGP_LANE):Feb$(PGP_LANE):InvCC" )
+	field( OUT,  "$(PGP):Ch$(PGP_LANE):Feb$(PGP_LANE):InvCC CA MS" )
 	field( ZNAM, "Normal" )
 	field( ONAM, "Invert" )
 }
@@ -157,7 +195,7 @@ record( calcout, "$(P)$(R)CamAcquireTimeCalc" )
 	field( CALC, "FLOOR(A*B)" )
 	field( PREC, "4" )
 	field( EGU,  "us" )
-	field( OUT,  "$(PGP):Ch$(PGP_LANE):Feb$(PGP_LANE):PulseWidth CA NMS" )
+	field( OUT,  "$(PGP):Ch$(PGP_LANE):Feb$(PGP_LANE):PulseWidth CA MS" )
 	info( archiveFields,  "VAL" )
 }
 # CamAcquireTime_RBV (Exposure Time)
@@ -342,20 +380,6 @@ record( longout, "$(P)$(R)CamHwVROI_RBV" )
 #	field( OUT,  "@asyn($(PORT),$(ADDR=0),$(TIMEOUT=1))CLCAM_HW_VROI" )
 	field( PINI, "YES" )
 	info( archiveFields,  "VAL" )
-}
-
-record( longin, "$(P)$(R)HTaps_RBV" )
-{
-#	field( DTYP,  "asynInt32" )
-#	field( INP,   "@asyn($(PORT),$(ADDR=0),$(TIMEOUT=1))CLCAM_HTAPS" )
-#	field( SCAN, "I/O Intr" )
-}
-
-record( longin, "$(P)$(R)VTaps_RBV" )
-{
-#	field( DTYP, "asynInt32" )
-#	field( INP,  "@asyn($(PORT),$(ADDR=0),$(TIMEOUT=1))CLCAM_VTAPS" )
-#	field( SCAN, "I/O Intr" )
 }
 
 record( mbbi, "$(P)$(R)CamMode_RBV" )
@@ -673,7 +697,7 @@ record( calc, "$(P)$(R)CamRepDur" )
 # For rolling shutter MODEL.db, set these fields as appropriate
 #	field( PINI, "YES" )
 #record( longout, "$(P)$(R)BeamEventCode" ) {
-#	field( OUT,  "$(BEAM_EC=$(P)$(R)CamEventCode) CPP NMS" ) }
+#	field( OUT,  "$(BEAM_EC=$(P)$(R)CamEventCode) CA NMS" ) }
 #record( longin, "$(P)$(R)BeamEventCode_RBV" ) {
 #	field( INP,  "$(BEAM_EC_RBV=$(P)$(R)CamEventCode_RBV) CPP MS" ) }
 #record( ai, "$(P)$(R)BeamRepRate_RBV" ) {
@@ -688,7 +712,7 @@ record( longout, "$(P)$(R)BeamEventCode" )
 {
 	field( DOL,  "40" )
 	field( PINI, "NO" )
-	field( OUT,  "$(P)$(R)CamEventCode CPP NMS" )
+	field( OUT,  "$(P)$(R)CamEventCode CA NMS" )
 	field( DISA, "1" )
 	info( autosaveFields, "HHSV HIGH HIHI HSV LLSV LOLO LOW LSV EGU DESC HOPR LOPR" )
 	info( archiveFields,  "VAL" )
@@ -723,8 +747,8 @@ record( calc, "$(P)$(R)CamlinkXmitTime" )
 {
     field( INPA, "$(P)$(R)ArraySize_RBV CPP MS" )
     field( INPB, "$(P)$(R)XmitRate CPP MS" )
-    field( INPC, "$(P)$(R)HTaps_RBV CPP MS" )
-    field( INPD, "$(P)$(R)VTaps_RBV CPP MS" )
+    field( INPC, "$(P)$(R)CamlinkHTap_RBV CPP MS" )
+    field( INPD, "$(P)$(R)CamlinkVTap_RBV CPP MS" )
     field( CALC, "(A/B/C/D)" )
     field( EGU,  "Sec" )
     field( PREC, "5" ) 

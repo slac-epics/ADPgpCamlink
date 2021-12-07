@@ -204,7 +204,6 @@ record( longin, "$(P)$(R)Feb$(F):TapCount_RBV" )
 record( longout, "$(P)$(R)Feb$(F):TapCount" )
 {
 	field( DTYP, "RogueLO" )
-	field( DOL,  "2" )
 	field( PINI, "YES" )
 	field( OUT,  "@B$(B) L$(L) ClinkDevRoot.ClinkFeb[$(F)].ClinkTop.Ch[0].TapCount" )
 	field( FLNK, "$(P)$(R)Feb$(F):TapCount_RBV" )
