@@ -8,6 +8,7 @@
 # Put monitors
 substitute "MON_SCAN=1 second"
 substitute "MON_DISABLED=1"
+substitute "SER_OK_PV=$(P)$(R)PgpMon:RxRemLinkReady_RBV"
 substitute "MON_PV=$(P)$(R)Feb$(F):BaudRate"
 include "putMonitor.template"
 substitute "MON_PV=$(P)$(R)Feb$(F):DataEn"

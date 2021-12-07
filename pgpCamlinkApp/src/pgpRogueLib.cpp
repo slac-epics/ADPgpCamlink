@@ -712,6 +712,7 @@ void pgpRogueLib::WaitForRxLinkUp( const char * pszDiagLabel )
 void pgpRogueLib::LoadConfigFile( const char * pszFilePath, double stepDelay )
 {
 	const char	*	functionName	= "pgpRogueLib::LoadConfigFile";
+#if 1
 	FILE		*	cfgFile			= fopen( pszFilePath, "r" );
 	struct timespec delay	= { (long int) floor(stepDelay), (long int) ((stepDelay - floor(stepDelay)) * 1e9) };
 	if ( cfgFile == NULL )
@@ -732,7 +733,86 @@ void pgpRogueLib::LoadConfigFile( const char * pszFilePath, double stepDelay )
 		while( 1 )
 		{
 			strcpy( varPath, "unParsed" );
-			nScan = fscanf( cfgFile, "%s = %lf", varPath, &dValue );
+			nScan = fscanf( cfgFile, "%s", varPath );
+			if ( nScan == EOF )
+				break;
+			if ( varPath[0] == '#' )
+			{
+				// Ignore comment lines
+				size_t		bufSize	= 1000;
+				char	*	commentBuf	= (char *) malloc(bufSize);
+				getline( &commentBuf, &bufSize, cfgFile );
+				if ( DEBUG_PGP_ROGUE >= 3 )
+					printf( "comment: %s\n", commentBuf );
+				free( commentBuf );
+				continue;
+			}
+			nScan = fscanf( cfgFile, " = %lf", &dValue );
+			if( nScan != 1 )
+			{
+				nScan = fscanf( cfgFile, " = %ld", &lValue );
+				if( nScan == 1 )
+					dValue = static_cast<double>(lValue);
+			}
+			if( nScan != 1 )
+			{
+				nScan = fscanf( cfgFile, " = 0x%lx", &lValue );
+				if( nScan == 2 )
+					dValue = static_cast<double>(lValue);
+			}
+			if( nScan == 1 )
+			{
+				setVariable( varPath, dValue );
+				nanosleep( &delay, NULL );
+				nValues++;
+			}
+			else
+			{
+				size_t		bufSize	= 1000;
+				char	*	commentBuf	= (char *) malloc(bufSize);
+				getline( &commentBuf, &bufSize, cfgFile );
+				printf( "%s: Error parsing %s\n", functionName, pszFilePath );
+				printf( "at: %s\n", commentBuf );
+				free( commentBuf );
+			}
+		}
+	}
+	catch ( rogue::GeneralError & e )
+	{
+		printf( "%s error: %s!\n", functionName, e.what() );
+	}
+	catch ( std::exception & e )
+	{
+		printf( "%s error: %s!\n", functionName, e.what() );
+	}
+
+	fclose( cfgFile );
+#else
+	{
+	std::ifstream		cfgFile( pszFilePath );
+	struct timespec delay	= { (long int) floor(stepDelay), (long int) ((stepDelay - floor(stepDelay)) * 1e9) };
+	if ( !cfgFile::is_open() )
+	{
+		fprintf( stderr, "LoadConfigFile error: Unable to open %s\n", pszFilePath );
+		return;
+	}
+	printf( "%s: Reading values from %s w/ %.4f sec delay/value ...\n", functionName, pszFilePath, stepDelay );
+
+	unsigned int	nValues	= 0;
+	try
+	{
+		int			nScan	= 0;
+		double		dValue;
+		int64_t		lValue;
+		char		varPath[256];
+
+		std::string		nextLine;
+		while( std::getline( cfgFile, nextLine ) )
+		{
+			strcpy( varPath, "unParsed" );
+			if ( nextLine.starts_with( "#" ) )
+				continue;
+			nScan = sscanf( nextLine.c_str(), "%s = %lf", varPath, &dValue );
 			if ( nScan == EOF )
 				break;
 			if( nScan != 2 )
@@ -769,6 +849,8 @@ void pgpRogueLib::LoadConfigFile( const char * pszFilePath, double stepDelay )
 	}
 
 	fclose( cfgFile );
+	}
+#endif
 	printf( "%s: Read %u values from %s\n", functionName, nValues, pszFilePath );
 }
 
