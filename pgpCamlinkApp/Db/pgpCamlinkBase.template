@@ -80,9 +80,17 @@ record( seq, $(P)$(R)CamReConfigSeq )
 # Camlink settings
 #
 
+record( longout, "$(P)$(R)CamlinkPixelClk" )
+{
+	field( OUT,  "$(PGP):Ch$(PGP_LANE):Feb$(PGP_LANE):PixelClk CA" )
+	field( EGU,  "MHz" )
+	field( PINI, "YES" )
+	info( autosaveFields, "" )
+}
+
 record( longout, "$(P)$(R)CamlinkBaudRate" )
 {
-	field( OUT,  "$(PGP):Ch$(PGP_LANE):Feb$(PGP_LANE):BaudRate CA MS" )
+	field( OUT,  "$(PGP):Ch$(PGP_LANE):Feb$(PGP_LANE):BaudRate CA" )
 	field( EGU,  "bps" )
 	info( autosaveFields, "" )
 }
@@ -91,7 +99,7 @@ record( longout, "$(P)$(R)CamlinkBaudRate" )
 # 0: 'Disable', 1: 'Base', 2: 'Medium', 3: 'Full', 4: 'Deca'
 record( mbbo, "$(P)$(R)CamlinkLinkMode" )
 {
-	field( OUT,  "$(PGP):Ch$(PGP_LANE):Feb$(PGP_LANE):LinkMode CA MS" )
+	field( OUT,  "$(PGP):Ch$(PGP_LANE):Feb$(PGP_LANE):LinkMode CA" )
 	field( ZRVL, "0" ) field( ZRST, "Disable" )
 	field( ONVL, "1" ) field( ONST, "Base" )
 	field( TWVL, "2" ) field( TWST, "Medium" )
@@ -104,7 +112,7 @@ record( mbbo, "$(P)$(R)CamlinkLinkMode" )
 # 4: '14Bit', 5: '16Bit', 6: '24Bit', 7: '30Bit', 8: '36Bit' 
 record( mbbo, "$(P)$(R)CamlinkDataMode" )
 {
-	field( OUT,  "$(PGP):Ch$(PGP_LANE):Feb$(PGP_LANE):DataMode CA MS" )
+	field( OUT,  "$(PGP):Ch$(PGP_LANE):Feb$(PGP_LANE):DataMode CA" )
 	field( ZRVL, "0" ) field( ZRST, "None" )
 	field( ONVL, "1" ) field( ONST, "8 Bit" )
 	field( TWVL, "2" ) field( TWST, "10 Bit" )
@@ -120,7 +128,7 @@ record( mbbo, "$(P)$(R)CamlinkDataMode" )
 # 0: 'None', 1: 'Line', 2: 'Frame'
 record( mbbo, "$(P)$(R)CamlinkFrameMode" )
 {
-	field( OUT,  "$(PGP):Ch$(PGP_LANE):Feb$(PGP_LANE):FrameMode CA MS" )
+	field( OUT,  "$(PGP):Ch$(PGP_LANE):Feb$(PGP_LANE):FrameMode CA" )
 	field( ZRVL, "0" ) field( ZRST, "None" )
 	field( ONVL, "1" ) field( ONST, "Line" )
 	field( TWVL, "2" ) field( TWST, "Frame" )
@@ -131,7 +139,7 @@ record( longout, "$(P)$(R)CamlinkHTap" )
 {
 	field( DESC, "Camlink horizontal taps" )
 	field( PINI, "YES" )
-	field( OUT,  "$(PGP):Ch$(PGP_LANE):Feb$(PGP_LANE):TapCount CA MS" )
+	field( OUT,  "$(PGP):Ch$(PGP_LANE):Feb$(PGP_LANE):TapCount CA" )
 }
 record( longin, "$(P)$(R)CamlinkHTap_RBV" )
 {
@@ -144,7 +152,7 @@ record( longout, "$(P)$(R)CamlinkVTap" )
 	field( DOL,  "1" )
 	field( OMSL, "closed_loop" )
 	field( PINI, "YES" )
-#	field( OUT,  "$(PGP):Ch$(PGP_LANE):Feb$(PGP_LANE):VTapCount CA MS" )
+#	field( OUT,  "$(PGP):Ch$(PGP_LANE):Feb$(PGP_LANE):VTapCount CA" )
 }
 record( longin, "$(P)$(R)CamlinkVTap_RBV" )
 {
@@ -155,12 +163,12 @@ record( longin, "$(P)$(R)CamlinkVTap_RBV" )
 record( longout, "$(P)$(R)CamlinkTrigMask" )
 {
 	field( DESC, "Sets trigger mask on 4-bit camCtrl bus" )
-	field( OUT,  "$(PGP):Ch$(PGP_LANE):Feb$(PGP_LANE):TrigMask CA MS" )
+	field( OUT,  "$(PGP):Ch$(PGP_LANE):Feb$(PGP_LANE):TrigMask CA" )
 }
 
 record( bo, "$(P)$(R)CamlinkInvCC" )
 {
-	field( OUT,  "$(PGP):Ch$(PGP_LANE):Feb$(PGP_LANE):InvCC CA MS" )
+	field( OUT,  "$(PGP):Ch$(PGP_LANE):Feb$(PGP_LANE):InvCC CA" )
 	field( ZNAM, "Normal" )
 	field( ONAM, "Invert" )
 }
@@ -195,7 +203,7 @@ record( calcout, "$(P)$(R)CamAcquireTimeCalc" )
 	field( CALC, "FLOOR(A*B)" )
 	field( PREC, "4" )
 	field( EGU,  "us" )
-	field( OUT,  "$(PGP):Ch$(PGP_LANE):Feb$(PGP_LANE):PulseWidth CA MS" )
+	field( OUT,  "$(PGP):Ch$(PGP_LANE):Feb$(PGP_LANE):PulseWidth CA" )
 	info( archiveFields,  "VAL" )
 }
 # CamAcquireTime_RBV (Exposure Time)
@@ -650,6 +658,8 @@ substitute "MON_PV=$(P)$(R)CamEventCode"
 include "putMonitor.template"
 
 substitute "SER_OK_PV=$(PGP):Ch$(PGP_LANE):PgpMon:RxRemLinkReady_RBV"
+substitute "MON_PV=$(P)$(R)CamlinkPixelClk"
+include "putMonitor.template"
 substitute "MON_PV=$(P)$(R)CamlinkBaudRate"
 include "putMonitor.template"
 substitute "MON_PV=$(P)$(R)CamlinkDataMode"

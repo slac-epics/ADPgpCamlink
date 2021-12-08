@@ -912,14 +912,14 @@ int SetPgpVariable( const char * pszCamName, const char * pszVarPath, double val
 	{
 		printf( "Usage: %s camPortName varPath value\n", functionName );
 		printf( "Example: %s CAM ClinkDevRoot.ClinkPcie.AxiPcieCore.AxiVersion.ScratchPad 123\n", functionName );
-		return -1;
+		return 0;
 	}
 
 	rogueDev	*	pRogue = rogueDev::RogueFindByName( std::string(pszCamName) );
 	if ( pRogue == NULL )
 	{
 		printf( "%s error: Rogue %s not found!\n", functionName, pszCamName );
-		return -1;
+		return 0;
 	}
 
 	return pRogue->SetPgpVariable( pszVarPath, value );

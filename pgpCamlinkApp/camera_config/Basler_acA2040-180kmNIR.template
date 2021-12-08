@@ -45,6 +45,11 @@ record( stringin, "$(P)$(R)CamModelScreen" )
 }
 
 # Camlink settings
+record( longout, "$(P)$(R)CamlinkPixelClk" )
+{
+	field( DOL,  "80" )
+}
+
 record( longout, "$(P)$(R)CamlinkBaudRate" )
 {
 	field( DOL,  "9600" )

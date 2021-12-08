@@ -34,6 +34,25 @@ record( longin, "$(P)$(R)Feb$(F):UpTime" )
 	info( autosaveFields, "" )
 }
 
+record( longout, "$(P)$(R)Feb$(F):PixelClk" )
+{
+	field( EGU,  "MHz" )
+#	field( PINI, "YES" )
+	field( DISV, "0" )
+	field( SDIS, "$(P)$(R)PgpMon:RxRemLinkReady_RBV CP" )
+	info( autosaveFields, "VAL" )
+}
+
+record( sub, "$(P)$(R)Feb$(F):PllConfig" )
+{
+	field( INPA, "$(B)" )
+	field( INPB, "$(F)" )
+	field( INPC, "$(P)$(R)Feb$(F):PixelClk CPP NMS" )
+	field( SNAM, "FebPllConfig" )
+	field( DISV, "0" )
+	field( SDIS, "$(P)$(R)PgpMon:RxRemLinkReady_RBV CP" )
+}
+
 # TODO Use mbbi w/ enumerated baud rates
 record( longin, "$(P)$(R)Feb$(F):BaudRate_RBV" )
 {

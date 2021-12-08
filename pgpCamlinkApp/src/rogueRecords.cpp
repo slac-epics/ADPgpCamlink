@@ -13,10 +13,12 @@
 #include <mbboRecord.h>
 #include <longinRecord.h>
 #include <longoutRecord.h>
+#include <subRecord.h>
 //#include <dbAccess.h>
 //#include <dbAccessDefs.h>
 #include <dbScan.h>
 #include <recGbl.h>
+#include <registryFunction.h>
 #include <epicsExport.h>
 
 //#include "drvRogue.h"
@@ -734,3 +736,52 @@ epicsExportAddress( dset, dsetRogueMBBO );
 #ifdef __cplusplus
 }
 #endif
+
+//	FebPllConfig
+//	Configures PLL on FEB for specified pixel clock
+//	Inputs:
+//		A:	LONG, Board number
+//		B:	LONG, FEB number
+//		C:	LONG, Pixel clock (MHz)
+//
+extern "C" long FebPllConfig( subRecord	*	pSub	)
+{
+    static const char	*	functionName = "FebPllConfig";
+	int			status		= 0;
+
+	// Get input values
+	unsigned int	iBoard		= (unsigned int) pSub->a;
+	unsigned int	iFeb		= (unsigned int) pSub->b;
+	unsigned int	pixelClk	= (unsigned int) pSub->c;
+
+	rogueDev	*	pRogue = rogueDev::RogueFindByBoard( iBoard );
+	if ( pRogue == NULL )
+	{
+		printf( "%s error: Rogue board %u not found!\n", functionName, iBoard );
+		return 0;
+	}
+	pgpRogueLibPtr	pRogueLib		= pRogue->GetRogueLib();
+	if ( pRogueLib == NULL )
+	{
+		printf( "%s error: Rogue lib for board %u not found!\n", functionName, iBoard );
+		return 0;
+	}
+	pSub->val = 0;
+	status	= pRogueLib->FebPllConfig( iFeb, pixelClk );
+	if ( status != 0 )
+	{
+		printf( "%s: Feb %u Configuration Error %d\n", functionName, iFeb, status );
+		return status;
+	}
+
+    if ( DEBUG_ROGUE_DEV >= 2 )
+		printf( "%s: Configured Feb %u PLL for %dMHz\n", functionName, iFeb, pixelClk );
+
+	pSub->val = pixelClk;
+	return 0;
+}
+
+extern "C"
+{
+epicsRegisterFunction(	FebPllConfig	);
+}
