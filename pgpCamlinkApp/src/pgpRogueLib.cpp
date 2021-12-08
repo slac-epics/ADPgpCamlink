@@ -19,6 +19,7 @@
 #include <exception>
 #include <fstream>
 #include <iostream>
+#include <sstream>
 #include <typeinfo>
 #include <sys/stat.h>
 #include <fcntl.h>
@@ -441,8 +442,8 @@ pgpRogueLib::pgpRogueLib(
 	setVariable( "ClinkDevRoot.ClinkPcie.Hsio.PgpRxAxisMon[3].CntRst", 1 );
 	setVariable( "ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TimingPhyMonitor.CntRst", 1 );
 #endif
-	if ( doFebConfig )
-		FebPllConfig();
+//	if ( doFebConfig )
+//		FebPllConfig();
 
 	setTriggerEnable( 0, false );
 	setTriggerEnable( 1, false );
@@ -591,99 +592,38 @@ void pgpRogueLib::FebFpgaReload()
 	sleep(5);
 }
 
-void pgpRogueLib::FebPllConfig()
+int pgpRogueLib::FebPllConfig( unsigned int iFeb, int pixelClk )
 {
-#if 0
-	{	TODO: Need to provide C++ equivalent to select Pll rate for each camera type
-		# PllConfig is internal python variable
-		# TODO: Will need to select clock via st.cmd or Opal config file
-		if (self.PllConfig[i].get() == '85MHz'):
-			self.Pll[i].Config85MHz()            # Check for 80 MHz configuration
-		if (self.PllConfig[i].get() == '80MHz'):
-			# Same config as 85 MHz
-			self.Pll[i].Config85MHz()            # Check for 25 MHz configuration
-		if (self.PllConfig[i].get() == '25MHz'):
-			self.Pll[i].Config25MHz()        # Release the reset after configuration
-	}
-#endif
-	if ( FebReady(0) )
+	if ( !FebReady(iFeb) )
 	{
-		printf( "Configuring Feb[0] Pll...\n" );
-		setVariable( "ClinkDevRoot.ClinkFeb[0].ClinkTop.Ch[0].CntRst",	1 );
-		setVariable( "ClinkDevRoot.ClinkFeb[0].ClinkTop.Ch[0].CntRst",	0 );
-		setVariable( "ClinkDevRoot.ClinkFeb[0].ClinkTop.Ch[1].CntRst",	1 );
-		setVariable( "ClinkDevRoot.ClinkFeb[0].ClinkTop.Ch[1].CntRst",	0 );
-		// Hold Pll in reset
-		setVariable( "ClinkDevRoot.ClinkFeb[0].ClinkTop.RstPll",		1 );
-
-		sleep(1);
-//		LoadConfigFile( "db/cfgFeb0Pll85MHz.txt", 0.0025 );
-		sleep(1);
-
-		// Enable Pll
-		setVariable( "ClinkDevRoot.ClinkFeb[0].ClinkTop.RstPll",		0 );
-		setVariable( "ClinkDevRoot.ClinkFeb[0].ClinkTop.CntRst",		1 );
-		setVariable( "ClinkDevRoot.ClinkFeb[0].ClinkTop.CntRst",		0 );
-		setVariable( "ClinkDevRoot.ClinkFeb[0].TrigCtrl[0].CntRst",		1 );
-		setVariable( "ClinkDevRoot.ClinkFeb[0].TrigCtrl[1].CntRst",		1 );
+		printf( "FebPllConfig: Error Feb %u not ready!\n", iFeb );
+		return -1;
 	}
 
-	if ( FebReady(1) )
-	{
-		// Feb1 Pll Config:
-		printf( "Configuring Feb[1] Pll...\n" );
-		setVariable( "ClinkDevRoot.ClinkFeb[1].ClinkTop.Ch[0].CntRst",	1 );
-		setVariable( "ClinkDevRoot.ClinkFeb[1].ClinkTop.Ch[0].CntRst",	0 );
-		setVariable( "ClinkDevRoot.ClinkFeb[1].ClinkTop.Ch[1].CntRst",	1 );
-		setVariable( "ClinkDevRoot.ClinkFeb[1].ClinkTop.Ch[1].CntRst",	0 );
-		setVariable( "ClinkDevRoot.ClinkFeb[1].ClinkTop.RstPll",		1 );
-		sleep(1);
-//		LoadConfigFile( "db/cfgFeb1Pll85MHz.txt", 0.0025 );
-		sleep(1);
-		setVariable( "ClinkDevRoot.ClinkFeb[1].ClinkTop.RstPll",		0 );
-		setVariable( "ClinkDevRoot.ClinkFeb[1].ClinkTop.CntRst",		1 );
-		setVariable( "ClinkDevRoot.ClinkFeb[1].ClinkTop.CntRst",		0 );
-		setVariable( "ClinkDevRoot.ClinkFeb[1].TrigCtrl[0].CntRst",		1 );
-		setVariable( "ClinkDevRoot.ClinkFeb[1].TrigCtrl[1].CntRst",		1 );
-	}
+	printf( "Configuring Feb[%u] Pll...\n", iFeb );
+	ostringstream	febRoot;
+	febRoot << string("ClinkDevRoot.ClinkFeb[") << iFeb << string("].ClinkTop");
 
-	if ( FebReady(2) )
-	{
-		// Feb2 Pll Config:
-		printf( "Configuring Feb[2] Pll...\n" );
-		setVariable( "ClinkDevRoot.ClinkFeb[2].ClinkTop.Ch[0].CntRst",	1 );
-		setVariable( "ClinkDevRoot.ClinkFeb[2].ClinkTop.Ch[0].CntRst",	0 );
-		setVariable( "ClinkDevRoot.ClinkFeb[2].ClinkTop.Ch[1].CntRst",	1 );
-		setVariable( "ClinkDevRoot.ClinkFeb[2].ClinkTop.Ch[1].CntRst",	0 );
-		setVariable( "ClinkDevRoot.ClinkFeb[2].ClinkTop.RstPll",		1 );
-		sleep(1);
-//		LoadConfigFile( "db/cfgFeb2Pll85MHz.txt", 0.0025 );
-		sleep(1);
-		setVariable( "ClinkDevRoot.ClinkFeb[2].ClinkTop.RstPll",		0 );
-		setVariable( "ClinkDevRoot.ClinkFeb[2].ClinkTop.CntRst",		1 );
-		setVariable( "ClinkDevRoot.ClinkFeb[2].ClinkTop.CntRst",		0 );
-		setVariable( "ClinkDevRoot.ClinkFeb[2].TrigCtrl[0].CntRst",		1 );
-		setVariable( "ClinkDevRoot.ClinkFeb[2].TrigCtrl[1].CntRst",		1 );
-	}
+	setVariable( febRoot.str(), ".Ch[0].CntRst",	1 );
+	setVariable( febRoot.str(), ".Ch[0].CntRst",	0 );
+	// Hold Pll in reset
+	setVariable( febRoot.str(), ".RstPll",			1 );
 
-	if ( FebReady(3) )
-	{
-		// Feb3 Pll Config:
-		printf( "Configuring Feb[3] Pll...\n" );
-		setVariable( "ClinkDevRoot.ClinkFeb[3].ClinkTop.Ch[0].CntRst",	1 );
-		setVariable( "ClinkDevRoot.ClinkFeb[3].ClinkTop.Ch[0].CntRst",	0 );
-		setVariable( "ClinkDevRoot.ClinkFeb[3].ClinkTop.Ch[1].CntRst",	1 );
-		setVariable( "ClinkDevRoot.ClinkFeb[3].ClinkTop.Ch[1].CntRst",	0 );
-		setVariable( "ClinkDevRoot.ClinkFeb[3].ClinkTop.RstPll",		1 );
-		sleep(1);
-//		LoadConfigFile( "db/cfgFeb3Pll85MHz.txt", 0.0025 );
-		sleep(1);
-		setVariable( "ClinkDevRoot.ClinkFeb[3].ClinkTop.RstPll",		0 );
-		setVariable( "ClinkDevRoot.ClinkFeb[3].ClinkTop.CntRst",		1 );
-		setVariable( "ClinkDevRoot.ClinkFeb[3].ClinkTop.CntRst",		0 );
-		setVariable( "ClinkDevRoot.ClinkFeb[3].TrigCtrl[0].CntRst",		1 );
-		setVariable( "ClinkDevRoot.ClinkFeb[3].TrigCtrl[1].CntRst",		1 );
-	}
+	sleep(1);
+	ostringstream	cfgFilePath;
+	cfgFilePath << string("cfg/Feb") << iFeb << string("Pll") << pixelClk << string("MHz.cfg");
+	printf( "LoadConfigFile %s...\n", cfgFilePath.str().c_str() );
+	LoadConfigFile( cfgFilePath.str().c_str(), 0.005 );
+	sleep(1);
+
+	// Enable Pll
+	printf( "Enable Pll %s\n", febRoot.str().c_str() );
+	setVariable( febRoot.str(), ".RstPll",			0 );
+	setVariable( febRoot.str(), ".CntRst",			1 );
+	setVariable( febRoot.str(), ".CntRst",			0 );
+	setVariable( febRoot.str(), ".Ch[0].CntRst",	1 );
+
+	return 0;
 }
 
 
@@ -1074,15 +1014,22 @@ void pgpRogueLib::dumpVariables( const char * pszFilePath, bool fWritableOnly, b
 
 void pgpRogueLib::setVariable( const char * pszVarPath, double value )
 {
+	std::string		rootPath( "" );
+	setVariable( rootPath, pszVarPath, value );
+}
+
+void pgpRogueLib::setVariable( const std::string & rootPath, const char * pszVarPath, double value )
+{
 	uint64_t	u64Value;
 	int64_t		i64Value;
 	bool		bValue;
 	float		fValue;
 	double		dValue;
-	std::string		varPath( pszVarPath );
+	ostringstream	varPath;
+	varPath << rootPath << string(pszVarPath);
 	rogue::interfaces::memory::VariablePtr	pVar;
 	//pVar = m_pRogueLib->getVariable( varPath );
-	pVar = getVariable( varPath );
+	pVar = getVariable( varPath.str() );
 	if ( pVar )
 	{
 		// Removed verbose printf option here
@@ -1099,29 +1046,29 @@ void pgpRogueLib::setVariable( const char * pszVarPath, double value )
 			break;
 		case rim::UInt:
 			u64Value	= static_cast<uint64_t>(value);
-			writeVarPath( pszVarPath, u64Value );
+			writeVarPath( varPath.str().c_str(), u64Value );
 			break;
 		case rim::Int:
 			i64Value	= static_cast<int64_t>(value);
-			writeVarPath( pszVarPath, i64Value );
+			writeVarPath( varPath.str().c_str(), i64Value );
 			break;
 		case rim::Bool:
 			bValue	= static_cast<bool>(value);
-			writeVarPath( pszVarPath, bValue );
+			writeVarPath( varPath.str().c_str(), bValue );
 			break;
 		case rim::Float:
 			fValue	= static_cast<float>(value);
-			writeVarPath( pszVarPath, fValue );
+			writeVarPath( varPath.str().c_str(), fValue );
 			break;
 		case rim::Double:
 			dValue	= static_cast<double>(value);
-			writeVarPath( pszVarPath, dValue );
+			writeVarPath( varPath.str().c_str(), dValue );
 			break;
 		}
 	}
 	else
 	{
-		printf( "pgpRogueLib error: %s not found!\n", varPath.c_str() );
+		printf( "pgpRogueLib error: %s not found!\n", varPath.str().c_str() );
 	}
 }
 

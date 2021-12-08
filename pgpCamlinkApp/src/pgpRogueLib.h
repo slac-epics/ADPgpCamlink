@@ -69,6 +69,7 @@ public:		//	Public member functions
 	void dumpVariables( const char * pszFilePath, bool fWriteOnly, bool fForceRead, bool verbose );
 
 	// Functions to allow setting or showing the value of rogue variables
+	void setVariable(  const std::string & rootPath, const char * pszVarPath, double value );
 	void setVariable(  const char * pszVarPath, double value );
 	void showVariable( const char * pszVarPath, bool verbose );
 	void showVariableList( bool verbose );
@@ -93,7 +94,7 @@ public:		//	Public member functions
 
 	void FebFpgaReload();
 
-	void FebPllConfig();
+	int FebPllConfig( unsigned int iFeb, int pixelClk );
 
 	void GetEventBuilderBlowoffPath( unsigned int triggerNum, std::string & retPath );
 	void GetEventBuilderSoftRstPath( unsigned int triggerNum, std::string & retPath );

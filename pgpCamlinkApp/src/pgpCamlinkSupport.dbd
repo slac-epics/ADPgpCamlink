@@ -4,6 +4,7 @@ registrar(	pgpCamlinkConfigFullRegister	)
 registrar(	ResetImageTimingRegister		)
 registrar(	ShowImageTimingRegister			)
 registrar(	ShowAllCamerasRegister			)
+function(	FebPllConfig	)
 
 # Camera specific support functions
 function( Up900Shutter_Process )
