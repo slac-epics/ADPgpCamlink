@@ -232,11 +232,10 @@ extern "C" long Up900Shutter_RBV_Process( aSubRecord	*	pSub	)
 	}
 
     if ( DEBUG_PGP_CAMLINK >= 2 )
-		printf( "%s: rawShutterSpeed %d, acquireTime=%f, triggerMode=%d\n", functionName, acquireTime, triggerMode );
+		printf( "%s: rawShutterSpeed %d, acquireTime=%f, triggerMode=%d\n", functionName, rawShutterSpeed, acquireTime, triggerMode );
 
 	return status;
 }
-
 
 // Register aSub functions
 extern "C"
