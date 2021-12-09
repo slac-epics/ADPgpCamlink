@@ -173,6 +173,39 @@ record( bo, "$(P)$(R)CamlinkInvCC" )
 	field( ONAM, "Invert" )
 }
 
+record( longout, "$(P)$(R)CamlinkHActive" )
+{
+	field( OUT,  "$(PGP):Ch$(PGP_LANE):Feb$(PGP_LANE):HActive CA" )
+	field( EGU,  "px" )
+	field( PINI, "YES" )
+	info( autosaveFields, "HHSV HIGH HIHI HSV LLSV LOLO LOW LSV     DESC HOPR LOPR VAL" )
+}
+
+record( longout, "$(P)$(R)CamlinkVActive" )
+{
+	field( OUT,  "$(PGP):Ch$(PGP_LANE):Feb$(PGP_LANE):VActive CA" )
+	field( EGU,  "px" )
+	field( PINI, "YES" )
+	info( autosaveFields, "HHSV HIGH HIHI HSV LLSV LOLO LOW LSV     DESC HOPR LOPR VAL" )
+}
+
+record( longout, "$(P)$(R)CamlinkHSkip" )
+{
+	field( OUT,  "$(PGP):Ch$(PGP_LANE):Feb$(PGP_LANE):HSkip CA" )
+	field( EGU,  "px" )
+	field( PINI, "YES" )
+	info( autosaveFields, "HHSV HIGH HIHI HSV LLSV LOLO LOW LSV     DESC HOPR LOPR VAL" )
+}
+
+record( longout, "$(P)$(R)CamlinkVSkip" )
+{
+	field( OUT,  "$(PGP):Ch$(PGP_LANE):Feb$(PGP_LANE):VSkip CA" )
+	field( EGU,  "px" )
+	field( PINI, "YES" )
+	info( autosaveFields, "HHSV HIGH HIHI HSV LLSV LOLO LOW LSV     DESC HOPR LOPR VAL" )
+}
+
+
 #
 # Propagate these PVs through the CAM interface
 
@@ -675,6 +708,14 @@ include "putMonitor.template"
 substitute "MON_PV=$(PGP):Ch$(PGP_LANE):EventBuilder:Bypass"
 include "putMonitor.template"
 substitute "MON_PV=$(P)$(R)CamlinkHTap"
+include "putMonitor.template"
+substitute "MON_PV=$(P)$(R)CamlinkHActive"
+include "putMonitor.template"
+substitute "MON_PV=$(P)$(R)CamlinkVActive"
+include "putMonitor.template"
+substitute "MON_PV=$(P)$(R)CamlinkHSkip"
+include "putMonitor.template"
+substitute "MON_PV=$(P)$(R)CamlinkVSkip"
 include "putMonitor.template"
 
 record( longin, "$(P)$(R)CamEventCode_RBV" )

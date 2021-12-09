@@ -78,6 +78,24 @@ record( bo, "$(P)$(R)CamlinkInvCC" )
 	field( PINI, "YES" )
 }
 
+# Provide defaults for ADCore SizeX and SizeY
+record( longout, "$(P)$(R)SizeX" )
+{
+	field( DOL, "1392" )
+}
+record( longout, "$(P)$(R)SizeY" )
+{
+	field( DOL, "1040" )
+}
+record( longout, "$(P)$(R)CamlinkHActive" )
+{
+	field( VAL, "1392" )
+}
+record( longout, "$(P)$(R)CamlinkVActive" )
+{
+	field( VAL, "1040" )
+}
+
 record( seq, "$(P)$(R)Up900DoReport" )
 {
 	field( DESC,	"Do delayed report" )

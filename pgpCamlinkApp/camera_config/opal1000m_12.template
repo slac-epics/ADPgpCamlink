@@ -123,6 +123,14 @@ record( longout, "$(P)$(R)SizeY" )
 {
 	field( DOL, "1024" )
 }
+record( longout, "$(P)$(R)CamlinkHActive" )
+{
+	field( VAL, "1024" )
+}
+record( longout, "$(P)$(R)CamlinkVActive" )
+{
+	field( VAL, "1024" )
+}
 
 # Set black level
 record( longout, "$(P)$(R)OpalBlackLevel" )

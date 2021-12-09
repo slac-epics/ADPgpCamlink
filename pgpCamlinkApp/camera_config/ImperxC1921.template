@@ -82,6 +82,23 @@ record( bo, "$(P)$(R)CamlinkInvCC" )
 	field( PINI, "YES" )
 }
 
+# Provide defaults for ADCore SizeX and SizeY
+record( longout, "$(P)$(R)SizeX" )
+{
+	field( DOL, "1944" )
+}
+record( longout, "$(P)$(R)SizeY" )
+{
+	field( DOL, "1472" )
+}
+record( longout, "$(P)$(R)CamlinkHActive" )
+{
+	field( VAL, "1944" )
+}
+record( longout, "$(P)$(R)CamlinkVActive" )
+{
+	field( VAL, "1472" )
+}
 
 # Possible TODO: Add support for
 
