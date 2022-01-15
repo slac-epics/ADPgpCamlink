@@ -292,15 +292,16 @@ pgpRogueLib::pgpRogueLib(
 	m_pAxiMemMap		= rogue::hardware::axi::AxiMemMap::create( m_devName );
 	m_pClMemMaster		= ClMemoryMaster::create( );
 	m_pClMemMaster->setSlave( m_pAxiMemMap );
-	const char	*	szMemName = "PCIe_Bar0";
-	addMemory( szMemName, m_pAxiMemMap );
-	//m_pRogueLib->addMemory( szMemName, m_pAxiMemMap );
-	printf("pgpRogueLib: addMemory AxiMemMap interface %s\n", szMemName );
+	const char	*	szPcieMemName = "PCIe_Bar0";
+	addMemory( szPcieMemName, m_pAxiMemMap );
+	//m_pRogueLib->addMemory( szPcieMemName, m_pAxiMemMap );
+	printf("pgpRogueLib: addMemory AxiMemMap interface %s\n", szPcieMemName );
 
 	//
 	// Create FEB Data Channel for each lane
 	// TODO: Make a function than encapsulates this
 	uint32_t	dest;
+	const char	*	szMemName;
 	for ( size_t	lane = 0; lane < N_AXI_LANES; lane++ )
 	{
 		dest = (0x100 * lane) + PGPCL_DATACHAN_FEB_REG_ACCESS;
@@ -329,7 +330,7 @@ pgpRogueLib::pgpRogueLib(
 		m_pFebMemMaster[lane]->setSlave( m_pSrpFeb[lane] );
 	}
 
-	printf( "Parsing ROGUE_ADDR_MAP\n" );
+	printf( "Parsing %zu length ROGUE_ADDR_MAP\n", strlen( ROGUE_ADDR_MAP ) );
 	parseMemMap( ROGUE_ADDR_MAP ); // From generated rogueAddrMap.h
 	printf( "ROGUE_ADDR_MAP parsed successfully\n" );
 	//m_pRogueLib->parseMemMap( ROGUE_ADDR_MAP );
@@ -815,7 +816,19 @@ template<class R> int pgpRogueLib::readVarPath( const char * pszVarPath, R & val
 	}
 	catch ( rogue::GeneralError & e )
 	{
-		printf( "%s %s error: %s!\n", functionName, varPath.c_str(), e.what() );
+		// Suppress errors for SFP Identifier as it's used to enable other SFP registers
+		// TODO: print the first error for each varPath and suppress duplicate errors after that.
+		std::string	idStr( ".Identifier" );
+		size_t		idPos = pVar->name().rfind( idStr );
+		if ( idPos == std::string::npos )
+			// Variable name doesn't contain ".Identifier"
+			printf( "%s %s rogue error: %s!\n", functionName, varPath.c_str(), e.what() );
+		else if ( pVar->name().find( ".Sfp" ) == std::string::npos )
+			// Variable name doesn't contain ".Sfp"
+			printf( "%s %s rogue error from %s: %s!\n", functionName, pVar->name().c_str(), varPath.c_str(), e.what() );
+		else if ( pVar->name().compare( idPos, pVar->name().length(), idStr ) == std::string::npos )
+			// Sfp Variable name doesn't end with ".Identifier"
+			printf( "%s %s rogue error from SFP %s: %s!\n", functionName, pVar->name().c_str(), varPath.c_str(), e.what() );
 	}
 	catch ( std::exception & e )
 	{
@@ -895,8 +908,6 @@ template<class R> int pgpRogueLib::writeVarPath( rim::VariablePtr pVar, const R 
 	{
 		printf( "%s error: %s!\n", functionName, e.what() );
 	}
-	if ( pVar->modelId() == rim::Bool )
-		pVar->setLogLevel( rogue::Logging::Info );
 
 	return status;
 }

@@ -57,7 +57,7 @@ public:		//	Public member functions
 	}
 
 	///	Constructor
-	pgpRogueLib(	unsigned int				board	);
+	pgpRogueLib( unsigned int board );
 
 	/// Destructor
 	virtual ~pgpRogueLib();
@@ -123,7 +123,7 @@ private:
 	std::string			m_LibVersion;	// Library Version
 
 	//rogue::LibraryBasePtr				m_pRogueLib;
-	//rogueAddrMapPtr						m_pRogueLib;
+	//rogueAddrMapPtr					m_pRogueLib;
 	rogue::hardware::axi::AxiMemMapPtr 	m_pAxiMemMap;
 	ClMemoryMasterPtr		 			m_pClMemMaster;
 

@@ -255,7 +255,7 @@ static long read_li( void	*	record )
 		status = rogue_read_record( pRecord, rogueValue );
 		pRecord->val = static_cast<epicsInt32>( rogueValue );
 		if ( DEBUG_ROGUE_DEV >= 4 )
-			printf( "%s: status %ld, intValue %d\n", functionName, status, pRecord->val );
+			printf( "%s: %s status %ld, intValue %d\n", functionName, pRecord->name, status, pRecord->val );
 	}
 	else
 	{
@@ -263,7 +263,7 @@ static long read_li( void	*	record )
 		status = rogue_read_record( pRecord, rogueValue );
 		pRecord->val = static_cast<epicsInt32>( rogueValue );
 		if ( DEBUG_ROGUE_DEV >= 4 )
-			printf( "%s: status %ld, uintValue %u\n", functionName, status, pRecord->val );
+			printf( "%s: %s status %ld, uintValue %u\n", functionName, pRecord->name, status, pRecord->val );
 	}
 	return status;
 }
@@ -332,14 +332,14 @@ static long write_lo( void	*	record )
 	if ( pRogueInfo->m_fSignedValue )
 	{
 		if ( DEBUG_ROGUE_DEV >= 3 )
-			printf( "%s: status %ld, intValue %d\n", functionName, status, pRecord->val );
+			printf( "%s: %s status %ld, intValue %d\n", functionName, pRecord->name, status, pRecord->val );
 		int64_t		rogueValue	= static_cast<int64_t>( pRecord->val );
 		status = rogue_write_record( pRecord, rogueValue );
 	}
 	else
 	{
 		if ( DEBUG_ROGUE_DEV >= 3 )
-			printf( "%s: status %ld, uintValue %u\n", functionName, status, pRecord->val );
+			printf( "%s: %s status %ld, uintValue %u\n", functionName, pRecord->name, status, pRecord->val );
 		uint64_t	rogueValue	= static_cast<uint64_t>( pRecord->val );
 		status = rogue_write_record( pRecord, rogueValue );
 	}
@@ -417,7 +417,7 @@ static long read_ai( void	*	record )
 	aiRecord		*	pRecord	= reinterpret_cast <aiRecord *>( record );
 	rogue_read_record( pRecord, pRecord->val );
 	if ( DEBUG_ROGUE_DEV >= 4 )
-		printf( "%s: status %ld, aiValue %f\n", functionName, status, pRecord->val );
+		printf( "%s: %s status %ld, aiValue %f\n", functionName, pRecord->name, status, pRecord->val );
 	return status;
 }
 #endif
@@ -471,7 +471,7 @@ static long write_ao( void	*	record )
 
 	const char 	*	functionName = "write_ao";
 	if ( DEBUG_ROGUE_DEV >= 3 )
-		printf( "%s: status %d, value %f\n", functionName, status, pRecord->val );
+		printf( "%s: %s status %d, value %f\n", functionName, pRecord->name, status, pRecord->val );
 	return status;
 }
 
@@ -540,7 +540,7 @@ static long read_bi( void	*	record )
 	rogue_read_record( pRecord, rogueValue );
 	pRecord->rval = static_cast<epicsEnum16>( rogueValue );
 	if ( DEBUG_ROGUE_DEV >= 4 )
-		printf( "%s: status %ld, biValue %d\n", functionName, status, pRecord->val );
+		printf( "%s: %s status %ld, biValue %d\n", functionName, pRecord->name, status, pRecord->val );
 	return status;
 }
 #endif
@@ -595,7 +595,7 @@ static long write_bo( void	*	record )
 
 	const char 	*	functionName = "write_bo";
 	if ( DEBUG_ROGUE_DEV >= 3 )
-		printf( "%s: status %d, value %u\n", functionName, status, pRecord->val );
+		printf( "%s: %s status %d, value %u\n", functionName, pRecord->name, status, pRecord->val );
 	return status;
 }
 
@@ -661,7 +661,7 @@ static long read_mbbi( void	*	record )
 	rogue_read_record( pRecord, rogueValue );
 	pRecord->rval = static_cast<epicsEnum16>( rogueValue );
 	if ( DEBUG_ROGUE_DEV >= 4 )
-		printf( "%s: status %ld, mbbiValue %d\n", functionName, status, pRecord->val );
+		printf( "%s: %s status %ld, mbbiValue %d\n", functionName, pRecord->name, status, pRecord->val );
 	return status;
 }
 #endif
@@ -716,7 +716,7 @@ static long write_mbbo( void	*	record )
 
 	const char 	*	functionName = "write_mbbo";
 	if ( DEBUG_ROGUE_DEV >= 3 )
-		printf( "%s: status %d, value %u\n", functionName, status, pRecord->val );
+		printf( "%s: %s status %d, value %u\n", functionName, pRecord->name, status, pRecord->val );
 	return status;
 }
 
