@@ -3,8 +3,8 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 18
-y 408
+x 16
+y 51
 w 700
 h 579
 font "helvetica-medium-r-12.0"
@@ -311,8 +311,8 @@ beginObjectProperties
 major 4
 minor 7
 release 0
-x 488
-y 284
+x 496
+y 320
 w 92
 h 20
 controlPv "$(P)$(R)OpalBlackLevel"
@@ -337,8 +337,8 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 348
-y 284
+x 356
+y 320
 w 132
 h 20
 font "helvetica-medium-r-12.0"
@@ -356,8 +356,8 @@ beginObjectProperties
 major 4
 minor 7
 release 0
-x 588
-y 284
+x 596
+y 320
 w 88
 h 20
 controlPv "$(P)$(R)OpalBlackLevel_RBV"
@@ -381,8 +381,8 @@ beginObjectProperties
 major 4
 minor 7
 release 0
-x 588
-y 308
+x 596
+y 344
 w 88
 h 20
 controlPv "$(P)$(R)OpalTestPattern_RBV"
@@ -406,8 +406,8 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 348
-y 308
+x 356
+y 344
 w 132
 h 20
 font "helvetica-medium-r-12.0"
@@ -425,8 +425,8 @@ beginObjectProperties
 major 4
 minor 7
 release 0
-x 588
-y 116
+x 596
+y 164
 w 88
 h 20
 controlPv "$(P)$(R)OpalDefPixelCorr_RBV"
@@ -450,8 +450,8 @@ beginObjectProperties
 major 4
 minor 0
 release 0
-x 488
-y 116
+x 496
+y 164
 w 92
 h 20
 fgColor index 25
@@ -470,8 +470,8 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 348
-y 116
+x 356
+y 164
 w 132
 h 20
 font "helvetica-medium-r-12.0"
@@ -489,8 +489,8 @@ beginObjectProperties
 major 4
 minor 7
 release 0
-x 68
-y 300
+x 432
+y 112
 w 252
 h 20
 controlPv "$(P)$(R)OpalLastError_RBV"
@@ -513,9 +513,9 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 4
-y 300
-w 60
+x 352
+y 112
+w 64
 h 20
 font "helvetica-medium-r-12.0"
 fontAlign "right"
@@ -532,8 +532,8 @@ beginObjectProperties
 major 4
 minor 7
 release 0
-x 588
-y 92
+x 596
+y 140
 w 88
 h 20
 controlPv "$(P)$(R)OpalElapsedTime_RBV"
@@ -558,8 +558,8 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 348
-y 92
+x 356
+y 140
 w 232
 h 20
 font "helvetica-medium-r-12.0"
@@ -804,7 +804,7 @@ release 1
 x 508
 y 60
 w 88
-h 20
+h 16
 font "helvetica-medium-r-12.0"
 fontAlign "center"
 fgColor index 14
@@ -823,7 +823,7 @@ release 1
 x 604
 y 60
 w 88
-h 20
+h 16
 font "helvetica-medium-r-12.0"
 fontAlign "center"
 fgColor index 14
@@ -951,8 +951,8 @@ beginObjectProperties
 major 4
 minor 7
 release 0
-x 588
-y 140
+x 596
+y 188
 w 88
 h 20
 controlPv "$(P)$(R)OpalDefPixelTest_RBV"
@@ -976,8 +976,8 @@ beginObjectProperties
 major 4
 minor 0
 release 0
-x 488
-y 140
+x 496
+y 188
 w 92
 h 20
 fgColor index 25
@@ -996,8 +996,8 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 348
-y 140
+x 356
+y 188
 w 132
 h 20
 font "helvetica-medium-r-12.0"
@@ -1491,8 +1491,8 @@ beginObjectProperties
 major 4
 minor 7
 release 0
-x 588
-y 236
+x 596
+y 272
 w 88
 h 20
 controlPv "$(P)$(R)OpalAutoExposure_RBV"
@@ -1516,8 +1516,8 @@ beginObjectProperties
 major 4
 minor 0
 release 0
-x 488
-y 236
+x 496
+y 272
 w 92
 h 20
 fgColor index 25
@@ -1536,8 +1536,8 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 348
-y 236
+x 356
+y 272
 w 132
 h 20
 font "helvetica-medium-r-12.0"
@@ -1555,8 +1555,8 @@ beginObjectProperties
 major 4
 minor 7
 release 0
-x 588
-y 260
+x 596
+y 296
 w 88
 h 20
 controlPv "$(P)$(R)OpalAutoGain_RBV"
@@ -1580,8 +1580,8 @@ beginObjectProperties
 major 4
 minor 0
 release 0
-x 488
-y 260
+x 496
+y 296
 w 92
 h 20
 fgColor index 25
@@ -1600,8 +1600,8 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 348
-y 260
+x 356
+y 296
 w 132
 h 20
 font "helvetica-medium-r-12.0"
@@ -1619,8 +1619,8 @@ beginObjectProperties
 major 4
 minor 7
 release 0
-x 212
-y 272
+x 576
+y 84
 w 108
 h 20
 controlPv "$(P)$(R)OpalTemperature_RBV"
@@ -1644,9 +1644,9 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 32
-y 272
-w 172
+x 348
+y 84
+w 224
 h 20
 font "helvetica-medium-r-12.0"
 fontAlign "right"
@@ -1755,8 +1755,8 @@ beginObjectProperties
 major 4
 minor 7
 release 0
-x 588
-y 356
+x 596
+y 392
 w 88
 h 20
 controlPv "$(P)$(R)OpalTrigPol_RBV"
@@ -1780,8 +1780,8 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 348
-y 356
+x 356
+y 392
 w 132
 h 20
 font "helvetica-medium-r-12.0"
@@ -1799,8 +1799,8 @@ beginObjectProperties
 major 4
 minor 0
 release 0
-x 488
-y 308
+x 496
+y 344
 w 92
 h 20
 fgColor index 25
@@ -1819,8 +1819,8 @@ beginObjectProperties
 major 4
 minor 0
 release 0
-x 488
-y 356
+x 496
+y 392
 w 92
 h 20
 fgColor index 25
@@ -1839,8 +1839,8 @@ beginObjectProperties
 major 4
 minor 7
 release 0
-x 588
-y 184
+x 596
+y 220
 w 88
 h 20
 controlPv "$(P)$(R)OpalGain_RBV"
@@ -1864,8 +1864,8 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 348
-y 184
+x 356
+y 220
 w 132
 h 20
 font "helvetica-medium-r-12.0"
@@ -1883,8 +1883,8 @@ beginObjectProperties
 major 4
 minor 7
 release 0
-x 488
-y 184
+x 496
+y 220
 w 92
 h 20
 controlPv "$(P)$(R)OpalGain"
@@ -1909,8 +1909,8 @@ beginObjectProperties
 major 4
 minor 7
 release 0
-x 588
-y 332
+x 596
+y 368
 w 88
 h 20
 controlPv "$(P)$(R)OpalVR"
@@ -1934,8 +1934,8 @@ beginObjectProperties
 major 4
 minor 0
 release 0
-x 488
-y 332
+x 496
+y 368
 w 92
 h 20
 fgColor index 25
@@ -1954,8 +1954,8 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 348
-y 332
+x 356
+y 368
 w 132
 h 20
 font "helvetica-medium-r-12.0"
@@ -1973,8 +1973,8 @@ beginObjectProperties
 major 4
 minor 7
 release 0
-x 588
-y 212
+x 596
+y 248
 w 88
 h 20
 controlPv "$(P)$(R)OpalAcquirePeriod_RBV"
@@ -1999,8 +1999,8 @@ beginObjectProperties
 major 4
 minor 7
 release 0
-x 488
-y 212
+x 496
+y 248
 w 92
 h 20
 controlPv "$(P)$(R)OpalAcquirePeriod"
@@ -2025,8 +2025,8 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 348
-y 212
+x 356
+y 248
 w 132
 h 20
 font "helvetica-medium-r-12.0"
@@ -2183,5 +2183,305 @@ bgColor index 3
 value {
   "N/A"
 }
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 240
+y 252
+w 80
+h 20
+controlPv "$(PGP):Ch$(CH):Feb$(CH):HActive_RBV"
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+fgColor index 15
+fgAlarm
+bgColor index 12
+limitsFromDb
+nullColor index 40
+smartRefresh
+showUnits
+newPos
+objType "monitors"
+noExecuteClipMask
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 16
+y 252
+w 120
+h 20
+font "helvetica-medium-r-12.0"
+fontAlign "right"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "HActive"
+}
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 16
+y 276
+w 120
+h 20
+font "helvetica-medium-r-12.0"
+fontAlign "right"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "HSkip"
+}
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 240
+y 276
+w 80
+h 20
+controlPv "$(PGP):Ch$(CH):Feb$(CH):HSkip_RBV"
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+fgColor index 15
+fgAlarm
+bgColor index 12
+limitsFromDb
+nullColor index 40
+smartRefresh
+showUnits
+newPos
+objType "monitors"
+noExecuteClipMask
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 240
+y 300
+w 80
+h 20
+controlPv "$(PGP):Ch$(CH):Feb$(CH):VActive_RBV"
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+fgColor index 15
+fgAlarm
+bgColor index 12
+limitsFromDb
+nullColor index 40
+smartRefresh
+showUnits
+newPos
+objType "monitors"
+noExecuteClipMask
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 16
+y 300
+w 120
+h 20
+font "helvetica-medium-r-12.0"
+fontAlign "right"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "VActive"
+}
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 16
+y 324
+w 120
+h 20
+font "helvetica-medium-r-12.0"
+fontAlign "right"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "VSkip"
+}
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 240
+y 324
+w 80
+h 20
+controlPv "$(PGP):Ch$(CH):Feb$(CH):VSkip_RBV"
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+fgColor index 15
+fgAlarm
+bgColor index 12
+limitsFromDb
+nullColor index 40
+smartRefresh
+showUnits
+newPos
+objType "monitors"
+noExecuteClipMask
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 156
+y 252
+w 76
+h 18
+controlPv "$(P)$(R)CamlinkHActive"
+format "decimal"
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+fgColor index 25
+fgAlarm
+bgColor index 5
+editable
+autoHeight
+motifWidget
+limitsFromDb
+nullColor index 40
+smartRefresh
+fastUpdate
+useHexPrefix
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 156
+y 276
+w 76
+h 18
+controlPv "$(P)$(R)CamlinkHSkip"
+format "decimal"
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+fgColor index 25
+fgAlarm
+bgColor index 5
+editable
+autoHeight
+motifWidget
+limitsFromDb
+nullColor index 40
+smartRefresh
+fastUpdate
+useHexPrefix
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 156
+y 324
+w 76
+h 18
+controlPv "$(P)$(R)CamlinkVSkip"
+format "decimal"
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+fgColor index 25
+fgAlarm
+bgColor index 5
+editable
+autoHeight
+motifWidget
+limitsFromDb
+nullColor index 40
+smartRefresh
+fastUpdate
+useHexPrefix
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 156
+y 300
+w 76
+h 18
+controlPv "$(P)$(R)CamlinkVActive"
+format "decimal"
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+fgColor index 25
+fgAlarm
+bgColor index 5
+editable
+autoHeight
+motifWidget
+limitsFromDb
+nullColor index 40
+smartRefresh
+fastUpdate
+useHexPrefix
+newPos
+objType "controls"
+noExecuteClipMask
 endObjectProperties
 

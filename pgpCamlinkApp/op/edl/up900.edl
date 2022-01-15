@@ -3,8 +3,8 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 3459
-y 1779
+x 2688
+y 1661
 w 700
 h 600
 font "helvetica-medium-r-12.0"
@@ -90,9 +90,9 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 32
-y 192
-w 172
+x 24
+y 196
+w 132
 h 20
 font "helvetica-medium-r-12.0"
 fontAlign "right"
@@ -133,8 +133,8 @@ beginObjectProperties
 major 4
 minor 7
 release 0
-x 328
-y 192
+x 280
+y 196
 w 108
 h 20
 controlPv "$(P)$(R)Up900DoubleSpeed_RBV"
@@ -501,8 +501,8 @@ beginObjectProperties
 major 4
 minor 7
 release 0
-x 328
-y 164
+x 280
+y 168
 w 108
 h 20
 controlPv "$(P)$(R)Up900Reference_RBV"
@@ -527,9 +527,9 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 32
-y 164
-w 172
+x 24
+y 168
+w 132
 h 20
 font "helvetica-medium-r-12.0"
 fontAlign "right"
@@ -1083,8 +1083,8 @@ beginObjectProperties
 major 4
 minor 7
 release 0
-x 328
-y 248
+x 280
+y 252
 w 108
 h 20
 controlPv "$(P)$(R)Up900RawShutterSpeed_RBV"
@@ -1109,9 +1109,9 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 32
-y 248
-w 172
+x 24
+y 252
+w 132
 h 20
 font "helvetica-medium-r-12.0"
 fontAlign "right"
@@ -1128,8 +1128,8 @@ beginObjectProperties
 major 4
 minor 7
 release 0
-x 216
-y 248
+x 168
+y 252
 w 100
 h 18
 controlPv "$(P)$(R)Up900RawShutterSpeed"
@@ -1156,8 +1156,8 @@ beginObjectProperties
 major 4
 minor 7
 release 0
-x 328
-y 276
+x 280
+y 280
 w 108
 h 20
 controlPv "$(P)$(R)Up900RawShutterMode_RBV"
@@ -1181,9 +1181,9 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 32
-y 276
-w 172
+x 24
+y 280
+w 132
 h 20
 font "helvetica-medium-r-12.0"
 fontAlign "right"
@@ -1200,8 +1200,8 @@ beginObjectProperties
 major 4
 minor 0
 release 0
-x 216
-y 276
+x 168
+y 280
 w 100
 h 20
 fgColor index 25
@@ -1333,6 +1333,306 @@ useHexPrefix
 showUnits
 newPos
 objType "monitors"
+noExecuteClipMask
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 172
+y 52
+w 76
+h 18
+controlPv "$(PGP):Ch$(CH):Feb$(CH):HActive"
+format "decimal"
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+fgColor index 25
+fgAlarm
+bgColor index 5
+editable
+autoHeight
+motifWidget
+limitsFromDb
+nullColor index 40
+smartRefresh
+fastUpdate
+useHexPrefix
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 280
+y 52
+w 80
+h 20
+controlPv "$(PGP):Ch$(CH):Feb$(CH):HActive_RBV"
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+fgColor index 15
+fgAlarm
+bgColor index 12
+limitsFromDb
+nullColor index 40
+smartRefresh
+showUnits
+newPos
+objType "monitors"
+noExecuteClipMask
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 28
+y 52
+w 120
+h 20
+font "helvetica-medium-r-12.0"
+fontAlign "right"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "HActive"
+}
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 28
+y 76
+w 120
+h 20
+font "helvetica-medium-r-12.0"
+fontAlign "right"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "HSkip"
+}
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 280
+y 76
+w 80
+h 20
+controlPv "$(PGP):Ch$(CH):Feb$(CH):HSkip_RBV"
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+fgColor index 15
+fgAlarm
+bgColor index 12
+limitsFromDb
+nullColor index 40
+smartRefresh
+showUnits
+newPos
+objType "monitors"
+noExecuteClipMask
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 172
+y 76
+w 76
+h 18
+controlPv "$(P)$(R)CamlinkHSkip"
+format "decimal"
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+fgColor index 25
+fgAlarm
+bgColor index 5
+editable
+autoHeight
+motifWidget
+limitsFromDb
+nullColor index 40
+smartRefresh
+fastUpdate
+useHexPrefix
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 172
+y 100
+w 76
+h 18
+controlPv "$(PGP):Ch$(CH):Feb$(CH):VActive"
+format "decimal"
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+fgColor index 25
+fgAlarm
+bgColor index 5
+editable
+autoHeight
+motifWidget
+limitsFromDb
+nullColor index 40
+smartRefresh
+fastUpdate
+useHexPrefix
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 280
+y 100
+w 80
+h 20
+controlPv "$(PGP):Ch$(CH):Feb$(CH):VActive_RBV"
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+fgColor index 15
+fgAlarm
+bgColor index 12
+limitsFromDb
+nullColor index 40
+smartRefresh
+showUnits
+newPos
+objType "monitors"
+noExecuteClipMask
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 28
+y 100
+w 120
+h 20
+font "helvetica-medium-r-12.0"
+fontAlign "right"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "VActive"
+}
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 28
+y 124
+w 120
+h 20
+font "helvetica-medium-r-12.0"
+fontAlign "right"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "VSkip"
+}
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 280
+y 124
+w 80
+h 20
+controlPv "$(PGP):Ch$(CH):Feb$(CH):VSkip_RBV"
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+fgColor index 15
+fgAlarm
+bgColor index 12
+limitsFromDb
+nullColor index 40
+smartRefresh
+showUnits
+newPos
+objType "monitors"
+noExecuteClipMask
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 172
+y 124
+w 76
+h 18
+controlPv "$(P)$(R)CamlinkVSkip"
+format "decimal"
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+fgColor index 25
+fgAlarm
+bgColor index 5
+editable
+autoHeight
+motifWidget
+limitsFromDb
+nullColor index 40
+smartRefresh
+fastUpdate
+useHexPrefix
+newPos
+objType "controls"
 noExecuteClipMask
 endObjectProperties
 
