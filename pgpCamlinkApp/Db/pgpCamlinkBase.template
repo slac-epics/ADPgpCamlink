@@ -178,7 +178,7 @@ record( longout, "$(P)$(R)CamlinkHActive" )
 	field( OUT,  "$(PGP):Ch$(PGP_LANE):Feb$(PGP_LANE):HActive CA" )
 	field( EGU,  "px" )
 	field( PINI, "YES" )
-	info( autosaveFields, "HHSV HIGH HIHI HSV LLSV LOLO LOW LSV     DESC HOPR LOPR VAL" )
+	info( autosaveFields, "HHSV HIGH HIHI HSV LLSV LOLO LOW LSV     DESC HOPR LOPR" )
 }
 
 record( longout, "$(P)$(R)CamlinkVActive" )
@@ -186,7 +186,7 @@ record( longout, "$(P)$(R)CamlinkVActive" )
 	field( OUT,  "$(PGP):Ch$(PGP_LANE):Feb$(PGP_LANE):VActive CA" )
 	field( EGU,  "px" )
 	field( PINI, "YES" )
-	info( autosaveFields, "HHSV HIGH HIHI HSV LLSV LOLO LOW LSV     DESC HOPR LOPR VAL" )
+	info( autosaveFields, "HHSV HIGH HIHI HSV LLSV LOLO LOW LSV     DESC HOPR LOPR" )
 }
 
 record( longout, "$(P)$(R)CamlinkHSkip" )

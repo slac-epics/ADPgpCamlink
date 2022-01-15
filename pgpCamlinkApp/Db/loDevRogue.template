@@ -3,7 +3,7 @@ record( longout, "$(P)$(R)$(NAME)" )
 {
 	field( DESC, "$(DESC=?)" )
 	field( DTYP, "RogueLO" )
-	field( DOL,  "$(DOL=0)" )
+	field( DOL,  "$(DOL=)" )
 	field( OUT,  "@B$(B) L$(L) $(PATH)" )
 	field( PINI, "$(PINI=NO)" )
 	field( HHSV, "$(HHSV=NO_ALARM)" )
