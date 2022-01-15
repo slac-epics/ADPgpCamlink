@@ -1,6 +1,11 @@
 #
 # SLAC RELEASE_NOTES
 #
+R1.5.0	2022-01-15 Bruce Hill
+	Added CamlinkHActive, CamlinkHSkip, etc along w/ initializers and put monitors.
+	Set initial size and active px for Basler and UP900
+	Tweaking PINI, EGU, and autosave settings
+
 R1.4.0	2021-12-08 Bruce Hill
 	Adding FebPllConfig subroutine record and PixelClk PVs
 	Support parsing of comments in pgpLoadConfig()
