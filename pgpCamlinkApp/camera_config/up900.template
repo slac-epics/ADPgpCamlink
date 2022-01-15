@@ -95,6 +95,14 @@ record( longout, "$(P)$(R)CamlinkVActive" )
 {
 	field( VAL, "1040" )
 }
+record( longout, "$(P)$(R)CamlinkHSkip" )
+{
+	field( VAL, "47" )
+}
+record( longout, "$(P)$(R)CamlinkVSkip" )
+{
+	field( VAL, "8" )
+}
 
 record( seq, "$(P)$(R)Up900DoReport" )
 {
