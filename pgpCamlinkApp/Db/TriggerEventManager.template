@@ -6,15 +6,6 @@
 #	R				- Region, common camera PV prefix is $(P)$(R)
 #	B				- Board number
 #	L				- Lane number
-#	F				- Feb number
-#
-# Relationship between Lane number, Feb number, and Feb lane
-#	One Channel Feb Firmware
-#	L		F		Feb lane
-#	0		0		0
-#	1		1		0
-#	2		2		0
-#	3		3		0
 #
 # Optional macros
 #	TIMEOUT			- Defaults to 1 sec
