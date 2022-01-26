@@ -1,6 +1,9 @@
 #
 # SLAC RELEASE_NOTES
 #
+R1.5.1	2022-01-26 Bruce Hill
+	Update to ADCore/R3.9-1.0.3 and asyn/R4.39-1.0.1
+
 R1.5.0	2022-01-15 Bruce Hill
 	Added CamlinkHActive, CamlinkHSkip, etc along w/ initializers and put monitors.
 	Set initial size and active px for Basler and UP900
