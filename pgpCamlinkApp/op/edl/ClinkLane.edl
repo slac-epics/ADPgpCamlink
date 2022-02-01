@@ -3,8 +3,8 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 2658
-y 1266
+x 2193
+y 1612
 w 720
 h 640
 font "helvetica-medium-r-8.0"
@@ -46,9 +46,9 @@ major 4
 minor 0
 release 0
 x 8
-y 52
+y 108
 w 336
-h 100
+h 44
 lineColor index 3
 fill
 fillColor index 3
@@ -101,7 +101,7 @@ major 4
 minor 1
 release 1
 x 8
-y 52
+y 108
 w 174
 h 14
 font "helvetica-bold-r-12.0"
@@ -156,9 +156,9 @@ major 4
 minor 0
 release 0
 x 352
-y 64
+y 108
 w 336
-h 88
+h 44
 lineColor index 3
 fill
 fillColor index 3
@@ -171,7 +171,7 @@ major 4
 minor 1
 release 1
 x 352
-y 64
+y 108
 w 76
 h 14
 font "helvetica-bold-r-12.0"
@@ -190,7 +190,7 @@ beginObjectProperties
 major 4
 minor 7
 release 0
-x 140
+x 228
 y 180
 w 80
 h 20
@@ -237,7 +237,7 @@ release 0
 x 352
 y 352
 w 336
-h 116
+h 128
 lineColor index 3
 fill
 fillColor index 3
@@ -269,7 +269,7 @@ beginObjectProperties
 major 4
 minor 7
 release 0
-x 488
+x 596
 y 372
 w 80
 h 20
@@ -313,7 +313,7 @@ beginObjectProperties
 major 4
 minor 7
 release 0
-x 484
+x 592
 y 204
 w 80
 h 20
@@ -338,9 +338,9 @@ beginObjectProperties
 major 4
 minor 7
 release 0
-x 572
+x 488
 y 204
-w 76
+w 96
 h 18
 controlPv "$(P)$(R)EvrV2:TriggerDelay"
 format "decimal"
@@ -408,8 +408,8 @@ beginObjectProperties
 major 4
 minor 7
 release 0
-x 140
-y 72
+x 228
+y 128
 w 80
 h 20
 controlPv "$(P)$(R)PgpMon:RxRemLinkReady_RBV"
@@ -435,7 +435,7 @@ major 4
 minor 1
 release 1
 x 12
-y 72
+y 128
 w 120
 h 20
 font "helvetica-medium-r-12.0"
@@ -454,10 +454,10 @@ beginObjectProperties
 major 4
 minor 0
 release 0
-x 576
+x 488
 y 372
-w 76
-h 18
+w 88
+h 20
 fgColor index 14
 bgColor index 3
 inconsistentColor index 40
@@ -474,7 +474,7 @@ beginObjectProperties
 major 4
 minor 7
 release 0
-x 140
+x 228
 y 228
 w 80
 h 20
@@ -519,7 +519,7 @@ beginObjectProperties
 major 4
 minor 7
 release 0
-x 140
+x 228
 y 252
 w 80
 h 20
@@ -564,8 +564,8 @@ beginObjectProperties
 major 4
 minor 7
 release 0
-x 484
-y 104
+x 592
+y 128
 w 80
 h 20
 controlPv "$(P)$(R)EventBuilder:DataCnt1_RBV"
@@ -591,7 +591,7 @@ major 4
 minor 1
 release 1
 x 356
-y 104
+y 128
 w 120
 h 20
 font "helvetica-medium-r-12.0"
@@ -610,7 +610,7 @@ beginObjectProperties
 major 4
 minor 7
 release 0
-x 488
+x 596
 y 444
 w 80
 h 20
@@ -654,8 +654,8 @@ beginObjectProperties
 major 4
 minor 0
 release 0
-x 228
-y 180
+x 144
+y 128
 w 76
 h 18
 fgColor index 14
@@ -674,7 +674,7 @@ beginObjectProperties
 major 4
 minor 7
 release 0
-x 572
+x 488
 y 180
 w 96
 h 18
@@ -704,7 +704,7 @@ beginObjectProperties
 major 4
 minor 7
 release 0
-x 484
+x 592
 y 180
 w 80
 h 20
@@ -792,7 +792,7 @@ beginObjectProperties
 major 4
 minor 7
 release 0
-x 140
+x 228
 y 276
 w 80
 h 20
@@ -817,8 +817,8 @@ beginObjectProperties
 major 4
 minor 7
 release 0
-x 228
-y 276
+x 144
+y 228
 w 76
 h 18
 controlPv "$(P)$(R)Feb$(CH):TrigMask"
@@ -867,7 +867,7 @@ beginObjectProperties
 major 4
 minor 7
 release 0
-x 140
+x 228
 y 300
 w 80
 h 20
@@ -911,7 +911,7 @@ beginObjectProperties
 major 4
 minor 7
 release 0
-x 140
+x 228
 y 348
 w 80
 h 20
@@ -935,8 +935,8 @@ beginObjectProperties
 major 4
 minor 7
 release 0
-x 228
-y 348
+x 144
+y 300
 w 76
 h 18
 controlPv "$(P)$(R)Feb$(CH):PulseWidthRaw"
@@ -965,8 +965,8 @@ beginObjectProperties
 major 4
 minor 7
 release 0
-x 228
-y 324
+x 144
+y 276
 w 76
 h 18
 controlPv "$(P)$(R)Feb$(CH):PulseWidth"
@@ -995,7 +995,7 @@ beginObjectProperties
 major 4
 minor 7
 release 0
-x 140
+x 228
 y 324
 w 80
 h 20
@@ -1040,8 +1040,8 @@ beginObjectProperties
 major 4
 minor 0
 release 0
-x 228
-y 300
+x 144
+y 252
 w 76
 h 18
 fgColor index 14
@@ -1060,7 +1060,7 @@ beginObjectProperties
 major 4
 minor 7
 release 0
-x 484
+x 592
 y 252
 w 80
 h 20
@@ -1105,7 +1105,7 @@ beginObjectProperties
 major 4
 minor 7
 release 0
-x 572
+x 488
 y 228
 w 96
 h 18
@@ -1135,7 +1135,7 @@ beginObjectProperties
 major 4
 minor 7
 release 0
-x 484
+x 592
 y 228
 w 80
 h 20
@@ -1179,8 +1179,8 @@ beginObjectProperties
 major 4
 minor 7
 release 0
-x 228
-y 372
+x 144
+y 324
 w 76
 h 18
 controlPv "$(P)$(R)Feb$(CH):HActive"
@@ -1209,7 +1209,7 @@ beginObjectProperties
 major 4
 minor 7
 release 0
-x 140
+x 228
 y 372
 w 80
 h 20
@@ -1274,7 +1274,7 @@ beginObjectProperties
 major 4
 minor 7
 release 0
-x 140
+x 228
 y 396
 w 80
 h 20
@@ -1299,8 +1299,8 @@ beginObjectProperties
 major 4
 minor 7
 release 0
-x 228
-y 396
+x 144
+y 348
 w 76
 h 18
 controlPv "$(P)$(R)Feb$(CH):HSkip"
@@ -1329,8 +1329,8 @@ beginObjectProperties
 major 4
 minor 7
 release 0
-x 228
-y 420
+x 144
+y 372
 w 76
 h 18
 controlPv "$(P)$(R)Feb$(CH):VActive"
@@ -1359,7 +1359,7 @@ beginObjectProperties
 major 4
 minor 7
 release 0
-x 140
+x 228
 y 420
 w 80
 h 20
@@ -1424,7 +1424,7 @@ beginObjectProperties
 major 4
 minor 7
 release 0
-x 140
+x 228
 y 444
 w 80
 h 20
@@ -1449,8 +1449,8 @@ beginObjectProperties
 major 4
 minor 7
 release 0
-x 228
-y 444
+x 144
+y 396
 w 76
 h 18
 controlPv "$(P)$(R)Feb$(CH):VSkip"
@@ -1479,7 +1479,7 @@ beginObjectProperties
 major 4
 minor 7
 release 0
-x 140
+x 228
 y 204
 w 80
 h 20
@@ -1516,5 +1516,97 @@ useDisplayBg
 value {
   "FrameSize"
 }
+endObjectProperties
+
+# (Message Button)
+object activeMessageButtonClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 180
+y 44
+w 164
+h 24
+fgColor index 14
+onColor index 5
+offColor index 3
+topShadowColor index 1
+botShadowColor index 11
+controlPv "$(PGP):SeqLcls2Timing.PROC"
+pressValue "1"
+onLabel "Select LCLS-II Timing"
+offLabel "Select LCLS-II Timing"
+3d
+font "helvetica-bold-r-12.0"
+endObjectProperties
+
+# (Message Button)
+object activeMessageButtonClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 8
+y 44
+w 164
+h 24
+fgColor index 14
+onColor index 5
+offColor index 3
+topShadowColor index 1
+botShadowColor index 11
+controlPv "$(PGP):SeqLcls1Timing.PROC"
+pressValue "1"
+onLabel "Select LCLS-I Timing"
+offLabel "Select LCLS-I Timing"
+3d
+font "helvetica-bold-r-12.0"
+endObjectProperties
+
+# (Message Button)
+object activeMessageButtonClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 180
+y 76
+w 164
+h 24
+fgColor index 14
+onColor index 5
+offColor index 3
+topShadowColor index 1
+botShadowColor index 11
+controlPv "$(PGP):SeqXpmMiniTiming.PROC"
+pressValue "1"
+onLabel "LCLS-II Timing w XpmMini"
+offLabel "LCLS-II Timing w XpmMini"
+3d
+font "helvetica-bold-r-12.0"
+endObjectProperties
+
+# (Message Button)
+object activeMessageButtonClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 8
+y 76
+w 164
+h 24
+fgColor index 14
+onColor index 5
+offColor index 3
+topShadowColor index 1
+botShadowColor index 11
+controlPv "$(PGP):SeqTpgMiniTiming.PROC"
+pressValue "1"
+onLabel "LCLS-I Timing w TpgMini"
+offLabel "LCLS-I Timing w TpgMini"
+3d
+font "helvetica-bold-r-12.0"
 endObjectProperties
 
