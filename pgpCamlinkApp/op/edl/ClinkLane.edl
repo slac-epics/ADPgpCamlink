@@ -3,8 +3,8 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 2193
-y 1612
+x 1780
+y 1266
 w 720
 h 640
 font "helvetica-medium-r-8.0"
@@ -655,7 +655,7 @@ major 4
 minor 0
 release 0
 x 144
-y 128
+y 180
 w 76
 h 18
 fgColor index 14
@@ -818,7 +818,7 @@ major 4
 minor 7
 release 0
 x 144
-y 228
+y 276
 w 76
 h 18
 controlPv "$(P)$(R)Feb$(CH):TrigMask"
@@ -936,7 +936,7 @@ major 4
 minor 7
 release 0
 x 144
-y 300
+y 348
 w 76
 h 18
 controlPv "$(P)$(R)Feb$(CH):PulseWidthRaw"
@@ -966,7 +966,7 @@ major 4
 minor 7
 release 0
 x 144
-y 276
+y 324
 w 76
 h 18
 controlPv "$(P)$(R)Feb$(CH):PulseWidth"
@@ -1041,7 +1041,7 @@ major 4
 minor 0
 release 0
 x 144
-y 252
+y 300
 w 76
 h 18
 fgColor index 14
@@ -1180,7 +1180,7 @@ major 4
 minor 7
 release 0
 x 144
-y 324
+y 372
 w 76
 h 18
 controlPv "$(P)$(R)Feb$(CH):HActive"
@@ -1300,7 +1300,7 @@ major 4
 minor 7
 release 0
 x 144
-y 348
+y 396
 w 76
 h 18
 controlPv "$(P)$(R)Feb$(CH):HSkip"
@@ -1330,7 +1330,7 @@ major 4
 minor 7
 release 0
 x 144
-y 372
+y 420
 w 76
 h 18
 controlPv "$(P)$(R)Feb$(CH):VActive"
@@ -1450,7 +1450,7 @@ major 4
 minor 7
 release 0
 x 144
-y 396
+y 444
 w 76
 h 18
 controlPv "$(P)$(R)Feb$(CH):VSkip"

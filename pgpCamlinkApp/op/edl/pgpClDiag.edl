@@ -3,8 +3,8 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 1255
-y 1212
+x 1757
+y 1416
 w 929
 h 800
 font "helvetica-medium-r-8.0"
@@ -289,7 +289,7 @@ minor 1
 release 1
 x 12
 y 408
-w 120
+w 124
 h 20
 font "helvetica-medium-r-12.0"
 fontAlign "right"
@@ -334,7 +334,7 @@ minor 1
 release 1
 x 12
 y 432
-w 120
+w 124
 h 20
 font "helvetica-medium-r-12.0"
 fontAlign "right"
@@ -354,7 +354,7 @@ minor 1
 release 1
 x 12
 y 480
-w 120
+w 124
 h 20
 font "helvetica-medium-r-12.0"
 fontAlign "right"
@@ -423,7 +423,7 @@ minor 1
 release 1
 x 12
 y 456
-w 120
+w 124
 h 20
 font "helvetica-medium-r-12.0"
 fontAlign "right"
@@ -443,7 +443,7 @@ minor 1
 release 1
 x 12
 y 552
-w 120
+w 124
 h 20
 font "helvetica-medium-r-12.0"
 fontAlign "right"
@@ -488,7 +488,7 @@ minor 1
 release 1
 x 12
 y 648
-w 120
+w 124
 h 20
 font "helvetica-medium-r-12.0"
 fontAlign "right"
@@ -532,7 +532,7 @@ minor 1
 release 1
 x 12
 y 696
-w 120
+w 124
 h 20
 font "helvetica-medium-r-12.0"
 fontAlign "right"
@@ -1156,7 +1156,7 @@ minor 1
 release 1
 x 12
 y 672
-w 120
+w 124
 h 20
 font "helvetica-medium-r-12.0"
 fontAlign "right"
@@ -1200,7 +1200,7 @@ minor 1
 release 1
 x 12
 y 600
-w 120
+w 124
 h 20
 font "helvetica-medium-r-12.0"
 fontAlign "right"
@@ -1220,7 +1220,7 @@ minor 1
 release 1
 x 12
 y 624
-w 120
+w 124
 h 20
 font "helvetica-medium-r-12.0"
 fontAlign "right"
@@ -1288,7 +1288,7 @@ minor 1
 release 1
 x 12
 y 720
-w 120
+w 124
 h 20
 font "helvetica-medium-r-12.0"
 fontAlign "right"
@@ -1332,7 +1332,7 @@ minor 1
 release 1
 x 12
 y 744
-w 120
+w 124
 h 20
 font "helvetica-medium-r-12.0"
 fontAlign "right"
@@ -1403,7 +1403,7 @@ minor 1
 release 1
 x 12
 y 528
-w 120
+w 124
 h 20
 font "helvetica-medium-r-12.0"
 fontAlign "right"
@@ -1448,7 +1448,7 @@ minor 1
 release 1
 x 12
 y 504
-w 120
+w 124
 h 20
 font "helvetica-medium-r-12.0"
 fontAlign "right"
@@ -2643,7 +2643,7 @@ minor 1
 release 1
 x 12
 y 576
-w 120
+w 124
 h 20
 font "helvetica-medium-r-12.0"
 fontAlign "right"
@@ -2800,7 +2800,6 @@ fgColor index 25
 fgAlarm
 bgColor index 5
 editable
-autoHeight
 limitsFromDb
 nullColor index 40
 smartRefresh
@@ -2864,7 +2863,7 @@ release 0
 x 752
 y 300
 w 76
-h 14
+h 20
 controlPv "$(P)$(R)EventBuilder:Bypass"
 format "decimal"
 font "helvetica-medium-r-12.0"
@@ -2873,7 +2872,7 @@ fgColor index 25
 fgAlarm
 bgColor index 5
 editable
-autoHeight
+motifWidget
 limitsFromDb
 nullColor index 40
 smartRefresh
