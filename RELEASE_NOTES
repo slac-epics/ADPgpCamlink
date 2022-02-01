@@ -1,6 +1,12 @@
 #
 # SLAC RELEASE_NOTES
 #
+R1.6.0	2022-02-01 Bruce Hill
+	Add camlink RBV values and rm unneeded L macro references
+	Add ability to check value against RBV in putMonitor.template
+	Include ClinkPcie.template in generated roguePcie.db
+	Cleanup ClinkLane.edl and pgpClDiag.edl
+
 R1.5.1	2022-01-26 Bruce Hill
 	Update to ADCore/R3.9-1.0.3 and asyn/R4.39-1.0.1
 
