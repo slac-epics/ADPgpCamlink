@@ -94,6 +94,10 @@ record( longout, "$(P)$(R)CamlinkBaudRate" )
 	field( EGU,  "bps" )
 	info( autosaveFields, "" )
 }
+record( longin, "$(P)$(R)CamlinkBaudRate_RBV" )
+{
+	field( INP,  "$(PGP):Ch$(PGP_LANE):Feb$(PGP_LANE):BaudRate_RBV CPP MS" )
+}
 
 # CameraLink Mode
 # 0: 'Disable', 1: 'Base', 2: 'Medium', 3: 'Full', 4: 'Deca'
@@ -105,6 +109,10 @@ record( mbbo, "$(P)$(R)CamlinkLinkMode" )
 	field( TWVL, "2" ) field( TWST, "Medium" )
 	field( THVL, "3" ) field( THST, "Full" )
 	field( FRVL, "4" ) field( FRST, "Deca" )
+}
+record( longin, "$(P)$(R)CamlinkLinkMode_RBV" )
+{
+	field( INP,  "$(PGP):Ch$(PGP_LANE):Feb$(PGP_LANE):LinkMode_RBV CPP MS" )
 }
 
 # Camlink Data Mode (# bits per pixel)
@@ -123,6 +131,10 @@ record( mbbo, "$(P)$(R)CamlinkDataMode" )
 	field( SVVL, "7" ) field( SVST, "30 Bit" )
 	field( EIVL, "8" ) field( EIST, "36 Bit" )
 }
+record( longin, "$(P)$(R)CamlinkDataMode_RBV" )
+{
+	field( INP,  "$(PGP):Ch$(PGP_LANE):Feb$(PGP_LANE):DataMode_RBV CPP MS" )
+}
 
 # Camlink Frame Mode
 # 0: 'None', 1: 'Line', 2: 'Frame'
@@ -132,6 +144,10 @@ record( mbbo, "$(P)$(R)CamlinkFrameMode" )
 	field( ZRVL, "0" ) field( ZRST, "None" )
 	field( ONVL, "1" ) field( ONST, "Line" )
 	field( TWVL, "2" ) field( TWST, "Frame" )
+}
+record( longin, "$(P)$(R)CamlinkFrameMode_RBV" )
+{
+	field( INP,  "$(PGP):Ch$(PGP_LANE):Feb$(PGP_LANE):FrameMode_RBV CPP MS" )
 }
 
 # DOL field set in $MODEL.template
@@ -165,6 +181,10 @@ record( longout, "$(P)$(R)CamlinkTrigMask" )
 	field( DESC, "Sets trigger mask on 4-bit camCtrl bus" )
 	field( OUT,  "$(PGP):Ch$(PGP_LANE):Feb$(PGP_LANE):TrigMask CA" )
 }
+record( longin, "$(P)$(R)CamlinkTrigMask_RBV" )
+{
+	field( INP,  "$(PGP):Ch$(PGP_LANE):Feb$(PGP_LANE):TrigMask_RBV CPP MS" )
+}
 
 record( bo, "$(P)$(R)CamlinkInvCC" )
 {
@@ -172,12 +192,22 @@ record( bo, "$(P)$(R)CamlinkInvCC" )
 	field( ZNAM, "Normal" )
 	field( ONAM, "Invert" )
 }
+record( longin, "$(P)$(R)CamlinkInvCC_RBV" )
+{
+	field( INP,  "$(PGP):Ch$(PGP_LANE):Feb$(PGP_LANE):InvCC_RBV CPP MS" )
+}
 
 record( longout, "$(P)$(R)CamlinkHActive" )
 {
 	field( OUT,  "$(PGP):Ch$(PGP_LANE):Feb$(PGP_LANE):HActive CA" )
 	field( EGU,  "px" )
 	field( PINI, "YES" )
+	info( autosaveFields, "HHSV HIGH HIHI HSV LLSV LOLO LOW LSV     DESC HOPR LOPR" )
+}
+record( longin, "$(P)$(R)CamlinkHActive_RBV" )
+{
+	field( INP,  "$(PGP):Ch$(PGP_LANE):Feb$(PGP_LANE):HActive_RBV CPP MS" )
+	field( EGU,  "px" )
 	info( autosaveFields, "HHSV HIGH HIHI HSV LLSV LOLO LOW LSV     DESC HOPR LOPR" )
 }
 
@@ -188,6 +218,12 @@ record( longout, "$(P)$(R)CamlinkVActive" )
 	field( PINI, "YES" )
 	info( autosaveFields, "HHSV HIGH HIHI HSV LLSV LOLO LOW LSV     DESC HOPR LOPR" )
 }
+record( longin, "$(P)$(R)CamlinkVActive_RBV" )
+{
+	field( INP,  "$(PGP):Ch$(PGP_LANE):Feb$(PGP_LANE):VActive_RBV CPP MS" )
+	field( EGU,  "px" )
+	info( autosaveFields, "HHSV HIGH HIHI HSV LLSV LOLO LOW LSV     DESC HOPR LOPR" )
+}
 
 record( longout, "$(P)$(R)CamlinkHSkip" )
 {
@@ -195,6 +231,12 @@ record( longout, "$(P)$(R)CamlinkHSkip" )
 	field( EGU,  "px" )
 	field( PINI, "YES" )
 	info( autosaveFields, "HHSV HIGH HIHI HSV LLSV LOLO LOW LSV     DESC HOPR LOPR VAL" )
+}
+record( longin, "$(P)$(R)CamlinkHSkip_RBV" )
+{
+	field( INP,  "$(PGP):Ch$(PGP_LANE):Feb$(PGP_LANE):HSkip_RBV CPP MS" )
+	field( EGU,  "px" )
+	info( autosaveFields, "HHSV HIGH HIHI HSV LLSV LOLO LOW LSV     DESC HOPR LOPR" )
 }
 
 record( longout, "$(P)$(R)CamlinkVSkip" )
@@ -204,7 +246,12 @@ record( longout, "$(P)$(R)CamlinkVSkip" )
 	field( PINI, "YES" )
 	info( autosaveFields, "HHSV HIGH HIHI HSV LLSV LOLO LOW LSV     DESC HOPR LOPR VAL" )
 }
-
+record( longin, "$(P)$(R)CamlinkVSkip_RBV" )
+{
+	field( INP,  "$(PGP):Ch$(PGP_LANE):Feb$(PGP_LANE):VSkip_RBV CPP MS" )
+	field( EGU,  "px" )
+	info( autosaveFields, "HHSV HIGH HIHI HSV LLSV LOLO LOW LSV     DESC HOPR LOPR" )
+}
 
 #
 # Propagate these PVs through the CAM interface
@@ -687,6 +734,7 @@ record( longout, "$(P)$(R)CamEventCode" )
 substitute "SER_OK_PV=$(PGP):Ch$(PGP_LANE):EvrV2:RateSel_RBV"
 substitute "MON_SCAN=1 second"
 substitute "MON_DISABLED=1"
+substitute "MON_VALUE=1"
 substitute "MON_PV=$(P)$(R)CamEventCode"
 include "putMonitor.template"
 

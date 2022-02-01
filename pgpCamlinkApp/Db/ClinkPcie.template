@@ -6,7 +6,6 @@
 #	P				- Prefix
 #	R				- Region, common camera PV prefix is $(P)$(R)
 #	B				- Board number
-#	L				- Lane number
 #
 # Optional macros
 #	TIMEOUT			- Defaults to 1 sec
@@ -26,7 +25,7 @@ record( waveform, "$(P)$(R)PgpAxiVersion" )
 record( mbbi, "$(P)$(R)AxiPcieCore:PCIE_HW_TYPE_G" )
 {
 	field( DTYP, "RogueMBBI" )
-	field( INP,  "@B$(B) L$(L) ClinkDevRoot.ClinkPcie.AxiPcieCore.AxiVersion.PCIE_HW_TYPE_G" )
+	field( INP,  "@B$(B) L0 ClinkDevRoot.ClinkPcie.AxiPcieCore.AxiVersion.PCIE_HW_TYPE_G" )
 	field( ZRVL, "0"  ) field( ZRST, "Undefined" )
 	field( ONVL, "1"  ) field( ONST, "AlphaDataKu3" )
 	field( TWVL, "2"  ) field( TWST, "BittWareXupVv8" )
@@ -43,13 +42,15 @@ record( mbbi, "$(P)$(R)AxiPcieCore:PCIE_HW_TYPE_G" )
 	field( TTVL, "13" ) field( TTST, "XilinxKcu1500" )
 	field( FTVL, "14" ) field( FTST, "XilinxVcu128" )
 	field( FFVL, "15" ) field( FFST, "Unused" )
+# Using PCIE_HW_TYPE_G as a health indicator
+	field( SCAN, "1 second" )
 	info( autosaveFields, "" )
 }
 
 record( mbbi, "$(P)$(R)Timing:ClkSel_RBV" )
 {
 	field( DTYP, "RogueMBBI" )
-	field( INP,  "@B$(B) L$(L) ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TimingFrameRx.ClkSel" )
+	field( INP,  "@B$(B) L0 ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TimingFrameRx.ClkSel" )
 	field( ZRVL, "0" ) field( ZRST, "LCLS-I  Clock" )
 	field( ONVL, "1" ) field( ONST, "LCLS-II Clock" )
 	info( autosaveFields, "" )
@@ -59,7 +60,7 @@ record( mbbi, "$(P)$(R)Timing:ClkSel_RBV" )
 record( mbbo, "$(P)$(R)Timing:ClkSel" )
 {
 	field( DTYP, "RogueMBBO" )
-	field( OUT,  "@B$(B) L$(L) ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TimingFrameRx.ClkSel" )
+	field( OUT,  "@B$(B) L0 ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TimingFrameRx.ClkSel" )
 	field( PINI, "YES" )
 	field( ZRVL, "0" ) field( ZRST, "LCLS-I  Clock" )
 	field( ONVL, "1" ) field( ONST, "LCLS-II Clock" )
@@ -72,7 +73,7 @@ record( mbbo, "$(P)$(R)Timing:ClkSel" )
 record( mbbi, "$(P)$(R)Timing:ModeSel_RBV" )
 {
 	field( DTYP, "RogueMBBI" )
-	field( INP,  "@B$(B) L$(L) ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TimingFrameRx.ModeSel" )
+	field( INP,  "@B$(B) L0 ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TimingFrameRx.ModeSel" )
 	field( ZRVL, "0" ) field( ZRST, "Lcls1Protocol" )
 	field( ONVL, "1" ) field( ONST, "Lcls2Protocol" )
 	info( autosaveFields, "" )
@@ -82,7 +83,7 @@ record( mbbi, "$(P)$(R)Timing:ModeSel_RBV" )
 record( mbbo, "$(P)$(R)Timing:ModeSel" )
 {
 	field( DTYP, "RogueMBBO" )
-	field( OUT,  "@B$(B) L$(L) ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TimingFrameRx.ModeSel" )
+	field( OUT,  "@B$(B) L0 ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TimingFrameRx.ModeSel" )
 	field( PINI, "YES" )
 	field( ZRVL, "0" ) field( ZRST, "Lcls1Protocol" )
 	field( ONVL, "1" ) field( ONST, "Lcls2Protocol" )
@@ -95,7 +96,7 @@ record( mbbo, "$(P)$(R)Timing:ModeSel" )
 record( mbbi, "$(P)$(R)Timing:ModeSelEn_RBV" )
 {
 	field( DTYP, "RogueMBBI" )
-	field( INP,  "@B$(B) L$(L) ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TimingFrameRx.ModeSelEn" )
+	field( INP,  "@B$(B) L0 ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TimingFrameRx.ModeSelEn" )
 	field( ZRVL, "0" ) field( ZRST, "UseClkSel" )
 	field( ONVL, "1" ) field( ONST, "UseModeSel" )
 	info( autosaveFields, "" )
@@ -104,7 +105,7 @@ record( mbbi, "$(P)$(R)Timing:ModeSelEn_RBV" )
 record( mbbo, "$(P)$(R)Timing:ModeSelEn" )
 {
 	field( DTYP, "RogueMBBO" )
-	field( OUT,  "@B$(B) L$(L) ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TimingFrameRx.ModeSelEn" )
+	field( OUT,  "@B$(B) L0 ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TimingFrameRx.ModeSelEn" )
 	field( PINI, "YES" )
 	field( ZRVL, "0" ) field( ZRST, "UseClkSel" )
 	field( ONVL, "1" ) field( ONST, "UseModeSel" )
@@ -117,7 +118,7 @@ record( mbbi, "$(P)$(R)XpmMini:Config_L0Select_RateSel_RBV" )
 {
 	field( DESC, "XpmMini LCLS-II Rate Select" )
 	field( DTYP, "RogueMBBI" )
-	field( INP,  "@B$(B) L$(L) ClinkDevRoot.ClinkPcie.Hsio.TimingRx.XpmMiniWrapper.XpmMini.Config_L0Select_RateSel" )
+	field( INP,  "@B$(B) L0 ClinkDevRoot.ClinkPcie.Hsio.TimingRx.XpmMiniWrapper.XpmMini.Config_L0Select_RateSel" )
 	field( ZRVL, "0" ) field( ZRST, "929 kHz" )
 	field( ONVL, "1" ) field( ONST, " 71 kHz" )
 	field( TWVL, "2" ) field( TWST, " 10 kHz" )
@@ -133,7 +134,7 @@ record( mbbo, "$(P)$(R)XpmMini:Config_L0Select_RateSel" )
 {
 	field( DESC, "XpmMini LCLS-II Rate Select" )
 	field( DTYP, "RogueMBBO" )
-	field( OUT,  "@B$(B) L$(L) ClinkDevRoot.ClinkPcie.Hsio.TimingRx.XpmMiniWrapper.XpmMini.Config_L0Select_RateSel" )
+	field( OUT,  "@B$(B) L0 ClinkDevRoot.ClinkPcie.Hsio.TimingRx.XpmMiniWrapper.XpmMini.Config_L0Select_RateSel" )
 	field( PINI, "YES" )
 	field( ZRVL, "0" ) field( ZRST, "929 kHz" )
 	field( ONVL, "1" ) field( ONST, " 71 kHz" )
@@ -155,13 +156,13 @@ record( mbbo, "$(P)$(R)XpmMini:Config_L0Select_RateSel" )
 record( longin, "$(P)$(R)Timing:RxDown_RBV" )
 {
 	field( DTYP, "RogueLI" )
-	field( INP,  "@B$(B) L$(L) ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TimingFrameRx.RxDown" )
+	field( INP,  "@B$(B) L0 ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TimingFrameRx.RxDown" )
 	field( SCAN, "$(SCAN=1 second)" )
 }
 record( longout, "$(P)$(R)Timing:RxDown" )
 {
 	field( DTYP, "RogueLO" )
-	field( OUT,  "@B$(B) L$(L) ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TimingFrameRx.RxDown" )
+	field( OUT,  "@B$(B) L0 ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TimingFrameRx.RxDown" )
 	field( PINI, "YES" )
 	field( FLNK, "$(P)$(R)Timing:RxDown_RBV" )
 }
@@ -172,12 +173,26 @@ record( longout, "$(P)$(R)Timing:RxDown" )
 record( longin, "$(P)$(R)Timing:RxPllReset_RBV" )
 {
 	field( DTYP, "RogueLI" )
-	field( INP,  "@B$(B) L$(L) ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TimingFrameRx.RxPllReset" )
+	field( INP,  "@B$(B) L0 ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TimingFrameRx.RxPllReset" )
 	field( SCAN, "$(SCAN=1 second)" )
 }
 record( longout, "$(P)$(R)Timing:RxPllReset" )
 {
 	field( DTYP, "RogueLO" )
-	field( OUT,  "@B$(B) L$(L) ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TimingFrameRx.RxPllReset" )
+	field( OUT,  "@B$(B) L0 ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TimingFrameRx.RxPllReset" )
 	field( FLNK, "$(P)$(R)Timing:RxPllReset_RBV" )
 }
+
+# Put monitors
+substitute "SER_OK_PV=$(P)$(R)AxiPcieCore:PCIE_HW_TYPE_G"
+substitute "MON_SCAN=1 second"
+substitute "MON_DISABLED=1"
+substitute "MON_VALUE=1"
+substitute "MON_PV=$(P)$(R)Timing:ClkSel"
+include "putMonitor.template"
+substitute "MON_PV=$(P)$(R)Timing:ModeSel"
+include "putMonitor.template"
+substitute "MON_PV=$(P)$(R)Timing:ModeSelEn"
+include "putMonitor.template"
+substitute "MON_PV=$(P)$(R)XpmMini:Config_L0Select_RateSel"
+include "putMonitor.template"

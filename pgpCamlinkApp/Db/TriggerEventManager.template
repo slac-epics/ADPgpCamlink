@@ -69,7 +69,7 @@ record( mbbo, "$(P)$(R)EvrV2:DestType" )
 # LCLS-I Rate Type
 record( mbbi, "$(P)$(R)EvrV2:RateType_RBV" )
 {
-	field( DESC, "LCLS-I Rate Type" )
+	field( DESC, "LCLS-II Rate Type" )
 	field( INP,  "@B$(B) L$(L) ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TriggerEventManager.EvrV2CoreTriggers.EvrV2ChannelReg[$(L)].RateType" )
 	field( DTYP, "RogueMBBI" )
 	field( ZRVL, "0" ) field( ZRST, "FixedRates" )
@@ -81,7 +81,7 @@ record( mbbi, "$(P)$(R)EvrV2:RateType_RBV" )
 
 record( mbbo, "$(P)$(R)EvrV2:RateType" )
 {
-	field( DESC, "LCLS-I Rate Type" )
+	field( DESC, "LCLS-II Rate Type" )
 	field( OUT,  "@B$(B) L$(L) ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TriggerEventManager.EvrV2CoreTriggers.EvrV2ChannelReg[$(L)].RateType" )
 	field( DTYP, "RogueMBBO" )
 	field( DOL,  "2" )
