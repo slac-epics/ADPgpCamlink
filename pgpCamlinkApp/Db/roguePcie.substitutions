@@ -1,5 +1,10 @@
 # roguePcie.substitutions
 
+file ClinkPcie.template
+{
+	{ P = "\$(P)", R = ":", B="\$(B)" }
+}
+
 file TriggerEventManager.template
 {
 	{ P = "\$(P)", R = "\$(R)Ch0:", L=0, F=0 }
@@ -18,16 +23,19 @@ file boolDevRogue.template
 		PATH	= "ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TimingPhyMonitor.UseMiniTpg"
 		PINI	= "YES"
 		SCAN	= "\$(SCAN=1 second)"
+		L		= "0"
 	}
 	{
 		NAME	= "XpmMini:Config_L0Select_Enabled",
 		PATH	= "ClinkDevRoot.ClinkPcie.Hsio.TimingRx.XpmMiniWrapper.XpmMini.Config_L0Select_Enabled"
 		PINI	= "YES"
+		L		= "0"
 	}
 	{
 		NAME	= "XpmMini:HwEnable",
 		PATH	= "ClinkDevRoot.ClinkPcie.Hsio.TimingRx.XpmMiniWrapper.XpmMini.HwEnable"
 		PINI	= "YES"
+		L		= "0"
 	}
 }
 
@@ -39,36 +47,42 @@ file liDevRogue.template
 		PATH	= "ClinkDevRoot.ClinkPcie.AxiPcieCore.AxiVersion.FpgaVersion",
 		DESC	= "AxiPcieCore FPGA Version (show as hex)"
 		PINI	= "YES"
+		L		= "0"
 	}
 	{
 		NAME	= "AxiPcieCore:UpTime",
 		PATH	= "ClinkDevRoot.ClinkPcie.AxiPcieCore.AxiVersion.UpTimeCnt",
 		EGU		= "sec"
 		SCAN	= "\$(SCAN=1 second)"
+		L		= "0"
 	}
 	{
 		NAME	= "Timing:sofCount",
 		PATH	= "ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TimingFrameRx.sofCount"
 		DESC	= "Count for Start of Timing Frame"
 		SCAN	= "\$(SCAN=1 second)"
+		L		= "0"
 	}
 	{
 		NAME	= "Timing:eofCount",
 		PATH	= "ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TimingFrameRx.eofCount"
 		DESC	= "Count for End of Timing Frame"
 		SCAN	= "\$(SCAN=1 second)"
+		L		= "0"
 	}
 	{
 		NAME	= "Timing:FidCount",
 		PATH	= "ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TimingFrameRx.FidCount"
 		DESC	= "Fiducial Count"
 		SCAN	= "\$(SCAN=1 second)"
+		L		= "0"
 	}
 	{
 		NAME	= "Timing:RxLinkUp",
 		PATH	= "ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TimingFrameRx.RxLinkUp"
 		DESC	= "Timing fiber link status"
 		SCAN	= "\$(SCAN=1 second)"
+		L		= "0"
 		LLSV    = "MAJOR"
 	}
 }
@@ -79,6 +93,7 @@ file loDevRogue.template
 		NAME	= "Timing:C_RxReset",
 		PATH	= "ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TimingFrameRx.C_RxReset"
 		SAVE	= ""
+		L		= "0"
 	}
 }
 
@@ -89,15 +104,18 @@ file longDevRogue.template
 		PATH	= "ClinkDevRoot.ClinkPcie.AxiPcieCore.AxiVersion.ScratchPad"
 		PINI	= "YES"
 		SAVE	= ""
+		L		= "0"
 	}
 	{
 		NAME	= "XpmMini:Config_L0Select_DestSel",
 		DOL		= "32768"
 		PATH	= "ClinkDevRoot.ClinkPcie.Hsio.TimingRx.XpmMiniWrapper.XpmMini.Config_L0Select_DestSel"
+		L		= "0"
 	}
 	{
 		NAME	= "XpmMini:Link",
 		PATH	= "ClinkDevRoot.ClinkPcie.Hsio.TimingRx.XpmMiniWrapper.XpmMini.Link"
+		L		= "0"
 	}
 }
 
