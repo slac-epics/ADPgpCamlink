@@ -1,6 +1,10 @@
 #
 # SLAC RELEASE_NOTES
 #
+R1.7.0	2022-02-08 Bruce Hill
+	Add LCLS-I and LCLS-II timing PVs to ClinkLane.edl
+	Other minor edm screen tweaks.
+
 R1.6.0	2022-02-01 Bruce Hill
 	Add camlink RBV values and rm unneeded L macro references
 	Add ability to check value against RBV in putMonitor.template
