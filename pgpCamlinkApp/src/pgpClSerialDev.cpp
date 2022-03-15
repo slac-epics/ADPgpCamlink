@@ -16,8 +16,8 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <iostream>
-#include <DmaDriver.h>
-#include <AxiVersion.h>
+//#include <DmaDriver.h>
+//#include <AxiVersion.h>
 
 #include "pgpClSerialDev.h"
 #include "rogue/GeneralError.h"
