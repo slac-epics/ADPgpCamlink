@@ -41,7 +41,7 @@ record( mbbi, "$(P)$(R)AxiPcieCore:PCIE_HW_TYPE_G" )
 	field( TVVL, "12" ) field( TVST, "XilinxKcu116" )
 	field( TTVL, "13" ) field( TTST, "XilinxKcu1500" )
 	field( FTVL, "14" ) field( FTST, "XilinxVcu128" )
-	field( FFVL, "15" ) field( FFST, "Unused" )
+	field( FFVL, "15" ) field( FFST, "XilinkxAlveoU55C" )
 # Using PCIE_HW_TYPE_G as a health indicator
 	field( SCAN, "1 second" )
 	info( autosaveFields, "" )

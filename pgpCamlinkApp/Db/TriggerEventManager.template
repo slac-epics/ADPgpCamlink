@@ -66,6 +66,30 @@ record( mbbo, "$(P)$(R)EvrV2:DestType" )
 	info( autosaveFields, "VAL" )
 }
 
+# Trigger EnableReg
+record( bi, "$(P)$(R)EvrV2:EnableReg_RBV" )
+{
+	field( DESC, "LCLS-II Rate Type" )
+	field( INP,  "@B$(B) L$(L) ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TriggerEventManager.EvrV2CoreTriggers.EvrV2ChannelReg[$(L)].EnableReg" )
+	field( DTYP, "RogueBI" )
+	field( ZNAM, "Disabled" )
+	field( ONAM, "Enabled" )
+	field( SCAN, "$(SCAN=1 second)" )
+	info( autosaveFields, "" )
+}
+record( bo, "$(P)$(R)EvrV2:EnableReg" )
+{
+	field( DESC, "EvrV2 Channel EnableReg " )
+	field( OUT,  "@B$(B) L$(L) ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TriggerEventManager.EvrV2CoreTriggers.EvrV2ChannelReg[$(L)].EnableReg" )
+	field( DTYP, "RogueBO" )
+	field( ZNAM, "Disabled" )
+	field( ONAM, "Enabled" )
+	field( DOL,  "1" )
+#	field( PINI, "YES" )
+	field( FLNK, "$(P)$(R)EvrV2:EnableReg_RBV" )
+	info( autosaveFields, "VAL" )
+}
+
 # LCLS-I Rate Type
 record( mbbi, "$(P)$(R)EvrV2:RateType_RBV" )
 {
@@ -115,3 +139,22 @@ record( longout, "$(P)$(R)EvrV2:RateSel" )
 }
 alias( "$(P)$(R)EvrV2:RateSel", "$(P)$(R)EvrV2:EventCode" )
 
+record( mbbi, "$(P)$(R)Timing:TriggerSource_RBV" )
+{
+	field( DESC, "TriggerEventManager Trigger Source" )
+	field( DTYP, "RogueMBBI" )
+	field( INP,  "@B$(B) L$(L) ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TriggerEventManager.TriggerEventBuffer[$(L)].TriggerSource" )
+	field( ZRVL, "0" ) field( ZRST, "XPM" )
+	field( ONVL, "1" ) field( ONST, "EVR" )
+}
+record( mbbo, "$(P)$(R)Timing:TriggerSource" )
+{
+	field( DESC, "TriggerEventManager Trigger Source" )
+	field( DTYP, "RogueMBBO" )
+	field( DOL,  "0" )
+	field( OUT,  "@B$(B) L$(L) ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TriggerEventManager.TriggerEventBuffer[$(L)].TriggerSource" )
+	field( ZRVL, "0" ) field( ZRST, "XPM" )
+	field( ONVL, "1" ) field( ONST, "EVR" )
+	field( FLNK, "$(P)$(R)Timing:TriggerSource_RBV" )
+	info( autosaveFields, "VAL" )
+}

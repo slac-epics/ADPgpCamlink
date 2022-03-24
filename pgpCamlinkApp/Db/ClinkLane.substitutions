@@ -341,6 +341,15 @@ file longDevRogue.template
 		DOL		= "4"
 		SAVE	= ""
 	}
+# Threshold in unit of AXIS words (8 bytes per word). The XPM is 48byte message.
+# So setting this register to 0x7 would NOT back pressure until
+# there are two messages in the pipeline
+	{
+		NAME	= "XpmPauseThresh",
+		PATH	= "ClinkDevRoot.ClinkPcie.Application.AppLane[$(L)].XpmPauseThresh",
+		SCAN	= "\$(SCAN=1 second)"
+		SAVE	= "VAL"
+	}
 	{
 		NAME	= "EvrV2:FebTrigWidth",
 		DESC	= "Must be non-zero, recommend set to 1"
