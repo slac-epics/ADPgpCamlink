@@ -1,6 +1,10 @@
 #
 # SLAC RELEASE_NOTES
 #
+R1.8.0	2022-03-23 Bruce Hill
+	Adding support for EvrV2:EnableReg and Timing:TriggerSource PVs
+	Update rogueAddrMap.h to cameralink v7.12.0 firmware
+
 R1.7.0	2022-02-08 Bruce Hill
 	Add LCLS-I and LCLS-II timing PVs to ClinkLane.edl
 	Other minor edm screen tweaks.
