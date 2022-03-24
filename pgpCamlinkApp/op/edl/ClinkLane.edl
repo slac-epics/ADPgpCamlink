@@ -3,10 +3,10 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 1877
-y 1192
-w 720
-h 640
+x 1409
+y 1709
+w 740
+h 624
 font "helvetica-medium-r-8.0"
 ctlFont "helvetica-medium-r-8.0"
 btnFont "helvetica-medium-r-8.0"
@@ -31,9 +31,9 @@ major 4
 minor 0
 release 0
 x 356
-y 212
+y 292
 w 336
-h 68
+h 96
 lineColor index 3
 fill
 fillColor index 3
@@ -156,7 +156,7 @@ major 4
 minor 0
 release 0
 x 356
-y 372
+y 500
 w 336
 h 108
 lineColor index 3
@@ -171,7 +171,7 @@ major 4
 minor 1
 release 1
 x 356
-y 372
+y 500
 w 76
 h 14
 font "helvetica-bold-r-12.0"
@@ -237,7 +237,7 @@ release 0
 x 356
 y 44
 w 336
-h 156
+h 236
 lineColor index 3
 fill
 fillColor index 3
@@ -294,7 +294,7 @@ major 4
 minor 1
 release 1
 x 360
-y 252
+y 360
 w 120
 h 20
 font "helvetica-medium-r-12.0"
@@ -314,7 +314,7 @@ major 4
 minor 7
 release 0
 x 596
-y 252
+y 360
 w 80
 h 20
 controlPv "$(P)$(R)EvrV2:TriggerDelay_RBV"
@@ -339,7 +339,7 @@ major 4
 minor 7
 release 0
 x 492
-y 252
+y 360
 w 96
 h 18
 controlPv "$(P)$(R)EvrV2:TriggerDelay"
@@ -388,7 +388,7 @@ major 4
 minor 1
 release 1
 x 356
-y 212
+y 292
 w 128
 h 16
 font "helvetica-bold-r-12.0"
@@ -627,7 +627,7 @@ major 4
 minor 7
 release 0
 x 492
-y 228
+y 336
 w 96
 h 18
 controlPv "$(P)$(R)EvrV2:RateSel"
@@ -657,7 +657,7 @@ major 4
 minor 7
 release 0
 x 596
-y 228
+y 336
 w 80
 h 20
 controlPv "$(P)$(R)EvrV2:RateSel_RBV"
@@ -682,7 +682,7 @@ major 4
 minor 1
 release 1
 x 360
-y 228
+y 336
 w 120
 h 20
 font "helvetica-medium-r-12.0"
@@ -1569,7 +1569,7 @@ major 4
 minor 7
 release 0
 x 600
-y 380
+y 508
 w 80
 h 20
 controlPv "$(P)$(R)EventBuilder:DataCnt0_RBV"
@@ -1595,7 +1595,7 @@ major 4
 minor 1
 release 1
 x 360
-y 380
+y 508
 w 120
 h 20
 font "helvetica-medium-r-12.0"
@@ -1615,7 +1615,7 @@ major 4
 minor 7
 release 0
 x 600
-y 404
+y 532
 w 80
 h 20
 controlPv "$(P)$(R)EventBuilder:DataCnt1_RBV"
@@ -1641,7 +1641,7 @@ major 4
 minor 1
 release 1
 x 360
-y 404
+y 532
 w 120
 h 20
 font "helvetica-medium-r-12.0"
@@ -1661,7 +1661,7 @@ major 4
 minor 7
 release 0
 x 496
-y 428
+y 556
 w 96
 h 18
 controlPv "$(P)$(R)EventBuilder:Blowoff"
@@ -1689,7 +1689,7 @@ major 4
 minor 7
 release 0
 x 600
-y 428
+y 556
 w 80
 h 20
 controlPv "$(P)$(R)EventBuilder:Blowoff_RBV"
@@ -1713,7 +1713,7 @@ major 4
 minor 1
 release 1
 x 360
-y 428
+y 556
 w 120
 h 20
 font "helvetica-medium-r-12.0"
@@ -1733,7 +1733,7 @@ major 4
 minor 7
 release 0
 x 496
-y 456
+y 584
 w 96
 h 18
 controlPv "$(P)$(R)EventBuilder:Bypass"
@@ -1762,7 +1762,7 @@ major 4
 minor 7
 release 0
 x 600
-y 452
+y 580
 w 80
 h 20
 controlPv "$(P)$(R)EventBuilder:Bypass_RBV"
@@ -1786,7 +1786,7 @@ major 4
 minor 1
 release 1
 x 360
-y 452
+y 580
 w 120
 h 20
 font "helvetica-medium-r-12.0"
@@ -1934,9 +1934,9 @@ major 4
 minor 0
 release 0
 x 356
-y 292
+y 400
 w 336
-h 68
+h 92
 lineColor index 3
 fill
 fillColor index 3
@@ -1949,7 +1949,7 @@ major 4
 minor 1
 release 1
 x 356
-y 292
+y 400
 w 139
 h 14
 font "helvetica-bold-r-12.0"
@@ -1969,7 +1969,7 @@ major 4
 minor 1
 release 1
 x 360
-y 332
+y 440
 w 120
 h 20
 font "helvetica-medium-r-12.0"
@@ -1978,7 +1978,7 @@ fgColor index 14
 bgColor index 0
 useDisplayBg
 value {
-  "Config_L0Select_DestSel"
+  "DestSel"
 }
 endObjectProperties
 
@@ -1989,7 +1989,7 @@ major 4
 minor 7
 release 0
 x 596
-y 332
+y 440
 w 80
 h 20
 controlPv "$(PGP):XpmMini:Config_L0Select_DestSel_RBV"
@@ -2014,7 +2014,7 @@ major 4
 minor 7
 release 0
 x 492
-y 332
+y 440
 w 96
 h 18
 controlPv "$(PGP):XpmMini:Config_L0Select_DestSel"
@@ -2044,7 +2044,7 @@ major 4
 minor 7
 release 0
 x 596
-y 308
+y 416
 w 80
 h 20
 controlPv "$(PGP):XpmMini:Config_L0Select_RateSel_RBV"
@@ -2068,7 +2068,7 @@ major 4
 minor 1
 release 1
 x 360
-y 308
+y 416
 w 120
 h 20
 font "helvetica-medium-r-12.0"
@@ -2088,7 +2088,7 @@ major 4
 minor 0
 release 0
 x 492
-y 308
+y 416
 w 96
 h 18
 fgColor index 14
@@ -2099,5 +2099,261 @@ botShadowColor index 11
 controlPv "$(PGP):XpmMini:Config_L0Select_RateSel"
 indicatorPv "$(PGP):XpmMini:Config_L0Select_RateSel_RBV"
 font "helvetica-medium-r-12.0"
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 600
+y 200
+w 80
+h 20
+controlPv "$(P)$(R)Timing:TriggerSource_RBV"
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+fgColor index 15
+fgAlarm
+bgColor index 12
+limitsFromDb
+nullColor index 40
+smartRefresh
+newPos
+objType "monitors"
+noExecuteClipMask
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 364
+y 200
+w 120
+h 20
+font "helvetica-medium-r-12.0"
+fontAlign "right"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "Timing:TriggerSource"
+}
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 360
+y 308
+w 120
+h 20
+font "helvetica-medium-r-12.0"
+fontAlign "right"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "EvrV2:EnableReg"
+}
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 596
+y 308
+w 80
+h 20
+controlPv "$(P)$(R)EvrV2:EnableReg_RBV"
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+fgColor index 15
+fgAlarm
+bgColor index 12
+limitsFromDb
+nullColor index 40
+smartRefresh
+newPos
+objType "monitors"
+noExecuteClipMask
+endObjectProperties
+
+# (Menu Button)
+object activeMenuButtonClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 492
+y 308
+w 96
+h 18
+fgColor index 14
+bgColor index 3
+inconsistentColor index 40
+topShadowColor index 1
+botShadowColor index 11
+controlPv "$(P)$(R)EvrV2:EnableReg"
+indicatorPv "$(P)$(R)EvrV2:EnableReg_RBV"
+font "helvetica-medium-r-12.0"
+endObjectProperties
+
+# (Menu Button)
+object activeMenuButtonClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 496
+y 200
+w 96
+h 18
+fgColor index 14
+bgColor index 3
+inconsistentColor index 40
+topShadowColor index 1
+botShadowColor index 11
+controlPv "$(P)$(R)Timing:TriggerSource"
+indicatorPv "$(P)$(R)Timing:TriggerSource_RBV"
+font "helvetica-medium-r-12.0"
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 600
+y 252
+w 80
+h 20
+controlPv "$(PGP):Ch$(CH):EvrV2:DestType_RBV"
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+fgColor index 15
+fgAlarm
+bgColor index 12
+limitsFromDb
+nullColor index 40
+smartRefresh
+newPos
+objType "monitors"
+noExecuteClipMask
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 600
+y 224
+w 80
+h 20
+controlPv "$(PGP):Ch$(CH):EvrV2:RateType_RBV"
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+fgColor index 15
+fgAlarm
+bgColor index 12
+limitsFromDb
+nullColor index 40
+smartRefresh
+newPos
+objType "monitors"
+noExecuteClipMask
+endObjectProperties
+
+# (Menu Button)
+object activeMenuButtonClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 496
+y 252
+w 96
+h 18
+fgColor index 14
+bgColor index 3
+inconsistentColor index 40
+topShadowColor index 1
+botShadowColor index 11
+controlPv "$(PGP):Ch$(CH):EvrV2:DestType"
+indicatorPv "$(PGP):Ch$(CH):EvrV2:DestType_RBV"
+font "helvetica-medium-r-12.0"
+endObjectProperties
+
+# (Menu Button)
+object activeMenuButtonClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 496
+y 224
+w 96
+h 18
+fgColor index 14
+bgColor index 3
+inconsistentColor index 40
+topShadowColor index 1
+botShadowColor index 11
+controlPv "$(PGP):Ch$(CH):EvrV2:RateType"
+indicatorPv "$(PGP):Ch$(CH):EvrV2:RateType_RBV"
+font "helvetica-medium-r-12.0"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 364
+y 252
+w 120
+h 20
+font "helvetica-medium-r-12.0"
+fontAlign "right"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "Timing:DestType"
+}
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 364
+y 224
+w 120
+h 20
+font "helvetica-medium-r-12.0"
+fontAlign "right"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "Timing:RateType"
+}
 endObjectProperties
 
