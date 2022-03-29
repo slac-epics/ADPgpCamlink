@@ -3,8 +3,8 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 98
-y 1356
+x 65
+y 1457
 w 929
 h 800
 font "helvetica-medium-r-8.0"
@@ -1940,36 +1940,6 @@ objType "monitors"
 noExecuteClipMask
 endObjectProperties
 
-# (Text Control)
-object activeXTextDspClass
-beginObjectProperties
-major 4
-minor 7
-release 0
-x 568
-y 532
-w 60
-h 24
-controlPv "$(PGP):Ch0:EvrV2:RateSel"
-format "decimal"
-font "helvetica-medium-r-12.0"
-fontAlign "center"
-fgColor index 25
-fgAlarm
-bgColor index 5
-editable
-autoHeight
-motifWidget
-limitsFromDb
-nullColor index 40
-smartRefresh
-fastUpdate
-useHexPrefix
-newPos
-objType "controls"
-noExecuteClipMask
-endObjectProperties
-
 # (Text Monitor)
 object activeXTextDspClass:noedit
 beginObjectProperties
@@ -2104,36 +2074,6 @@ objType "monitors"
 noExecuteClipMask
 endObjectProperties
 
-# (Text Control)
-object activeXTextDspClass
-beginObjectProperties
-major 4
-minor 7
-release 0
-x 568
-y 560
-w 60
-h 24
-controlPv "$(PGP):Ch1:EvrV2:RateSel"
-format "decimal"
-font "helvetica-medium-r-12.0"
-fontAlign "center"
-fgColor index 25
-fgAlarm
-bgColor index 5
-editable
-autoHeight
-motifWidget
-limitsFromDb
-nullColor index 40
-smartRefresh
-fastUpdate
-useHexPrefix
-newPos
-objType "controls"
-noExecuteClipMask
-endObjectProperties
-
 # (Text Monitor)
 object activeXTextDspClass:noedit
 beginObjectProperties
@@ -2248,36 +2188,6 @@ objType "monitors"
 noExecuteClipMask
 endObjectProperties
 
-# (Text Control)
-object activeXTextDspClass
-beginObjectProperties
-major 4
-minor 7
-release 0
-x 568
-y 588
-w 60
-h 24
-controlPv "$(PGP):Ch2:EvrV2:RateSel"
-format "decimal"
-font "helvetica-medium-r-12.0"
-fontAlign "center"
-fgColor index 25
-fgAlarm
-bgColor index 5
-editable
-autoHeight
-motifWidget
-limitsFromDb
-nullColor index 40
-smartRefresh
-fastUpdate
-useHexPrefix
-newPos
-objType "controls"
-noExecuteClipMask
-endObjectProperties
-
 # (Text Monitor)
 object activeXTextDspClass:noedit
 beginObjectProperties
@@ -2389,36 +2299,6 @@ smartRefresh
 showUnits
 newPos
 objType "monitors"
-noExecuteClipMask
-endObjectProperties
-
-# (Text Control)
-object activeXTextDspClass
-beginObjectProperties
-major 4
-minor 7
-release 0
-x 568
-y 620
-w 60
-h 24
-controlPv "$(PGP):Ch3:EvrV2:RateSel"
-format "decimal"
-font "helvetica-medium-r-12.0"
-fontAlign "center"
-fgColor index 25
-fgAlarm
-bgColor index 5
-editable
-autoHeight
-motifWidget
-limitsFromDb
-nullColor index 40
-smartRefresh
-fastUpdate
-useHexPrefix
-newPos
-objType "controls"
 noExecuteClipMask
 endObjectProperties
 
@@ -3770,7 +3650,6 @@ fgColor index 25
 fgAlarm
 bgColor index 5
 editable
-autoHeight
 motifWidget
 limitsFromDb
 nullColor index 40
@@ -3861,7 +3740,7 @@ release 0
 x 744
 y 560
 w 68
-h 18
+h 24
 controlPv "$(PGP):Ch1:EvrV2:TriggerDelay"
 format "decimal"
 font "helvetica-medium-r-12.0"
@@ -3870,7 +3749,6 @@ fgColor index 25
 fgAlarm
 bgColor index 5
 editable
-autoHeight
 motifWidget
 limitsFromDb
 nullColor index 40
@@ -3916,7 +3794,7 @@ release 0
 x 744
 y 588
 w 68
-h 18
+h 24
 controlPv "$(PGP):Ch2:EvrV2:TriggerDelay"
 format "decimal"
 font "helvetica-medium-r-12.0"
@@ -3925,7 +3803,6 @@ fgColor index 25
 fgAlarm
 bgColor index 5
 editable
-autoHeight
 motifWidget
 limitsFromDb
 nullColor index 40
@@ -3971,7 +3848,7 @@ release 0
 x 744
 y 620
 w 68
-h 18
+h 24
 controlPv "$(PGP):Ch3:EvrV2:TriggerDelay"
 format "decimal"
 font "helvetica-medium-r-12.0"
@@ -3980,7 +3857,6 @@ fgColor index 25
 fgAlarm
 bgColor index 5
 editable
-autoHeight
 motifWidget
 limitsFromDb
 nullColor index 40
@@ -4246,5 +4122,201 @@ useDisplayBg
 value {
   "PCIE H/W Type"
 }
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 568
+y 532
+w 60
+h 24
+
+beginGroup
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 568
+y 532
+w 60
+h 24
+controlPv "$(CAM):CamEventCode"
+format "decimal"
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+fgColor index 25
+fgAlarm
+bgColor index 5
+editable
+motifWidget
+limitsFromDb
+nullColor index 40
+smartRefresh
+fastUpdate
+useHexPrefix
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+endGroup
+
+visPv "$(CAM):CamChannel"
+visMin "0"
+visMax "1"
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 568
+y 560
+w 60
+h 24
+
+beginGroup
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 568
+y 560
+w 60
+h 24
+controlPv "$(CAM):CamEventCode"
+format "decimal"
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+fgColor index 25
+fgAlarm
+bgColor index 5
+editable
+motifWidget
+limitsFromDb
+nullColor index 40
+smartRefresh
+fastUpdate
+useHexPrefix
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+endGroup
+
+visPv "$(CAM):CamChannel"
+visMin "1"
+visMax "2"
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 568
+y 588
+w 60
+h 24
+
+beginGroup
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 568
+y 588
+w 60
+h 24
+controlPv "$(CAM):CamEventCode"
+format "decimal"
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+fgColor index 25
+fgAlarm
+bgColor index 5
+editable
+motifWidget
+limitsFromDb
+nullColor index 40
+smartRefresh
+fastUpdate
+useHexPrefix
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+endGroup
+
+visPv "$(CAM):CamChannel"
+visMin "2"
+visMax "3"
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 568
+y 620
+w 60
+h 24
+
+beginGroup
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 568
+y 620
+w 60
+h 24
+controlPv "$(CAM):CamEventCode"
+format "decimal"
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+fgColor index 25
+fgAlarm
+bgColor index 5
+editable
+motifWidget
+limitsFromDb
+nullColor index 40
+smartRefresh
+fastUpdate
+useHexPrefix
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+endGroup
+
+visPv "$(CAM):CamChannel"
+visMin "3"
+visMax "4"
 endObjectProperties
 

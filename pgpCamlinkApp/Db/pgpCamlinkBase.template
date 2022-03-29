@@ -13,9 +13,6 @@
 #
 # These are needed only if you want to use PV's w/ the CAM prefix
 # to set and monitor event code trigger timing.
-#	CAM_EC			- PV to set camera trigger event code
-#	CAM_EC_RBV		- PV to get camera trigger event code
-#	CAM_RATE_RBV	- PV to get camera trigger event code rep rate in Hz
 #	TICK_DLY_SCALE	- Scale factor for cam delay to timing system ticks, default 1000000000 for ns
 #	TICK_DLY_EGU	- EGU for   tick delay values, defaults to ns
 #
@@ -74,6 +71,13 @@ record( longout, $(P)$(R)CamReConfigCount )
 }
 record( seq, $(P)$(R)CamReConfigSeq )
 {
+}
+
+# Usefull PV for GUI visibility based on channel number (PGP_LANE)
+record( longin, "$(P)$(R)CamChannel" )
+{
+	field( VAL,  "$(PGP_LANE)" )
+	field( PINI, "YES" )
 }
 
 #
