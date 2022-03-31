@@ -69,7 +69,7 @@ void ImageStream::acceptFrame ( rogue::interfaces::stream::FramePtr frame )
 			printf( "ImageStream::acceptFrame SubFrame %d, dest=%u, size=%u, fUser=0x%02x, lUser=0x%02x\n",
 					sf, data->dest(), data->size(), data->fUser(), data->lUser() );
 		if ( data->dest() == 0 )
-		{	// TDEST 0 is Trigger (Timing Event)
+		{	// TDEST 0 is Timestamp (Timing Event)
 			it = data->begin();
 			it += 8;	// Skipping ?
 			fromFrame( it, 4, &ts.nsec );
@@ -96,7 +96,7 @@ void ImageStream::acceptFrame ( rogue::interfaces::stream::FramePtr frame )
 				printf( "ImageStream::acceptFrame TDEST 2 SubFrame %d, size %u\n", sf, size );
 		}
 		else if ( data->dest() == 3 ) // new Timing msg created by Matt
-		{	// TDEST 3 is XPM Timing
+		{	// TDEST 3 is XPM Timing  (DAQ)
 			if ( DEBUG_PGP_CAMLINK >= 4 )
 				printf( "ImageStream::acceptFrame TDEST 3 SubFrame %d, Event: \n", sf );
 			//it = data->begin();
