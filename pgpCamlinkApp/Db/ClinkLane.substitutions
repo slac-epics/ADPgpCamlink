@@ -83,7 +83,7 @@ file boolDevRogue.template
 		NAME	= "EventBuilder:Blowoff",
 		PATH	= "ClinkDevRoot.ClinkPcie.Application.AppLane[$(L)].EventBuilder.Blowoff"
 		SAVE	= ""
-		DESC	= "Blow off data in EventBuilder pipeline"
+		DESC	= "Bitmask Blowoff TDEST 0,1,2 in pipeline"
 		ZNAM	= "OK"
 		ONAM	= "Blowoff"
 		DOL		= "1"
@@ -183,6 +183,26 @@ file liDevRogue.template
 	{
 		NAME	= "EventBuilder:DataCnt1",
 		PATH	= "ClinkDevRoot.ClinkPcie.Application.AppLane[$(L)].EventBuilder.DataCnt[1]"
+		SCAN	= "\$(SCAN=1 second)"
+	}
+	{
+		NAME	= "EventBuilder:DataCnt2",
+		PATH	= "ClinkDevRoot.ClinkPcie.Application.AppLane[$(L)].EventBuilder.DataCnt[2]"
+		SCAN	= "\$(SCAN=1 second)"
+	}
+	{
+		NAME	= "EventBuilder:TimeoutDropCnt0",
+		PATH	= "ClinkDevRoot.ClinkPcie.Application.AppLane[$(L)].EventBuilder.TimeoutDropCnt[0]",
+		SCAN	= "\$(SCAN=1 second)"
+	}
+	{
+		NAME	= "EventBuilder:TimeoutDropCnt1",
+		PATH	= "ClinkDevRoot.ClinkPcie.Application.AppLane[$(L)].EventBuilder.TimeoutDropCnt[1]"
+		SCAN	= "\$(SCAN=1 second)"
+	}
+	{
+		NAME	= "EventBuilder:TimeoutDropCnt2",
+		PATH	= "ClinkDevRoot.ClinkPcie.Application.AppLane[$(L)].EventBuilder.TimeoutDropCnt[2]"
 		SCAN	= "\$(SCAN=1 second)"
 	}
 	{
@@ -337,6 +357,13 @@ file longDevRogue.template
 	{
 		NAME	= "EventBuilder:Bypass",
 		PATH	= "ClinkDevRoot.ClinkPcie.Application.AppLane[$(L)].EventBuilder.Bypass",
+		SCAN	= "\$(SCAN=1 second)"
+		DOL		= "4"
+		SAVE	= ""
+	}
+	{
+		NAME	= "EventBuilder:Timeout",
+		PATH	= "ClinkDevRoot.ClinkPcie.Application.AppLane[$(L)].EventBuilder.Timeout",
 		SCAN	= "\$(SCAN=1 second)"
 		DOL		= "4"
 		SAVE	= ""
