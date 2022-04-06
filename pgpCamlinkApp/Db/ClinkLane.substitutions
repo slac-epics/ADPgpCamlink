@@ -2,484 +2,484 @@
 
 file ClinkFeb.template
 {
-	{ P = "\$(P)", R = "\$(R)", N = "1" }
+    { P = "\$(P)", R = "\$(R)", N = "1" }
 }
 
 file ClinkLaneMonitor.template
 {
-	{ P = "\$(P)", R = "\$(R)" }
+    { P = "\$(P)", R = "\$(R)" }
 }
 
 file SfpTransceiver.db
 {
-#	{ PTOP	= "ClinkDevRoot.ClinkFeb[$(F)]", R = "\$(R)", N = "0" }
+#   { PTOP  = "ClinkDevRoot.ClinkFeb[$(F)]", R = "\$(R)", N = "0" }
 # Only adding Sfp 1 as that's the only one we typically populate
-	{ PTOP	= "ClinkDevRoot.ClinkFeb[$(F)]", R = "\$(R)", N = "1" }
+    { PTOP  = "ClinkDevRoot.ClinkFeb[$(F)]", R = "\$(R)", N = "1" }
 # Empty transceivers cause long delays for current firmware so we don't monitor them
-#	{ PTOP	= "ClinkDevRoot.ClinkFeb[$(F)]", R = "\$(R)Feb$(F):", N = "2" }
-#	{ PTOP	= "ClinkDevRoot.ClinkFeb[$(F)]", R = "\$(R)Feb$(F):", N = "3" }
+#   { PTOP  = "ClinkDevRoot.ClinkFeb[$(F)]", R = "\$(R)Feb$(F):", N = "2" }
+#   { PTOP  = "ClinkDevRoot.ClinkFeb[$(F)]", R = "\$(R)Feb$(F):", N = "3" }
 }
 
 file biDevRogue.template
 {
-	{
-		NAME	= "Feb$(F):LinkLockedA",
-		PATH	= "ClinkDevRoot.ClinkFeb[$(F)].ClinkTop.LinkLockedA",
-		SCAN	= "\$(SCAN=1 second)"
-		DISV	= "0"
-		SDIS	= "$(P)$(R)PgpMon:RxRemLinkReady_RBV CP"
-	}
-	{
-		NAME	= "PgpMon:RxRemLinkReady"
-		PATH	= "ClinkDevRoot.ClinkPcie.Hsio.PgpMon[$(L)].RxStatus.RemRxLinkReady"
-		ZNAM	= "Not Ready"
-		ONAM	= "Ready"
-		SCAN	= "\$(SCAN=1 second)"
-		ZSV     = "MAJOR"
-	}
-	{
-		NAME	= "PgpMon:RxStatus:LinkReady"
-		PATH	= "ClinkDevRoot.ClinkPcie.Hsio.PgpMon[$(L)].RxStatus.LinkReady"
-		ZNAM	= "Not Ready"
-		ONAM	= "Ready"
-		ZSV     = "MAJOR"
-		SCAN	= "\$(SCAN=1 second)"
-	}
-	{
-		NAME	= "PgpMon:RxStatus:PhyRxActive"
-		PATH	= "ClinkDevRoot.ClinkPcie.Hsio.PgpMon[$(L)].RxStatus.PhyRxActive"
-		SCAN	= "\$(SCAN=1 second)"
-	}
-	{
-		NAME	= "PgpMon:TxStatus:LinkReady"
-		PATH	= "ClinkDevRoot.ClinkPcie.Hsio.PgpMon[$(L)].TxStatus.LinkReady"
-		SCAN	= "\$(SCAN=1 second)"
-	}
-	{
-		NAME	= "PgpMon:TxStatus:PhyTxActive"
-		PATH	= "ClinkDevRoot.ClinkPcie.Hsio.PgpMon[$(L)].TxStatus.phyTxActive"
-		SCAN	= "\$(SCAN=1 second)"
-		ZNAM    = "Down"
-		ZSV     = "MAJOR"
-		ONAM    = "Ready"
-		OSV     = "NO_ALARM"
-	}
+    {
+        NAME    = "Feb$(F):LinkLockedA",
+        PATH    = "ClinkDevRoot.ClinkFeb[$(F)].ClinkTop.LinkLockedA",
+        SCAN    = "\$(SCAN=1 second)"
+        DISV    = "0"
+        SDIS    = "$(P)$(R)PgpMon:RxRemLinkReady_RBV CP"
+    }
+    {
+        NAME    = "PgpMon:RxRemLinkReady"
+        PATH    = "ClinkDevRoot.ClinkPcie.Hsio.PgpMon[$(L)].RxStatus.RemRxLinkReady"
+        ZNAM    = "Not Ready"
+        ONAM    = "Ready"
+        SCAN    = "\$(SCAN=1 second)"
+        ZSV     = "MAJOR"
+    }
+    {
+        NAME    = "PgpMon:RxStatus:LinkReady"
+        PATH    = "ClinkDevRoot.ClinkPcie.Hsio.PgpMon[$(L)].RxStatus.LinkReady"
+        ZNAM    = "Not Ready"
+        ONAM    = "Ready"
+        ZSV     = "MAJOR"
+        SCAN    = "\$(SCAN=1 second)"
+    }
+    {
+        NAME    = "PgpMon:RxStatus:PhyRxActive"
+        PATH    = "ClinkDevRoot.ClinkPcie.Hsio.PgpMon[$(L)].RxStatus.PhyRxActive"
+        SCAN    = "\$(SCAN=1 second)"
+    }
+    {
+        NAME    = "PgpMon:TxStatus:LinkReady"
+        PATH    = "ClinkDevRoot.ClinkPcie.Hsio.PgpMon[$(L)].TxStatus.LinkReady"
+        SCAN    = "\$(SCAN=1 second)"
+    }
+    {
+        NAME    = "PgpMon:TxStatus:PhyTxActive"
+        PATH    = "ClinkDevRoot.ClinkPcie.Hsio.PgpMon[$(L)].TxStatus.phyTxActive"
+        SCAN    = "\$(SCAN=1 second)"
+        ZNAM    = "Down"
+        ZSV     = "MAJOR"
+        ONAM    = "Ready"
+        OSV     = "NO_ALARM"
+    }
 }
 file boolDevRogue.template
 {
-	{
-		NAME	= "Feb$(F):DataEn",
-		PATH	= "ClinkDevRoot.ClinkFeb[$(F)].ClinkTop.Ch[0].DataEn"
+    {
+        NAME    = "Feb$(F):DataEn",
+        PATH    = "ClinkDevRoot.ClinkFeb[$(F)].ClinkTop.Ch[0].DataEn"
 #       DESC    = "01234567890123 Max 40 char 7890123456789"
-		DESC	= "Clink FSM module Data Enable."
-		DOL		= "1"
-		PINI	= "YES"
-		SAVE	= ""
-		SCAN	= "\$(SCAN=1 second)"
-		DISV	= "0"
-		SDIS	= "$(P)$(R)PgpMon:RxRemLinkReady_RBV CP"
-	}
-	{
-		NAME	= "EventBuilder:Blowoff",
-		PATH	= "ClinkDevRoot.ClinkPcie.Application.AppLane[$(L)].EventBuilder.Blowoff"
-		SAVE	= ""
-		DESC	= "Bitmask Blowoff TDEST 0,1,2 in pipeline"
-		ZNAM	= "OK"
-		ONAM	= "Blowoff"
-		DOL		= "1"
-		PINI	= "YES"
-		SCAN	= "\$(SCAN=1 second)"
-	}
-	{
-		NAME	= "EvrV2:EnableReg",
-		PATH	= "ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TriggerEventManager.EvrV2CoreTriggers.EvrV2ChannelReg[$(L)].EnableReg"
-		DESC	= "Enables the Lane $(L) EvrV2 Channel Logic"
-		DOL		= "1"
-		PINI	= "YES"
-		SAVE	= ""
-		SCAN	= "\$(SCAN=1 second)"
-	}
-	{
-		NAME	= "EvrV2:EnableFebTrig",
-		PATH	= "ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TriggerEventManager.EvrV2CoreTriggers.EvrV2TriggerReg[$(L)].EnableTrig"
-		DESC	= "Enables the EvrV2 Trigger Output"
-		DOL		= "1"
-		PINI	= "YES"
-		SAVE	= ""
-		SCAN	= "\$(SCAN=1 second)"
-	}
-	{
-		NAME	= "Feb$(F):EnableTrig",
-		PATH	= "ClinkDevRoot.ClinkFeb[$(F)].TrigCtrl[0].EnableTrig"
-		DESC	= "Enables the Feb Trigger Output"
-		DOL		= "1"
-		PINI	= "YES"
-		SAVE	= ""
-		SCAN	= "\$(SCAN=1 second)"
-		DISV	= "0"
-		SDIS	= "$(P)$(R)PgpMon:RxRemLinkReady_RBV CP"
-	}
-	{
-		NAME	= "Feb$(F):InvCC",
-		PATH	= "ClinkDevRoot.ClinkFeb[$(F)].TrigCtrl[0].InvCC"
-		DESC	= "Inverts the Camlink CC control lines"
-		ZNAM	= "Normal"
-		ONAM	= "Inverted"
-		PINI	= ""
-		DISV	= "0"
-		SDIS	= "$(P)$(R)PgpMon:RxRemLinkReady_RBV CP"
-	}
-	{
-		NAME	= "Trigger:MasterEnable",
-		PATH	= "ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TriggerEventManager.TriggerEventBuffer[$(L)].MasterEnable"
-		DOL 	= "1"
-		PINI	= "YES"
-		SAVE	= ""
-		SCAN	= "\$(SCAN=1 second)"
-	}
+        DESC    = "Clink FSM module Data Enable."
+        DOL     = "1"
+        PINI    = "YES"
+        SAVE    = ""
+        SCAN    = "\$(SCAN=1 second)"
+        DISV    = "0"
+        SDIS    = "$(P)$(R)PgpMon:RxRemLinkReady_RBV CP"
+    }
+    {
+        NAME    = "EventBuilder:Blowoff",
+        PATH    = "ClinkDevRoot.ClinkPcie.Application.AppLane[$(L)].EventBuilder.Blowoff"
+        SAVE    = ""
+        DESC    = "Bitmask Blowoff TDEST 0,1,2 in pipeline"
+        ZNAM    = "OK"
+        ONAM    = "Blowoff"
+        DOL     = "1"
+        PINI    = "YES"
+        SCAN    = "\$(SCAN=1 second)"
+    }
+    {
+        NAME    = "EvrV2:EnableReg",
+        PATH    = "ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TriggerEventManager.EvrV2CoreTriggers.EvrV2ChannelReg[$(L)].EnableReg"
+        DESC    = "Enables the Lane $(L) EvrV2 Channel Logic"
+        DOL     = "1"
+        PINI    = "YES"
+        SAVE    = ""
+        SCAN    = "\$(SCAN=1 second)"
+    }
+    {
+        NAME    = "EvrV2:EnableFebTrig",
+        PATH    = "ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TriggerEventManager.EvrV2CoreTriggers.EvrV2TriggerReg[$(L)].EnableTrig"
+        DESC    = "Enables the EvrV2 Trigger Output"
+        DOL     = "1"
+        PINI    = "YES"
+        SAVE    = ""
+        SCAN    = "\$(SCAN=1 second)"
+    }
+    {
+        NAME    = "Feb$(F):EnableTrig",
+        PATH    = "ClinkDevRoot.ClinkFeb[$(F)].TrigCtrl[0].EnableTrig"
+        DESC    = "Enables the Feb Trigger Output"
+        DOL     = "1"
+        PINI    = "YES"
+        SAVE    = ""
+        SCAN    = "\$(SCAN=1 second)"
+        DISV    = "0"
+        SDIS    = "$(P)$(R)PgpMon:RxRemLinkReady_RBV CP"
+    }
+    {
+        NAME    = "Feb$(F):InvCC",
+        PATH    = "ClinkDevRoot.ClinkFeb[$(F)].TrigCtrl[0].InvCC"
+        DESC    = "Inverts the Camlink CC control lines"
+        ZNAM    = "Normal"
+        ONAM    = "Inverted"
+        PINI    = ""
+        DISV    = "0"
+        SDIS    = "$(P)$(R)PgpMon:RxRemLinkReady_RBV CP"
+    }
+    {
+        NAME    = "Trigger:MasterEnable",
+        PATH    = "ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TriggerEventManager.TriggerEventBuffer[$(L)].MasterEnable"
+        DOL     = "1"
+        PINI    = "YES"
+        SAVE    = ""
+        SCAN    = "\$(SCAN=1 second)"
+    }
 }
 
 # TODO: Move PgpRx:FrameCnt to int64DevRogue.template
 file liDevRogue.template
 {
-	{
-		NAME	= "AxiPcieCore:DmaIb:FrameSize",
-		PATH	= "ClinkDevRoot.ClinkPcie.AxiPcieCore.DmaIbAxisMon.Ch[$(L)].FrameSize",
-		DESC	= "AxiPcieCore Inbound DMA FrameSize"
-		SCAN	= "\$(SCAN=1 second)"
-	}
-	{
-		NAME	= "AxiPcieCore:DmaIb:FrameSizeMax",
-		PATH	= "ClinkDevRoot.ClinkPcie.AxiPcieCore.DmaIbAxisMon.Ch[$(L)].FrameSizeMax",
-		DESC	= "AxiPcieCore Inbound DMA FrameSizeMax"
-		SCAN	= "\$(SCAN=1 second)"
-	}
-	{
-		NAME	= "Feb$(F):DropCount",
-		PATH	= "ClinkDevRoot.ClinkFeb[$(F)].ClinkTop.Ch[0].DropCount",
-		SCAN	= "\$(SCAN=1 second)"
-		DISV	= "0"
-		SDIS	= "$(P)$(R)PgpMon:RxRemLinkReady_RBV CP"
-	}
-	{
-		NAME	= "Feb$(F):FrameSize",
-		PATH	= "ClinkDevRoot.ClinkFeb[$(F)].ClinkTop.Ch[0].FrameSize",
-		SCAN	= "\$(SCAN=1 second)"
-		DISV	= "0"
-		SDIS	= "$(P)$(R)PgpMon:RxRemLinkReady_RBV CP"
-	}
-	{
-		NAME	= "Feb$(F):FrameCount",
-		PATH	= "ClinkDevRoot.ClinkFeb[$(F)].ClinkTop.Ch[0].FrameCount",
-		SCAN	= "\$(SCAN=1 second)"
-		DISV	= "0"
-		SDIS	= "$(P)$(R)PgpMon:RxRemLinkReady_RBV CP"
-	}
-	{
-		NAME	= "EventBuilder:DataCnt0",
-		PATH	= "ClinkDevRoot.ClinkPcie.Application.AppLane[$(L)].EventBuilder.DataCnt[0]",
-		SCAN	= "\$(SCAN=1 second)"
-	}
-	{
-		NAME	= "EventBuilder:DataCnt1",
-		PATH	= "ClinkDevRoot.ClinkPcie.Application.AppLane[$(L)].EventBuilder.DataCnt[1]"
-		SCAN	= "\$(SCAN=1 second)"
-	}
-	{
-		NAME	= "EventBuilder:DataCnt2",
-		PATH	= "ClinkDevRoot.ClinkPcie.Application.AppLane[$(L)].EventBuilder.DataCnt[2]"
-		SCAN	= "\$(SCAN=1 second)"
-	}
-	{
-		NAME	= "EventBuilder:TimeoutDropCnt0",
-		PATH	= "ClinkDevRoot.ClinkPcie.Application.AppLane[$(L)].EventBuilder.TimeoutDropCnt[0]",
-		SCAN	= "\$(SCAN=1 second)"
-	}
-	{
-		NAME	= "EventBuilder:TimeoutDropCnt1",
-		PATH	= "ClinkDevRoot.ClinkPcie.Application.AppLane[$(L)].EventBuilder.TimeoutDropCnt[1]"
-		SCAN	= "\$(SCAN=1 second)"
-	}
-	{
-		NAME	= "EventBuilder:TimeoutDropCnt2",
-		PATH	= "ClinkDevRoot.ClinkPcie.Application.AppLane[$(L)].EventBuilder.TimeoutDropCnt[2]"
-		SCAN	= "\$(SCAN=1 second)"
-	}
-	{
-		NAME	= "Feb$(F):TrigCnt",
-		PATH	= "ClinkDevRoot.ClinkFeb[$(F)].TrigCtrl[0].TrigCnt"
-		DESC	= "Feb$(F) TriggerCtrl count"
-		SCAN	= "\$(SCAN=1 second)"
-		DISV	= "0"
-		SDIS	= "$(P)$(R)PgpMon:RxRemLinkReady_RBV CP"
-	}
-	{
-		NAME	= "Feb$(F):TrigRate",
-		PATH	= "ClinkDevRoot.ClinkFeb[$(F)].TrigCtrl[0].TrigRate"
-		DESC	= "Feb$(F) TriggerCtrl rate"
-		SCAN	= "\$(SCAN=1 second)"
-		DISV	= "0"
-		EGU     = "Hz"
-		SDIS	= "$(P)$(R)PgpMon:RxRemLinkReady_RBV CP"
-	}
-	{
-		NAME	= "PgpRx:Bandwidth",
-		PATH	= "ClinkDevRoot.ClinkPcie.Hsio.PgpRxAxisMon[$(L)].Ch[1].RawBandwidth"
-		SCAN	= "\$(SCAN=1 second)"
-	}
-	{
-		NAME	= "PgpRx:FrameCnt",
-		PATH	= "ClinkDevRoot.ClinkPcie.Hsio.PgpRxAxisMon[$(L)].Ch[1].FrameCnt"
-		SCAN	= "\$(SCAN=1 second)"
-	}
-	
-	{
-		NAME	= "Feb$(F):PgpMon:RxCellErrorCount"
-		PATH	= "ClinkDevRoot.ClinkFeb[$(F)].PgpMon[0].RxCellErrorCount"
-		SCAN	= "\$(SCAN=1 second)"
-		DISV	= "0"
-		SDIS	= "$(P)$(R)PgpMon:RxRemLinkReady_RBV CP"
-	}
-	{
-		NAME	= "Feb$(F):PgpMon:RxLinkDownCount"
-		PATH	= "ClinkDevRoot.ClinkFeb[$(F)].PgpMon[0].RxLinkDownCount"
-		SCAN	= "\$(SCAN=1 second)"
-		DISV	= "0"
-		SDIS	= "$(P)$(R)PgpMon:RxRemLinkReady_RBV CP"
-	}
-	{
-		NAME	= "Feb$(F):PgpMon:RxLinkErrorCount"
-		PATH	= "ClinkDevRoot.ClinkFeb[$(F)].PgpMon[0].RxLinkErrorCount"
-		SCAN	= "\$(SCAN=1 second)"
-		DISV	= "0"
-		SDIS	= "$(P)$(R)PgpMon:RxRemLinkReady_RBV CP"
-	}
-	{
-		NAME	= "Feb$(F):PgpMon:TxFrameErrorCount"
-		PATH	= "ClinkDevRoot.ClinkFeb[$(F)].PgpMon[0].TxFrameErrorCount"
-		SCAN	= "\$(SCAN=1 second)"
-		DISV	= "0"
-		SDIS	= "$(P)$(R)PgpMon:RxRemLinkReady_RBV CP"
-	}
-	{
-		NAME	= "Feb$(F):PgpMon:RxRemLinkReadyCount"
-		PATH	= "ClinkDevRoot.ClinkFeb[$(F)].PgpMon[0].RxRemLinkReadyCount"
-		SCAN	= "\$(SCAN=1 second)"
-		DISV	= "0"
-		SDIS	= "$(P)$(R)PgpMon:RxRemLinkReady_RBV CP"
-	}
+    {
+        NAME    = "AxiPcieCore:DmaIb:FrameSize",
+        PATH    = "ClinkDevRoot.ClinkPcie.AxiPcieCore.DmaIbAxisMon.Ch[$(L)].FrameSize",
+        DESC    = "AxiPcieCore Inbound DMA FrameSize"
+        SCAN    = "\$(SCAN=1 second)"
+    }
+    {
+        NAME    = "AxiPcieCore:DmaIb:FrameSizeMax",
+        PATH    = "ClinkDevRoot.ClinkPcie.AxiPcieCore.DmaIbAxisMon.Ch[$(L)].FrameSizeMax",
+        DESC    = "AxiPcieCore Inbound DMA FrameSizeMax"
+        SCAN    = "\$(SCAN=1 second)"
+    }
+    {
+        NAME    = "Feb$(F):DropCount",
+        PATH    = "ClinkDevRoot.ClinkFeb[$(F)].ClinkTop.Ch[0].DropCount",
+        SCAN    = "\$(SCAN=1 second)"
+        DISV    = "0"
+        SDIS    = "$(P)$(R)PgpMon:RxRemLinkReady_RBV CP"
+    }
+    {
+        NAME    = "Feb$(F):FrameSize",
+        PATH    = "ClinkDevRoot.ClinkFeb[$(F)].ClinkTop.Ch[0].FrameSize",
+        SCAN    = "\$(SCAN=1 second)"
+        DISV    = "0"
+        SDIS    = "$(P)$(R)PgpMon:RxRemLinkReady_RBV CP"
+    }
+    {
+        NAME    = "Feb$(F):FrameCount",
+        PATH    = "ClinkDevRoot.ClinkFeb[$(F)].ClinkTop.Ch[0].FrameCount",
+        SCAN    = "\$(SCAN=1 second)"
+        DISV    = "0"
+        SDIS    = "$(P)$(R)PgpMon:RxRemLinkReady_RBV CP"
+    }
+    {
+        NAME    = "EventBuilder:DataCnt0",
+        PATH    = "ClinkDevRoot.ClinkPcie.Application.AppLane[$(L)].EventBuilder.DataCnt[0]",
+        SCAN    = "\$(SCAN=1 second)"
+    }
+    {
+        NAME    = "EventBuilder:DataCnt1",
+        PATH    = "ClinkDevRoot.ClinkPcie.Application.AppLane[$(L)].EventBuilder.DataCnt[1]"
+        SCAN    = "\$(SCAN=1 second)"
+    }
+    {
+        NAME    = "EventBuilder:DataCnt2",
+        PATH    = "ClinkDevRoot.ClinkPcie.Application.AppLane[$(L)].EventBuilder.DataCnt[2]"
+        SCAN    = "\$(SCAN=1 second)"
+    }
+    {
+        NAME    = "EventBuilder:TimeoutDropCnt0",
+        PATH    = "ClinkDevRoot.ClinkPcie.Application.AppLane[$(L)].EventBuilder.TimeoutDropCnt[0]",
+        SCAN    = "\$(SCAN=1 second)"
+    }
+    {
+        NAME    = "EventBuilder:TimeoutDropCnt1",
+        PATH    = "ClinkDevRoot.ClinkPcie.Application.AppLane[$(L)].EventBuilder.TimeoutDropCnt[1]"
+        SCAN    = "\$(SCAN=1 second)"
+    }
+    {
+        NAME    = "EventBuilder:TimeoutDropCnt2",
+        PATH    = "ClinkDevRoot.ClinkPcie.Application.AppLane[$(L)].EventBuilder.TimeoutDropCnt[2]"
+        SCAN    = "\$(SCAN=1 second)"
+    }
+    {
+        NAME    = "Feb$(F):TrigCnt",
+        PATH    = "ClinkDevRoot.ClinkFeb[$(F)].TrigCtrl[0].TrigCnt"
+        DESC    = "Feb$(F) TriggerCtrl count"
+        SCAN    = "\$(SCAN=1 second)"
+        DISV    = "0"
+        SDIS    = "$(P)$(R)PgpMon:RxRemLinkReady_RBV CP"
+    }
+    {
+        NAME    = "Feb$(F):TrigRate",
+        PATH    = "ClinkDevRoot.ClinkFeb[$(F)].TrigCtrl[0].TrigRate"
+        DESC    = "Feb$(F) TriggerCtrl rate"
+        SCAN    = "\$(SCAN=1 second)"
+        DISV    = "0"
+        EGU     = "Hz"
+        SDIS    = "$(P)$(R)PgpMon:RxRemLinkReady_RBV CP"
+    }
+    {
+        NAME    = "PgpRx:Bandwidth",
+        PATH    = "ClinkDevRoot.ClinkPcie.Hsio.PgpRxAxisMon[$(L)].Ch[1].RawBandwidth"
+        SCAN    = "\$(SCAN=1 second)"
+    }
+    {
+        NAME    = "PgpRx:FrameCnt",
+        PATH    = "ClinkDevRoot.ClinkPcie.Hsio.PgpRxAxisMon[$(L)].Ch[1].FrameCnt"
+        SCAN    = "\$(SCAN=1 second)"
+    }
+    
+    {
+        NAME    = "Feb$(F):PgpMon:RxCellErrorCount"
+        PATH    = "ClinkDevRoot.ClinkFeb[$(F)].PgpMon[0].RxCellErrorCount"
+        SCAN    = "\$(SCAN=1 second)"
+        DISV    = "0"
+        SDIS    = "$(P)$(R)PgpMon:RxRemLinkReady_RBV CP"
+    }
+    {
+        NAME    = "Feb$(F):PgpMon:RxLinkDownCount"
+        PATH    = "ClinkDevRoot.ClinkFeb[$(F)].PgpMon[0].RxLinkDownCount"
+        SCAN    = "\$(SCAN=1 second)"
+        DISV    = "0"
+        SDIS    = "$(P)$(R)PgpMon:RxRemLinkReady_RBV CP"
+    }
+    {
+        NAME    = "Feb$(F):PgpMon:RxLinkErrorCount"
+        PATH    = "ClinkDevRoot.ClinkFeb[$(F)].PgpMon[0].RxLinkErrorCount"
+        SCAN    = "\$(SCAN=1 second)"
+        DISV    = "0"
+        SDIS    = "$(P)$(R)PgpMon:RxRemLinkReady_RBV CP"
+    }
+    {
+        NAME    = "Feb$(F):PgpMon:TxFrameErrorCount"
+        PATH    = "ClinkDevRoot.ClinkFeb[$(F)].PgpMon[0].TxFrameErrorCount"
+        SCAN    = "\$(SCAN=1 second)"
+        DISV    = "0"
+        SDIS    = "$(P)$(R)PgpMon:RxRemLinkReady_RBV CP"
+    }
+    {
+        NAME    = "Feb$(F):PgpMon:RxRemLinkReadyCount"
+        PATH    = "ClinkDevRoot.ClinkFeb[$(F)].PgpMon[0].RxRemLinkReadyCount"
+        SCAN    = "\$(SCAN=1 second)"
+        DISV    = "0"
+        SDIS    = "$(P)$(R)PgpMon:RxRemLinkReady_RBV CP"
+    }
 
-	{
-		NAME	= "PgpRx:FrameRate",
-		PATH	= "ClinkDevRoot.ClinkPcie.Hsio.PgpRxAxisMon[$(L)].Ch[1].FrameRate"
-		DESC	= "Incoming frame rate on PGP RX PHY"
-		SCAN	= "\$(SCAN=1 second)"
-		EGU     = "Hz"
-	}
-	{
-		NAME	= "PgpRx:FrameSize",
-		PATH	= "ClinkDevRoot.ClinkPcie.Hsio.PgpRxAxisMon[$(L)].Ch[1].FrameSize"
-		DESC	= "Incoming frame size on PGP RX PHY"
-		SCAN	= "\$(SCAN=1 second)"
-	}
-	{
-		NAME	= "EvrV2:Count",
-		PATH	= "ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TriggerEventManager.EvrV2CoreTriggers.EvrV2ChannelReg[$(L)].Count"
-		DESC	= "Trigger Logic Selection Count"
-		SCAN	= "\$(SCAN=1 second)"
-	}
-	{
-		NAME	= "Feb$(F):ClinkClkFreq0",
-		PATH	= "ClinkDevRoot.ClinkFeb[$(F)].ClinkTop.ClinkClkFreq[0]",
-		SCAN	= "\$(SCAN=1 second)"
-		DISV	= "0"
-		SDIS	= "$(P)$(R)PgpMon:RxRemLinkReady_RBV CP"
-	}
-	{
-		NAME	= "Feb$(F):ClkInFreq0",
-		PATH	= "ClinkDevRoot.ClinkFeb[$(F)].ClinkTop.ClkInFreq[0]",
-		SCAN	= "\$(SCAN=1 second)"
-		DISV	= "0"
-		SDIS	= "$(P)$(R)PgpMon:RxRemLinkReady_RBV CP"
-	}
-	{
-		NAME	= "Feb$(F):LinkLockedCntA",
-		PATH	= "ClinkDevRoot.ClinkFeb[$(F)].ClinkTop.LinkLockedCntA",
-		SCAN	= "\$(SCAN=1 second)"
-		DISV	= "0"
-		SDIS	= "$(P)$(R)PgpMon:RxRemLinkReady_RBV CP"
-	}
-	{
-		NAME	= "Feb$(F):FrameSize",
-		PATH	= "ClinkDevRoot.ClinkFeb[$(F)].ClinkTop.Ch[0].FrameSize"
-		SCAN	= "\$(SCAN=1 second)"
-		DISV	= "0"
-		SDIS	= "$(P)$(R)PgpMon:RxRemLinkReady_RBV CP"
-	}
+    {
+        NAME    = "PgpRx:FrameRate",
+        PATH    = "ClinkDevRoot.ClinkPcie.Hsio.PgpRxAxisMon[$(L)].Ch[1].FrameRate"
+        DESC    = "Incoming frame rate on PGP RX PHY"
+        SCAN    = "\$(SCAN=1 second)"
+        EGU     = "Hz"
+    }
+    {
+        NAME    = "PgpRx:FrameSize",
+        PATH    = "ClinkDevRoot.ClinkPcie.Hsio.PgpRxAxisMon[$(L)].Ch[1].FrameSize"
+        DESC    = "Incoming frame size on PGP RX PHY"
+        SCAN    = "\$(SCAN=1 second)"
+    }
+    {
+        NAME    = "EvrV2:Count",
+        PATH    = "ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TriggerEventManager.EvrV2CoreTriggers.EvrV2ChannelReg[$(L)].Count"
+        DESC    = "Trigger Logic Selection Count"
+        SCAN    = "\$(SCAN=1 second)"
+    }
+    {
+        NAME    = "Feb$(F):ClinkClkFreq0",
+        PATH    = "ClinkDevRoot.ClinkFeb[$(F)].ClinkTop.ClinkClkFreq[0]",
+        SCAN    = "\$(SCAN=1 second)"
+        DISV    = "0"
+        SDIS    = "$(P)$(R)PgpMon:RxRemLinkReady_RBV CP"
+    }
+    {
+        NAME    = "Feb$(F):ClkInFreq0",
+        PATH    = "ClinkDevRoot.ClinkFeb[$(F)].ClinkTop.ClkInFreq[0]",
+        SCAN    = "\$(SCAN=1 second)"
+        DISV    = "0"
+        SDIS    = "$(P)$(R)PgpMon:RxRemLinkReady_RBV CP"
+    }
+    {
+        NAME    = "Feb$(F):LinkLockedCntA",
+        PATH    = "ClinkDevRoot.ClinkFeb[$(F)].ClinkTop.LinkLockedCntA",
+        SCAN    = "\$(SCAN=1 second)"
+        DISV    = "0"
+        SDIS    = "$(P)$(R)PgpMon:RxRemLinkReady_RBV CP"
+    }
+    {
+        NAME    = "Feb$(F):FrameSize",
+        PATH    = "ClinkDevRoot.ClinkFeb[$(F)].ClinkTop.Ch[0].FrameSize"
+        SCAN    = "\$(SCAN=1 second)"
+        DISV    = "0"
+        SDIS    = "$(P)$(R)PgpMon:RxRemLinkReady_RBV CP"
+    }
 }
 
 file loDevRogue.template
 {
-	{
-		NAME	= "EventBuilder:SoftRst",
-		PATH	= "ClinkDevRoot.ClinkPcie.Application.AppLane[$(L)].EventBuilder.SoftRst"
-		SAVE	= ""
-		DESC	= "Reset EventBuilder pipeline"
-		DOL		= "0"
-		PINI	= "YES"
-	}
-	{
-		NAME	= "PgpMon:CountReset"
-		PATH	= "ClinkDevRoot.ClinkPcie.Hsio.PgpMon[$(L)].Ctrl.CountReset"
-		SAVE	= ""
-		DESC	= "Reset PgpMon counts"
-	}
-	{
-		NAME	= "Trigger:FifoReset",
-		PATH	= "ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TriggerEventManager.TriggerEventBuffer[0].FifoReset"
-		SAVE	= ""
-		DESC	= "Reset Trigger FIFO"
-		DOL		= "0"
-		SCAN	= "\$(SCAN=1 second)"
-	}
-	{
-		NAME	= "Feb$(F):PgpMon:CountReset"
-		PATH	= "ClinkDevRoot.ClinkFeb[$(F)].PgpMon[0].CountReset"
-		SAVE	= ""
-		DESC	= "Reset Feb$(F) PgpMon counts"
-		DISV	= "0"
-		SDIS	= "$(P)$(R)PgpMon:RxRemLinkReady_RBV CP"
-	}
+    {
+        NAME    = "EventBuilder:SoftRst",
+        PATH    = "ClinkDevRoot.ClinkPcie.Application.AppLane[$(L)].EventBuilder.SoftRst"
+        SAVE    = ""
+        DESC    = "Reset EventBuilder pipeline"
+        DOL     = "0"
+        PINI    = "YES"
+    }
+    {
+        NAME    = "PgpMon:CountReset"
+        PATH    = "ClinkDevRoot.ClinkPcie.Hsio.PgpMon[$(L)].Ctrl.CountReset"
+        SAVE    = ""
+        DESC    = "Reset PgpMon counts"
+    }
+    {
+        NAME    = "Trigger:FifoReset",
+        PATH    = "ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TriggerEventManager.TriggerEventBuffer[0].FifoReset"
+        SAVE    = ""
+        DESC    = "Reset Trigger FIFO"
+        DOL     = "0"
+        SCAN    = "\$(SCAN=1 second)"
+    }
+    {
+        NAME    = "Feb$(F):PgpMon:CountReset"
+        PATH    = "ClinkDevRoot.ClinkFeb[$(F)].PgpMon[0].CountReset"
+        SAVE    = ""
+        DESC    = "Reset Feb$(F) PgpMon counts"
+        DISV    = "0"
+        SDIS    = "$(P)$(R)PgpMon:RxRemLinkReady_RBV CP"
+    }
 }
 
 file longDevRogue.template
 {
-	{
-		NAME	= "EventBuilder:Bypass",
-		PATH	= "ClinkDevRoot.ClinkPcie.Application.AppLane[$(L)].EventBuilder.Bypass",
-		SCAN	= "\$(SCAN=1 second)"
-		DOL		= "4"
-		SAVE	= ""
-	}
-	{
-		NAME	= "EventBuilder:Timeout",
-		PATH	= "ClinkDevRoot.ClinkPcie.Application.AppLane[$(L)].EventBuilder.Timeout",
-		SCAN	= "\$(SCAN=1 second)"
-		DOL		= "4"
-		SAVE	= ""
-	}
+    {
+        NAME    = "EventBuilder:Bypass",
+        PATH    = "ClinkDevRoot.ClinkPcie.Application.AppLane[$(L)].EventBuilder.Bypass",
+        SCAN    = "\$(SCAN=1 second)"
+        DOL     = "4"
+        SAVE    = ""
+    }
+    {
+        NAME    = "EventBuilder:Timeout",
+        PATH    = "ClinkDevRoot.ClinkPcie.Application.AppLane[$(L)].EventBuilder.Timeout",
+        SCAN    = "\$(SCAN=1 second)"
+        DOL     = "4"
+        SAVE    = ""
+    }
 # Threshold in unit of AXIS words (8 bytes per word). The XPM is 48byte message.
 # So setting this register to 0x7 would NOT back pressure until
 # there are two messages in the pipeline
-	{
-		NAME	= "XpmPauseThresh",
-		PATH	= "ClinkDevRoot.ClinkPcie.Application.AppLane[$(L)].XpmPauseThresh",
-		SCAN	= "\$(SCAN=1 second)"
-		SAVE	= "VAL"
-	}
-	{
-		NAME	= "EvrV2:FebTrigWidth",
-		DESC	= "Must be non-zero, recommend set to 1"
-		PATH	= "ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TriggerEventManager.EvrV2CoreTriggers.EvrV2TriggerReg[$(L)].Width"
-		DOL		= "1"
-		PINI	= "YES"
-		SAVE	= ""
-		SCAN	= "\$(SCAN=1 second)"
-	}
-	{
-		NAME	= "EvrV2:Polarity",
-		PATH	= "ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TriggerEventManager.EvrV2CoreTriggers.EvrV2TriggerReg[$(L)].Polarity"
-		DOL		= "1"
-		PINI	= "YES"
-		SCAN	= "\$(SCAN=1 second)"
-	}
-	{
-		NAME	= "EvrV2:Source",
-		PATH	= "ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TriggerEventManager.EvrV2CoreTriggers.EvrV2TriggerReg[$(L)].Source"
-		SCAN	= "\$(SCAN=1 second)"
-		DOL		= "$(L)"
-		PINI	= "YES"
-	}
-	{
-		NAME	= "Feb$(F):SwControlValue",
-		PATH	= "ClinkDevRoot.ClinkFeb[$(F)].ClinkTop.Ch[0].SwControlValue"
-		DESC	= "Software camera control bit values"
-		DOL		= "0"
-		PINI	= "YES"
-		SAVE	= ""
-		DISV	= "0"
-		SDIS	= "$(P)$(R)PgpMon:RxRemLinkReady_RBV CP"
-	}
-	{
-		NAME	= "Feb$(F):SwControlEn",
-		PATH	= "ClinkDevRoot.ClinkFeb[$(F)].ClinkTop.Ch[0].SwControlEn"
-		DESC	= "Lane A SW camera control bit enable mask"
-		DOL		= "0"
-		PINI	= "YES"
-		SAVE	= ""
-		DISV	= "0"
-		SDIS	= "$(P)$(R)PgpMon:RxRemLinkReady_RBV CP"
-	}
-	{
-		NAME	= "Feb$(F):RstPll",
-		PATH	= "ClinkDevRoot.ClinkFeb[$(F)].ClinkTop.RstPll"
-		PINI	= ""
-		SAVE	= ""
-		DISV	= "0"
-		SDIS	= "$(P)$(R)PgpMon:RxRemLinkReady_RBV CP"
-	}
-	{
-		NAME	= "Feb$(F):HSkip",
-		PATH	= "ClinkDevRoot.ClinkFeb[$(F)].ClinkTop.Ch[0].HSkip"
-		SAVE	= "VAL"
-		EGU     = "px"
-		DISV	= "0"
-		SDIS	= "$(P)$(R)PgpMon:RxRemLinkReady_RBV CP"
-	}
-	{
-		NAME	= "Feb$(F):HActive",
-		PATH	= "ClinkDevRoot.ClinkFeb[$(F)].ClinkTop.Ch[0].HActive"
-		SAVE	= "VAL"
-		EGU     = "px"
-#		DISV	= "0"
-#		SDIS	= "$(P)$(R)PgpMon:RxRemLinkReady_RBV CP"
-	}
-	{
-		NAME	= "Feb$(F):VSkip",
-		PATH	= "ClinkDevRoot.ClinkFeb[$(F)].ClinkTop.Ch[0].VSkip"
-		SAVE	= "VAL"
-		EGU     = "px"
-		DISV	= "0"
-		SDIS	= "$(P)$(R)PgpMon:RxRemLinkReady_RBV CP"
-	}
-	{
-		NAME	= "Feb$(F):VActive",
-		PATH	= "ClinkDevRoot.ClinkFeb[$(F)].ClinkTop.Ch[0].VActive"
-		SAVE	= "VAL"
-		EGU     = "px"
-#		DISV	= "0"
-#		SDIS	= "$(P)$(R)PgpMon:RxRemLinkReady_RBV CP"
-	}
-	{
-		NAME	= "Timing:PauseThreshold",
-		PATH	= "ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TriggerEventManager.TriggerEventBuffer[$(L)].PauseThreshold"
-	}
-	{
-		NAME	= "Timing:TriggerCount",
-		PATH	= "ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TriggerEventManager.TriggerEventBuffer[$(L)].TriggerCount"
-		DESC	= "TriggerEventManager Trigger count"
-		SCAN	= "\$(SCAN=1 second)"
-		DOL		= "0"
-		PINI	= "YES"
-		SAVE	= ""
-	}
-	{
-		NAME	= "EvrV2:TriggerDelay",
-		PATH	= "ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TriggerEventManager.EvrV2CoreTriggers.EvrV2TriggerReg[$(L)].Delay"
-		DOL		= "0"
-		EGU		= "1/125MHz"
-		PINI	= "YES"
-	}
+    {
+        NAME    = "XpmPauseThresh",
+        PATH    = "ClinkDevRoot.ClinkPcie.Application.AppLane[$(L)].XpmPauseThresh",
+        SCAN    = "\$(SCAN=1 second)"
+        SAVE    = "VAL"
+    }
+    {
+        NAME    = "EvrV2:FebTrigWidth",
+        DESC    = "Must be non-zero, recommend set to 1"
+        PATH    = "ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TriggerEventManager.EvrV2CoreTriggers.EvrV2TriggerReg[$(L)].Width"
+        DOL     = "1"
+        PINI    = "YES"
+        SAVE    = ""
+        SCAN    = "\$(SCAN=1 second)"
+    }
+    {
+        NAME    = "EvrV2:Polarity",
+        PATH    = "ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TriggerEventManager.EvrV2CoreTriggers.EvrV2TriggerReg[$(L)].Polarity"
+        DOL     = "1"
+        PINI    = "YES"
+        SCAN    = "\$(SCAN=1 second)"
+    }
+    {
+        NAME    = "EvrV2:Source",
+        PATH    = "ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TriggerEventManager.EvrV2CoreTriggers.EvrV2TriggerReg[$(L)].Source"
+        SCAN    = "\$(SCAN=1 second)"
+        DOL     = "$(L)"
+        PINI    = "YES"
+    }
+    {
+        NAME    = "Feb$(F):SwControlValue",
+        PATH    = "ClinkDevRoot.ClinkFeb[$(F)].ClinkTop.Ch[0].SwControlValue"
+        DESC    = "Software camera control bit values"
+        DOL     = "0"
+        PINI    = "YES"
+        SAVE    = ""
+        DISV    = "0"
+        SDIS    = "$(P)$(R)PgpMon:RxRemLinkReady_RBV CP"
+    }
+    {
+        NAME    = "Feb$(F):SwControlEn",
+        PATH    = "ClinkDevRoot.ClinkFeb[$(F)].ClinkTop.Ch[0].SwControlEn"
+        DESC    = "Lane A SW camera control bit enable mask"
+        DOL     = "0"
+        PINI    = "YES"
+        SAVE    = ""
+        DISV    = "0"
+        SDIS    = "$(P)$(R)PgpMon:RxRemLinkReady_RBV CP"
+    }
+    {
+        NAME    = "Feb$(F):RstPll",
+        PATH    = "ClinkDevRoot.ClinkFeb[$(F)].ClinkTop.RstPll"
+        PINI    = ""
+        SAVE    = ""
+        DISV    = "0"
+        SDIS    = "$(P)$(R)PgpMon:RxRemLinkReady_RBV CP"
+    }
+    {
+        NAME    = "Feb$(F):HSkip",
+        PATH    = "ClinkDevRoot.ClinkFeb[$(F)].ClinkTop.Ch[0].HSkip"
+        SAVE    = "VAL"
+        EGU     = "px"
+        DISV    = "0"
+        SDIS    = "$(P)$(R)PgpMon:RxRemLinkReady_RBV CP"
+    }
+    {
+        NAME    = "Feb$(F):HActive",
+        PATH    = "ClinkDevRoot.ClinkFeb[$(F)].ClinkTop.Ch[0].HActive"
+        SAVE    = "VAL"
+        EGU     = "px"
+#       DISV    = "0"
+#       SDIS    = "$(P)$(R)PgpMon:RxRemLinkReady_RBV CP"
+    }
+    {
+        NAME    = "Feb$(F):VSkip",
+        PATH    = "ClinkDevRoot.ClinkFeb[$(F)].ClinkTop.Ch[0].VSkip"
+        SAVE    = "VAL"
+        EGU     = "px"
+        DISV    = "0"
+        SDIS    = "$(P)$(R)PgpMon:RxRemLinkReady_RBV CP"
+    }
+    {
+        NAME    = "Feb$(F):VActive",
+        PATH    = "ClinkDevRoot.ClinkFeb[$(F)].ClinkTop.Ch[0].VActive"
+        SAVE    = "VAL"
+        EGU     = "px"
+#       DISV    = "0"
+#       SDIS    = "$(P)$(R)PgpMon:RxRemLinkReady_RBV CP"
+    }
+    {
+        NAME    = "Timing:PauseThreshold",
+        PATH    = "ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TriggerEventManager.TriggerEventBuffer[$(L)].PauseThreshold"
+    }
+    {
+        NAME    = "Timing:TriggerCount",
+        PATH    = "ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TriggerEventManager.TriggerEventBuffer[$(L)].TriggerCount"
+        DESC    = "TriggerEventManager Trigger count"
+        SCAN    = "\$(SCAN=1 second)"
+        DOL     = "0"
+        PINI    = "YES"
+        SAVE    = ""
+    }
+    {
+        NAME    = "EvrV2:TriggerDelay",
+        PATH    = "ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TriggerEventManager.EvrV2CoreTriggers.EvrV2TriggerReg[$(L)].Delay"
+        DOL     = "0"
+        EGU     = "1/125MHz"
+        PINI    = "YES"
+    }
 }
 
 #       DESC    = "0         1         2         3         "
