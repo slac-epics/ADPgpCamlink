@@ -1,0 +1,147 @@
+4 0 1
+beginScreenProperties
+major 4
+minor 0
+release 1
+x 516
+y 2283
+w 382
+h 168
+font "helvetica-medium-r-12.0"
+ctlFont "helvetica-medium-r-12.0"
+btnFont "helvetica-medium-r-12.0"
+fgColor index 14
+bgColor index 3
+textColor index 14
+ctlFgColor1 index 15
+ctlFgColor2 index 25
+ctlBgColor1 index 12
+ctlBgColor2 index 5
+topShadowColor index 1
+botShadowColor index 11
+title "emb-lcls1-timing"
+showGrid
+snapToGrid
+gridSize 4
+endScreenProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 284
+y 8
+w 72
+h 20
+controlPv "$(P)$(R)CamRepRate_RBV"
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+fgColor index 15
+fgAlarm
+bgColor index 12
+limitsFromDb
+nullColor index 40
+smartRefresh
+useHexPrefix
+showUnits
+newPos
+objType "monitors"
+noExecuteClipMask
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 0
+y 4
+w 120
+h 20
+font "helvetica-medium-r-12.0"
+fontAlign "right"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "Cam Trig Event Code"
+}
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 0
+y 8
+w 120
+h 20
+font "helvetica-medium-r-12.0"
+fontAlign "right"
+fgColor index 14
+bgColor index 3
+value {
+  "LCLS-I Event Code"
+}
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 132
+y 8
+w 64
+h 20
+controlPv "$(P)$(R)CamEventCode"
+format "decimal"
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+fgColor index 25
+fgAlarm
+bgColor index 5
+editable
+motifWidget
+limitsFromDb
+nullColor index 40
+smartRefresh
+fastUpdate
+useHexPrefix
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 212
+y 8
+w 64
+h 20
+controlPv "$(P)$(R)CamEventCode_RBV"
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+fgColor index 15
+fgAlarm
+bgColor index 12
+limitsFromDb
+nullColor index 40
+smartRefresh
+useHexPrefix
+showUnits
+newPos
+objType "monitors"
+noExecuteClipMask
+endObjectProperties
+
