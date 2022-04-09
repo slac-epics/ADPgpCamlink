@@ -1,6 +1,9 @@
 #
 # SLAC RELEASE_NOTES
 #
+R1.8.2	2022-04-09 Janos Vamosi
+	Update to ADCore/R3.9-1.1.0
+
 R1.8.1	2022-03-29 Bruce Hill
 	Improvements to LCLS2 timing screens.
 
@@ -17,9 +20,6 @@ R1.6.0	2022-02-01 Bruce Hill
 	Add ability to check value against RBV in putMonitor.template
 	Include ClinkPcie.template in generated roguePcie.db
 	Cleanup ClinkLane.edl and pgpClDiag.edl
-
-R1.5.1	2022-01-26 Bruce Hill
-	Update to ADCore/R3.9-1.0.3 and asyn/R4.39-1.0.1
 
 R1.5.0	2022-01-15 Bruce Hill
 	Added CamlinkHActive, CamlinkHSkip, etc along w/ initializers and put monitors.
