@@ -118,7 +118,7 @@ record( mbbo, "$(P)$(R)EvrV2:RateType" )
 	info( autosaveFields, "" )
 }
 
-# LCLS-I Rate Select
+# EvrV2 Rate Select, Common to both LCLS-I and LCLS-II timing, but different ranges for each
 record( longin, "$(P)$(R)EvrV2:RateSel_RBV" )
 {
 	field( DESC, "LCLS-I Event Code" )
@@ -126,11 +126,13 @@ record( longin, "$(P)$(R)EvrV2:RateSel_RBV" )
 	field( DTYP, "RogueLI" )
 	info( autosaveFields, "" )
 }
-alias( "$(P)$(R)EvrV2:RateSel_RBV", "$(P)$(R)EvrV2:EventCode_RBV" )
+#alias( "$(P)$(R)EvrV2:RateSel_RBV", "$(P)$(R)EvrV2:EventCode_RBV" )
 
 record( longout, "$(P)$(R)Lcls1:RateSel" )
 {
+field(TPRO,2)
 	field( DESC, "Ch$(L) Lcls1 RateSel" )
+	field( DOL,  "45" )
 	field( PINI, "YES" )
 	field( FLNK, "$(P)$(R)EvrV2:RateSelCalc" )
 	info( autosaveFields, "VAL" )
@@ -138,7 +140,9 @@ record( longout, "$(P)$(R)Lcls1:RateSel" )
 
 record( longout, "$(P)$(R)Lcls2:RateSel" )
 {
+field(TPRO,2)
 	field( DESC, "Ch$(L) Lcls2 RateSel" )
+	field( DOL,  "0" )
 	field( PINI, "YES" )
 	field( FLNK, "$(P)$(R)EvrV2:RateSelCalc" )
 	info( autosaveFields, "VAL" )
@@ -146,6 +150,7 @@ record( longout, "$(P)$(R)Lcls2:RateSel" )
 
 record( calcout, "$(P)$(R)EvrV2:RateSelCalc" )
 {
+field(TPRO,2)
 	field( INPA, "$(P)$(R)Lcls1:RateSel MS NPP" ) 
 	field( INPB, "$(P)$(R)Lcls2:RateSel MS NPP" )
 	field( INPC, "$(P)$(R)Timing:ClkSel MS NPP" )
@@ -155,13 +160,14 @@ record( calcout, "$(P)$(R)EvrV2:RateSelCalc" )
 
 record( longout, "$(P)$(R)EvrV2:RateSel" )
 {
+field(TPRO,2)
 	field( DESC, "Ch$(L) EvrV2 RateSel, shared by LCLS-I and LCLS-II" )
 	field( OUT,  "@B$(B) L$(L) ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TriggerEventManager.EvrV2CoreTriggers.EvrV2ChannelReg[$(L)].RateSel" )
 	field( DTYP, "RogueLO" )
 	field( PINI, "YES" )
 	field( FLNK, "$(P)$(R)EvrV2:RateSel_RBV" )
 }
-alias( "$(P)$(R)EvrV2:RateSel", "$(P)$(R)EvrV2:EventCode" )
+#alias( "$(P)$(R)EvrV2:RateSel", "$(P)$(R)EvrV2:EventCode" )
 
 record( mbbi, "$(P)$(R)Timing:TriggerSource_RBV" )
 {
@@ -175,6 +181,7 @@ record( mbbo, "$(P)$(R)Timing:TriggerSource" )
 {
 	field( DESC, "TriggerEventManager Trigger Source" )
 	field( DTYP, "RogueMBBO" )
+	field( PINI, "YES" )
 	field( DOL,  "0" )
 	field( OUT,  "@B$(B) L$(L) ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TriggerEventManager.TriggerEventBuffer[$(L)].TriggerSource" )
 	field( ZRVL, "0" ) field( ZRST, "XPM" )

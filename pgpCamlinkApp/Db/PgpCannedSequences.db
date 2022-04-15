@@ -9,6 +9,7 @@
 # Select LCLS-I Timing
 record( seq, "$(PGP):SeqLcls1Timing" )
 {
+field(TPRO,1)
 	field( DESC, "Select LCLS-I Timing" )
 
 	#	First Disable triggers
@@ -24,22 +25,23 @@ record( seq, "$(PGP):SeqLcls1Timing" )
 
 	# Select LCLS-I Clock
 	field( DLY5, "0" ) field( DOL5, "0" ) field( LNK5, "$(PGP):Timing:ClkSel        PP NMS" )
+	field( DLY6, "0" ) field( DOL6, "0" ) field( LNK6, "$(PGP):Timing:ModeSel       PP NMS" )
 
 	# Assert C_RxReset for 1 sec 
-	field( DLY6, "0" ) field( DOL6, "1" ) field( LNK6, "$(PGP):Timing:C_RxReset     PP NMS" )
-	field( DLY7, "1" ) field( DOL7, "0" ) field( LNK7, "$(PGP):Timing:C_RxReset     PP NMS" )
+	field( DLY7, "0" ) field( DOL7, "1" ) field( LNK7, "$(PGP):Timing:C_RxReset     PP NMS" )
+	field( DLY8, "1" ) field( DOL8, "0" ) field( LNK8, "$(PGP):Timing:C_RxReset     PP NMS" )
 
 	# Reset the latching register
-	field( DLY8, ".1") field( DOL8, "0" ) field( LNK8, "$(PGP):Timing:RxDown        PP NMS" )
+	field( DLY9, ".1") field( DOL9, "0" ) field( LNK9, "$(PGP):Timing:RxDown        PP NMS" )
 
 	# Set EventBuilder Bypass to mask out XPM Timing Message for LCLS1 timing 
-	field( DLY9, "0" ) field( DOL9, "4" ) field( LNK9, "$(PGP):ChAll:EventBuilder:BypassXPM  PP NMS" )
+	field( DLYA, "0" ) field( DOLA, "4" ) field( LNKA, "$(PGP):ChAll:EventBuilder:BypassXPM  PP NMS" )
 
 	# Set RateType to ControlWord for LCLS1 timing rates
-	field( DLYA, "0" ) field( DOLA, "2" ) field( LNKA, "$(PGP):ChAll:EvrV2:RateTypeControlWord PP NMS" )
+	field( DLYB, "0" ) field( DOLB, "2" ) field( LNKB, "$(PGP):ChAll:EvrV2:RateTypeControlWord PP NMS" )
 
 	# Set RateSel for each channel to that channel's LCLS1 timing rate
-	field( DLYB, "0" ) field( DOLB, "1" ) field( LNKB, "$(PGP):ChAll:Lcls1:RateSel.PROC  PP NMS" )
+	field( DLYC, "0" ) field( DOLC, "1" ) field( LNKC, "$(PGP):ChAll:Lcls1:RateSel.PROC  PP NMS" )
 
 	info( autosaveFields, "DESC" )
 }
@@ -47,6 +49,7 @@ record( seq, "$(PGP):SeqLcls1Timing" )
 # Select TpgMini Internally generated LCLS-I Clock
 record( seq, "$(PGP):SeqTpgMiniTiming" )
 {
+field(TPRO,1)
 	field( DESC, "Select TpgMini Internal LCLS-I Clock" )
 
 	#	First Disable triggers
@@ -62,22 +65,23 @@ record( seq, "$(PGP):SeqTpgMiniTiming" )
 
 	# Select LCLS-I Clock
 	field( DLY5, "0" ) field( DOL5, "0" ) field( LNK5, "$(PGP):Timing:ClkSel        PP NMS" )
+	field( DLY6, "0" ) field( DOL6, "0" ) field( LNK6, "$(PGP):Timing:ModeSel       PP NMS" )
 
 	# Assert C_RxReset for 1 sec 
-	field( DLY6, "0" ) field( DOL6, "1" ) field( LNK6, "$(PGP):Timing:C_RxReset     PP NMS" )
-	field( DLY7, "1" ) field( DOL7, "0" ) field( LNK7, "$(PGP):Timing:C_RxReset     PP NMS" )
+	field( DLY7, "0" ) field( DOL7, "1" ) field( LNK7, "$(PGP):Timing:C_RxReset     PP NMS" )
+	field( DLY8, "1" ) field( DOL8, "0" ) field( LNK8, "$(PGP):Timing:C_RxReset     PP NMS" )
 
 	# Reset the latching register
-	field( DLY8, ".1") field( DOL8, "0" ) field( LNK8, "$(PGP):Timing:RxDown        PP NMS" )
+	field( DLY9, ".1") field( DOL9, "0" ) field( LNK9, "$(PGP):Timing:RxDown        PP NMS" )
 
 	# Set EventBuilder Bypass to mask out XPM Timing Message for LCLS1 timing 
-	field( DLY9, "0" ) field( DOL9, "4" ) field( LNK9, "$(PGP):ChAll:EventBuilder:BypassXPM  PP NMS" )
+	field( DLYA, "0" ) field( DOLA, "4" ) field( LNKA, "$(PGP):ChAll:EventBuilder:BypassXPM  PP NMS" )
 
 	# Set RateType to ControlWord for LCLS1 timing rates
-	field( DLYA, "0" ) field( DOLA, "2" ) field( LNKA, "$(PGP):ChAll:EvrV2:RateTypeControlWord PP NMS" )
+	field( DLYB, "0" ) field( DOLB, "2" ) field( LNKB, "$(PGP):ChAll:EvrV2:RateTypeControlWord PP NMS" )
 
 	# Set RateSel for each channel to that channel's LCLS1 timing rate
-	field( DLYB, "0" ) field( DOLB, "1" ) field( LNKB, "$(PGP):ChAll:Lcls1:RateSel.PROC  PP NMS" )
+	field( DLYC, "0" ) field( DOLC, "1" ) field( LNKC, "$(PGP):ChAll:Lcls1:RateSel.PROC  PP NMS" )
 
 	# Enable MiniTpg
 	field( DLYF, "0" ) field( DOLF, "1" ) field( LNKF, "$(PGP):Timing:UseMiniTpg    PP NMS" )
@@ -88,6 +92,7 @@ record( seq, "$(PGP):SeqTpgMiniTiming" )
 # Select LCLS-II Timing
 record( seq, "$(PGP):SeqLcls2Timing" )
 {
+field(TPRO,1)
 	field( DESC, "Select LCLS-II Timing" )
 
 	#	First Disable triggers
@@ -103,22 +108,23 @@ record( seq, "$(PGP):SeqLcls2Timing" )
 
 	# Select LCLS-II Clock
 	field( DLY5, "0" ) field( DOL5, "1" ) field( LNK5, "$(PGP):Timing:ClkSel        PP NMS" )
+	field( DLY6, "0" ) field( DOL6, "1" ) field( LNK6, "$(PGP):Timing:ModeSel       PP NMS" )
 
 	# Assert C_RxReset for 1 sec 
-	field( DLY6, "0" ) field( DOL6, "1" ) field( LNK6, "$(PGP):Timing:C_RxReset     PP NMS" )
-	field( DLY7, "1" ) field( DOL7, "0" ) field( LNK7, "$(PGP):Timing:C_RxReset     PP NMS" )
+	field( DLY7, "0" ) field( DOL7, "1" ) field( LNK7, "$(PGP):Timing:C_RxReset     PP NMS" )
+	field( DLY8, "1" ) field( DOL8, "0" ) field( LNK8, "$(PGP):Timing:C_RxReset     PP NMS" )
 
 	# Reset the latching register
-	field( DLY8, ".1") field( DOL8, "0" ) field( LNK8, "$(PGP):Timing:RxDown        PP NMS" )
+	field( DLY9, ".1") field( DOL9, "0" ) field( LNK9, "$(PGP):Timing:RxDown        PP NMS" )
 
 	# Set EventBuilder Bypass to mask out XPM Timing Message for LCLS2 timing 
-	field( DLY9, "0" ) field( DOL9, "4" ) field( LNK9, "$(PGP):ChAll:EventBuilder:BypassXPM  PP NMS" )
+	field( DLYA, "0" ) field( DOLA, "4" ) field( LNKA, "$(PGP):ChAll:EventBuilder:BypassXPM  PP NMS" )
 
 	# Set RateType to FixedRates for LCLS2 timing rates
-	field( DLYA, "0" ) field( DOLA, "0" ) field( LNKA, "$(PGP):ChAll:EvrV2:RateTypeControlWord PP NMS" )
+	field( DLYB, "0" ) field( DOLB, "0" ) field( LNKB, "$(PGP):ChAll:EvrV2:RateTypeControlWord PP NMS" )
 
 	# Set RateSel for each channel to that channel's LCLS2 timing rate
-	field( DLYB, "0" ) field( DOLB, "1" ) field( LNKB, "$(PGP):ChAll:Lcls2:RateSel.PROC  PP NMS" )
+	field( DLYC, "0" ) field( DOLC, "1" ) field( LNKC, "$(PGP):ChAll:Lcls2:RateSel.PROC  PP NMS" )
 
 	info( autosaveFields, "DESC" )
 	#	info( autosaveFields, "DESC DOL1 DLY1 DOL2 DLY2 DOL3 DLY3 DOL4 DLY4 DOL5 DLY5 DOL6 DLY6 DOL7 DLY7 DOL8 DLY8 DOL9 DLY9 DOLA DLYA" )
@@ -142,29 +148,30 @@ record( seq, "$(PGP):SeqXpmMiniTiming" )
 
 	# Select LCLS-II Clock
 	field( DLY5, "0" ) field( DOL5, "1" ) field( LNK5, "$(PGP):Timing:ClkSel        PP NMS" )
+	field( DLY6, "0" ) field( DOL6, "1" ) field( LNK6, "$(PGP):Timing:ModeSel       PP NMS" )
 
 	# Assert C_RxReset for 1 sec 
-	field( DLY6, "0" ) field( DOL6, "1" ) field( LNK6, "$(PGP):Timing:C_RxReset     PP NMS" )
-	field( DLY7, "1" ) field( DOL7, "0" ) field( LNK7, "$(PGP):Timing:C_RxReset     PP NMS" )
+	field( DLY7, "0" ) field( DOL7, "1" ) field( LNK7, "$(PGP):Timing:C_RxReset     PP NMS" )
+	field( DLY8, "1" ) field( DOL8, "0" ) field( LNK8, "$(PGP):Timing:C_RxReset     PP NMS" )
 
 	# Reset the latching register
-	field( DLY8, ".1") field( DOL8, "0" ) field( LNK8, "$(PGP):Timing:RxDown        PP NMS" )
+	field( DLY9, ".1") field( DOL9, "0" ) field( LNK9, "$(PGP):Timing:RxDown        PP NMS" )
 
 	# Set EventBuilder Bypass to mask out XPM Timing Message for LCLS2 timing 
-	field( DLY9, "0" ) field( DOL9, "4" ) field( LNK9, "$(PGP):ChAll:EventBuilder:BypassXPM  PP NMS" )
+	field( DLYA, "0" ) field( DOLA, "4" ) field( LNKA, "$(PGP):ChAll:EventBuilder:BypassXPM  PP NMS" )
 
 	# Set RateType to FixedRates for LCLS2 timing rates
-	field( DLYA, "0" ) field( DOLA, "0" ) field( LNKA, "$(PGP):ChAll:EvrV2:RateTypeControlWord PP NMS" )
+	field( DLYB, "0" ) field( DOLB, "0" ) field( LNKB, "$(PGP):ChAll:EvrV2:RateTypeControlWord PP NMS" )
 
 	# Set RateSel for each channel to that channel's LCLS2 timing rate
-	field( DLYB, "0" ) field( DOLB, "1" ) field( LNKB, "$(PGP):ChAll:Lcls2:RateSel.PROC  PP NMS" )
+	field( DLYC, "0" ) field( DOLC, "1" ) field( LNKC, "$(PGP):ChAll:Lcls2:RateSel.PROC  PP NMS" )
 
 	# Enable MiniTpg
-	field( DLYC, "1" ) field( DOLC, "1" ) field( LNKC, "$(PGP):Timing:UseMiniTpg    PP NMS" )
-	field( DLYD, "0" ) field( DOLD, "1" ) field( LNKD, "$(PGP):XpmMini:HwEnable     PP NMS" )
-	field( DLYE, "0" ) field( DOLE, "0" ) field( LNKE, "$(PGP):XpmMini:Link         PP NMS" )
+	field( DLYD, "1" ) field( DOLD, "1" ) field( LNKD, "$(PGP):Timing:UseMiniTpg    PP NMS" )
+	field( DLYE, "0" ) field( DOLE, "1" ) field( LNKE, "$(PGP):XpmMini:HwEnable     PP NMS" )
+#	field( DLYE, "0" ) field( DOLE, "0" ) field( LNKE, "$(PGP):XpmMini:Link         PP NMS" )
 
-	# Enable
+	# Enable XpmMini Select
 	field( DLYF, "0" ) field( DOLF, "1" ) field( LNKF, "$(PGP):XpmMini:Config_L0Select_Enabled PP NMS" )
 
 	info( autosaveFields, "DESC" )
@@ -174,20 +181,20 @@ record( dfanout, "$(PGP):ChAll:EventBuilder:BypassXPM" )
 {
 	field( DESC, "Bypass XPM DAQ msgs in EventBuilder" )
 	field( DOL,  "4" )
-	field( LNK1, "$(PGP):Ch0:EventBuilder:Bypass  PP NMS" )
-	field( LNK2, "$(PGP):Ch1:EventBuilder:Bypass  PP NMS" )
-	field( LNK3, "$(PGP):Ch2:EventBuilder:Bypass  PP NMS" )
-	field( LNK4, "$(PGP):Ch3:EventBuilder:Bypass  PP NMS" )
+	field( OUTA, "$(PGP):Ch0:EventBuilder:Bypass  PP NMS" )
+	field( OUTB, "$(PGP):Ch1:EventBuilder:Bypass  PP NMS" )
+	field( OUTC, "$(PGP):Ch2:EventBuilder:Bypass  PP NMS" )
+	field( OUTD, "$(PGP):Ch3:EventBuilder:Bypass  PP NMS" )
 }
 
 record( dfanout, "$(PGP):ChAll:EvrV2:RateTypeControlWord" )
 {
 	field( DESC, "Set RateType to ControlWord for LCLS1" )
 	field( DOL,  "2" )
-	field( LNK1, "$(PGP):Ch0:EvrV2:RateType  PP NMS" )
-	field( LNK2, "$(PGP):Ch1:EvrV2:RateType  PP NMS" )
-	field( LNK3, "$(PGP):Ch2:EvrV2:RateType  PP NMS" )
-	field( LNK4, "$(PGP):Ch3:EvrV2:RateType  PP NMS" )
+	field( OUTA, "$(PGP):Ch0:EvrV2:RateType  PP NMS" )
+	field( OUTB, "$(PGP):Ch1:EvrV2:RateType  PP NMS" )
+	field( OUTC, "$(PGP):Ch2:EvrV2:RateType  PP NMS" )
+	field( OUTD, "$(PGP):Ch3:EvrV2:RateType  PP NMS" )
 }
 
 record( seq, "$(PGP):ChAll:Lcls1:RateSel" )

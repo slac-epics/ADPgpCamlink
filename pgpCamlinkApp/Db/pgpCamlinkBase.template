@@ -726,20 +726,29 @@ record( calcout, "$(CAM):CamTrigDelay_RBV" )
 
 record( longout, "$(P)$(R)CamEventCode" )
 {
-	field( DOL,  "40" )
-	field( OUT,  "$(PGP):Ch$(PGP_LANE):EvrV2:RateSel CA NMS" )
+field(TPRO,2)
+	field( DOL,  "45" )
+	field( OUT,  "$(PGP):Ch$(PGP_LANE):Lcls1:RateSel CA NMS" )
 	field( PINI, "YES" )
 	info( autosaveFields, "HHSV HIGH HIHI HSV LLSV LOLO LOW LSV EGU DESC HOPR LOPR VAL" )
 	info( autosaveFields_pass1, "VAL" )
 	info( archiveFields,  "VAL" )
 }
 
-record( longout, "$(P)$(R)Lcls2:RateSel" )
+record( longout, "$(P)$(R)CamLcls2RateSel" )
 {
-	field( DOL,  "1" )
+field(TPRO,2)
+	field( DOL,  "0" )
 	field( OUT,  "$(PGP):Ch$(PGP_LANE):Lcls2:RateSel CA NMS" )
 	field( PINI, "YES" )
 	info( autosaveFields, "HHSV HIGH HIHI HSV LLSV LOLO LOW LSV EGU DESC HOPR LOPR VAL" )
+	info( archiveFields,  "VAL" )
+}
+
+record( longin, "$(P)$(R)CamLcls2RateSel_RBV" )
+{
+	field( INP,  "$(PGP):Ch$(PGP_LANE):Lcls2:RateSel CPP MS" )
+	info( autosaveFields, "HHSV HIGH HIHI HSV LLSV LOLO LOW LSV EGU DESC" )
 	info( archiveFields,  "VAL" )
 }
 
@@ -747,10 +756,12 @@ record( longout, "$(P)$(R)Lcls2:RateSel" )
 substitute "SER_OK_PV=$(PGP):Ch$(PGP_LANE):EvrV2:RateSel_RBV"
 substitute "MON_SCAN=1 second"
 substitute "MON_DISABLED=1"
+#? # CamEventCode_RBV follows the PGP EvrV2:RateSel_RBV, so it
+#? # sometimes follows Lcls2 timing, while CamEventCode is only for Lcls1 timing.
 substitute "MON_VALUE=1"
 substitute "MON_PV=$(P)$(R)CamEventCode"
 include "putMonitor.template"
-substitute "MON_PV=$(P)$(R)Lcls2:RateSel"
+substitute "MON_PV=$(P)$(R)CamLcls2RateSel"
 include "putMonitor.template"
 
 substitute "SER_OK_PV=$(PGP):Ch$(PGP_LANE):PgpMon:RxRemLinkReady_RBV"
@@ -768,8 +779,8 @@ substitute "MON_PV=$(P)$(R)CamlinkTrigMask"
 include "putMonitor.template"
 substitute "MON_PV=$(P)$(R)CamlinkInvCC"
 include "putMonitor.template"
-substitute "MON_PV=$(PGP):Ch$(PGP_LANE):EventBuilder:Bypass"
-include "putMonitor.template"
+#substitute "MON_PV=$(PGP):Ch$(PGP_LANE):EventBuilder:Bypass"
+#include "putMonitor.template"
 substitute "MON_PV=$(P)$(R)CamlinkHTap"
 include "putMonitor.template"
 substitute "MON_PV=$(P)$(R)CamlinkHActive"
@@ -783,7 +794,7 @@ include "putMonitor.template"
 
 record( longin, "$(P)$(R)CamEventCode_RBV" )
 {
-	field( INP,  "$(PGP):Ch$(PGP_LANE):EvrV2:RateSel_RBV CPP MS" )
+	field( INP,  "$(PGP):Ch$(PGP_LANE):Lcls1:RateSel CPP MS" )
 	info( autosaveFields, "HHSV HIGH HIHI HSV LLSV LOLO LOW LSV EGU DESC" )
 	info( archiveFields,  "VAL" )
 }

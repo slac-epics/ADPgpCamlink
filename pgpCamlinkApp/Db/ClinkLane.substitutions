@@ -370,7 +370,8 @@ file longDevRogue.template
         PATH    = "ClinkDevRoot.ClinkPcie.Application.AppLane[$(L)].EventBuilder.Timeout",
         SCAN    = "\$(SCAN=1 second)"
         DOL     = "4"
-        SAVE    = ""
+        PINI    = "YES"
+        SAVE    = "VAL"
     }
 # Threshold in unit of AXIS words (8 bytes per word). The XPM is 48byte message.
 # So setting this register to 0x7 would NOT back pressure until
