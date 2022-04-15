@@ -639,7 +639,6 @@ fgColor index 25
 fgAlarm
 bgColor index 5
 editable
-autoHeight
 motifWidget
 nullColor index 40
 smartRefresh
@@ -656,9 +655,9 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 344
+x 336
 y 4
-w 100
+w 108
 h 20
 font "helvetica-medium-r-12.0"
 fontAlign "right"
@@ -696,32 +695,6 @@ objType "monitors"
 noExecuteClipMask
 endObjectProperties
 
-# (Text Monitor)
-object activeXTextDspClass:noedit
-beginObjectProperties
-major 4
-minor 7
-release 0
-x 508
-y 32
-w 88
-h 20
-controlPv "$(P)$(R)BeamRepRate_RBV"
-font "helvetica-medium-r-12.0"
-fontAlign "center"
-fgColor index 15
-fgAlarm
-bgColor index 12
-limitsFromDb
-nullColor index 40
-smartRefresh
-useHexPrefix
-showUnits
-newPos
-objType "monitors"
-noExecuteClipMask
-endObjectProperties
-
 # (Text Control)
 object activeXTextDspClass
 beginObjectProperties
@@ -731,14 +704,13 @@ release 0
 x 452
 y 32
 w 48
-h 18
-controlPv "$(P)$(R)BeamEventCode"
+h 20
+controlPv "$(P)$(R)CamLcls2RateSel"
 format "decimal"
 font "helvetica-medium-r-12.0"
 fgColor index 25
 bgColor index 5
 editable
-autoHeight
 motifWidget
 nullColor index 40
 smartRefresh
@@ -755,44 +727,17 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 344
+x 336
 y 32
-w 100
+w 108
 h 20
 font "helvetica-medium-r-12.0"
 fontAlign "right"
 fgColor index 14
 bgColor index 3
 value {
-  "Beam Eventcode"
+  "Lcls-II Rate Select"
 }
-endObjectProperties
-
-# (Text Monitor)
-object activeXTextDspClass:noedit
-beginObjectProperties
-major 4
-minor 7
-release 0
-x 604
-y 32
-w 88
-h 20
-controlPv "$(P)$(R)BeamRepDur"
-format "exponential"
-font "helvetica-medium-r-12.0"
-fontAlign "center"
-fgColor index 15
-fgAlarm
-bgColor index 12
-limitsFromDb
-nullColor index 40
-smartRefresh
-useHexPrefix
-showUnits
-newPos
-objType "monitors"
-noExecuteClipMask
 endObjectProperties
 
 # (Static Text)
@@ -1913,7 +1858,7 @@ x 596
 y 368
 w 88
 h 20
-controlPv "$(P)$(R)OpalVR"
+controlPv "$(P)$(R)OpalVR_RBV"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
 fgColor index 15
@@ -1943,8 +1888,8 @@ bgColor index 5
 inconsistentColor index 40
 topShadowColor index 2
 botShadowColor index 13
-controlPv "$(P)$(R)OpalSetVR"
-indicatorPv "$(P)$(R)OpalVR"
+controlPv "$(P)$(R)OpalVR"
+indicatorPv "$(P)$(R)OpalVR_RBV"
 font "helvetica-medium-r-14.0"
 endObjectProperties
 

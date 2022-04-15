@@ -992,15 +992,14 @@ record( longin, "$(P)$(R)OpalBinY_RBV" )
     field( INP,	 "@opal1000m_12.proto GetInt(VBIN) $(PORT).SER" )
 }
 
-# TODO: Confirm w/ Larry
 # Vertical remapping is enabled by the config file and should not be changed.
-record( bo, "$(P)$(R)OpalSetVR" )
+record( bo, "$(P)$(R)OpalVR" )
 {
     field( DESC, "Set Vertical Remapping" )
     field( DTYP, "stream"       )
 	field( DOL,  "1" )
     field( OUT,	 "@opal1000m_12.proto SetInt(VR) $(PORT).SER" )
-    field( FLNK, "$(P)$(R)OpalVR" )
+    field( FLNK, "$(P)$(R)OpalVR_RBV" )
     field( ZNAM, "No Remap" )
     field( ONAM, "Remap"    )
     field( ZSV,  "MINOR"    )
@@ -1008,7 +1007,7 @@ record( bo, "$(P)$(R)OpalSetVR" )
 }
 
 # Vertical remapping is enabled by the config file and should not be changed.
-record( bi, "$(P)$(R)OpalVR" )
+record( bi, "$(P)$(R)OpalVR_RBV" )
 {
     field( DESC, "Vertical Remapping" )
     field( DTYP, "stream"       )
@@ -1176,7 +1175,7 @@ substitute "MON_PV=$(P)$(R)OpalFirmwareTimestamp_RBV"
 include "rbvMonitor.template"
 substitute "MON_PV=$(P)$(R)OpalBinY_RBV"
 include "rbvMonitor.template"
-substitute "MON_PV=$(P)$(R)OpalVR"
+substitute "MON_PV=$(P)$(R)OpalVR_RBV"
 include "rbvMonitor.template"
 substitute "MON_PV=$(P)$(R)OpalOutputMirror_RBV"
 include "rbvMonitor.template"
@@ -1202,8 +1201,6 @@ include "putMonitor.template"
 
 # 10 second put monitors
 substitute "MON_SCAN=10 second"
-substitute "MON_PV=$(P)$(R)OpalBlackLevel"
-include "putMonitor.template"
 substitute "MON_PV=$(P)$(R)OpalDefPixelCorr"
 include "putMonitor.template"
 substitute "MON_PV=$(P)$(R)OpalDefPixelTest"
@@ -1213,6 +1210,13 @@ include "putMonitor.template"
 substitute "MON_PV=$(P)$(R)OpalSetFSP"
 include "putMonitor.template"
 substitute "MON_PV=$(P)$(R)OpalSetFSM"
+include "putMonitor.template"
+substitute "MON_VALUE=1"
+substitute "MON_PV=$(P)$(R)OpalBlackLevel"
+include "putMonitor.template"
+substitute "MON_PV=$(P)$(R)OpalBlackLevel"
+include "putMonitor.template"
+substitute "MON_PV=$(P)$(R)OpalVR"
 include "putMonitor.template"
 
 # Possible TODO: Add support for
