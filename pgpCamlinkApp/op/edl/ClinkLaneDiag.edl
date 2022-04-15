@@ -3,8 +3,8 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 2009
-y 1568
+x 793
+y 1399
 w 1100
 h 900
 font "helvetica-medium-r-8.0"
@@ -1468,7 +1468,7 @@ x 584
 y 328
 w 96
 h 20
-controlPv "$(P)$(R)EvrV2:RateSel_RBV"
+controlPv "$(P)$(R)Lcls1:RateSel"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
 fgColor index 15
@@ -1499,7 +1499,7 @@ fgColor index 14
 bgColor index 0
 useDisplayBg
 value {
-  "EvrV2:RateSel"
+  "Lcls1:RateSel"
 }
 endObjectProperties
 
@@ -2431,6 +2431,7 @@ fgColor index 25
 fgAlarm
 bgColor index 5
 editable
+motifWidget
 limitsFromDb
 nullColor index 40
 smartRefresh
