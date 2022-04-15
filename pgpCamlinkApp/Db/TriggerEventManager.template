@@ -128,14 +128,38 @@ record( longin, "$(P)$(R)EvrV2:RateSel_RBV" )
 }
 alias( "$(P)$(R)EvrV2:RateSel_RBV", "$(P)$(R)EvrV2:EventCode_RBV" )
 
+record( longout, "$(P)$(R)Lcls1:RateSel" )
+{
+	field( DESC, "Ch$(L) Lcls1 RateSel" )
+	field( PINI, "YES" )
+	field( FLNK, "$(P)$(R)EvrV2:RateSelCalc" )
+	info( autosaveFields, "VAL" )
+}
+
+record( longout, "$(P)$(R)Lcls2:RateSel" )
+{
+	field( DESC, "Ch$(L) Lcls2 RateSel" )
+	field( PINI, "YES" )
+	field( FLNK, "$(P)$(R)EvrV2:RateSelCalc" )
+	info( autosaveFields, "VAL" )
+}
+
+record( calcout, "$(P)$(R)EvrV2:RateSelCalc" )
+{
+	field( INPA, "$(P)$(R)Lcls1:RateSel MS NPP" ) 
+	field( INPB, "$(P)$(R)Lcls2:RateSel MS NPP" )
+	field( INPC, "$(P)$(R)Timing:ClkSel MS NPP" )
+	field( CALC, "C ? A : B" )
+	field( OUT,  "$(P)$(R)EvrV2:RateSel MS CA" )
+}
+
 record( longout, "$(P)$(R)EvrV2:RateSel" )
 {
-	field( DESC, "Ch$(L) LCLS-I EventCode" )
+	field( DESC, "Ch$(L) EvrV2 RateSel, shared by LCLS-I and LCLS-II" )
 	field( OUT,  "@B$(B) L$(L) ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TriggerEventManager.EvrV2CoreTriggers.EvrV2ChannelReg[$(L)].RateSel" )
 	field( DTYP, "RogueLO" )
 	field( PINI, "YES" )
 	field( FLNK, "$(P)$(R)EvrV2:RateSel_RBV" )
-	info( autosaveFields, "VAL" )
 }
 alias( "$(P)$(R)EvrV2:RateSel", "$(P)$(R)EvrV2:EventCode" )
 

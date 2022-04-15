@@ -734,12 +734,23 @@ record( longout, "$(P)$(R)CamEventCode" )
 	info( archiveFields,  "VAL" )
 }
 
+record( longout, "$(P)$(R)Lcls2:RateSel" )
+{
+	field( DOL,  "1" )
+	field( OUT,  "$(PGP):Ch$(PGP_LANE):Lcls2:RateSel CA NMS" )
+	field( PINI, "YES" )
+	info( autosaveFields, "HHSV HIGH HIHI HSV LLSV LOLO LOW LSV EGU DESC HOPR LOPR VAL" )
+	info( archiveFields,  "VAL" )
+}
+
 # Put monitors
 substitute "SER_OK_PV=$(PGP):Ch$(PGP_LANE):EvrV2:RateSel_RBV"
 substitute "MON_SCAN=1 second"
 substitute "MON_DISABLED=1"
 substitute "MON_VALUE=1"
 substitute "MON_PV=$(P)$(R)CamEventCode"
+include "putMonitor.template"
+substitute "MON_PV=$(P)$(R)Lcls2:RateSel"
 include "putMonitor.template"
 
 substitute "SER_OK_PV=$(PGP):Ch$(PGP_LANE):PgpMon:RxRemLinkReady_RBV"

@@ -358,7 +358,11 @@ file longDevRogue.template
         NAME    = "EventBuilder:Bypass",
         PATH    = "ClinkDevRoot.ClinkPcie.Application.AppLane[$(L)].EventBuilder.Bypass",
         SCAN    = "\$(SCAN=1 second)"
+        LSV     = "MINOR"
+        LOW     = "3"
         DOL     = "4"
+        HIGH    = "5"
+        HSV     = "MINOR"
         SAVE    = ""
     }
     {
@@ -372,7 +376,7 @@ file longDevRogue.template
 # So setting this register to 0x7 would NOT back pressure until
 # there are two messages in the pipeline
     {
-        NAME    = "XpmPauseThresh",
+        NAME    = "Timing:XpmPauseThresh",
         PATH    = "ClinkDevRoot.ClinkPcie.Application.AppLane[$(L)].XpmPauseThresh",
         SCAN    = "\$(SCAN=1 second)"
         SAVE    = "VAL"
@@ -479,6 +483,13 @@ file longDevRogue.template
         DOL     = "0"
         EGU     = "1/125MHz"
         PINI    = "YES"
+    }
+    {
+        NAME    = "Timing:XpmPartition",
+        PATH    = "ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TriggerEventManager.TriggerEventBuffer[$(L)].Partition"
+        SAVE    = "VAL"
+        DESC    = "Select XPM Partition 0..15"
+        SCAN    = "\$(SCAN=1 second)"
     }
 }
 
