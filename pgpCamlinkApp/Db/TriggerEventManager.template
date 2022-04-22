@@ -153,8 +153,8 @@ record( calcout, "$(P)$(R)EvrV2:RateSelCalc" )
 field(TPRO,2)
 	field( INPA, "$(P)$(R)Lcls1:RateSel MS NPP" ) 
 	field( INPB, "$(P)$(R)Lcls2:RateSel MS NPP" )
-	field( INPC, "$(P)$(R)Timing:ClkSel MS NPP" )
-	field( CALC, "C ? A : B" )
+	field( INPC, "$(P):Timing:ClkSel MS NPP" )
+	field( CALC, "C ? B : A" )
 	field( OUT,  "$(P)$(R)EvrV2:RateSel MS CA" )
 }
 
