@@ -3,8 +3,8 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 1584
-y 1515
+x 590
+y 149
 w 740
 h 741
 font "helvetica-medium-r-8.0"
@@ -19,6 +19,7 @@ ctlBgColor1 index 12
 ctlBgColor2 index 5
 topShadowColor index 1
 botShadowColor index 11
+title "pgpCamnlink CH$(CH) Timing"
 showGrid
 snapToGrid
 gridSize 4
