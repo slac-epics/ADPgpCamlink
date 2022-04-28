@@ -726,7 +726,7 @@ record( calcout, "$(CAM):CamTrigDelay_RBV" )
 
 record( longout, "$(P)$(R)CamEventCode" )
 {
-field(TPRO,2)
+#field(TPRO,2)
 	field( DOL,  "45" )
 	field( OUT,  "$(PGP):Ch$(PGP_LANE):Lcls1:RateSel CA NMS" )
 	field( PINI, "YES" )
@@ -737,7 +737,7 @@ field(TPRO,2)
 
 record( longout, "$(P)$(R)CamLcls2RateSel" )
 {
-field(TPRO,2)
+#field(TPRO,2)
 	field( DOL,  "0" )
 	field( OUT,  "$(PGP):Ch$(PGP_LANE):Lcls2:RateSel CA NMS" )
 	field( PINI, "YES" )

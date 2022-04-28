@@ -130,7 +130,6 @@ record( longin, "$(P)$(R)EvrV2:RateSel_RBV" )
 
 record( longout, "$(P)$(R)Lcls1:RateSel" )
 {
-field(TPRO,2)
 	field( DESC, "Ch$(L) Lcls1 RateSel" )
 	field( DOL,  "45" )
 	field( PINI, "YES" )
@@ -140,7 +139,6 @@ field(TPRO,2)
 
 record( longout, "$(P)$(R)Lcls2:RateSel" )
 {
-field(TPRO,2)
 	field( DESC, "Ch$(L) Lcls2 RateSel" )
 	field( DOL,  "0" )
 	field( PINI, "YES" )
@@ -150,7 +148,6 @@ field(TPRO,2)
 
 record( calcout, "$(P)$(R)EvrV2:RateSelCalc" )
 {
-field(TPRO,2)
 	field( INPA, "$(P)$(R)Lcls1:RateSel MS NPP" ) 
 	field( INPB, "$(P)$(R)Lcls2:RateSel MS NPP" )
 	field( INPC, "$(P):Timing:ClkSel MS NPP" )
@@ -160,8 +157,7 @@ field(TPRO,2)
 
 record( longout, "$(P)$(R)EvrV2:RateSel" )
 {
-field(TPRO,2)
-	field( DESC, "Ch$(L) EvrV2 RateSel, shared by LCLS-I and LCLS-II" )
+	field( DESC, "Ch0 EvrV2 RateSel LCLS-I & LCLS-II" )
 	field( OUT,  "@B$(B) L$(L) ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TriggerEventManager.EvrV2CoreTriggers.EvrV2ChannelReg[$(L)].RateSel" )
 	field( DTYP, "RogueLO" )
 	field( PINI, "YES" )

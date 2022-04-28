@@ -207,7 +207,7 @@ record( stringout, "$(P)$(R)BaslerUserID" )
 	field( DTYP, "stream" )
 	field( OUT,  "@Basler.proto SetString(\\x00,\\x01,\\x20,\\x08, \\x20) $(PORT).SER" )
 	field( FLNK, "$(P)$(R)BaslerUserID_RBV" )
-	field( TPRO, 2 )
+#	field( TPRO, 2 )
 }
 
 # Not implemented

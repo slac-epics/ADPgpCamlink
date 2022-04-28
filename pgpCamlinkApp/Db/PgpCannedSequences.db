@@ -9,7 +9,6 @@
 # Select LCLS-I Timing
 record( seq, "$(PGP):SeqLcls1Timing" )
 {
-field(TPRO,1)
 	field( DESC, "Select LCLS-I Timing" )
 
 	#	First Disable triggers
@@ -49,7 +48,6 @@ field(TPRO,1)
 # Select TpgMini Internally generated LCLS-I Clock
 record( seq, "$(PGP):SeqTpgMiniTiming" )
 {
-field(TPRO,1)
 	field( DESC, "Select TpgMini Internal LCLS-I Clock" )
 
 	#	First Disable triggers
@@ -92,7 +90,6 @@ field(TPRO,1)
 # Select LCLS-II Timing
 record( seq, "$(PGP):SeqLcls2Timing" )
 {
-field(TPRO,1)
 	field( DESC, "Select LCLS-II Timing" )
 
 	#	First Disable triggers
