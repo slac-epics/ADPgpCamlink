@@ -55,8 +55,8 @@ void ImageStream::acceptFrame ( rogue::interfaces::stream::FramePtr frame )
 	it = frame->begin();
 
 	// Timestamp should default to TOD
-	epicsTimeStamp		ts;
-	epicsTimeGetCurrent( &ts );
+	if ( m_ImageInfo.m_tsImage.secPastEpoch == 0 && m_ImageInfo.m_tsImage.nsec == 0 )
+		epicsTimeGetCurrent( &m_ImageInfo.m_tsImage );
 
 	// Process frame via CoreV1 protocol
 	m_FrameCore.processFrame(frame);
@@ -65,20 +65,20 @@ void ImageStream::acceptFrame ( rogue::interfaces::stream::FramePtr frame )
 		rogue::protocols::batcher::DataPtr	data = m_FrameCore.record(sf);
 		// FUSER_BIT_1 = StartOfFrame
 		// LUSER_BIT_0 = FrameError
-		if ( DEBUG_PGP_CAMLINK >= 4 )
-			printf( "ImageStream::acceptFrame SubFrame %d, dest=%u, size=%u, fUser=0x%02x, lUser=0x%02x\n",
-					sf, data->dest(), data->size(), data->fUser(), data->lUser() );
+		if ( DEBUG_PGP_CAMLINK >= 5 )
+			printf( "ImageStream::acceptFrame SubFrame %u of %u, dest=%u, size=%u, fUser=0x%02x, lUser=0x%02x\n",
+					sf, m_FrameCore.count(), data->dest(), data->size(), data->fUser(), data->lUser() );
 		if ( data->dest() == 0 )
 		{	// TDEST 0 is Timestamp (Timing Event)
 			it = data->begin();
 			it += 8;	// Skipping ?
-			fromFrame( it, 4, &ts.nsec );
-			fromFrame( it, 4, &ts.secPastEpoch );
-			epicsTimeToStrftime( acBuff, 40, "%H:%M:%S.%04f", &ts );
+			fromFrame( it, 4, &m_ImageInfo.m_tsImage.nsec );
+			fromFrame( it, 4, &m_ImageInfo.m_tsImage.secPastEpoch );
+			epicsTimeToStrftime( acBuff, 40, "%H:%M:%S.%04f", &m_ImageInfo.m_tsImage );
 			if ( DEBUG_PGP_CAMLINK >= 4 )
 			{
-				printf( "%s TDEST 0 SubFrame %d, ts %s, pulseId 0x%X\n",
-						functionName, sf, acBuff, ts.nsec & 0x1FFFF );
+				printf( "%s TDEST 0 subFrame %u of %u, ts %s, pulseID %d\n",
+						functionName, sf, m_FrameCore.count(), acBuff, m_ImageInfo.m_tsImage.nsec & 0x1FFFF );
 			}
 		}
 		else if ( data->dest() == 1 )
@@ -93,7 +93,7 @@ void ImageStream::acceptFrame ( rogue::interfaces::stream::FramePtr frame )
 			uint32_t	size	= data->end() - data->begin();
 			//uint8_t	*	dataPtr	= data->begin().ptr();
 			if ( DEBUG_PGP_CAMLINK >= 4 )
-				printf( "ImageStream::acceptFrame TDEST 2 SubFrame %d, size %u\n", sf, size );
+				printf( "ImageStream::acceptFrame TDEST 2 SubFrame %u of %u, size %u\n", sf, m_FrameCore.count(), size );
 		}
 		else if ( data->dest() == 3 ) // new Timing msg created by Matt
 		{	// TDEST 3 is XPM Timing  (DAQ)
@@ -104,12 +104,13 @@ void ImageStream::acceptFrame ( rogue::interfaces::stream::FramePtr frame )
 	}
 
 	// Process image
-	if ( m_pClDev )
+	if ( m_pClDev && m_ImageInfo.m_ImageDataPtr )
 	{
-		m_ImageInfo.m_tsImage			= ts;
-		if ( !m_ImageInfo.m_ImageDataPtr && ( DEBUG_PGP_CAMLINK >= 4 ) )
-			printf( "ts %s, pulseId 0x%X, no image!\n", acBuff, ts.nsec & 0x1FFFF );
+		if ( !m_ImageInfo.m_ImageDataPtr && ( DEBUG_PGP_CAMLINK >= 3 ) )
+			printf( "ts %s, pulseID %d, subFr cnt %u, no image!\n", acBuff, m_ImageInfo.m_tsImage.nsec & 0x1FFFF, m_FrameCore.count() );
 		m_pClDev->ProcessImage( &m_ImageInfo );
 		m_ImageInfo.m_ImageDataPtr.reset();
+		m_ImageInfo.m_tsImage.secPastEpoch = 0;
+		m_ImageInfo.m_tsImage.nsec = 0;
 	}
 }
