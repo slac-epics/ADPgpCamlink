@@ -1,6 +1,19 @@
 #
 # SLAC RELEASE_NOTES
 #
+R2.0.0	2022-04-28 Bruce Hill
+	Updates to support switching between LCLS-I and LCLS-II timing.
+	Update LCLS1 and LCLS2 timing sequences for 2 sets of timing rate PVs
+	Updated to cameralink v7.13.0 firmware
+	Consolidated widgets from pgpClDiag.edl to ClinkLane.edl and ClinkLaneDiag.edl
+	Remove obs pgpClDiag.edl
+	Make the OpalVR Vertical Remapping PVs follow trad. naming w/ OpalVR_RBV
+	Modify ImageStream::acceptFrame for one TDEST/frame.
+	Fix EvrV2:RateSelCalc CALC and INPC fields
+	Moved embedded lcls1 and lcls2 timing screens here from ioc/common/pgpCamlink
+	Add new registers: Timing:Timeout, Timing:TimeoutDropCnt0,1,2, Timing:XpmPartition and Timing:XpmPauseThresh
+	Remove -O0 flag that had gotten into the Makefiles.  Now compiling w/ default -O3 optimization
+
 R1.8.2	2022-04-09 Janos Vamosi
 	Update to ADCore/R3.9-1.1.0
 
