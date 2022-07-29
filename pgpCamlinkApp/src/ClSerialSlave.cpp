@@ -29,27 +29,62 @@ ClSerialSlave::~ClSerialSlave()
 		printf( "Destructor for ClSerialSlave\n" );
 }
 
-int ClSerialSlave::readBytes( unsigned char * buffer, double timeout, size_t nBytesMax )
+int ClSerialSlave::readBytes( unsigned char * buffer, double timeout, size_t nBytesReq )
 {
+	const char		*	functionName = "ClSerialSlave::readBytes";
+	unsigned char	*	pBufNext	= buffer;
 	if ( clSerialSlaveDebug >= 3 )
-		printf( "ClSerialSlave::readBytes: %zu bytes, timeout %.3f sec\n", nBytesMax, timeout );
+		printf( "ClSerialSlave::readBytes: %zu bytes, timeout %.3f sec\n", nBytesReq, timeout );
 	std::chrono::milliseconds	timeoutDur( (int) (timeout * 1000) );
 	std::unique_lock<std::mutex>	lockIt(m_replyLock);
 
-	m_nBytesReq	= nBytesMax;
-	while ( m_replyBuffer.size() < m_nBytesReq )
+	int	nBytesRead = 0;
+	m_nBytesReq	= nBytesReq;
+	while ( (pBufNext - buffer) < (int) nBytesReq )
 	{
+		nBytesRead = pBufNext - buffer;
+		int	nBytesToRead = m_replyBuffer.size();
+		if( nBytesToRead > (int) (nBytesReq - nBytesRead) )
+			nBytesToRead = (int) (nBytesReq - nBytesRead);
+		if ( nBytesToRead > 0 )
+		{
+			nBytesRead = readFromBuffer( pBufNext, nBytesToRead );
+		}
+		else
+			nBytesRead = 0;
+		if ( nBytesRead > 0 )
+		{
+			pBufNext += nBytesRead;
+			if ( clSerialSlaveDebug >= 4 )
+			{
+				epicsTimeStamp	now;
+				char tsBuffer[40];
+				(void) epicsTimeGetCurrent(&now);
+				tsBuffer[0] = 0;
+				epicsTimeToStrftime( tsBuffer, sizeof(tsBuffer),
+					"%Y/%m/%d %H:%M:%S.%03f", &now );
+				printf("%s %s: read %d bytes\n", tsBuffer, functionName, nBytesRead);
+			}
+			continue;
+		}
+
+		// No bytes available.   Wait for more.
+		nBytesRead = pBufNext - buffer;
+		if ( clSerialSlaveDebug >= 4 )
+			printf( "%s: Waiting for %d more bytes\n", functionName, (int) nBytesReq - nBytesRead );
 		std::cv_status	 cvStatus = m_replyReady.wait_for( lockIt, timeoutDur );
+		if ( m_replyBuffer.size() > 0 )
+			continue;
 		if ( cvStatus == std::cv_status::timeout )
 		{
 			if ( clSerialSlaveDebug >= 3 )
-				printf( "ClSerialSlave::readBytes: timeout waiting for %zu bytes.\n", m_nBytesReq );
+				printf( "%s: timeout waiting for %d bytes.\n", functionName, (int) nBytesReq - nBytesRead );
 			break;
 		}
 	}
 
-	int	nBytesRead = readFromBuffer( buffer, nBytesMax );
 	m_nBytesReq	= 0;
+	nBytesRead = pBufNext - buffer;
 	return nBytesRead;
 }
 

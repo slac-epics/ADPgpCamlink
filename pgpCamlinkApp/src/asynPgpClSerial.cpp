@@ -263,7 +263,13 @@ asynStatus	asynPgpClSerial::readOctet(
 	unsigned char	*	pReadBuffer	= (unsigned char *) pBuffer;
 	size_t				sReadBuffer	= nBytesReadMax;
 
-	if( pasynUser->timeout == 0 ) pasynUser->timeout = 0.2;	// TODO: Shouldn't need this
+#if 0
+	if( pasynUser->timeout == 0 )
+	{
+		printf( "asynUser timeout is zero.  Setting to 0.2\n" );
+		pasynUser->timeout = 0.2;	// TODO: Shouldn't need this
+	}
+#endif
 
 	int		nRead	= 0;
 	for (;;)
@@ -279,15 +285,19 @@ asynStatus	asynPgpClSerial::readOctet(
 		{
 			nAvailToRead = m_SerDev.getNumAvailBytes();
 			if ( DEBUG_PGPCL_SER >= 4 )
-				printf("%s: nAvailToRead %d\n", functionName, nAvailToRead);
+			{
+				epicsTimeStamp	now;
+				char tsBuffer[40];
+				(void) epicsTimeGetCurrent(&now);
+				tsBuffer[0] = 0;
+				epicsTimeToStrftime( tsBuffer, sizeof(tsBuffer),
+					"%Y/%m/%d %H:%M:%S.%03f", &now );
+				printf("%s %s: nAvailToRead %d\n", tsBuffer, functionName, nAvailToRead);
+			}
 		}
 		if( 1 || nAvailToRead > 0 )
 		{
 			int		nToRead = static_cast<int>(sReadBuffer);
-			if( nAvailToRead > 0 )
-				nToRead = nAvailToRead;
-			//else
-			//	nAvailToRead = nToRead;
 
 			asynPrint(	pasynUser, ASYN_TRACE_FLOW,
 						"%s: %s nToRead %d\n", functionName, this->portName, nToRead );
@@ -308,6 +318,7 @@ asynStatus	asynPgpClSerial::readOctet(
 			if ( DEBUG_PGPCL_SER >= 4 )
 				printf( "%s: %s Released serial lock, read %d ...\n", functionName, this->portName, nRead );
 		}
+#if 0
 		else
 		{	// Obsolete?
             // nAvailToRead <=0 so nothing to do here... fly away!
@@ -318,6 +329,7 @@ asynStatus	asynPgpClSerial::readOctet(
 
             return asynSuccess;
         }
+#endif
 
         epicsMutexUnlock(m_serialLock);
 		if ( DEBUG_PGPCL_SER >= 4 )
@@ -377,8 +389,7 @@ asynStatus	asynPgpClSerial::readOctet(
 			m_fInputFlushNeeded = true;
 			break;		/* If we have an error, we're done. */
 		}
-		if ( pasynUser->timeout > 0 )
-			break;			/* If we aren't waiting forever, we're done. */
+		break;
 	}	// end forever loop
 
 
@@ -450,8 +461,9 @@ asynStatus	asynPgpClSerial::readOctet(
 
 	if ( DEBUG_PGPCL_SER >= 4 )
 	{
-		printf(	"%s: returning status %d, pBuffer '%s', pnRead %zu, eomReason %d (of %d, %d)\n",
-				functionName, status, pBuffer, *pnRead, *eomReason, ASYN_EOM_EOS, ASYN_EOM_CNT);
+		printf(	"%s: returning status %d, pBuffer '%s', pnRead %zu, eomReason %d\n",
+				functionName, status, pBuffer, *pnRead, *eomReason );
+				//	"(of %d, %d)\n", ASYN_EOM_EOS, ASYN_EOM_CNT
 	}
 
     return status;
