@@ -100,7 +100,67 @@ record( longout, "$(P)$(R)CamlinkVActive" )
 	field( VAL, "1472" )
 }
 
-# Possible TODO: Add support for
+# W/O, write 1 to reset device
+record( bo, "$(P)$(R)ResetDevice" )
+{
+	field( DESC, "Reset camera to power up state" )
+	field( DTYP, "stream" )
+	field( OUT,  "@ImperxC1921.proto SetUint32(\\x601C,1) $(PORT).SER" )
+    field( ZNAM, "Reset" )
+    field( ONAM, "Resetting!"  )
+#    field( SDIS, "$(P)$(R)SerialDisable" )
+}
+
+record( mbbo, "$(P)$(R)ImperxCommError" )
+{
+	field( DOL,  "0" )
+	field( PINI, "YES" )
+	field( ZRVL, "0" ) field( ZRST, "No Error" )
+	field( ONVL, "1" ) field( ONST, "Invalid Cmd" )
+	field( TWVL, "2" ) field( TWST, "Time-out" )
+	field( THVL, "3" ) field( THST, "Cksum Error" )
+	field( FRVL, "4" ) field( FRST, "Val < Min" )
+	field( FVVL, "5" ) field( FVST, "Val > Max" )
+	field( SXVL, "6" ) field( SXST, "AGC Error" )
+	field( SVVL, "7" ) field( SVST, "Supvsr Mode Err" )
+	field( EIVL, "8" ) field( EIST, "Mode Not Supp" )
+}
+
+# TriggerEnable
+record( longout, "$(P)$(R)ImperxTriggerEnable" )
+{
+	field( DTYP, "stream" )
+	field( OUT,  "@ImperxC1921.proto SetTriggerEnable($(P)$(R)) $(PORT).SER" )
+}
+record( longin, "$(P)$(R)ImperxTriggerEnable_RBV" )
+{
+	field( DTYP, "stream" )
+#	field( INP,  "@ImperxC1921.proto GetUint32(\\\\x00,\\\\x05) $(PORT).SER" )
+#	field( INP,  "@ImperxC1921.proto GetUint32(\\\\$TrigEnable) $(PORT).SER" )
+	field( INP,  "@ImperxC1921.proto GetTrigEnable($(P)$(R)) $(PORT).SER" )
+}
+record( longin, "$(P)$(R)ImperxTriggerEnableLSB" )
+{
+	field( DTYP, "stream" )
+#	field( INP,  "@ImperxC1921.proto GetUint32(\\\\x00,\\\\x05) $(PORT).SER" )
+#	field( INP,  "@ImperxC1921.proto GetUint32(\\\\$TrigEnable) $(PORT).SER" )
+	field( INP,  "@ImperxC1921.proto GetTrigEnableLSB($(P)$(R)) $(PORT).SER" )
+}
+
+# TriggerEnable
+record( longout, "$(P)$(R)ImperxTriggerEnable" )
+{
+	field( DTYP, "stream" )
+	field( OUT,  "@ImperxC1921.proto SetTrigEnable($(P)$(R)) $(PORT).SER" )
+}
+record( longin, "$(P)$(R)ImperxTriggerEnable_RBV" )
+{
+	field( DTYP, "stream" )
+#	field( INP,  "@ImperxC1921.proto GetUint32(\\\\x00,\\\\x05) $(PORT).SER" )
+#	field( INP,  "@ImperxC1921.proto GetUint32(\\\\$TrigEnable) $(PORT).SER" )
+	field( INP,  "@ImperxC1921.proto GetTrigEnable($(P)$(R)) $(PORT).SER" )
+}
+
 
 # Include a serialMonitor.template monitor
 # This should be the first PV you process in the CamReConfigSeq

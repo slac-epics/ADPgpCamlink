@@ -1,35 +1,131 @@
 #
 # Imperx Serial Protocol
 #
-# TODO: Replace all of this cloned up900.proto w/ Imperx equivalents
-# Write Messages: 7 bytes
-#	Byte 1:	0x57
-#	Byte 2:	Addr MSB
-#	Byte 3:	Addr LSB
-#	Byte 4:	Data Byte 4 (MSB)
-#	Byte 5:	Data Byte 3
-#	Byte 6:	Data Byte 2
-#	Byte 7:	Data Byte 1 (LSB)
+# Read Operation:
+#	Send 7 Bytes:
+#		Byte 1:	0x52
+#		Byte 2:	Addr MSB
+#		Byte 3:	Addr LSB
+#
+#	Expect to Receive:
+#		Byte 1:	0x06 (ACK)
+#		Byte 2:	Data Byte 4 (MSB)
+#		Byte 3:	Data Byte 3
+#		Byte 4:	Data Byte 2
+#		Byte 5:	Data Byte 1 (LSB)
+#
+# Write Operation:
+#	Send 7 bytes:
+#		Byte 1:	0x57
+#		Byte 2:	Addr MSB
+#		Byte 3:	Addr LSB
+#		Byte 4:	Data Byte 4 (MSB)
+#		Byte 5:	Data Byte 3
+#		Byte 6:	Data Byte 2
+#		Byte 7:	Data Byte 1 (LSB)
 #
 # Successful replies start w/ an ACK, hex 0x06, followed by reply content, if any
 # Unsuccesful commands reply w/ a NAK, hex 0x15, followed by a one byte error code
+#	Error Codes:
+#	0x00 No error
+#	0x01 Invalid command. An invalid command (not 52 or 57) sent to the camera.
+#	0x02 Time-out
+#	0x03 Checksum error
+#	0x04 Value less than minimum
+#	0x05 Value higher than maximum
+#	0x06 AGC error
+#	0x07 Supervisor mode error
+#	0x08 Mode not supported error
+
 #
-#InTerminator	= CR;
-#OutTerminator	= CR;
+inTerminator	= "";
+outTerminator	= "";
 #PeekSize		= 0;
-#ReplyTimeout	= 800;
-#ReadTimeout		= 100;
+ReplyTimeout	= 5500;
+ReadTimeout 	= 5000;
 #WriteTimeout	= 500;
 ExtraInput		= Ignore;
 
-SetReg
+# Imperx C1921 Register Addresses
+# Composed of 2 bytes, LSB then MSB of register address
+# Composed of 2 bytes, MSB then LSB of register address
+AnalogGain		= \x00\x00;
+A2D_Bits		= \x08\x00;	# 0x0 = 8 bits, 0x1 = 10 bits, 0x2  = 12 bits
+AOI_Control		= \x10\x00;	# 0 = MAOI disable, 1 = MAOI w/ FrameRate increase, 2 = MAOI w/ constant FR
+AOI_HorizOffset	= \x14\x00;
+AOI_HorizWidth	= \x18\x00;
+AOI_VertOffset	= \x1C\x00;
+AOI_VertHeight	= \x20\x00;
+HorizDecimate	= \x24\x00;	# 0 = Horiz Decimation disabled, 1 = enabled
+VertDecimate	= \x28\x00;	# 0 = Vert  Decimation disabled, 1 = enabled
+VertBinning		= \x2C\x00;	# 0 = Vert  Binning disabled, 1 = enabled
+ImageHorizFlip	= \x30\x00;	# 0 = Horiz Flip disabled, 1 = enabled
+ImageVertFlip	= \x34\x00;	# 0 = Vert  Flip disabled, 1 = enabled
+BlkLevelEnable	= \x38\x00;	# 0 = Black Level Correction disabled, 1 = enabled
+BlkLevel		= \x3C\x00;	# 0 to ?
+ExpCtrlMode		= \x40\x00;	# 0 = None, 1 = Trigger Pulse Width, 2 = Internal Fixed Rate
+ExpDuration		= \x44\x00;	# Exposure time in micro seconds
+DataOutputBits	= \x00\x01;	# Bit_Dpt_Sel 0x0 = 8 bits, 0x1 = 10 bits, 0x2  = 12 bits
+CamlinkMode		= \x04\x01;	# Dat_Fmt_Sel 0x0 = Base (2 taps), 0x1 = Base (3 taps), 0x2 = Medium, 0x3 = Full, 0x4 = DECA
+DigitalOffset	= \x5C\x01;	# -511 to +512
+DigitalGain		= \x60\x01;
+#TrigEnable		= \x00\x05;	# 0 = Trigger mode disabled, 1 = enabled
+TrigEnable		= \x05\x00;	# 0 = Trigger mode disabled, 1 = enabled
+TrigInpSel		= \x04\x05;	# 0 = N/A, 1 = Ext Cam IN1, 2 = Internal, 3 = Camlink CC1, 4 = SW Trigger, 5 = Ext Cam IN2
+TrigEdgeSel		= \x08\x05;	# 0 = Rising Edge 1 = Falling Edge
+TrigDebounce	= \x0C\x05;	# Trigger debounce time in micro sec
+TrigFilterTime	= \x10\x05;	# Trigger filter time in micro sec.  Shorter pulses are ignored.
+TrigOverlapMode	= \x14\x05;	# 0 = Ignore extra trigger, 1 = Abort prior capture and retrigger
+TrigModeSel		= \x18\x05;	# 0 = Std trigger, 1 = Fast triggering
+TrigFrCap		= \x1C\x05;	# Number of frames to capture per trigger
+TrigExpDelay	= \x20\x05;	# Delay in micro sec between trigger and start of exposure
+TrigStrobeMode	= \x24\x05;	# 0 = Trig Strobe disabled, 1 = enable Strobe #1, 2 = enable Strobe #2, 3 = enable #1 and #2
+SoftReset		= \x1C\x60;	# Write 0xDEADBEEF to reset camera
+SWTrigger		= \x30\x60;
+
+# Read Operation
+# Send 3 bytes to camera
+#	0x52	(R)
+#	MSB_Addr
+#	LSB_Addr
+#
+#	Camera always returns ACK and 4 bytes
+#	If address is invalid, the 4 bytes are zeroes.
+#	0x06	(ACK)
+#	MSB
+#	...
+#	...
+#	LSB
+
+SetUint32
 {
-    out "W%02r\$1%04r\$2";    in  ACK "@\"%#s";
+    out "\x57" "%.2r\$1" "%.4r\$2";    in  "\x06" "@\"%#s";
 }
 
-GetInt
+GetUint32
 {
-    out "R%02r\$1";    in  ACK "%04r";
-#   @init { out "R%02r\$1";    in  ACK "%04r"; }
+#    out "\x52\x00\x05" "\$1\$2";
+#    out "\x52\$TrigEnable";		# Works!
+    out "\x52\$1";
+#    out "\x52%1(\$1)r%1(\$2)r";
+	in  "\x06%#04r";
+#   @init { out "\x52" "%.2r\$1";    in  "\x06" "%.4r"; }
+}
+
+GetTrigEnableLSB
+{
+    out "\x52\x00\x05";	# 0 = Trigger mode disabled, 1 = enabled
+	in  "\x06%#.4r";
+}
+GetTrigEnable
+{
+    out "\x52\$TrigEnable";
+	in  "\x06%#04r";
+}
+SetTrigEnable
+{
+    out "\x57\$TrigEnable" "%#04r";
+	in  "\x06";
+    @mismatch { in  "\x15" "%(\$1ImperxCommError)1r"; }
 }
 
