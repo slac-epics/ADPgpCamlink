@@ -41,8 +41,8 @@
 inTerminator	= "";
 outTerminator	= "";
 #PeekSize		= 0;
-ReplyTimeout	= 5500;
-ReadTimeout 	= 5000;
+ReplyTimeout	= 1500;
+ReadTimeout 	= 1000;
 #WriteTimeout	= 500;
 ExtraInput		= Ignore;
 
@@ -50,38 +50,37 @@ ExtraInput		= Ignore;
 # Composed of 2 bytes, LSB then MSB of register address
 # Composed of 2 bytes, MSB then LSB of register address
 AnalogGain		= \x00\x00;
-A2D_Bits		= \x08\x00;	# 0x0 = 8 bits, 0x1 = 10 bits, 0x2  = 12 bits
-AOI_Control		= \x10\x00;	# 0 = MAOI disable, 1 = MAOI w/ FrameRate increase, 2 = MAOI w/ constant FR
-AOI_HorizOffset	= \x14\x00;
-AOI_HorizWidth	= \x18\x00;
-AOI_VertOffset	= \x1C\x00;
-AOI_VertHeight	= \x20\x00;
-HorizDecimate	= \x24\x00;	# 0 = Horiz Decimation disabled, 1 = enabled
-VertDecimate	= \x28\x00;	# 0 = Vert  Decimation disabled, 1 = enabled
-VertBinning		= \x2C\x00;	# 0 = Vert  Binning disabled, 1 = enabled
-ImageHorizFlip	= \x30\x00;	# 0 = Horiz Flip disabled, 1 = enabled
-ImageVertFlip	= \x34\x00;	# 0 = Vert  Flip disabled, 1 = enabled
-BlkLevelEnable	= \x38\x00;	# 0 = Black Level Correction disabled, 1 = enabled
-BlkLevel		= \x3C\x00;	# 0 to ?
-ExpCtrlMode		= \x40\x00;	# 0 = None, 1 = Trigger Pulse Width, 2 = Internal Fixed Rate
-ExpDuration		= \x44\x00;	# Exposure time in micro seconds
-DataOutputBits	= \x00\x01;	# Bit_Dpt_Sel 0x0 = 8 bits, 0x1 = 10 bits, 0x2  = 12 bits
-CamlinkMode		= \x04\x01;	# Dat_Fmt_Sel 0x0 = Base (2 taps), 0x1 = Base (3 taps), 0x2 = Medium, 0x3 = Full, 0x4 = DECA
-DigitalOffset	= \x5C\x01;	# -511 to +512
-DigitalGain		= \x60\x01;
-#TrigEnable		= \x00\x05;	# 0 = Trigger mode disabled, 1 = enabled
+A2D_Bits		= \x00\x08;	# 0x0 = 8 bits, 0x1 = 10 bits, 0x2  = 12 bits
+AOI_Control		= \x00\x10;	# 0 = MAOI disable, 1 = MAOI w/ FrameRate increase, 2 = MAOI w/ constant FR
+AOI_HorizOffset	= \x00\x14;
+AOI_HorizWidth	= \x00\x18;
+AOI_VertOffset	= \x00\x1C;
+AOI_VertHeight	= \x00\x20;
+HorizDecimate	= \x00\x24;	# 0 = Horiz Decimation disabled, 1 = enabled
+VertDecimate	= \x00\x28;	# 0 = Vert  Decimation disabled, 1 = enabled
+VertBinning		= \x00\x2C;	# 0 = Vert  Binning disabled, 1 = enabled
+ImageHorizFlip	= \x00\x30;	# 0 = Horiz Flip disabled, 1 = enabled
+ImageVertFlip	= \x00\x34;	# 0 = Vert  Flip disabled, 1 = enabled
+BlkLevelEnable	= \x00\x38;	# 0 = Black Level Correction disabled, 1 = enabled
+BlkLevel		= \x00\x3C;	# 0 to ?
+ExpCtrlMode		= \x00\x40;	# 0 = None, 1 = Trigger Pulse Width, 2 = Internal Fixed Rate
+ExpDuration		= \x00\x44;	# Exposure time in micro seconds
+DataOutputBits	= \x01\x00;	# Bit_Dpt_Sel 0x0 = 8 bits, 0x1 = 10 bits, 0x2  = 12 bits
+CamlinkMode		= \x01\x04;	# Dat_Fmt_Sel 0x0 = Base (2 taps), 0x1 = Base (3 taps), 0x2 = Medium, 0x3 = Full, 0x4 = DECA
+DigitalOffset	= \x01\x5C;	# -511 to +512
+DigitalGain		= \x01\x60;
 TrigEnable		= \x05\x00;	# 0 = Trigger mode disabled, 1 = enabled
-TrigInpSel		= \x04\x05;	# 0 = N/A, 1 = Ext Cam IN1, 2 = Internal, 3 = Camlink CC1, 4 = SW Trigger, 5 = Ext Cam IN2
-TrigEdgeSel		= \x08\x05;	# 0 = Rising Edge 1 = Falling Edge
-TrigDebounce	= \x0C\x05;	# Trigger debounce time in micro sec
-TrigFilterTime	= \x10\x05;	# Trigger filter time in micro sec.  Shorter pulses are ignored.
-TrigOverlapMode	= \x14\x05;	# 0 = Ignore extra trigger, 1 = Abort prior capture and retrigger
-TrigModeSel		= \x18\x05;	# 0 = Std trigger, 1 = Fast triggering
-TrigFrCap		= \x1C\x05;	# Number of frames to capture per trigger
-TrigExpDelay	= \x20\x05;	# Delay in micro sec between trigger and start of exposure
-TrigStrobeMode	= \x24\x05;	# 0 = Trig Strobe disabled, 1 = enable Strobe #1, 2 = enable Strobe #2, 3 = enable #1 and #2
-SoftReset		= \x1C\x60;	# Write 0xDEADBEEF to reset camera
-SWTrigger		= \x30\x60;
+TrigInpSel		= \x05\x04;	# 0 = N/A, 1 = Ext Cam IN1, 2 = Internal, 3 = Camlink CC1, 4 = SW Trigger, 5 = Ext Cam IN2
+TrigEdgeSel		= \x05\x08;	# 0 = Rising Edge 1 = Falling Edge
+TrigDebounce	= \x05\x0C;	# Trigger debounce time in micro sec
+TrigFilterTime	= \x05\x10;	# Trigger filter time in micro sec.  Shorter pulses are ignored.
+TrigOverlapMode	= \x05\x14;	# 0 = Ignore extra trigger, 1 = Abort prior capture and retrigger
+TrigModeSel		= \x05\x18;	# 0 = Std trigger, 1 = Fast triggering
+TrigFrCap		= \x05\x1C;	# Number of frames to capture per trigger
+TrigExpDelay	= \x05\x20;	# Delay in micro sec between trigger and start of exposure
+TrigStrobeMode	= \x05\x24;	# 0 = Trig Strobe disabled, 1 = enable Strobe #1, 2 = enable Strobe #2, 3 = enable #1 and #2
+SoftReset		= \x60\x1C;	# Write 0xDEADBEEF to reset camera
+SWTrigger		= \x60\x30;
 
 # Read Operation
 # Send 3 bytes to camera
@@ -99,32 +98,26 @@ SWTrigger		= \x30\x60;
 
 SetUint32
 {
-    out "\x57" "%.2r\$1" "%.4r\$2";    in  "\x06" "@\"%#s";
+    out "\x57" "%.2r\$1" "%.4r\$2";    in  "\x06" "@\"%4r";
 }
 
 GetUint32
 {
-#    out "\x52\x00\x05" "\$1\$2";
 #    out "\x52\$TrigEnable";		# Works!
     out "\x52\$1";
 #    out "\x52%1(\$1)r%1(\$2)r";
-	in  "\x06%#04r";
+	in  "\x06%04r";
 #   @init { out "\x52" "%.2r\$1";    in  "\x06" "%.4r"; }
 }
 
-GetTrigEnableLSB
-{
-    out "\x52\x00\x05";	# 0 = Trigger mode disabled, 1 = enabled
-	in  "\x06%#.4r";
-}
 GetTrigEnable
 {
     out "\x52\$TrigEnable";
-	in  "\x06%#04r";
+	in  "\x06%04r";
 }
 SetTrigEnable
 {
-    out "\x57\$TrigEnable" "%#04r";
+    out "\x57\$TrigEnable" "%04r";
 	in  "\x06";
     @mismatch { in  "\x15" "%(\$1ImperxCommError)1r"; }
 }

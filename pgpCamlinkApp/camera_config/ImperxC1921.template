@@ -139,13 +139,6 @@ record( longin, "$(P)$(R)ImperxTriggerEnable_RBV" )
 #	field( INP,  "@ImperxC1921.proto GetUint32(\\\\$TrigEnable) $(PORT).SER" )
 	field( INP,  "@ImperxC1921.proto GetTrigEnable($(P)$(R)) $(PORT).SER" )
 }
-record( longin, "$(P)$(R)ImperxTriggerEnableLSB" )
-{
-	field( DTYP, "stream" )
-#	field( INP,  "@ImperxC1921.proto GetUint32(\\\\x00,\\\\x05) $(PORT).SER" )
-#	field( INP,  "@ImperxC1921.proto GetUint32(\\\\$TrigEnable) $(PORT).SER" )
-	field( INP,  "@ImperxC1921.proto GetTrigEnableLSB($(P)$(R)) $(PORT).SER" )
-}
 
 # TriggerEnable
 record( longout, "$(P)$(R)ImperxTriggerEnable" )
