@@ -135,25 +135,8 @@ record( longout, "$(P)$(R)ImperxTriggerEnable" )
 record( longin, "$(P)$(R)ImperxTriggerEnable_RBV" )
 {
 	field( DTYP, "stream" )
-#	field( INP,  "@ImperxC1921.proto GetUint32(\\\\x00,\\\\x05) $(PORT).SER" )
-#	field( INP,  "@ImperxC1921.proto GetUint32(\\\\$TrigEnable) $(PORT).SER" )
 	field( INP,  "@ImperxC1921.proto GetTrigEnable($(P)$(R)) $(PORT).SER" )
 }
-
-# TriggerEnable
-record( longout, "$(P)$(R)ImperxTriggerEnable" )
-{
-	field( DTYP, "stream" )
-	field( OUT,  "@ImperxC1921.proto SetTrigEnable($(P)$(R)) $(PORT).SER" )
-}
-record( longin, "$(P)$(R)ImperxTriggerEnable_RBV" )
-{
-	field( DTYP, "stream" )
-#	field( INP,  "@ImperxC1921.proto GetUint32(\\\\x00,\\\\x05) $(PORT).SER" )
-#	field( INP,  "@ImperxC1921.proto GetUint32(\\\\$TrigEnable) $(PORT).SER" )
-	field( INP,  "@ImperxC1921.proto GetTrigEnable($(P)$(R)) $(PORT).SER" )
-}
-
 
 # Include a serialMonitor.template monitor
 # This should be the first PV you process in the CamReConfigSeq
