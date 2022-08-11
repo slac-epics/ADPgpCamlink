@@ -70,8 +70,8 @@ CamlinkMode		= \x01\x04;	# Dat_Fmt_Sel 0x0 = Base (2 taps), 0x1 = Base (3 taps),
 DigitalOffset	= \x01\x5C;	# -511 to +512
 DigitalGain		= \x01\x60;
 TrigEnable		= \x05\x00;	# 0 = Trigger mode disabled, 1 = enabled
-TrigInpSel		= \x05\x04;	# 0 = N/A, 1 = Ext Cam IN1, 2 = Internal, 3 = Camlink CC1, 4 = SW Trigger, 5 = Ext Cam IN2
-TrigEdgeSel		= \x05\x08;	# 0 = Rising Edge 1 = Falling Edge
+TrigInput		= \x05\x04;	# 0 = N/A, 1 = Ext Cam IN1, 2 = Internal, 3 = Camlink CC1, 4 = SW Trigger, 5 = Ext Cam IN2
+TrigEdgeSelect	= \x05\x08;	# 0 = Rising Edge 1 = Falling Edge
 TrigDebounce	= \x05\x0C;	# Trigger debounce time in micro sec
 TrigFilterTime	= \x05\x10;	# Trigger filter time in micro sec.  Shorter pulses are ignored.
 TrigOverlapMode	= \x05\x14;	# 0 = Ignore extra trigger, 1 = Abort prior capture and retrigger
@@ -118,6 +118,78 @@ GetTrigEnable
 SetTrigEnable
 {
     out "\x57\$TrigEnable" "%04r";
+	in  "\x06";
+    @mismatch { in  "\x15" "%(\$1ImperxCommError)1r"; }
+}
+
+GetTrigInput
+{
+    out "\x52\$TrigInput";
+	in  "\x06%04r";
+}
+SetTrigInput
+{
+    out "\x57\$TrigInput" "%04r";
+	in  "\x06";
+    @mismatch { in  "\x15" "%(\$1ImperxCommError)1r"; }
+}
+
+GetTrigEdgeSelect
+{
+    out "\x52\$TrigEdgeSelect" "%04r";
+	in  "\x06%04r";
+}
+SetTrigEdgeSelect
+{
+    out "\x57\$TrigEdgeSelect" "%04r";
+	in  "\x06";
+    @mismatch { in  "\x15" "%(\$1ImperxCommError)1r"; }
+}
+
+GetExpCtrlMode
+{
+    out "\x52\$ExpCtrlMode";
+	in  "\x06%04r";
+}
+SetExpCtrlMode
+{
+    out "\x57\$ExpCtrlMode" "%04r";
+	in  "\x06";
+    @mismatch { in  "\x15" "%(\$1ImperxCommError)1r"; }
+}
+
+GetA2D_Bits
+{
+    out "\x52\$A2D_Bits";
+	in  "\x06%04r";
+}
+SetA2D_Bits
+{
+    out "\x57\$A2D_Bits" "%04r";
+	in  "\x06";
+    @mismatch { in  "\x15" "%(\$1ImperxCommError)1r"; }
+}
+
+GetDataOutputBits
+{
+    out "\x52\$DataOutputBits";
+	in  "\x06%04r";
+}
+SetDataOutputBits
+{
+    out "\x57\$DataOutputBits" "%04r";
+	in  "\x06";
+    @mismatch { in  "\x15" "%(\$1ImperxCommError)1r"; }
+}
+
+GetCamlinkMode
+{
+    out "\x52\$CamlinkMode";
+	in  "\x06%04r";
+}
+SetCamlinkMode
+{
+    out "\x57\$CamlinkMode" "%04r";
 	in  "\x06";
     @mismatch { in  "\x15" "%(\$1ImperxCommError)1r"; }
 }

@@ -127,15 +127,163 @@ record( mbbo, "$(P)$(R)ImperxCommError" )
 }
 
 # TriggerEnable
-record( longout, "$(P)$(R)ImperxTriggerEnable" )
+record( mbbo, "$(P)$(R)ImperxTriggerEnable" )
 {
+	field( DOL,  "1" )
+	field( PINI, "YES" )
 	field( DTYP, "stream" )
 	field( OUT,  "@ImperxC1921.proto SetTriggerEnable($(P)$(R)) $(PORT).SER" )
+	field( FLNK, "$(P)$(R)ImperxTriggerEnable_RBV" )
+	field( ZRVL, "0" ) field( ZRST, "Disabled" )
+	field( ONVL, "1" ) field( ONST, "Enabled" )
+#	info( autosaveFields, "VAL" )
 }
-record( longin, "$(P)$(R)ImperxTriggerEnable_RBV" )
+record( mbbi, "$(P)$(R)ImperxTriggerEnable_RBV" )
 {
 	field( DTYP, "stream" )
 	field( INP,  "@ImperxC1921.proto GetTrigEnable($(P)$(R)) $(PORT).SER" )
+	field( ZRVL, "0" ) field( ZRST, "Disabled" )
+	field( ONVL, "1" ) field( ONST, "Enabled" )
+}
+
+# TrigInput
+record( mbbo, "$(P)$(R)ImperxTrigInput" )
+{
+	field( DOL,  "3" )
+	field( PINI, "YES" )
+	field( DTYP, "stream" )
+	field( OUT,  "@ImperxC1921.proto SetTrigInput($(P)$(R)) $(PORT).SER" )
+	field( ZRVL, "0" ) field( ZRST, "N/A" )
+	field( ONVL, "1" ) field( ONST, "Ext Cam IN1" )
+	field( TWVL, "2" ) field( TWST, "Internal" )
+	field( THVL, "3" ) field( THST, "Camlink CC1" )
+	field( FRVL, "4" ) field( FRST, "Software" )
+	field( FVVL, "5" ) field( FVST, "Ext Cam IN2" )
+	field( FLNK, "$(P)$(R)ImperxTrigInput_RBV" )
+	info( autosaveFields, "VAL" )
+}
+record( mbbi, "$(P)$(R)ImperxTrigInput_RBV" )
+{
+	field( DTYP, "stream" )
+	field( INP,  "@ImperxC1921.proto GetTrigInput($(P)$(R)) $(PORT).SER" )
+	field( ZRVL, "0" ) field( ZRST, "N/A" )
+	field( ONVL, "1" ) field( ONST, "Ext Cam IN1" )
+	field( TWVL, "2" ) field( TWST, "Internal" )
+	field( THVL, "3" ) field( THST, "Camlink CC1" )
+	field( FRVL, "4" ) field( FRST, "Software" )
+	field( FVVL, "5" ) field( FVST, "Ext Cam IN2" )
+}
+
+# TrigEdgeSelect
+record( mbbo, "$(P)$(R)ImperxTrigEdgeSelect" )
+{
+	field( DOL,  "0" )
+	field( PINI, "YES" )
+	field( DTYP, "stream" )
+	field( OUT,  "@ImperxC1921.proto SetTrigEdgeSelect($(P)$(R)) $(PORT).SER" )
+	field( FLNK, "$(P)$(R)ImperxTrigEdgeSelect_RBV" )
+	field( ZRVL, "0" ) field( ZRST, "Rising" )
+	field( ONVL, "1" ) field( ONST, "Falling" )
+	info( autosaveFields, "VAL" )
+}
+record( mbbi, "$(P)$(R)ImperxTrigEdgeSelect_RBV" )
+{
+	field( DTYP, "stream" )
+	field( INP,  "@ImperxC1921.proto GetTrigEdgeSelect($(P)$(R)) $(PORT).SER" )
+	field( ZRVL, "0" ) field( ZRST, "Rising" )
+	field( ONVL, "1" ) field( ONST, "Falling" )
+}
+
+# ExpCtrlMode
+record( mbbo, "$(P)$(R)ImperxExpCtrlMode" )
+{
+	field( DOL,  "1" )
+	field( PINI, "YES" )
+	field( DTYP, "stream" )
+	field( OUT,  "@ImperxC1921.proto SetExpCtrlMode($(P)$(R)) $(PORT).SER" )
+	field( ZRVL, "0" ) field( ZRST, "Off" )
+	field( ONVL, "1" ) field( ONST, "Pulse" )
+	field( TWVL, "2" ) field( TWST, "Internal" )
+	field( FLNK, "$(P)$(R)ImperxExpCtrlMode_RBV" )
+	info( autosaveFields, "VAL" )
+}
+record( mbbi, "$(P)$(R)ImperxExpCtrlMode_RBV" )
+{
+	field( DTYP, "stream" )
+	field( INP,  "@ImperxC1921.proto GetExpCtrlMode($(P)$(R)) $(PORT).SER" )
+	field( ZRVL, "0" ) field( ZRST, "Off" )
+	field( ONVL, "1" ) field( ONST, "Pulse" )
+	field( TWVL, "2" ) field( TWST, "Internal" )
+}
+
+# A2D_Bits
+record( mbbo, "$(P)$(R)ImperxA2D_Bits" )
+{
+	field( DOL,  "1" )
+	field( PINI, "YES" )
+	field( DTYP, "stream" )
+	field( OUT,  "@ImperxC1921.proto SetA2D_Bits($(P)$(R)) $(PORT).SER" )
+	field( ZRVL, "0" ) field( ZRST, "8 bits" )
+	field( ONVL, "1" ) field( ONST, "10 bits" )
+	field( TWVL, "2" ) field( TWST, "12 bits" )
+	field( FLNK, "$(P)$(R)ImperxA2D_Bits_RBV" )
+	info( autosaveFields, "VAL" )
+}
+record( mbbi, "$(P)$(R)ImperxA2D_Bits_RBV" )
+{
+	field( DTYP, "stream" )
+	field( INP,  "@ImperxC1921.proto GetA2D_Bits($(P)$(R)) $(PORT).SER" )
+	field( ZRVL, "0" ) field( ZRST, "8 bits" )
+	field( ONVL, "1" ) field( ONST, "10 bits" )
+	field( TWVL, "2" ) field( TWST, "12 bits" )
+}
+
+# DataOutputBits
+record( mbbo, "$(P)$(R)ImperxDataOutputBits" )
+{
+	field( DOL,  "1" )
+	field( PINI, "YES" )
+	field( DTYP, "stream" )
+	field( OUT,  "@ImperxC1921.proto SetDataOutputBits($(P)$(R)) $(PORT).SER" )
+	field( ZRVL, "0" ) field( ZRST, "8 bits" )
+	field( ONVL, "1" ) field( ONST, "10 bits" )
+	field( TWVL, "2" ) field( TWST, "12 bits" )
+	field( FLNK, "$(P)$(R)ImperxDataOutputBits_RBV" )
+	info( autosaveFields, "VAL" )
+}
+record( mbbi, "$(P)$(R)ImperxDataOutputBits_RBV" )
+{
+	field( DTYP, "stream" )
+	field( INP,  "@ImperxC1921.proto GetDataOutputBits($(P)$(R)) $(PORT).SER" )
+	field( ZRVL, "0" ) field( ZRST, "8 bits" )
+	field( ONVL, "1" ) field( ONST, "10 bits" )
+	field( TWVL, "2" ) field( TWST, "12 bits" )
+}
+
+# CamlinkMode
+record( mbbo, "$(P)$(R)ImperxCamlinkMode" )
+{
+	field( DOL,  "3" )
+	field( PINI, "YES" )
+	field( DTYP, "stream" )
+	field( OUT,  "@ImperxC1921.proto SetCamlinkMode($(P)$(R)) $(PORT).SER" )
+	field( ZRVL, "0" ) field( ZRST, "Base 2 taps" )
+	field( ONVL, "1" ) field( ONST, "Base 3 taps" )
+	field( TWVL, "2" ) field( TWST, "Medium" )
+	field( THVL, "3" ) field( THST, "Full" )
+	field( FRVL, "4" ) field( FRST, "DECA" )
+	field( FLNK, "$(P)$(R)ImperxCamlinkMode_RBV" )
+	info( autosaveFields, "VAL" )
+}
+record( mbbi, "$(P)$(R)ImperxCamlinkMode_RBV" )
+{
+	field( DTYP, "stream" )
+	field( INP,  "@ImperxC1921.proto GetCamlinkMode($(P)$(R)) $(PORT).SER" )
+	field( ZRVL, "0" ) field( ZRST, "Base 2 taps" )
+	field( ONVL, "1" ) field( ONST, "Base 3 taps" )
+	field( TWVL, "2" ) field( TWST, "Medium" )
+	field( THVL, "3" ) field( THST, "Full" )
+	field( FRVL, "4" ) field( FRST, "DECA" )
 }
 
 # Include a serialMonitor.template monitor
