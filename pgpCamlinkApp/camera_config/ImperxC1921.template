@@ -8,6 +8,7 @@
 #	PGP_PV		PV prefix for rogue register PVs
 #	PGP_LANE	PGP_LANE number 0-3
 #
+# Note: Frame readout time is apparently 13.8ms, so we can't do 120hz
 
 record( stringin, "$(P)$(R)CamModel" )
 {
@@ -132,7 +133,7 @@ record( mbbo, "$(P)$(R)ImperxTriggerEnable" )
 	field( DOL,  "1" )
 	field( PINI, "YES" )
 	field( DTYP, "stream" )
-	field( OUT,  "@ImperxC1921.proto SetTriggerEnable($(P)$(R)) $(PORT).SER" )
+	field( OUT,  "@ImperxC1921.proto SetTrigEnable($(P)$(R)) $(PORT).SER" )
 	field( FLNK, "$(P)$(R)ImperxTriggerEnable_RBV" )
 	field( ZRVL, "0" ) field( ZRST, "Disabled" )
 	field( ONVL, "1" ) field( ONST, "Enabled" )
@@ -219,7 +220,7 @@ record( mbbi, "$(P)$(R)ImperxExpCtrlMode_RBV" )
 # A2D_Bits
 record( mbbo, "$(P)$(R)ImperxA2D_Bits" )
 {
-	field( DOL,  "1" )
+	field( DOL,  "2" )
 	field( PINI, "YES" )
 	field( DTYP, "stream" )
 	field( OUT,  "@ImperxC1921.proto SetA2D_Bits($(P)$(R)) $(PORT).SER" )
@@ -241,7 +242,7 @@ record( mbbi, "$(P)$(R)ImperxA2D_Bits_RBV" )
 # DataOutputBits
 record( mbbo, "$(P)$(R)ImperxDataOutputBits" )
 {
-	field( DOL,  "1" )
+	field( DOL,  "2" )
 	field( PINI, "YES" )
 	field( DTYP, "stream" )
 	field( OUT,  "@ImperxC1921.proto SetDataOutputBits($(P)$(R)) $(PORT).SER" )
@@ -284,6 +285,127 @@ record( mbbi, "$(P)$(R)ImperxCamlinkMode_RBV" )
 	field( TWVL, "2" ) field( TWST, "Medium" )
 	field( THVL, "3" ) field( THST, "Full" )
 	field( FRVL, "4" ) field( FRST, "DECA" )
+}
+
+# TrigModeSelect
+record( longout, "$(P)$(R)ImperxTrigModeSelect" )
+{
+	field( DOL,  "1" )
+	field( PINI, "YES" )
+	field( DTYP, "stream" )
+	field( OUT,  "@ImperxC1921.proto SetTrigModeSelect($(P)$(R)) $(PORT).SER" )
+	field( FLNK, "$(P)$(R)ImperxTrigModeSelect_RBV" )
+	info( autosaveFields, "VAL" )
+}
+record( longin, "$(P)$(R)ImperxTrigModeSelect_RBV" )
+{
+	field( DTYP, "stream" )
+	field( INP,  "@ImperxC1921.proto GetTrigModeSelect($(P)$(R)) $(PORT).SER" )
+}
+
+# FramesPerTrigger
+record( longout, "$(P)$(R)ImperxFramesPerTrigger" )
+{
+	field( DOL,  "1" )
+	field( PINI, "YES" )
+	field( DTYP, "stream" )
+	field( OUT,  "@ImperxC1921.proto SetFramesPerTrigger($(P)$(R)) $(PORT).SER" )
+	field( FLNK, "$(P)$(R)ImperxFramesPerTrigger_RBV" )
+	info( autosaveFields, "VAL" )
+}
+record( longin, "$(P)$(R)ImperxFramesPerTrigger_RBV" )
+{
+	field( DTYP, "stream" )
+	field( INP,  "@ImperxC1921.proto GetFramesPerTrigger($(P)$(R)) $(PORT).SER" )
+}
+
+# TrigExpDelay (Set to zero as our EVR has it's own TriggerDelay that's more accurate)
+record( longout, "$(P)$(R)ImperxTrigExpDelay" )
+{
+	field( DESC, "Trigger Exposure Delay, should be 0" )
+	field( DOL,  "0" )
+	field( PINI, "YES" )
+	field( DTYP, "stream" )
+	field( OUT,  "@ImperxC1921.proto SetTrigExpDelay($(P)$(R)) $(PORT).SER" )
+	field( EGU,  "us" )
+	field( FLNK, "$(P)$(R)ImperxTrigExpDelay_RBV" )
+}
+record( longin, "$(P)$(R)ImperxTrigExpDelay_RBV" )
+{
+	field( DESC, "Trigger Exposure Delay, should be 0" )
+	field( DTYP, "stream" )
+	field( INP,  "@ImperxC1921.proto GetTrigExpDelay($(P)$(R)) $(PORT).SER" )
+	field( EGU,  "us" )
+}
+
+# TrigStrobeMode
+record( longout, "$(P)$(R)ImperxTrigStrobeMode" )
+{
+	field( DOL,  "3" )
+	field( PINI, "YES" )
+	field( DTYP, "stream" )
+	field( OUT,  "@ImperxC1921.proto SetTrigStrobeMode($(P)$(R)) $(PORT).SER" )
+	field( FLNK, "$(P)$(R)ImperxTrigStrobeMode_RBV" )
+	info( autosaveFields, "VAL" )
+}
+record( longin, "$(P)$(R)ImperxTrigStrobeMode_RBV" )
+{
+	field( DTYP, "stream" )
+	field( INP,  "@ImperxC1921.proto GetTrigStrobeMode($(P)$(R)) $(PORT).SER" )
+}
+
+# TrigDebounce
+record( longout, "$(P)$(R)ImperxTrigDebounce" )
+{
+	field( DOL,  "1" )
+	field( PINI, "YES" )
+	field( DTYP, "stream" )
+	field( OUT,  "@ImperxC1921.proto SetTrigDebounce($(P)$(R)) $(PORT).SER" )
+	field( EGU,  "us" )
+	field( FLNK, "$(P)$(R)ImperxTrigDebounce_RBV" )
+	info( autosaveFields, "VAL" )
+}
+record( longin, "$(P)$(R)ImperxTrigDebounce_RBV" )
+{
+	field( DTYP, "stream" )
+	field( INP,  "@ImperxC1921.proto GetTrigDebounce($(P)$(R)) $(PORT).SER" )
+	field( EGU,  "us" )
+}
+
+# TrigFilterTime
+record( longout, "$(P)$(R)ImperxTrigFilterTime" )
+{
+	field( DOL,  "5" )
+	field( PINI, "YES" )
+	field( DTYP, "stream" )
+	field( OUT,  "@ImperxC1921.proto SetTrigFilterTime($(P)$(R)) $(PORT).SER" )
+	field( EGU,  "us" )
+	field( FLNK, "$(P)$(R)ImperxTrigFilterTime_RBV" )
+	info( autosaveFields, "VAL" )
+}
+record( longin, "$(P)$(R)ImperxTrigFilterTime_RBV" )
+{
+	field( DTYP, "stream" )
+	field( INP,  "@ImperxC1921.proto GetTrigFilterTime($(P)$(R)) $(PORT).SER" )
+	field( EGU,  "us" )
+}
+
+# TrigOverlapMode
+record( longout, "$(P)$(R)ImperxTrigOverlapMode" )
+{
+	field( DESC, "0=IgnoreExtraTrig, 1=Retrigger" )
+	field( DOL,  "1" )
+	field( PINI, "YES" )
+	field( DTYP, "stream" )
+	field( OUT,  "@ImperxC1921.proto SetTrigOverlapMode($(P)$(R)) $(PORT).SER" )
+	field( FLNK, "$(P)$(R)ImperxTrigOverlapMode_RBV" )
+	info( autosaveFields, "VAL" )
+}
+record( longin, "$(P)$(R)ImperxTrigOverlapMode_RBV" )
+{
+	field( DESC, "0=IgnoreExtraTrig, 1=Retrigger" )
+	field( DTYP, "stream" )
+	field( INP,  "@ImperxC1921.proto GetTrigOverlapMode($(P)$(R)) $(PORT).SER" )
 }
 
 # Include a serialMonitor.template monitor

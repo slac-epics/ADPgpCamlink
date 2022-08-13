@@ -49,7 +49,7 @@ ExtraInput		= Ignore;
 # Imperx C1921 Register Addresses
 # Composed of 2 bytes, LSB then MSB of register address
 # Composed of 2 bytes, MSB then LSB of register address
-AnalogGain		= \x00\x00;
+AnalogGain		= \x00\x00;	# 0dB to 24dB
 A2D_Bits		= \x00\x08;	# 0x0 = 8 bits, 0x1 = 10 bits, 0x2  = 12 bits
 AOI_Control		= \x00\x10;	# 0 = MAOI disable, 1 = MAOI w/ FrameRate increase, 2 = MAOI w/ constant FR
 AOI_HorizOffset	= \x00\x14;
@@ -68,15 +68,15 @@ ExpDuration		= \x00\x44;	# Exposure time in micro seconds
 DataOutputBits	= \x01\x00;	# Bit_Dpt_Sel 0x0 = 8 bits, 0x1 = 10 bits, 0x2  = 12 bits
 CamlinkMode		= \x01\x04;	# Dat_Fmt_Sel 0x0 = Base (2 taps), 0x1 = Base (3 taps), 0x2 = Medium, 0x3 = Full, 0x4 = DECA
 DigitalOffset	= \x01\x5C;	# -511 to +512
-DigitalGain		= \x01\x60;
+DigitalGain		= \x01\x60; # 0dB to 24dB
 TrigEnable		= \x05\x00;	# 0 = Trigger mode disabled, 1 = enabled
 TrigInput		= \x05\x04;	# 0 = N/A, 1 = Ext Cam IN1, 2 = Internal, 3 = Camlink CC1, 4 = SW Trigger, 5 = Ext Cam IN2
 TrigEdgeSelect	= \x05\x08;	# 0 = Rising Edge 1 = Falling Edge
 TrigDebounce	= \x05\x0C;	# Trigger debounce time in micro sec
 TrigFilterTime	= \x05\x10;	# Trigger filter time in micro sec.  Shorter pulses are ignored.
 TrigOverlapMode	= \x05\x14;	# 0 = Ignore extra trigger, 1 = Abort prior capture and retrigger
-TrigModeSel		= \x05\x18;	# 0 = Std trigger, 1 = Fast triggering
-TrigFrCap		= \x05\x1C;	# Number of frames to capture per trigger
+TrigModeSelect		= \x05\x18;	# 0 = Std trigger, 1 = Fast triggering
+FramesPerTrigger= \x05\x1C;	# Number of frames to capture per trigger
 TrigExpDelay	= \x05\x20;	# Delay in micro sec between trigger and start of exposure
 TrigStrobeMode	= \x05\x24;	# 0 = Trig Strobe disabled, 1 = enable Strobe #1, 2 = enable Strobe #2, 3 = enable #1 and #2
 SoftReset		= \x60\x1C;	# Write 0xDEADBEEF to reset camera
@@ -190,6 +190,90 @@ GetCamlinkMode
 SetCamlinkMode
 {
     out "\x57\$CamlinkMode" "%04r";
+	in  "\x06";
+    @mismatch { in  "\x15" "%(\$1ImperxCommError)1r"; }
+}
+
+GetTrigDebounce
+{
+    out "\x52\$TrigDebounce";
+	in  "\x06%04r";
+}
+SetTrigDebounce
+{
+    out "\x57\$TrigDebounce" "%04r";
+	in  "\x06";
+    @mismatch { in  "\x15" "%(\$1ImperxCommError)1r"; }
+}
+
+GetTrigFilterTime
+{
+    out "\x52\$TrigFilterTime";
+	in  "\x06%04r";
+}
+SetTrigFilterTime
+{
+    out "\x57\$TrigFilterTime" "%04r";
+	in  "\x06";
+    @mismatch { in  "\x15" "%(\$1ImperxCommError)1r"; }
+}
+
+GetTrigOverlapMode
+{
+    out "\x52\$TrigOverlapMode";
+	in  "\x06%04r";
+}
+SetTrigOverlapMode
+{
+    out "\x57\$TrigOverlapMode" "%04r";
+	in  "\x06";
+    @mismatch { in  "\x15" "%(\$1ImperxCommError)1r"; }
+}
+
+GetFramesPerTrigger
+{
+    out "\x52\$FramesPerTrigger";
+	in  "\x06%04r";
+}
+SetFramesPerTrigger
+{
+    out "\x57\$FramesPerTrigger" "%04r";
+	in  "\x06";
+    @mismatch { in  "\x15" "%(\$1ImperxCommError)1r"; }
+}
+
+GetTrigExpDelay
+{
+    out "\x52\$TrigExpDelay";
+	in  "\x06%04r";
+}
+SetTrigExpDelay
+{
+    out "\x57\$TrigExpDelay" "%04r";
+	in  "\x06";
+    @mismatch { in  "\x15" "%(\$1ImperxCommError)1r"; }
+}
+
+GetTrigModeSelect
+{
+    out "\x52\$TrigModeSelect";
+	in  "\x06%04r";
+}
+SetTrigModeSelect
+{
+    out "\x57\$TrigModeSelect" "%04r";
+	in  "\x06";
+    @mismatch { in  "\x15" "%(\$1ImperxCommError)1r"; }
+}
+
+GetTrigStrobeMode
+{
+    out "\x52\$TrigStrobeMode";
+	in  "\x06%04r";
+}
+SetTrigStrobeMode
+{
+    out "\x57\$TrigStrobeMode" "%04r";
 	in  "\x06";
     @mismatch { in  "\x15" "%(\$1ImperxCommError)1r"; }
 }

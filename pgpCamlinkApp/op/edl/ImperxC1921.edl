@@ -3,8 +3,8 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 1198
-y 430
+x 1222
+y 1850
 w 700
 h 600
 font "helvetica-medium-r-12.0"
@@ -358,7 +358,7 @@ major 4
 minor 7
 release 0
 x 596
-y 384
+y 524
 w 96
 h 20
 controlPv "$(P)$(R)AcquireTime_RBV"
@@ -385,7 +385,7 @@ major 4
 minor 7
 release 0
 x 596
-y 360
+y 500
 w 96
 h 20
 controlPv "$(P)$(R)TriggerMode_RBV"
@@ -410,7 +410,7 @@ major 4
 minor 7
 release 0
 x 508
-y 360
+y 500
 w 80
 h 20
 controlPv "$(P)$(R)CamTriggerMode_RBV"
@@ -435,7 +435,7 @@ major 4
 minor 7
 release 0
 x 508
-y 384
+y 524
 w 80
 h 20
 controlPv "$(P)$(R)CamAcquireTime_RBV"
@@ -462,7 +462,7 @@ major 4
 minor 1
 release 1
 x 508
-y 336
+y 476
 w 80
 h 20
 font "helvetica-medium-r-12.0"
@@ -481,7 +481,7 @@ major 4
 minor 1
 release 1
 x 596
-y 336
+y 476
 w 96
 h 20
 font "helvetica-medium-r-12.0"
@@ -500,7 +500,7 @@ major 4
 minor 7
 release 0
 x 372
-y 360
+y 500
 w 88
 h 20
 controlPv "$(P)$(R)ImperxTrigInput_RBV"
@@ -525,7 +525,7 @@ major 4
 minor 1
 release 1
 x 372
-y 336
+y 476
 w 88
 h 20
 font "helvetica-medium-r-12.0"
@@ -544,7 +544,7 @@ major 4
 minor 1
 release 1
 x 300
-y 336
+y 476
 w 64
 h 20
 font "helvetica-medium-r-12.0"
@@ -563,7 +563,7 @@ major 4
 minor 7
 release 0
 x 372
-y 384
+y 524
 w 88
 h 20
 controlPv "$(P)$(R)ImperxRawShutterSpeed_RBV"
@@ -590,7 +590,7 @@ major 4
 minor 7
 release 0
 x 300
-y 360
+y 500
 w 64
 h 20
 controlPv "$(P)$(R)ImperxTrigEdgeSelect"
@@ -615,7 +615,7 @@ major 4
 minor 7
 release 0
 x 172
-y 360
+y 500
 w 68
 h 20
 controlPv "$(P)$(R)CamTriggerMode"
@@ -640,7 +640,7 @@ major 4
 minor 7
 release 0
 x 172
-y 384
+y 524
 w 68
 h 20
 controlPv "$(P)$(R)CamAcquireTime"
@@ -667,7 +667,7 @@ major 4
 minor 1
 release 1
 x 172
-y 336
+y 476
 w 68
 h 20
 font "helvetica-medium-r-12.0"
@@ -686,7 +686,7 @@ major 4
 minor 7
 release 0
 x 84
-y 360
+y 500
 w 80
 h 20
 controlPv "$(P)$(R)TriggerMode"
@@ -711,7 +711,7 @@ major 4
 minor 7
 release 0
 x 84
-y 384
+y 524
 w 80
 h 20
 controlPv "$(P)$(R)AcquireTime"
@@ -738,7 +738,7 @@ major 4
 minor 1
 release 1
 x 84
-y 336
+y 476
 w 80
 h 20
 font "helvetica-medium-r-12.0"
@@ -757,7 +757,7 @@ major 4
 minor 7
 release 0
 x 300
-y 384
+y 524
 w 64
 h 20
 controlPv "$(P)$(R)ImperxRawShutterSpeed"
@@ -784,7 +784,7 @@ major 4
 minor 1
 release 1
 x 4
-y 360
+y 500
 w 76
 h 20
 font "helvetica-medium-r-12.0"
@@ -803,7 +803,7 @@ major 4
 minor 1
 release 1
 x 4
-y 384
+y 524
 w 76
 h 20
 font "helvetica-medium-r-12.0"
@@ -1299,5 +1299,509 @@ bgColor index 3
 value {
   "TrigInput"
 }
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 300
+y 260
+w 108
+h 20
+controlPv "$(P)$(R)ImperxTrigExpDelay_RBV"
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+fgColor index 15
+fgAlarm
+bgColor index 12
+limitsFromDb
+nullColor index 40
+smartRefresh
+useHexPrefix
+showUnits
+newPos
+objType "monitors"
+noExecuteClipMask
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 188
+y 260
+w 100
+h 20
+controlPv "$(P)$(R)ImperxTrigExpDelay"
+format "decimal"
+font "helvetica-medium-r-12.0"
+fgColor index 25
+fgAlarm
+bgColor index 5
+editable
+motifWidget
+nullColor index 40
+smartRefresh
+fastUpdate
+useHexPrefix
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 4
+y 260
+w 172
+h 20
+font "helvetica-medium-r-12.0"
+fontAlign "right"
+fgColor index 14
+bgColor index 3
+value {
+  "TrigExpDelay"
+}
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 300
+y 288
+w 108
+h 20
+controlPv "$(P)$(R)ImperxTrigModeSelect_RBV"
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+fgColor index 15
+fgAlarm
+bgColor index 12
+limitsFromDb
+nullColor index 40
+smartRefresh
+useHexPrefix
+showUnits
+newPos
+objType "monitors"
+noExecuteClipMask
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 188
+y 288
+w 100
+h 20
+controlPv "$(P)$(R)ImperxTrigModeSelect"
+format "decimal"
+font "helvetica-medium-r-12.0"
+fgColor index 25
+fgAlarm
+bgColor index 5
+editable
+motifWidget
+nullColor index 40
+smartRefresh
+fastUpdate
+useHexPrefix
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 4
+y 288
+w 172
+h 20
+font "helvetica-medium-r-12.0"
+fontAlign "right"
+fgColor index 14
+bgColor index 3
+value {
+  "TrigModeSelect"
+}
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 300
+y 316
+w 108
+h 20
+controlPv "$(P)$(R)ImperxTrigStrobeMode_RBV"
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+fgColor index 15
+fgAlarm
+bgColor index 12
+limitsFromDb
+nullColor index 40
+smartRefresh
+useHexPrefix
+showUnits
+newPos
+objType "monitors"
+noExecuteClipMask
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 188
+y 316
+w 100
+h 20
+controlPv "$(P)$(R)ImperxTrigStrobeMode"
+format "decimal"
+font "helvetica-medium-r-12.0"
+fgColor index 25
+fgAlarm
+bgColor index 5
+editable
+motifWidget
+nullColor index 40
+smartRefresh
+fastUpdate
+useHexPrefix
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 4
+y 316
+w 172
+h 20
+font "helvetica-medium-r-12.0"
+fontAlign "right"
+fgColor index 14
+bgColor index 3
+value {
+  "TrigStrobeMode"
+}
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 4
+y 344
+w 172
+h 20
+font "helvetica-medium-r-12.0"
+fontAlign "right"
+fgColor index 14
+bgColor index 3
+value {
+  "TrigDebounce"
+}
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 188
+y 344
+w 100
+h 20
+controlPv "$(P)$(R)ImperxTrigDebounce"
+format "decimal"
+font "helvetica-medium-r-12.0"
+fgColor index 25
+fgAlarm
+bgColor index 5
+editable
+motifWidget
+nullColor index 40
+smartRefresh
+fastUpdate
+useHexPrefix
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 300
+y 344
+w 108
+h 20
+controlPv "$(P)$(R)ImperxTrigDebounce_RBV"
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+fgColor index 15
+fgAlarm
+bgColor index 12
+limitsFromDb
+nullColor index 40
+smartRefresh
+useHexPrefix
+showUnits
+newPos
+objType "monitors"
+noExecuteClipMask
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 4
+y 372
+w 172
+h 20
+font "helvetica-medium-r-12.0"
+fontAlign "right"
+fgColor index 14
+bgColor index 3
+value {
+  "TrigFilterTime"
+}
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 188
+y 372
+w 100
+h 20
+controlPv "$(P)$(R)ImperxTrigFilterTime"
+format "decimal"
+font "helvetica-medium-r-12.0"
+fgColor index 25
+fgAlarm
+bgColor index 5
+editable
+motifWidget
+nullColor index 40
+smartRefresh
+fastUpdate
+useHexPrefix
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 300
+y 372
+w 108
+h 20
+controlPv "$(P)$(R)ImperxTrigFilterTime_RBV"
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+fgColor index 15
+fgAlarm
+bgColor index 12
+limitsFromDb
+nullColor index 40
+smartRefresh
+useHexPrefix
+showUnits
+newPos
+objType "monitors"
+noExecuteClipMask
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 4
+y 400
+w 172
+h 24
+font "helvetica-medium-r-12.0"
+fontAlign "right"
+fgColor index 14
+bgColor index 3
+value {
+  "TrigOverlapMode"
+}
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 188
+y 400
+w 100
+h 24
+controlPv "$(P)$(R)ImperxTrigOverlapMode"
+format "decimal"
+font "helvetica-medium-r-12.0"
+fgColor index 25
+fgAlarm
+bgColor index 5
+editable
+motifWidget
+nullColor index 40
+smartRefresh
+fastUpdate
+useHexPrefix
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 300
+y 400
+w 108
+h 24
+controlPv "$(P)$(R)ImperxTrigOverlapMode_RBV"
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+fgColor index 15
+fgAlarm
+bgColor index 12
+limitsFromDb
+nullColor index 40
+smartRefresh
+useHexPrefix
+showUnits
+newPos
+objType "monitors"
+noExecuteClipMask
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 4
+y 432
+w 172
+h 20
+font "helvetica-medium-r-12.0"
+fontAlign "right"
+fgColor index 14
+bgColor index 3
+value {
+  "FramesPerTrigger"
+}
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 188
+y 432
+w 100
+h 20
+controlPv "$(P)$(R)ImperxFramesPerTrigger"
+format "decimal"
+font "helvetica-medium-r-12.0"
+fgColor index 25
+fgAlarm
+bgColor index 5
+editable
+motifWidget
+nullColor index 40
+smartRefresh
+fastUpdate
+useHexPrefix
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 300
+y 432
+w 108
+h 20
+controlPv "$(P)$(R)ImperxFramesPerTrigger_RBV"
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+fgColor index 15
+fgAlarm
+bgColor index 12
+limitsFromDb
+nullColor index 40
+smartRefresh
+useHexPrefix
+showUnits
+newPos
+objType "monitors"
+noExecuteClipMask
 endObjectProperties
 
