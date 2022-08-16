@@ -47,10 +47,10 @@ record( mbbo, "$(P)$(R)CamlinkLinkMode" )
 }
 record( mbbo, "$(P)$(R)CamlinkDataMode" )
 {
-	field( DOL,  "2" ) # 10 Bit
+	field( DOL,  "3" ) # 12 Bit
 	field( ONSV, "MINOR" )
-	field( TWSV, "NO_ALARM" )
-	field( THSV, "MINOR" )
+	field( TWSV, "MINOR" )
+	field( THSV, "NO_ALARM" )
 	field( FRSV, "MINOR" )
 	field( FVSV, "MINOR" )
 	field( PINI, "YES" )
@@ -65,9 +65,9 @@ record( mbbo, "$(P)$(R)CamlinkFrameMode" )
 record( longout, "$(P)$(R)CamlinkHTap" )
 {
 	field( DOL,  "8" )
-	field( HIGH, "10" )
+	field( HIGH, "9" )
 	field( HSV,  "MINOR" )
-	field( LOW,  "9" )
+	field( LOW,  "7" )
 	field( LSV,  "MINOR" )
 	field( PINI, "YES" )
 }
