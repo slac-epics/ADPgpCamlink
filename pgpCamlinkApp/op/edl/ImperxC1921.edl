@@ -3,8 +3,8 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 1222
-y 1850
+x 1363
+y 1132
 w 700
 h 600
 font "helvetica-medium-r-12.0"
@@ -891,9 +891,9 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 4
+x 24
 y 92
-w 172
+w 152
 h 20
 font "helvetica-medium-r-12.0"
 fontAlign "right"
@@ -954,9 +954,9 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 4
+x 24
 y 120
-w 172
+w 152
 h 20
 font "helvetica-medium-r-12.0"
 fontAlign "right"
@@ -1017,9 +1017,9 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 4
+x 24
 y 148
-w 172
+w 152
 h 20
 font "helvetica-medium-r-12.0"
 fontAlign "right"
@@ -1080,9 +1080,9 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 4
+x 24
 y 176
-w 172
+w 152
 h 20
 font "helvetica-medium-r-12.0"
 fontAlign "right"
@@ -1143,9 +1143,9 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 4
+x 24
 y 204
-w 172
+w 152
 h 20
 font "helvetica-medium-r-12.0"
 fontAlign "right"
@@ -1206,9 +1206,9 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 4
+x 24
 y 232
-w 172
+w 152
 h 20
 font "helvetica-medium-r-12.0"
 fontAlign "right"
@@ -1288,9 +1288,9 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 4
+x 24
 y 64
-w 172
+w 152
 h 20
 font "helvetica-medium-r-12.0"
 fontAlign "right"
@@ -1360,9 +1360,9 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 4
+x 24
 y 260
-w 172
+w 152
 h 20
 font "helvetica-medium-r-12.0"
 fontAlign "right"
@@ -1432,9 +1432,9 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 4
+x 24
 y 288
-w 172
+w 152
 h 20
 font "helvetica-medium-r-12.0"
 fontAlign "right"
@@ -1504,9 +1504,9 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 4
+x 24
 y 316
-w 172
+w 152
 h 20
 font "helvetica-medium-r-12.0"
 fontAlign "right"
@@ -1523,9 +1523,9 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 4
+x 24
 y 344
-w 172
+w 152
 h 20
 font "helvetica-medium-r-12.0"
 fontAlign "right"
@@ -1595,9 +1595,9 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 4
+x 24
 y 372
-w 172
+w 152
 h 20
 font "helvetica-medium-r-12.0"
 fontAlign "right"
@@ -1667,9 +1667,9 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 4
+x 24
 y 400
-w 172
+w 152
 h 24
 font "helvetica-medium-r-12.0"
 fontAlign "right"
@@ -1739,9 +1739,9 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 4
+x 24
 y 432
-w 172
+w 152
 h 20
 font "helvetica-medium-r-12.0"
 fontAlign "right"
@@ -1803,5 +1803,37 @@ showUnits
 newPos
 objType "monitors"
 noExecuteClipMask
+endObjectProperties
+
+# (Related Display)
+object relatedDisplayClass
+beginObjectProperties
+major 4
+minor 4
+release 0
+x 0
+y 288
+w 16
+h 20
+fgColor index 14
+bgColor index 3
+topShadowColor index 1
+botShadowColor index 11
+font "helvetica-bold-r-10.0"
+xPosOffset -100
+yPosOffset -148
+useFocus
+buttonLabel "?"
+numPvs 4
+numDsps 1
+displayFileName {
+  0 "ADPgpCamlinkScreens/pgpCamlinkHelp.edl"
+}
+setPosition {
+  0 "button"
+}
+symbols {
+  0 "desc0=0: Standard Trig Mode,desc1=1: Fast Overlap Trig Mode,desc2='',desc3='',desc4='',desc5=''"
+}
 endObjectProperties
 
