@@ -408,6 +408,208 @@ record( longin, "$(P)$(R)ImperxTrigOverlapMode_RBV" )
 	field( INP,  "@ImperxC1921.proto GetTrigOverlapMode($(P)$(R)) $(PORT).SER" )
 }
 
+# AOI_Mode
+record( mbbo, "$(P)$(R)ImperxAOI_Mode" )
+{
+	field( DOL,  "0" )
+	field( PINI, "YES" )
+	field( DTYP, "stream" )
+	field( OUT,  "@ImperxC1921.proto SetAOI_Mode($(P)$(R)) $(PORT).SER" )
+	field( ZRVL, "0" ) field( ZRST, "Disabled" )
+	field( ONVL, "1" ) field( ONST, "ROI w/ FR inc" )
+	field( TWVL, "2" ) field( TWST, "ROI w/ cnst FR" )
+	field( FLNK, "$(P)$(R)ImperxAOI_Mode_RBV" )
+	info( autosaveFields, "VAL" )
+}
+record( mbbi, "$(P)$(R)ImperxAOI_Mode_RBV" )
+{
+	field( DTYP, "stream" )
+	field( INP,  "@ImperxC1921.proto GetAOI_Mode($(P)$(R)) $(PORT).SER" )
+	field( ZRVL, "0" ) field( ZRST, "Disabled" )
+	field( ONVL, "1" ) field( ONST, "ROI w/ FR inc" )
+	field( TWVL, "2" ) field( TWST, "ROI w/ cnst FR" )
+}
+
+# AOI_HorizOffset
+record( longout, "$(P)$(R)ImperxAOI_HorizOffset" )
+{
+	field( DOL,  "0" )
+	field( PINI, "YES" )
+	field( DTYP, "stream" )
+	field( OUT,  "@ImperxC1921.proto SetAOI_HorizOffset($(P)$(R)) $(PORT).SER" )
+	field( FLNK, "$(P)$(R)ImperxAOI_HorizOffset_RBV" )
+	info( autosaveFields, "VAL" )
+}
+record( longin, "$(P)$(R)ImperxAOI_HorizOffset_RBV" )
+{
+	field( DTYP, "stream" )
+	field( INP,  "@ImperxC1921.proto GetAOI_HorizOffset($(P)$(R)) $(PORT).SER" )
+}
+
+# AOI_HorizSize
+record( longout, "$(P)$(R)ImperxAOI_HorizSize" )
+{
+	field( DOL,  "1944" )
+	field( PINI, "YES" )
+	field( DTYP, "stream" )
+	field( OUT,  "@ImperxC1921.proto SetAOI_HorizSize($(P)$(R)) $(PORT).SER" )
+	field( FLNK, "$(P)$(R)ImperxAOI_HorizSize_RBV" )
+	info( autosaveFields, "VAL" )
+}
+record( longin, "$(P)$(R)ImperxAOI_HorizSize_RBV" )
+{
+	field( DTYP, "stream" )
+	field( INP,  "@ImperxC1921.proto GetAOI_HorizSize($(P)$(R)) $(PORT).SER" )
+}
+
+# AOI_VertOffset
+record( longout, "$(P)$(R)ImperxAOI_VertOffset" )
+{
+	field( DOL,  "0" )
+	field( PINI, "YES" )
+	field( DTYP, "stream" )
+	field( OUT,  "@ImperxC1921.proto SetAOI_VertOffset($(P)$(R)) $(PORT).SER" )
+	field( FLNK, "$(P)$(R)ImperxAOI_VertOffset_RBV" )
+	info( autosaveFields, "VAL" )
+}
+record( longin, "$(P)$(R)ImperxAOI_VertOffset_RBV" )
+{
+	field( DTYP, "stream" )
+	field( INP,  "@ImperxC1921.proto GetAOI_VertOffset($(P)$(R)) $(PORT).SER" )
+}
+
+# AOI_VertSize
+record( longout, "$(P)$(R)ImperxAOI_VertSize" )
+{
+	field( DOL,  "1472" )
+	field( PINI, "YES" )
+	field( DTYP, "stream" )
+	field( OUT,  "@ImperxC1921.proto SetAOI_VertSize($(P)$(R)) $(PORT).SER" )
+	field( FLNK, "$(P)$(R)ImperxAOI_VertSize_RBV" )
+	info( autosaveFields, "VAL" )
+}
+record( longin, "$(P)$(R)ImperxAOI_VertSize_RBV" )
+{
+	field( DTYP, "stream" )
+	field( INP,  "@ImperxC1921.proto GetAOI_VertSize($(P)$(R)) $(PORT).SER" )
+}
+
+# HorizDecimate
+record( mbbo, "$(P)$(R)ImperxHorizDecimate" )
+{
+	field( DOL,  "0" )
+	field( PINI, "YES" )
+	field( DTYP, "stream" )
+	field( OUT,  "@ImperxC1921.proto SetHorizDecimate($(P)$(R)) $(PORT).SER" )
+	field( FLNK, "$(P)$(R)ImperxHorizDecimate_RBV" )
+	field( ZRVL, "0" ) field( ZRST, "Normal" )
+	field( ONVL, "1" ) field( ONST, "2:1 Dec" )
+	info( autosaveFields, "VAL" )
+}
+record( mbbi, "$(P)$(R)ImperxHorizDecimate_RBV" )
+{
+	field( DTYP, "stream" )
+	field( INP,  "@ImperxC1921.proto GetHorizDecimate($(P)$(R)) $(PORT).SER" )
+	field( ZRVL, "0" ) field( ZRST, "Normal" )
+	field( ONVL, "1" ) field( ONST, "2:1 Dec" )
+}
+
+# VertDecimate
+record( mbbo, "$(P)$(R)ImperxVertDecimate" )
+{
+	field( DOL,  "0" )
+	field( PINI, "YES" )
+	field( DTYP, "stream" )
+	field( OUT,  "@ImperxC1921.proto SetVertDecimate($(P)$(R)) $(PORT).SER" )
+	field( ZRVL, "0" ) field( ZRST, "Normal" )
+	field( ONVL, "1" ) field( ONST, "2:1 Dec" )
+	field( FLNK, "$(P)$(R)ImperxVertDecimate_RBV" )
+	info( autosaveFields, "VAL" )
+}
+record( mbbi, "$(P)$(R)ImperxVertDecimate_RBV" )
+{
+	field( DTYP, "stream" )
+	field( INP,  "@ImperxC1921.proto GetVertDecimate($(P)$(R)) $(PORT).SER" )
+	field( ZRVL, "0" ) field( ZRST, "Normal" )
+	field( ONVL, "1" ) field( ONST, "2:1 Dec" )
+}
+
+# VertBinning
+record( mbbo, "$(P)$(R)ImperxVertBinning" )
+{
+	field( DOL,  "0" )
+	field( PINI, "YES" )
+	field( DTYP, "stream" )
+	field( OUT,  "@ImperxC1921.proto SetVertBinning($(P)$(R)) $(PORT).SER" )
+	field( ZRVL, "0" ) field( ZRST, "Normal" )
+	field( ONVL, "1" ) field( ONST, "2X Binning" )
+	field( FLNK, "$(P)$(R)ImperxVertBinning_RBV" )
+	info( autosaveFields, "VAL" )
+}
+record( mbbi, "$(P)$(R)ImperxVertBinning_RBV" )
+{
+	field( DTYP, "stream" )
+	field( INP,  "@ImperxC1921.proto GetVertBinning($(P)$(R)) $(PORT).SER" )
+	field( ZRVL, "0" ) field( ZRST, "Normal" )
+	field( ONVL, "1" ) field( ONST, "2X Binning" )
+}
+
+# HorizBinning
+record( mbbo, "$(P)$(R)ImperxHorizBinning" )
+{
+	field( DOL,  "0" )
+	field( PINI, "YES" )
+	field( DTYP, "stream" )
+	field( OUT,  "@ImperxC1921.proto SetHorizBinning($(P)$(R)) $(PORT).SER" )
+	field( ZRVL, "0" ) field( ZRST, "Normal" )
+	field( ONVL, "1" ) field( ONST, "2X Binning" )
+	field( FLNK, "$(P)$(R)ImperxHorizBinning_RBV" )
+	info( autosaveFields, "VAL" )
+}
+record( mbbi, "$(P)$(R)ImperxHorizBinning_RBV" )
+{
+	field( DTYP, "stream" )
+	field( INP,  "@ImperxC1921.proto GetHorizBinning($(P)$(R)) $(PORT).SER" )
+	field( ZRVL, "0" ) field( ZRST, "Normal" )
+	field( ONVL, "1" ) field( ONST, "2X Binning" )
+}
+
+# TestPattern
+record( mbbo, "$(P)$(R)ImperxTestPattern" )
+{
+	field( DOL,  "0" )
+	field( PINI, "YES" )
+	field( DTYP, "stream" )
+	field( OUT,  "@ImperxC1921.proto SetTestPattern($(P)$(R)) $(PORT).SER" )
+	field( ZRVL, "0" ) field( ZRST, "None" )
+	field( ONVL, "1" ) field( ONST, "CheckerBd" )
+	field( TWVL, "2" ) field( TWST, "Gray" )
+	field( THVL, "3" ) field( THST, "TapVals" )
+	field( FRVL, "4" ) field( FRST, "HRamp" )
+	field( FVVL, "5" ) field( FVST, "VRamp" )
+	field( SXVL, "6" ) field( SXST, "BothRamp" )
+	field( SVVL, "7" ) field( SVST, "Moving" )
+	field( EIVL, "8" ) field( EIST, "Bars" )
+	field( NIVL, "9" ) field( NIST, "Cross" )
+	field( FLNK, "$(P)$(R)ImperxTestPattern_RBV" )
+	info( autosaveFields, "VAL" )
+}
+record( mbbi, "$(P)$(R)ImperxTestPattern_RBV" )
+{
+	field( DTYP, "stream" )
+	field( INP,  "@ImperxC1921.proto GetTestPattern($(P)$(R)) $(PORT).SER" )
+	field( ZRVL, "0" ) field( ZRST, "None" )
+	field( ONVL, "1" ) field( ONST, "CheckerBd" )
+	field( TWVL, "2" ) field( TWST, "Gray" )
+	field( THVL, "3" ) field( THST, "TapVals" )
+	field( FRVL, "4" ) field( FRST, "HRamp" )
+	field( FVVL, "5" ) field( FVST, "VRamp" )
+	field( SXVL, "6" ) field( SXST, "BothRamp" )
+	field( SVVL, "7" ) field( SVST, "Moving" )
+	field( EIVL, "8" ) field( EIST, "Bars" )
+	field( NIVL, "9" ) field( NIST, "Cross" )
+}
+
 # Include a serialMonitor.template monitor
 # This should be the first PV you process in the CamReConfigSeq
 substitute "MON_SCAN=10 second"
@@ -446,35 +648,75 @@ substitute "MON_PV=$(P)$(R)ImperxTrigFilterTime_RBV"
 include "rbvMonitor.template"
 substitute "MON_PV=$(P)$(R)ImperxTrigOverlapMode_RBV"
 include "rbvMonitor.template"
+substitute "MON_PV=$(P)$(R)ImperxAOI_Mode_RBV"
+include "rbvMonitor.template"
+substitute "MON_PV=$(P)$(R)ImperxAOI_HorizOffset_RBV"
+include "rbvMonitor.template"
+substitute "MON_PV=$(P)$(R)ImperxAOI_HorizSize_RBV"
+include "rbvMonitor.template"
+substitute "MON_PV=$(P)$(R)ImperxAOI_VertOffset_RBV"
+include "rbvMonitor.template"
+substitute "MON_PV=$(P)$(R)ImperxAOI_VertSize_RBV"
+include "rbvMonitor.template"
+substitute "MON_PV=$(P)$(R)ImperxHorizDecimate_RBV"
+include "rbvMonitor.template"
+substitute "MON_PV=$(P)$(R)ImperxVertDecimate_RBV"
+include "rbvMonitor.template"
+substitute "MON_PV=$(P)$(R)ImperxHorizBinning_RBV"
+include "rbvMonitor.template"
+substitute "MON_PV=$(P)$(R)ImperxVertBinning_RBV"
+include "rbvMonitor.template"
+substitute "MON_PV=$(P)$(R)ImperxTestPattern_RBV"
+include "rbvMonitor.template"
 
 # Put monitors
 substitute "MON_SCAN=1 second"
 substitute "MON_DISABLED=1"
 substitute "MON_PV=$(P)$(R)ImperxCamlinkMode"
-#include "putMonitor.template"
+include "putMonitor.template"
 substitute "MON_PV=$(P)$(R)ImperxTriggerEnable"
-#include "putMonitor.template"
+include "putMonitor.template"
 substitute "MON_PV=$(P)$(R)ImperxTrigInput"
-#include "putMonitor.template"
+include "putMonitor.template"
 substitute "MON_PV=$(P)$(R)ImperxTrigEdgeSelect"
-#include "putMonitor.template"
+include "putMonitor.template"
 substitute "MON_PV=$(P)$(R)ImperxExpCtrlMode"
-#include "putMonitor.template"
+include "putMonitor.template"
 substitute "MON_PV=$(P)$(R)ImperxA2D_Bits"
-#include "putMonitor.template"
+include "putMonitor.template"
 substitute "MON_PV=$(P)$(R)ImperxDataOutputBits"
-#include "putMonitor.template"
+include "putMonitor.template"
 substitute "MON_PV=$(P)$(R)ImperxTrigModeSelect"
-#include "putMonitor.template"
+include "putMonitor.template"
 substitute "MON_PV=$(P)$(R)ImperxFramesPerTrigger"
-#include "putMonitor.template"
+include "putMonitor.template"
 substitute "MON_PV=$(P)$(R)ImperxTrigExpDelay"
-#include "putMonitor.template"
+include "putMonitor.template"
 substitute "MON_PV=$(P)$(R)ImperxTrigStrobeMode"
-#include "putMonitor.template"
+include "putMonitor.template"
 substitute "MON_PV=$(P)$(R)ImperxTrigDebounce"
-#include "putMonitor.template"
+include "putMonitor.template"
 substitute "MON_PV=$(P)$(R)ImperxTrigFilterTime"
-#include "putMonitor.template"
+include "putMonitor.template"
 substitute "MON_PV=$(P)$(R)ImperxTrigOverlapMode"
-#include "putMonitor.template"
+include "putMonitor.template"
+substitute "MON_PV=$(P)$(R)ImperxAOI_Mode"
+include "putMonitor.template"
+substitute "MON_PV=$(P)$(R)ImperxAOI_HorizOffset"
+include "putMonitor.template"
+substitute "MON_PV=$(P)$(R)ImperxAOI_HorizSize"
+include "putMonitor.template"
+substitute "MON_PV=$(P)$(R)ImperxAOI_VertOffset"
+include "putMonitor.template"
+substitute "MON_PV=$(P)$(R)ImperxAOI_VertSize"
+include "putMonitor.template"
+substitute "MON_PV=$(P)$(R)ImperxHorizDecimate"
+include "putMonitor.template"
+substitute "MON_PV=$(P)$(R)ImperxVertDecimate"
+include "putMonitor.template"
+substitute "MON_PV=$(P)$(R)ImperxHorizBinning"
+include "putMonitor.template"
+substitute "MON_PV=$(P)$(R)ImperxVertBinning"
+include "putMonitor.template"
+substitute "MON_PV=$(P)$(R)ImperxTestPattern"
+include "putMonitor.template"

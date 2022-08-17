@@ -42,7 +42,7 @@ inTerminator	= "";
 outTerminator	= "";
 #PeekSize		= 0;
 ReplyTimeout	= 1500;
-ReadTimeout 	= 1000;
+ReadTimeout 	= 200;
 #WriteTimeout	= 500;
 ExtraInput		= Ignore;
 
@@ -51,14 +51,15 @@ ExtraInput		= Ignore;
 # Composed of 2 bytes, MSB then LSB of register address
 AnalogGain		= \x00\x00;	# 0dB to 24dB
 A2D_Bits		= \x00\x08;	# 0x0 = 8 bits, 0x1 = 10 bits, 0x2  = 12 bits
-AOI_Control		= \x00\x10;	# 0 = MAOI disable, 1 = MAOI w/ FrameRate increase, 2 = MAOI w/ constant FR
-AOI_HorizOffset	= \x00\x14;
-AOI_HorizWidth	= \x00\x18;
-AOI_VertOffset	= \x00\x1C;
-AOI_VertHeight	= \x00\x20;
-HorizDecimate	= \x00\x24;	# 0 = Horiz Decimation disabled, 1 = enabled
-VertDecimate	= \x00\x28;	# 0 = Vert  Decimation disabled, 1 = enabled
-VertBinning		= \x00\x2C;	# 0 = Vert  Binning disabled, 1 = enabled
+# Area Of Interest (AOI), same as ROI
+AOI_Mode		= \x00\x10;	# 0 = MAOI disable, 1 = MAOI w/ FrameRate increase, 2 = MAOI w/ constant FR
+AOI_HorizOffset	= \x00\x14;	# HW ROI, MinX
+AOI_HorizSize	= \x00\x18;	# HW ROI, SizeX
+AOI_VertOffset	= \x00\x1C;	# HW ROI, MinY
+AOI_VertSize	= \x00\x20;	# HW ROI, SizeY
+HorizDecimate	= \x00\x24;	# 0 = Horiz 2:1 Decimation disabled, 1 = enabled
+VertDecimate	= \x00\x28;	# 0 = Vert  2:1 Decimation disabled, 1 = enabled
+VertBinning		= \x00\x2C;	# 0 = Vert  2X  Binning    disabled, 1 = enabled
 ImageHorizFlip	= \x00\x30;	# 0 = Horiz Flip disabled, 1 = enabled
 ImageVertFlip	= \x00\x34;	# 0 = Vert  Flip disabled, 1 = enabled
 BlkLevelEnable	= \x00\x38;	# 0 = Black Level Correction disabled, 1 = enabled
@@ -67,6 +68,8 @@ ExpCtrlMode		= \x00\x40;	# 0 = None, 1 = Trigger Pulse Width, 2 = Internal Fixed
 ExpDuration		= \x00\x44;	# Exposure time in micro seconds
 DataOutputBits	= \x01\x00;	# Bit_Dpt_Sel 0x0 = 8 bits, 0x1 = 10 bits, 0x2  = 12 bits
 CamlinkMode		= \x01\x04;	# Dat_Fmt_Sel 0x0 = Base (2 taps), 0x1 = Base (3 taps), 0x2 = Medium, 0x3 = Full, 0x4 = DECA
+TestPattern		= \x01\x08;	# 0=None, 1=Checkerbd, 2=Gray, 3=TapValues, 4=HRamp, 5=VRamp, 6=BothRamp, 7=Moving,8=Bars, 9=Cross
+HorizBinning	= \x01\x10;	# 0 = Horiz 2X  Binning    disabled, 1 = enabled
 DigitalOffset	= \x01\x5C;	# -511 to +512
 DigitalGain		= \x01\x60; # 0dB to 24dB
 TrigEnable		= \x05\x00;	# 0 = Trigger mode disabled, 1 = enabled
@@ -75,10 +78,13 @@ TrigEdgeSelect	= \x05\x08;	# 0 = Rising Edge 1 = Falling Edge
 TrigDebounce	= \x05\x0C;	# Trigger debounce time in micro sec
 TrigFilterTime	= \x05\x10;	# Trigger filter time in micro sec.  Shorter pulses are ignored.
 TrigOverlapMode	= \x05\x14;	# 0 = Ignore extra trigger, 1 = Abort prior capture and retrigger
-TrigModeSelect		= \x05\x18;	# 0 = Std trigger, 1 = Fast triggering
+TrigModeSelect	= \x05\x18;	# 0 = Std trigger, 1 = Fast triggering
 FramesPerTrigger= \x05\x1C;	# Number of frames to capture per trigger
 TrigExpDelay	= \x05\x20;	# Delay in micro sec between trigger and start of exposure
 TrigStrobeMode	= \x05\x24;	# 0 = Trig Strobe disabled, 1 = enable Strobe #1, 2 = enable Strobe #2, 3 = enable #1 and #2
+FirmwareVer		= \x60\x06;	# Bits FirmwareVers=0:23, CMOScolor=24:27, FirmwareImage=28:31=
+SerialOK		= \x60\x0C;	# Bits Temp=246.312-(D(9:0)*0.304)
+CamTemp			= \x60\x10;	# Bits Temp=246.312-(D(9:0)*0.304)
 SoftReset		= \x60\x1C;	# Write 0xDEADBEEF to reset camera
 SWTrigger		= \x60\x30;
 
@@ -117,7 +123,7 @@ GetTrigEnable
 }
 SetTrigEnable
 {
-    out "\x57\$TrigEnable" "%04r";
+    out "\x57\$TrigEnable" "%04.4r";
 	in  "\x06";
     @mismatch { in  "\x15" "%(\$1ImperxCommError)1r"; }
 }
@@ -129,7 +135,7 @@ GetTrigInput
 }
 SetTrigInput
 {
-    out "\x57\$TrigInput" "%04r";
+    out "\x57\$TrigInput" "%04.4r";
 	in  "\x06";
     @mismatch { in  "\x15" "%(\$1ImperxCommError)1r"; }
 }
@@ -141,7 +147,7 @@ GetTrigEdgeSelect
 }
 SetTrigEdgeSelect
 {
-    out "\x57\$TrigEdgeSelect" "%04r";
+    out "\x57\$TrigEdgeSelect" "%04.4r";
 	in  "\x06";
     @mismatch { in  "\x15" "%(\$1ImperxCommError)1r"; }
 }
@@ -153,7 +159,7 @@ GetExpCtrlMode
 }
 SetExpCtrlMode
 {
-    out "\x57\$ExpCtrlMode" "%04r";
+    out "\x57\$ExpCtrlMode" "%04.4r";
 	in  "\x06";
     @mismatch { in  "\x15" "%(\$1ImperxCommError)1r"; }
 }
@@ -165,7 +171,7 @@ GetA2D_Bits
 }
 SetA2D_Bits
 {
-    out "\x57\$A2D_Bits" "%04r";
+    out "\x57\$A2D_Bits" "%04.4r";
 	in  "\x06";
     @mismatch { in  "\x15" "%(\$1ImperxCommError)1r"; }
 }
@@ -177,7 +183,7 @@ GetDataOutputBits
 }
 SetDataOutputBits
 {
-    out "\x57\$DataOutputBits" "%04r";
+    out "\x57\$DataOutputBits" "%04.4r";
 	in  "\x06";
     @mismatch { in  "\x15" "%(\$1ImperxCommError)1r"; }
 }
@@ -189,7 +195,7 @@ GetCamlinkMode
 }
 SetCamlinkMode
 {
-    out "\x57\$CamlinkMode" "%04r";
+    out "\x57\$CamlinkMode" "%04.4r";
 	in  "\x06";
     @mismatch { in  "\x15" "%(\$1ImperxCommError)1r"; }
 }
@@ -201,7 +207,7 @@ GetTrigDebounce
 }
 SetTrigDebounce
 {
-    out "\x57\$TrigDebounce" "%04r";
+    out "\x57\$TrigDebounce" "%04.4r";
 	in  "\x06";
     @mismatch { in  "\x15" "%(\$1ImperxCommError)1r"; }
 }
@@ -213,7 +219,7 @@ GetTrigFilterTime
 }
 SetTrigFilterTime
 {
-    out "\x57\$TrigFilterTime" "%04r";
+    out "\x57\$TrigFilterTime" "%04.4r";
 	in  "\x06";
     @mismatch { in  "\x15" "%(\$1ImperxCommError)1r"; }
 }
@@ -225,7 +231,7 @@ GetTrigOverlapMode
 }
 SetTrigOverlapMode
 {
-    out "\x57\$TrigOverlapMode" "%04r";
+    out "\x57\$TrigOverlapMode" "%04.4r";
 	in  "\x06";
     @mismatch { in  "\x15" "%(\$1ImperxCommError)1r"; }
 }
@@ -237,7 +243,7 @@ GetFramesPerTrigger
 }
 SetFramesPerTrigger
 {
-    out "\x57\$FramesPerTrigger" "%04r";
+    out "\x57\$FramesPerTrigger" "%04.4r";
 	in  "\x06";
     @mismatch { in  "\x15" "%(\$1ImperxCommError)1r"; }
 }
@@ -249,7 +255,7 @@ GetTrigExpDelay
 }
 SetTrigExpDelay
 {
-    out "\x57\$TrigExpDelay" "%04r";
+    out "\x57\$TrigExpDelay" "%04.4r";
 	in  "\x06";
     @mismatch { in  "\x15" "%(\$1ImperxCommError)1r"; }
 }
@@ -261,7 +267,7 @@ GetTrigModeSelect
 }
 SetTrigModeSelect
 {
-    out "\x57\$TrigModeSelect" "%04r";
+    out "\x57\$TrigModeSelect" "%04.4r";
 	in  "\x06";
     @mismatch { in  "\x15" "%(\$1ImperxCommError)1r"; }
 }
@@ -273,7 +279,127 @@ GetTrigStrobeMode
 }
 SetTrigStrobeMode
 {
-    out "\x57\$TrigStrobeMode" "%04r";
+    out "\x57\$TrigStrobeMode" "%04.4r";
+	in  "\x06";
+    @mismatch { in  "\x15" "%(\$1ImperxCommError)1r"; }
+}
+
+GetAOI_Mode
+{
+    out "\x52\$AOI_Mode";
+	in  "\x06%04r";
+}
+SetAOI_Mode
+{
+    out "\x57\$AOI_Mode" "%04.4r";
+	in  "\x06";
+    @mismatch { in  "\x15" "%(\$1ImperxCommError)1r"; }
+}
+
+GetAOI_HorizOffset
+{
+    out "\x52\$AOI_HorizOffset";
+	in  "\x06%04r";
+}
+SetAOI_HorizOffset
+{
+    out "\x57\$AOI_HorizOffset" "%04.4r";
+	in  "\x06";
+    @mismatch { in  "\x15" "%(\$1ImperxCommError)1r"; }
+}
+
+GetAOI_HorizSize
+{
+    out "\x52\$AOI_HorizSize";
+	in  "\x06%04r";
+}
+SetAOI_HorizSize
+{
+    out "\x57\$AOI_HorizSize" "%04.4r";
+	in  "\x06";
+    @mismatch { in  "\x15" "%(\$1ImperxCommError)1r"; }
+}
+
+GetAOI_VertOffset
+{
+    out "\x52\$AOI_VertOffset";
+	in  "\x06%04r";
+}
+SetAOI_VertOffset
+{
+    out "\x57\$AOI_VertOffset" "%04.4r";
+	in  "\x06";
+    @mismatch { in  "\x15" "%(\$1ImperxCommError)1r"; }
+}
+
+GetAOI_VertSize
+{
+    out "\x52\$AOI_VertSize";
+	in  "\x06%04r";
+}
+SetAOI_VertSize
+{
+    out "\x57\$AOI_VertSize" "%04.4r";
+	in  "\x06";
+    @mismatch { in  "\x15" "%(\$1ImperxCommError)1r"; }
+}
+
+GetHorizDecimate
+{
+    out "\x52\$HorizDecimate";
+	in  "\x06%04r";
+}
+SetHorizDecimate
+{
+    out "\x57\$HorizDecimate" "%04.4r";
+	in  "\x06";
+    @mismatch { in  "\x15" "%(\$1ImperxCommError)1r"; }
+}
+
+GetVertDecimate
+{
+    out "\x52\$VertDecimate";
+	in  "\x06%04r";
+}
+SetVertDecimate
+{
+    out "\x57\$VertDecimate" "%04.4r";
+	in  "\x06";
+    @mismatch { in  "\x15" "%(\$1ImperxCommError)1r"; }
+}
+
+GetVertBinning
+{
+    out "\x52\$VertBinning";
+	in  "\x06%04r";
+}
+SetVertBinning
+{
+    out "\x57\$VertBinning" "%04.4r";
+	in  "\x06";
+    @mismatch { in  "\x15" "%(\$1ImperxCommError)1r"; }
+}
+
+GetHorizBinning
+{
+    out "\x52\$HorizBinning";
+	in  "\x06%04r";
+}
+SetHorizBinning
+{
+    out "\x57\$HorizBinning" "%04.4r";
+	in  "\x06";
+    @mismatch { in  "\x15" "%(\$1ImperxCommError)1r"; }
+}
+
+GetTestPattern
+{
+    out "\x52\$TestPattern";
+	in  "\x06%04r";
+}
+SetTestPattern
+{
+    out "\x57\$TestPattern" "%04.4r";
 	in  "\x06";
     @mismatch { in  "\x15" "%(\$1ImperxCommError)1r"; }
 }
