@@ -5,7 +5,7 @@ minor 0
 release 1
 x 1363
 y 1132
-w 700
+w 717
 h 600
 font "helvetica-medium-r-12.0"
 ctlFont "helvetica-medium-r-12.0"
@@ -32,7 +32,7 @@ major 4
 minor 4
 release 0
 x 420
-y 120
+y 84
 w 120
 h 24
 fgColor index 14
@@ -115,7 +115,7 @@ major 4
 minor 4
 release 0
 x 548
-y 120
+y 84
 w 140
 h 24
 fgColor index 14
@@ -155,7 +155,7 @@ major 4
 minor 4
 release 0
 x 548
-y 92
+y 56
 w 140
 h 24
 fgColor index 14
@@ -188,7 +188,7 @@ major 4
 minor 4
 release 0
 x 420
-y 92
+y 56
 w 120
 h 24
 fgColor index 14
@@ -320,7 +320,7 @@ major 4
 minor 1
 release 1
 x 508
-y 60
+y 28
 w 88
 h 20
 font "helvetica-medium-r-12.0"
@@ -339,7 +339,7 @@ major 4
 minor 1
 release 1
 x 604
-y 60
+y 28
 w 88
 h 20
 font "helvetica-medium-r-12.0"
@@ -866,7 +866,7 @@ beginObjectProperties
 major 4
 minor 7
 release 0
-x 300
+x 240
 y 92
 w 108
 h 20
@@ -893,7 +893,7 @@ minor 1
 release 1
 x 24
 y 92
-w 152
+w 112
 h 20
 font "helvetica-medium-r-12.0"
 fontAlign "right"
@@ -910,9 +910,9 @@ beginObjectProperties
 major 4
 minor 0
 release 0
-x 188
+x 140
 y 92
-w 100
+w 92
 h 20
 fgColor index 25
 bgColor index 5
@@ -929,7 +929,7 @@ beginObjectProperties
 major 4
 minor 7
 release 0
-x 300
+x 240
 y 120
 w 108
 h 20
@@ -956,7 +956,7 @@ minor 1
 release 1
 x 24
 y 120
-w 152
+w 112
 h 20
 font "helvetica-medium-r-12.0"
 fontAlign "right"
@@ -973,9 +973,9 @@ beginObjectProperties
 major 4
 minor 0
 release 0
-x 188
+x 140
 y 120
-w 100
+w 92
 h 20
 fgColor index 25
 bgColor index 5
@@ -992,7 +992,7 @@ beginObjectProperties
 major 4
 minor 7
 release 0
-x 300
+x 240
 y 148
 w 108
 h 20
@@ -1019,7 +1019,7 @@ minor 1
 release 1
 x 24
 y 148
-w 152
+w 112
 h 20
 font "helvetica-medium-r-12.0"
 fontAlign "right"
@@ -1036,9 +1036,9 @@ beginObjectProperties
 major 4
 minor 0
 release 0
-x 188
+x 140
 y 148
-w 100
+w 92
 h 20
 fgColor index 25
 bgColor index 5
@@ -1055,7 +1055,7 @@ beginObjectProperties
 major 4
 minor 7
 release 0
-x 300
+x 240
 y 176
 w 108
 h 20
@@ -1082,7 +1082,7 @@ minor 1
 release 1
 x 24
 y 176
-w 152
+w 112
 h 20
 font "helvetica-medium-r-12.0"
 fontAlign "right"
@@ -1099,9 +1099,9 @@ beginObjectProperties
 major 4
 minor 0
 release 0
-x 188
+x 140
 y 176
-w 100
+w 92
 h 20
 fgColor index 25
 bgColor index 5
@@ -1118,7 +1118,7 @@ beginObjectProperties
 major 4
 minor 7
 release 0
-x 300
+x 240
 y 204
 w 108
 h 20
@@ -1145,7 +1145,7 @@ minor 1
 release 1
 x 24
 y 204
-w 152
+w 112
 h 20
 font "helvetica-medium-r-12.0"
 fontAlign "right"
@@ -1162,9 +1162,9 @@ beginObjectProperties
 major 4
 minor 0
 release 0
-x 188
+x 140
 y 204
-w 100
+w 92
 h 20
 fgColor index 25
 bgColor index 5
@@ -1181,7 +1181,7 @@ beginObjectProperties
 major 4
 minor 7
 release 0
-x 300
+x 240
 y 232
 w 108
 h 20
@@ -1208,7 +1208,7 @@ minor 1
 release 1
 x 24
 y 232
-w 152
+w 112
 h 20
 font "helvetica-medium-r-12.0"
 fontAlign "right"
@@ -1225,9 +1225,9 @@ beginObjectProperties
 major 4
 minor 0
 release 0
-x 188
+x 140
 y 232
-w 100
+w 92
 h 20
 fgColor index 25
 bgColor index 5
@@ -1244,7 +1244,7 @@ beginObjectProperties
 major 4
 minor 7
 release 0
-x 300
+x 240
 y 64
 w 108
 h 20
@@ -1269,9 +1269,9 @@ beginObjectProperties
 major 4
 minor 0
 release 0
-x 188
+x 140
 y 64
-w 100
+w 92
 h 20
 fgColor index 25
 bgColor index 5
@@ -1290,7 +1290,7 @@ minor 1
 release 1
 x 24
 y 64
-w 152
+w 112
 h 20
 font "helvetica-medium-r-12.0"
 fontAlign "right"
@@ -1307,7 +1307,7 @@ beginObjectProperties
 major 4
 minor 7
 release 0
-x 300
+x 240
 y 260
 w 108
 h 20
@@ -1333,9 +1333,9 @@ beginObjectProperties
 major 4
 minor 7
 release 0
-x 188
+x 140
 y 260
-w 100
+w 92
 h 20
 controlPv "$(P)$(R)ImperxTrigExpDelay"
 format "decimal"
@@ -1362,7 +1362,7 @@ minor 1
 release 1
 x 24
 y 260
-w 152
+w 112
 h 20
 font "helvetica-medium-r-12.0"
 fontAlign "right"
@@ -1379,7 +1379,7 @@ beginObjectProperties
 major 4
 minor 7
 release 0
-x 300
+x 240
 y 288
 w 108
 h 20
@@ -1405,9 +1405,9 @@ beginObjectProperties
 major 4
 minor 7
 release 0
-x 188
+x 140
 y 288
-w 100
+w 92
 h 20
 controlPv "$(P)$(R)ImperxTrigModeSelect"
 format "decimal"
@@ -1434,7 +1434,7 @@ minor 1
 release 1
 x 24
 y 288
-w 152
+w 112
 h 20
 font "helvetica-medium-r-12.0"
 fontAlign "right"
@@ -1451,7 +1451,7 @@ beginObjectProperties
 major 4
 minor 7
 release 0
-x 300
+x 240
 y 316
 w 108
 h 20
@@ -1477,9 +1477,9 @@ beginObjectProperties
 major 4
 minor 7
 release 0
-x 188
+x 140
 y 316
-w 100
+w 92
 h 20
 controlPv "$(P)$(R)ImperxTrigStrobeMode"
 format "decimal"
@@ -1506,7 +1506,7 @@ minor 1
 release 1
 x 24
 y 316
-w 152
+w 112
 h 20
 font "helvetica-medium-r-12.0"
 fontAlign "right"
@@ -1525,7 +1525,7 @@ minor 1
 release 1
 x 24
 y 344
-w 152
+w 112
 h 20
 font "helvetica-medium-r-12.0"
 fontAlign "right"
@@ -1542,9 +1542,9 @@ beginObjectProperties
 major 4
 minor 7
 release 0
-x 188
+x 140
 y 344
-w 100
+w 92
 h 20
 controlPv "$(P)$(R)ImperxTrigDebounce"
 format "decimal"
@@ -1569,7 +1569,7 @@ beginObjectProperties
 major 4
 minor 7
 release 0
-x 300
+x 240
 y 344
 w 108
 h 20
@@ -1597,7 +1597,7 @@ minor 1
 release 1
 x 24
 y 372
-w 152
+w 112
 h 20
 font "helvetica-medium-r-12.0"
 fontAlign "right"
@@ -1614,9 +1614,9 @@ beginObjectProperties
 major 4
 minor 7
 release 0
-x 188
+x 140
 y 372
-w 100
+w 92
 h 20
 controlPv "$(P)$(R)ImperxTrigFilterTime"
 format "decimal"
@@ -1641,7 +1641,7 @@ beginObjectProperties
 major 4
 minor 7
 release 0
-x 300
+x 240
 y 372
 w 108
 h 20
@@ -1669,8 +1669,8 @@ minor 1
 release 1
 x 24
 y 400
-w 152
-h 24
+w 112
+h 20
 font "helvetica-medium-r-12.0"
 fontAlign "right"
 fgColor index 14
@@ -1686,10 +1686,10 @@ beginObjectProperties
 major 4
 minor 7
 release 0
-x 188
+x 140
 y 400
-w 100
-h 24
+w 92
+h 20
 controlPv "$(P)$(R)ImperxTrigOverlapMode"
 format "decimal"
 font "helvetica-medium-r-12.0"
@@ -1713,10 +1713,10 @@ beginObjectProperties
 major 4
 minor 7
 release 0
-x 300
+x 240
 y 400
 w 108
-h 24
+h 20
 controlPv "$(P)$(R)ImperxTrigOverlapMode_RBV"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
@@ -1740,8 +1740,8 @@ major 4
 minor 1
 release 1
 x 24
-y 432
-w 152
+y 428
+w 112
 h 20
 font "helvetica-medium-r-12.0"
 fontAlign "right"
@@ -1758,9 +1758,9 @@ beginObjectProperties
 major 4
 minor 7
 release 0
-x 188
-y 432
-w 100
+x 140
+y 428
+w 92
 h 20
 controlPv "$(P)$(R)ImperxFramesPerTrigger"
 format "decimal"
@@ -1785,8 +1785,8 @@ beginObjectProperties
 major 4
 minor 7
 release 0
-x 300
-y 432
+x 240
+y 428
 w 108
 h 20
 controlPv "$(P)$(R)ImperxFramesPerTrigger_RBV"
