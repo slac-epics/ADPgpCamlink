@@ -3,8 +3,8 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 355
-y 321
+x 0
+y 233
 w 770
 h 807
 font "helvetica-medium-r-12.0"
@@ -775,11 +775,11 @@ beginObjectProperties
 major 4
 minor 7
 release 0
-x 600
+x 676
 y 128
-w 108
+w 64
 h 20
-controlPv "$(CAM):CamlinkHTap"
+controlPv "$(CAM):CamlinkHTap_RBV"
 format "hex"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
@@ -907,9 +907,9 @@ beginObjectProperties
 major 4
 minor 7
 release 0
-x 600
+x 676
 y 152
-w 108
+w 64
 h 20
 controlPv "$(PGP):Ch$(CH):Feb$(CH):TapCount_RBV"
 format "hex"
@@ -943,5 +943,65 @@ useDisplayBg
 value {
   "Pgp Feb$(CH) TapCount"
 }
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 612
+y 128
+w 60
+h 18
+controlPv "$(CAM):CamlinkHTap"
+format "decimal"
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+fgColor index 25
+fgAlarm
+bgColor index 5
+editable
+autoHeight
+motifWidget
+limitsFromDb
+nullColor index 40
+smartRefresh
+fastUpdate
+useHexPrefix
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 612
+y 152
+w 60
+h 18
+controlPv "$(PGP):Ch$(CH):Feb$(CH):TapCount"
+format "decimal"
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+fgColor index 25
+fgAlarm
+bgColor index 5
+editable
+autoHeight
+motifWidget
+limitsFromDb
+nullColor index 40
+smartRefresh
+fastUpdate
+useHexPrefix
+newPos
+objType "controls"
+noExecuteClipMask
 endObjectProperties
 
