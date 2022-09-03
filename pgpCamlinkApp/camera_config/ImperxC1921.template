@@ -8,7 +8,6 @@
 #	PGP_PV		PV prefix for rogue register PVs
 #	PGP_LANE	PGP_LANE number 0-3
 #
-# Note: Frame readout time is apparently 13.8ms, so we can't do 120hz
 
 record( stringin, "$(P)$(R)CamModel" )
 {
@@ -38,18 +37,20 @@ record( longout, "$(P)$(R)CamlinkBaudRate" )
 	field( LSV,  "MINOR" )
 	field( PINI, "YES" )
 }
+# Default to 4, Deca LinkMode
 record( mbbo, "$(P)$(R)CamlinkLinkMode" )
 {
-	field( DOL,  "3" )
-	field( TWSV, "MINOR" )
+	field( DOL,  "4" )
 	field( ZRSV, "MINOR" )
+	field( FVSV, "MINOR" )
 	field( PINI, "YES" )
 }
 record( mbbo, "$(P)$(R)CamlinkDataMode" )
 {
-	field( DOL,  "3" ) # 12 Bit
-	field( ONSV, "MINOR" )
-	field( TWSV, "MINOR" )
+	field( DOL,  "2" ) # 10 Bit
+	field( ZRSV, "MINOR" )
+	field( ONSV, "NO_ALARM" )
+	field( TWSV, "NO_ALARM" )
 	field( THSV, "NO_ALARM" )
 	field( FRSV, "MINOR" )
 	field( FVSV, "MINOR" )
@@ -67,7 +68,7 @@ record( longout, "$(P)$(R)CamlinkHTap" )
 	field( DOL,  "8" )
 	field( HIGH, "9" )
 	field( HSV,  "MINOR" )
-	field( LOW,  "7" )
+	field( LOW,  "1" )
 	field( LSV,  "MINOR" )
 	field( PINI, "YES" )
 }
@@ -220,7 +221,7 @@ record( mbbi, "$(P)$(R)ImperxExpCtrlMode_RBV" )
 # A2D_Bits
 record( mbbo, "$(P)$(R)ImperxA2D_Bits" )
 {
-	field( DOL,  "2" )
+	field( DOL,  "1" )
 	field( PINI, "YES" )
 	field( DTYP, "stream" )
 	field( OUT,  "@ImperxC1921.proto SetA2D_Bits($(P)$(R)) $(PORT).SER" )
@@ -242,7 +243,7 @@ record( mbbi, "$(P)$(R)ImperxA2D_Bits_RBV" )
 # DataOutputBits
 record( mbbo, "$(P)$(R)ImperxDataOutputBits" )
 {
-	field( DOL,  "2" )
+	field( DOL,  "1" )
 	field( PINI, "YES" )
 	field( DTYP, "stream" )
 	field( OUT,  "@ImperxC1921.proto SetDataOutputBits($(P)$(R)) $(PORT).SER" )
@@ -341,7 +342,7 @@ record( longin, "$(P)$(R)ImperxTrigExpDelay_RBV" )
 # TrigStrobeMode
 record( longout, "$(P)$(R)ImperxTrigStrobeMode" )
 {
-	field( DOL,  "3" )
+	field( DOL,  "0" )
 	field( PINI, "YES" )
 	field( DTYP, "stream" )
 	field( OUT,  "@ImperxC1921.proto SetTrigStrobeMode($(P)$(R)) $(PORT).SER" )
