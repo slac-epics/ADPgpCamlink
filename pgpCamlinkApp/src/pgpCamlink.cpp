@@ -1453,6 +1453,7 @@ int pgpCamlink::LoadNDArray(
 	assert( pNDArray->pData	!= NULL );
 	assert( pImageCbInfo->m_ImageDataPtr );
 
+	if ( DEBUG_PGP_CAMLINK < 4 )
 	if ( pImageCbInfo->m_ImageDataPtr->size() < (m_ClCurWidth * m_ClCurHeight) )
 	{
 		printf( "%s Error: DMA size %zu < expected image size %zu\n",
@@ -1461,7 +1462,7 @@ int pgpCamlink::LoadNDArray(
 		return -1;
 	}
 
-	if ( DEBUG_PGP_CAMLINK >= 4 )
+	if ( DEBUG_PGP_CAMLINK >= 5 )
 	{
 		printf( "%s: DMA   size %zu x %zu pixels, %u bits/pixel\n", functionName,
 				m_ClCurWidth, m_ClCurHeight, m_ClNumBits );
