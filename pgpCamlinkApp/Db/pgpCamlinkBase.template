@@ -479,25 +479,14 @@ record( longout, "$(P)$(R)CamHwVROI_RBV" )
 	info( archiveFields,  "VAL" )
 }
 
-record( mbbi, "$(P)$(R)CamMode_RBV" )
+record( mbbo, "$(P)$(R)CamMode" )
 {
-#	field( DTYP, "asynInt32" )
-#	field( INP,  "@asyn($(PORT),$(ADDR=0),$(TIMEOUT=1))CLCAM_MODE" )
-	field( INP,  "$(PGP):Ch$(PGP_LANE):Feb$(PGP_LANE):LinkMode_RBV CPP" )
-	field( ZRST, "Base" )
-	field( ZRVL, "0" )
-	field( ONST, "Medium" )
-	field( ONVL, "1" )
-	field( TWST, "Full" )
-	field( TWVL, "2" )
-#	field( SCAN, "I/O Intr" )
-	info( archiveFields,  "VAL" )
-}
-
-record( stringin, "$(P)$(R)CamClass" )
-{
-#	field( DTYP, "asynOctetRead" )
-#	field( INP,  "@asyn($(PORT),$(ADDR=0),$(TIMEOUT=1))CLCAM_CLASS" )
+	field( OUT,  "$(P)$(R)CamlinkLinkMode CPP" )
+	field( ZRVL, "0" ) field( ZRST, "Disable" )
+	field( ONVL, "1" ) field( ONST, "Base" )
+	field( TWVL, "2" ) field( TWST, "Medium" )
+	field( THVL, "3" ) field( THST, "Full" )
+	field( FRVL, "4" ) field( FRST, "Deca" )
 #	field( SCAN, "I/O Intr" )
 	info( archiveFields,  "VAL" )
 }
@@ -869,79 +858,6 @@ record( calc, "$(P)$(R)BeamRepDur" )
 	field( EGU,  "sec" )
 	field( PREC, "3" )
 	info( autosaveFields, "HHSV HIGH HIHI HSV LLSV LOLO LOW LSV EGU DESC PREC" )
-	info( archiveFields,  "VAL" )
-}
-
-
-record( calc, "$(P)$(R)CamlinkXmitTime" )
-{
-    field( INPA, "$(P)$(R)ArraySize_RBV CPP MS" )
-    field( INPB, "$(P)$(R)XmitRate CPP MS" )
-    field( INPC, "$(P)$(R)CamlinkHTap_RBV CPP MS" )
-    field( INPD, "$(P)$(R)CamlinkVTap_RBV CPP MS" )
-    field( CALC, "(A/B/C/D)" )
-    field( EGU,  "Sec" )
-    field( PREC, "5" ) 
-	field( FLNK, "$(P)$(R)XmitDelay" )
-}
-
-record( calc, "$(P)$(R)XmitDelay" )
-{
-    field( INPA, "$(P)$(R)CamlinkXmitTime NPP MS" )
-    field( INPB, "$(P)$(R)CamProcDelay CPP MS" )
-    field( CALC, "A+B" )
-    field( EGU,  "Sec" )
-    field( PREC, "5" ) 
-}
-
-record( ao, "$(P)$(R)DriverProcDelay" )
-{
-    field( DOL,  "0.0007" )
-    field( EGU,  "Sec" )
-    field( PREC, "3" ) 
-    field( PINI, "YES" )
-    info( autosaveFields, "VAL" )
-}
-
-#
-# TrigToTS_Calc: Calculates expected delay from trigger to timeStamp update 
-# Inputs: All units in seconds
-#	A	- Camera acquire time (exposure length)
-#	B	- Camera image transmission time
-#	C	- Estimated driver processing delay before requesting timestamp
-record( calc, "$(P)$(R)TrigToTS_Calc" )
-{
-    field( INPA, "$(P)$(R)AcquireTime_RBV CPP MS" )
-    field( INPB, "$(P)$(R)XmitDelay CP MS" )
-    field( INPC, "$(P)$(R)DriverProcDelay CP MS" )
-    field( CALC, "A+B+C" )
-    field( EGU,  "sec" )
-    field( PREC, "5" ) 
-}
-
-# Holds the total number of images acquired
-record( longout, "$(P)$(R)SyncTotalCnt" )
-{
-	field( DTYP, "asynInt32" )
-	field( OUT,  "@asyn($(PORT),$(ADDR=0),$(TIMEOUT=1))SYNC_TOTAL" )
-    field( SCAN, "I/O Intr" )
-}
-
-# Holds the total number of images discarded by Bad Timestamp
-record( longout, "$(P)$(R)SyncBadTSCnt" )
-{
-	field( DTYP, "asynInt32" )
-	field( OUT,  "@asyn($(PORT),$(ADDR=0),$(TIMEOUT=1))SYNC_BAD_TS" )
-    field( SCAN, "I/O Intr" )
-	info( archiveFields,  "VAL" )
-}
-
-# Holds the total number of images discarded by Bad Sync 
-record( longout, "$(P)$(R)SyncBadSyncCnt" )
-{
-	field( DTYP, "asynInt32" )
-	field( OUT,  "@asyn($(PORT),$(ADDR=0),$(TIMEOUT=1))SYNC_BAD_SYNC" )
-    field( SCAN, "I/O Intr" )
 	info( archiveFields,  "VAL" )
 }
 

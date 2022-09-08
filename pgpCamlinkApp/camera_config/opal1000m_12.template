@@ -1081,44 +1081,6 @@ record( stringin, "$(P)$(R)OpalModelID_RBV" )
     field( INP,	 "@opal1000m_12.proto GetQStr(MID) $(PORT).SER" )
 }
 
-# Opal processing w/ Vertical Remapping enabled is
-# 2us + 7.5us + 4.7ms
-# Adding another 100us based on timing tests
-record( ao, "$(P)$(R)CamProcDelay" )
-{
-    field( DOL,  "4.8095e-3" )
-    field( EGU,  "Sec" )
-    field( PREC, "3" ) 
-    field( PINI, "YES" )
-    info( autosaveFields, "VAL" )
-}
-
-# Effective transmit rate is 80Mhz PixelClock * 2 HTaps
-record( ao, "$(P)$(R)XmitRate" )
-{
-    field( DOL,  "160.0e6" )
-    field( EGU,  "Px/Sec" )
-    field( PREC, "3" )
-    field( PINI, "YES" )
-    info( autosaveFields, "VAL" )
-}   
-
-# Opal XmitDelay doesn't vary w/ ROI, just BinY
-# Did linear regression fit on t_frame_min values from Opal manual
-# Slope  = 6.8107e-6
-# Offset = 1.1513e-3
-record( calc, "$(P)$(R)XmitDelay" )
-{
-    field( INPA, "6.8107e-6" )
-    field( INPB, "1.1513e-3" )
-    field( INPC, "$(P)$(R)CamProcDelay CPP MS" )
-    field( INPD, "$(P)$(R)BinY  CPP MS" )
-    field( INPE, "$(P)$(R)SizeY CPP MS" )
-    field( CALC, "A*E/D+B+C" )
-    field( EGU,  "Sec" )
-}
-
-
 # Monitor and reprocess these records automatically when they're undefined
 # Macros:
 #	SER_OK_PV:	PV used to verify serial link, blocks reprocess when UDF 

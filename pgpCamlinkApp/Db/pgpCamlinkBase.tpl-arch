@@ -5,7 +5,6 @@ $(CAM):BeamEventCode.VAL		1	monitor
 $(CAM):BeamRepDur.VAL		1	monitor
 $(CAM):BeamRepRate_RBV.VAL		10 scan
 $(CAM):CamAcquireTimeCalc.VAL	1	monitor
-$(CAM):CamClass.VAL	1	monitor
 $(CAM):CamDelayScale.EGU		1	monitor
 $(CAM):CamDelayScale.VAL		1	monitor
 $(CAM):CamDrvVersion.VAL	1	monitor
@@ -25,6 +24,3 @@ $(CAM):Gain.VAL		1	monitor
 $(CAM):PgpAxiVersion.VAL	1	monitor
 $(CAM):PgpCoreFpgaVersion.VAL		1	monitor
 $(CAM):PgpFebFpgaVersion.VAL		1	monitor
-$(CAM):SyncBadSyncCnt.VAL		1	monitor
-$(CAM):SyncBadTSCnt.VAL		1	monitor
-$(CAM):SyncTotalCnt.VAL		1	monitor

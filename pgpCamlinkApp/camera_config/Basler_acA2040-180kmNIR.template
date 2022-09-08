@@ -1467,11 +1467,6 @@ record( longin, "$(P)$(R)BaslerBlackLevel_RBV" )
 	field( PINI, "YES" )
 }
 
-record( ao, "$(P)$(R)CamProcDelay" )
-{
-	field( DOL,  "3.0e-3" )
-}
-
 record( mbbo, "$(P)$(R)BaslerTestPattern" )
 {
 	field( DOL,  "0" )
