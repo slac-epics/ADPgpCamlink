@@ -114,9 +114,14 @@ record( mbbo, "$(P)$(R)CamlinkLinkMode" )
 	field( THVL, "3" ) field( THST, "Full" )
 	field( FRVL, "4" ) field( FRST, "Deca" )
 }
-record( longin, "$(P)$(R)CamlinkLinkMode_RBV" )
+record( mbbi, "$(P)$(R)CamlinkLinkMode_RBV" )
 {
 	field( INP,  "$(PGP):Ch$(PGP_LANE):Feb$(PGP_LANE):LinkMode_RBV CPP MS" )
+	field( ZRVL, "0" ) field( ZRST, "Disable" )
+	field( ONVL, "1" ) field( ONST, "Base" )
+	field( TWVL, "2" ) field( TWST, "Medium" )
+	field( THVL, "3" ) field( THST, "Full" )
+	field( FRVL, "4" ) field( FRST, "Deca" )
 }
 
 # Camlink Data Mode (# bits per pixel)
@@ -176,7 +181,7 @@ record( longout, "$(P)$(R)CamlinkVTap" )
 }
 record( longin, "$(P)$(R)CamlinkVTap_RBV" )
 {
-#	field( INP,  "$(PGP):Ch$(PGP_LANE):Feb$(PGP_LANE):TapCount_RBV CPP MS" )
+#	field( INP,  "$(PGP):Ch$(PGP_LANE):Feb$(PGP_LANE):VTapCount_RBV CPP MS" )
 	field( INP,  "$(P)$(R)CamlinkVTap CPP MS" )
 }
 
