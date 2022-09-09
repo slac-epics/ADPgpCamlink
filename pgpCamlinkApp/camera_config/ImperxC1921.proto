@@ -142,7 +142,7 @@ SetTrigInput
 
 GetTrigEdgeSelect
 {
-    out "\x52\$TrigEdgeSelect" "%04r";
+    out "\x52\$TrigEdgeSelect";
 	in  "\x06%04r";
 }
 SetTrigEdgeSelect
