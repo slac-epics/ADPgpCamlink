@@ -3,8 +3,8 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 1480
-y 1120
+x 1150
+y 1735
 w 732
 h 600
 font "helvetica-medium-r-12.0"
@@ -220,7 +220,7 @@ beginObjectProperties
 major 4
 minor 7
 release 0
-x 528
+x 540
 y 4
 w 88
 h 20
@@ -246,7 +246,7 @@ beginObjectProperties
 major 4
 minor 7
 release 0
-x 472
+x 484
 y 4
 w 48
 h 20
@@ -273,9 +273,9 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 364
+x 368
 y 4
-w 100
+w 108
 h 20
 font "helvetica-medium-r-12.0"
 fontAlign "right"
@@ -292,7 +292,7 @@ beginObjectProperties
 major 4
 minor 7
 release 0
-x 624
+x 636
 y 4
 w 88
 h 20
@@ -319,7 +319,7 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 528
+x 540
 y 28
 w 88
 h 20
@@ -338,7 +338,7 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 624
+x 636
 y 28
 w 88
 h 20
@@ -358,7 +358,7 @@ major 4
 minor 7
 release 0
 x 596
-y 524
+y 532
 w 96
 h 20
 controlPv "$(P)$(R)AcquireTime_RBV"
@@ -385,7 +385,7 @@ major 4
 minor 7
 release 0
 x 596
-y 500
+y 508
 w 96
 h 20
 controlPv "$(P)$(R)TriggerMode_RBV"
@@ -410,7 +410,7 @@ major 4
 minor 7
 release 0
 x 508
-y 500
+y 508
 w 80
 h 20
 controlPv "$(P)$(R)CamTriggerMode_RBV"
@@ -435,7 +435,7 @@ major 4
 minor 7
 release 0
 x 508
-y 524
+y 532
 w 80
 h 20
 controlPv "$(P)$(R)CamAcquireTime_RBV"
@@ -462,7 +462,7 @@ major 4
 minor 1
 release 1
 x 508
-y 476
+y 484
 w 80
 h 20
 font "helvetica-medium-r-12.0"
@@ -481,7 +481,7 @@ major 4
 minor 1
 release 1
 x 596
-y 476
+y 484
 w 96
 h 20
 font "helvetica-medium-r-12.0"
@@ -500,7 +500,7 @@ major 4
 minor 7
 release 0
 x 372
-y 500
+y 508
 w 88
 h 20
 controlPv "$(P)$(R)ImperxTrigInput_RBV"
@@ -525,7 +525,7 @@ major 4
 minor 1
 release 1
 x 372
-y 476
+y 484
 w 88
 h 20
 font "helvetica-medium-r-12.0"
@@ -544,7 +544,7 @@ major 4
 minor 1
 release 1
 x 300
-y 476
+y 484
 w 64
 h 20
 font "helvetica-medium-r-12.0"
@@ -563,7 +563,7 @@ major 4
 minor 7
 release 0
 x 372
-y 524
+y 532
 w 88
 h 20
 controlPv "$(P)$(R)ImperxRawShutterSpeed_RBV"
@@ -590,7 +590,7 @@ major 4
 minor 7
 release 0
 x 300
-y 500
+y 508
 w 64
 h 20
 controlPv "$(P)$(R)ImperxTrigEdgeSelect"
@@ -615,7 +615,7 @@ major 4
 minor 7
 release 0
 x 172
-y 500
+y 508
 w 68
 h 20
 controlPv "$(P)$(R)CamTriggerMode"
@@ -640,7 +640,7 @@ major 4
 minor 7
 release 0
 x 172
-y 524
+y 532
 w 68
 h 20
 controlPv "$(P)$(R)CamAcquireTime"
@@ -667,7 +667,7 @@ major 4
 minor 1
 release 1
 x 172
-y 476
+y 484
 w 68
 h 20
 font "helvetica-medium-r-12.0"
@@ -686,7 +686,7 @@ major 4
 minor 7
 release 0
 x 84
-y 500
+y 508
 w 80
 h 20
 controlPv "$(P)$(R)TriggerMode"
@@ -711,7 +711,7 @@ major 4
 minor 7
 release 0
 x 84
-y 524
+y 532
 w 80
 h 20
 controlPv "$(P)$(R)AcquireTime"
@@ -738,7 +738,7 @@ major 4
 minor 1
 release 1
 x 84
-y 476
+y 484
 w 80
 h 20
 font "helvetica-medium-r-12.0"
@@ -757,7 +757,7 @@ major 4
 minor 7
 release 0
 x 300
-y 524
+y 532
 w 64
 h 20
 controlPv "$(P)$(R)ImperxRawShutterSpeed"
@@ -784,7 +784,7 @@ major 4
 minor 1
 release 1
 x 4
-y 500
+y 508
 w 76
 h 20
 font "helvetica-medium-r-12.0"
@@ -803,7 +803,7 @@ major 4
 minor 1
 release 1
 x 4
-y 524
+y 532
 w 76
 h 20
 font "helvetica-medium-r-12.0"
@@ -821,7 +821,7 @@ beginObjectProperties
 major 4
 minor 7
 release 0
-x 472
+x 484
 y 28
 w 48
 h 20
@@ -847,7 +847,7 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 356
+x 368
 y 28
 w 108
 h 20
@@ -867,7 +867,7 @@ major 4
 minor 7
 release 0
 x 248
-y 92
+y 232
 w 108
 h 20
 controlPv "$(P)$(R)ImperxTrigEdgeSelect_RBV"
@@ -892,7 +892,7 @@ major 4
 minor 1
 release 1
 x 24
-y 92
+y 232
 w 104
 h 20
 font "helvetica-medium-r-12.0"
@@ -911,7 +911,7 @@ major 4
 minor 0
 release 0
 x 136
-y 92
+y 232
 w 104
 h 20
 fgColor index 25
@@ -930,7 +930,7 @@ major 4
 minor 7
 release 0
 x 248
-y 120
+y 260
 w 108
 h 20
 controlPv "$(P)$(R)ImperxExpCtrlMode_RBV"
@@ -955,7 +955,7 @@ major 4
 minor 1
 release 1
 x 24
-y 120
+y 260
 w 104
 h 20
 font "helvetica-medium-r-12.0"
@@ -974,7 +974,7 @@ major 4
 minor 0
 release 0
 x 136
-y 120
+y 260
 w 104
 h 20
 fgColor index 25
@@ -993,7 +993,7 @@ major 4
 minor 7
 release 0
 x 248
-y 148
+y 120
 w 108
 h 20
 controlPv "$(P)$(R)ImperxA2D_Bits_RBV"
@@ -1018,7 +1018,7 @@ major 4
 minor 1
 release 1
 x 24
-y 148
+y 120
 w 104
 h 20
 font "helvetica-medium-r-12.0"
@@ -1037,7 +1037,7 @@ major 4
 minor 0
 release 0
 x 136
-y 148
+y 120
 w 104
 h 20
 fgColor index 25
@@ -1056,7 +1056,7 @@ major 4
 minor 7
 release 0
 x 248
-y 176
+y 148
 w 108
 h 20
 controlPv "$(P)$(R)ImperxDataOutputBits_RBV"
@@ -1081,7 +1081,7 @@ major 4
 minor 1
 release 1
 x 24
-y 176
+y 148
 w 104
 h 20
 font "helvetica-medium-r-12.0"
@@ -1100,7 +1100,7 @@ major 4
 minor 0
 release 0
 x 136
-y 176
+y 148
 w 104
 h 20
 fgColor index 25
@@ -1119,7 +1119,7 @@ major 4
 minor 7
 release 0
 x 248
-y 204
+y 176
 w 108
 h 20
 controlPv "$(P)$(R)ImperxCamlinkMode_RBV"
@@ -1144,7 +1144,7 @@ major 4
 minor 1
 release 1
 x 24
-y 204
+y 176
 w 104
 h 20
 font "helvetica-medium-r-12.0"
@@ -1163,7 +1163,7 @@ major 4
 minor 0
 release 0
 x 136
-y 204
+y 176
 w 104
 h 20
 fgColor index 25
@@ -1182,7 +1182,7 @@ major 4
 minor 7
 release 0
 x 248
-y 232
+y 288
 w 108
 h 20
 controlPv "$(P)$(R)ImperxTriggerEnable_RBV"
@@ -1207,7 +1207,7 @@ major 4
 minor 1
 release 1
 x 24
-y 232
+y 288
 w 104
 h 20
 font "helvetica-medium-r-12.0"
@@ -1226,7 +1226,7 @@ major 4
 minor 0
 release 0
 x 136
-y 232
+y 288
 w 104
 h 20
 fgColor index 25
@@ -1245,7 +1245,7 @@ major 4
 minor 7
 release 0
 x 248
-y 64
+y 204
 w 108
 h 20
 controlPv "$(P)$(R)ImperxTrigInput_RBV"
@@ -1270,7 +1270,7 @@ major 4
 minor 0
 release 0
 x 136
-y 64
+y 204
 w 104
 h 20
 fgColor index 25
@@ -1289,7 +1289,7 @@ major 4
 minor 1
 release 1
 x 24
-y 64
+y 204
 w 104
 h 20
 font "helvetica-medium-r-12.0"
@@ -1308,7 +1308,7 @@ major 4
 minor 7
 release 0
 x 248
-y 260
+y 316
 w 108
 h 20
 controlPv "$(P)$(R)ImperxTrigExpDelay_RBV"
@@ -1334,7 +1334,7 @@ major 4
 minor 7
 release 0
 x 136
-y 260
+y 316
 w 104
 h 20
 controlPv "$(P)$(R)ImperxTrigExpDelay"
@@ -1361,7 +1361,7 @@ major 4
 minor 1
 release 1
 x 24
-y 260
+y 316
 w 104
 h 20
 font "helvetica-medium-r-12.0"
@@ -1380,7 +1380,7 @@ major 4
 minor 7
 release 0
 x 248
-y 288
+y 344
 w 108
 h 20
 controlPv "$(P)$(R)ImperxTrigModeSelect_RBV"
@@ -1393,7 +1393,6 @@ limitsFromDb
 nullColor index 40
 smartRefresh
 useHexPrefix
-showUnits
 newPos
 objType "monitors"
 noExecuteClipMask
@@ -1406,7 +1405,7 @@ major 4
 minor 7
 release 0
 x 136
-y 288
+y 344
 w 104
 h 20
 controlPv "$(P)$(R)ImperxTrigModeSelect"
@@ -1416,10 +1415,10 @@ fgColor index 25
 fgAlarm
 bgColor index 5
 editable
-motifWidget
 nullColor index 40
 smartRefresh
 fastUpdate
+updatePvOnDrop
 useHexPrefix
 newPos
 objType "controls"
@@ -1433,7 +1432,7 @@ major 4
 minor 1
 release 1
 x 24
-y 288
+y 344
 w 104
 h 20
 font "helvetica-medium-r-12.0"
@@ -1452,7 +1451,7 @@ major 4
 minor 7
 release 0
 x 248
-y 316
+y 372
 w 108
 h 20
 controlPv "$(P)$(R)ImperxTrigStrobeMode_RBV"
@@ -1478,7 +1477,7 @@ major 4
 minor 7
 release 0
 x 136
-y 316
+y 372
 w 104
 h 20
 controlPv "$(P)$(R)ImperxTrigStrobeMode"
@@ -1505,7 +1504,7 @@ major 4
 minor 1
 release 1
 x 24
-y 316
+y 372
 w 104
 h 20
 font "helvetica-medium-r-12.0"
@@ -1524,7 +1523,7 @@ major 4
 minor 1
 release 1
 x 24
-y 344
+y 400
 w 104
 h 20
 font "helvetica-medium-r-12.0"
@@ -1543,7 +1542,7 @@ major 4
 minor 7
 release 0
 x 136
-y 344
+y 400
 w 104
 h 20
 controlPv "$(P)$(R)ImperxTrigDebounce"
@@ -1570,7 +1569,7 @@ major 4
 minor 7
 release 0
 x 248
-y 344
+y 400
 w 108
 h 20
 controlPv "$(P)$(R)ImperxTrigDebounce_RBV"
@@ -1596,7 +1595,7 @@ major 4
 minor 1
 release 1
 x 24
-y 372
+y 428
 w 104
 h 20
 font "helvetica-medium-r-12.0"
@@ -1615,7 +1614,7 @@ major 4
 minor 7
 release 0
 x 136
-y 372
+y 428
 w 104
 h 20
 controlPv "$(P)$(R)ImperxTrigFilterTime"
@@ -1642,7 +1641,7 @@ major 4
 minor 7
 release 0
 x 248
-y 372
+y 428
 w 108
 h 20
 controlPv "$(P)$(R)ImperxTrigFilterTime_RBV"
@@ -1668,7 +1667,7 @@ major 4
 minor 1
 release 1
 x 24
-y 400
+y 456
 w 104
 h 20
 font "helvetica-medium-r-12.0"
@@ -1687,7 +1686,7 @@ major 4
 minor 7
 release 0
 x 136
-y 400
+y 456
 w 104
 h 20
 controlPv "$(P)$(R)ImperxTrigOverlapMode"
@@ -1697,7 +1696,6 @@ fgColor index 25
 fgAlarm
 bgColor index 5
 editable
-motifWidget
 nullColor index 40
 smartRefresh
 fastUpdate
@@ -1714,7 +1712,7 @@ major 4
 minor 7
 release 0
 x 248
-y 400
+y 456
 w 108
 h 20
 controlPv "$(P)$(R)ImperxTrigOverlapMode_RBV"
@@ -1727,7 +1725,6 @@ limitsFromDb
 nullColor index 40
 smartRefresh
 useHexPrefix
-showUnits
 newPos
 objType "monitors"
 noExecuteClipMask
@@ -1739,8 +1736,8 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 24
-y 428
+x 368
+y 288
 w 104
 h 20
 font "helvetica-medium-r-12.0"
@@ -1758,9 +1755,9 @@ beginObjectProperties
 major 4
 minor 7
 release 0
-x 136
-y 428
-w 104
+x 476
+y 288
+w 112
 h 20
 controlPv "$(P)$(R)ImperxFramesPerTrigger"
 format "decimal"
@@ -1785,8 +1782,8 @@ beginObjectProperties
 major 4
 minor 7
 release 0
-x 248
-y 428
+x 596
+y 288
 w 108
 h 20
 controlPv "$(P)$(R)ImperxFramesPerTrigger_RBV"
@@ -1812,7 +1809,7 @@ major 4
 minor 4
 release 0
 x 0
-y 288
+y 344
 w 16
 h 20
 fgColor index 14
@@ -2523,7 +2520,6 @@ limitsFromDb
 nullColor index 40
 smartRefresh
 useHexPrefix
-showUnits
 newPos
 objType "monitors"
 noExecuteClipMask
@@ -2545,6 +2541,130 @@ fgColor index 14
 bgColor index 3
 value {
   "ImperxCommError"
+}
+endObjectProperties
+
+# (Message Button)
+object activeMessageButtonClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 20
+y 32
+w 336
+h 20
+fgColor index 14
+onColor index 6
+offColor index 3
+topShadowColor index 1
+botShadowColor index 11
+controlPv "$(P)$(R)SeqCamModeBase.PROC"
+pressValue "1"
+onLabel "Base: 60fps, 12bit"
+offLabel "Select Base: 60fps, 12bit"
+3d
+font "helvetica-medium-r-12.0"
+endObjectProperties
+
+# (Message Button)
+object activeMessageButtonClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 20
+y 52
+w 336
+h 20
+fgColor index 14
+onColor index 6
+offColor index 3
+topShadowColor index 1
+botShadowColor index 11
+controlPv "$(P)$(R)SeqCamModeMedium.PROC"
+pressValue "1"
+onLabel "Medium: 121fps, 12bit"
+offLabel "Medium: 121fps, 12bit"
+3d
+font "helvetica-medium-r-12.0"
+endObjectProperties
+
+# (Message Button)
+object activeMessageButtonClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 20
+y 72
+w 336
+h 20
+fgColor index 14
+onColor index 6
+offColor index 3
+topShadowColor index 1
+botShadowColor index 11
+controlPv "$(P)$(R)SeqCamModeFull.PROC"
+pressValue "1"
+onLabel "Full: 174fps, 8bit"
+offLabel "Full: 174fps, 8bit"
+3d
+font "helvetica-medium-r-12.0"
+endObjectProperties
+
+# (Message Button)
+object activeMessageButtonClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 20
+y 92
+w 336
+h 20
+fgColor index 14
+onColor index 6
+offColor index 3
+topShadowColor index 1
+botShadowColor index 11
+controlPv "$(P)$(R)SeqCamModeDeca.PROC"
+pressValue "1"
+onLabel "Deca: 143fps, 10bit"
+offLabel "Deca: 143fps, 10bit"
+3d
+font "helvetica-medium-r-12.0"
+endObjectProperties
+
+# (Related Display)
+object relatedDisplayClass
+beginObjectProperties
+major 4
+minor 4
+release 0
+x 0
+y 456
+w 16
+h 20
+fgColor index 14
+bgColor index 3
+topShadowColor index 1
+botShadowColor index 11
+font "helvetica-bold-r-10.0"
+xPosOffset -100
+yPosOffset -148
+useFocus
+buttonLabel "?"
+numPvs 4
+numDsps 1
+displayFileName {
+  0 "ADPgpCamlinkScreens/pgpCamlinkHelp.edl"
+}
+setPosition {
+  0 "button"
+}
+symbols {
+  0 "desc0=0: Ignore overlapping trig,desc1=1: Restart on overlap trig,desc2='',desc3='',desc4='',desc5=''"
 }
 endObjectProperties
 
