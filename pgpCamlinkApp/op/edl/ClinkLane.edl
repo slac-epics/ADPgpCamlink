@@ -3,8 +3,8 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 1263
-y 1482
+x 1147
+y 1635
 w 740
 h 741
 font "helvetica-medium-r-8.0"
@@ -19,7 +19,7 @@ ctlBgColor1 index 12
 ctlBgColor2 index 5
 topShadowColor index 1
 botShadowColor index 11
-title "pgpCamnlink CH$(CH) Timing"
+title "ClinkLane CH$(CH) Timing"
 showGrid
 snapToGrid
 gridSize 4
@@ -541,25 +541,6 @@ value {
 }
 endObjectProperties
 
-# (Menu Button)
-object activeMenuButtonClass
-beginObjectProperties
-major 4
-minor 0
-release 0
-x 144
-y 204
-w 76
-h 18
-fgColor index 14
-bgColor index 3
-inconsistentColor index 40
-topShadowColor index 1
-botShadowColor index 11
-controlPv "$(P)$(R)Feb$(CH):InvCC"
-font "helvetica-medium-r-12.0"
-endObjectProperties
-
 # (Text Control)
 object activeXTextDspClass
 beginObjectProperties
@@ -716,7 +697,7 @@ x 144
 y 276
 w 76
 h 18
-controlPv "$(P)$(R)Feb$(CH):TrigMask"
+controlPv "$(CAM):CamlinkTrigMask"
 format "decimal"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
@@ -1078,7 +1059,7 @@ x 144
 y 372
 w 76
 h 18
-controlPv "$(P)$(R)Feb$(CH):HActive"
+controlPv "$(CAM):CamlinkHActive"
 format "decimal"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
@@ -1198,7 +1179,7 @@ x 144
 y 396
 w 76
 h 18
-controlPv "$(P)$(R)Feb$(CH):HSkip"
+controlPv "$(CAM):CamlinkHSkip"
 format "decimal"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
@@ -1228,7 +1209,7 @@ x 144
 y 420
 w 76
 h 18
-controlPv "$(P)$(R)Feb$(CH):VActive"
+controlPv "$(CAM):CamlinkVActive"
 format "decimal"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
@@ -1348,7 +1329,7 @@ x 144
 y 444
 w 76
 h 18
-controlPv "$(P)$(R)Feb$(CH):VSkip"
+controlPv "$(CAM):CamlinkVSkip"
 format "decimal"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
@@ -2966,5 +2947,29 @@ endGroup
 visPv "$(PGP):Timing:UseMiniTpg"
 visMin "1"
 visMax "2"
+endObjectProperties
+
+# (Button)
+object activeButtonClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 144
+y 204
+w 76
+h 20
+fgColor index 14
+onColor index 6
+offColor index 3
+inconsistentColor index 40
+topShadowColor index 1
+botShadowColor index 11
+controlPv "$(CAM):CamlinkInvCC"
+onLabel "Invert"
+offLabel "Normal"
+3d
+font "helvetica-medium-r-12.0"
+objType "controls"
 endObjectProperties
 
