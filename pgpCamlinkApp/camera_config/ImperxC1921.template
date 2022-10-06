@@ -84,6 +84,93 @@ record( bo, "$(P)$(R)CamlinkInvCC" )
 	field( PINI, "YES" )
 }
 
+# Imperx Supported Camlink Modes
+# The Imperx Cheetah supports a variety of combinations of:
+#	LinkMode: Base, Medium, Full, or Deca
+#	CMOS A/D Bits: 8, 10, or 12
+#	Camlink Bits: 8, 10, or 12
+# SLAC is supporting 4 combinations, using the
+# best case number of bits for each of the 4 LinkModes.
+# 0: 'Disable', 1: 'Base', 2: 'Medium', 3: 'Full', 4: 'Deca'
+# Published frame rate:
+#	Base, 12 bit, 60fps
+#	Medium, 12 bit, 121fps
+#	Full, 8 bit, 174fps
+#	Deca, 10 bit, 143fps
+#
+# Max frames per second measured in free run
+#	Base, 12 bit, 31fps FreeRun
+#	Medium, 12 bit, 63fps FreeRun
+#	Full, 8 bit, 172fps FreeRun
+#	Deca, 10 bit, 0fps FreeRun, didn't work
+record( mbbo, "$(P)$(R)CamMode" )
+{
+	field( DOL,  "2" )
+}
+# Select fanout off CamMode to a sequence record for each supported CamMode.
+record( fanout, "$(P)$(R)CamModeFanout" )
+{
+	field( SELL, "$(P)$(R)CamMode CPP" )
+	field( SELM, "Specified" )
+	field( LNK0, "" )
+	field( LNK1, "$(P)$(R)SeqCamModeBase" )
+	field( LNK2, "$(P)$(R)SeqCamModeMedium" )
+	field( LNK3, "$(P)$(R)SeqCamModeFull" )
+	field( LNK4, "$(P)$(R)SeqCamModeDeca" )
+}
+record( seq, "$(P)$(R)SeqCamModeBase" )
+{
+	#	First stop aquisition triggers
+	field( DLY0, "0" ) field( DOL0, "0" ) field( LNK0, "$(P)$(R)Acquire  PP NMS" )
+
+	field( DESC, "Base Mode: 60fps, 12 bits, 2 taps" )
+	field( DLY1, "2" ) field( DOL1, "2" ) field( LNK1, "$(P)$(R)ImperxA2D_Bits PP NMS" )
+	field( DLY2, "0" ) field( DOL2, "2" ) field( LNK2, "$(P)$(R)ImperxDataOutputBits PP NMS" )
+	field( DLY3, "0" ) field( DOL3, "0" ) field( LNK3, "$(P)$(R)ImperxCamlinkMode PP NMS" )
+	field( DLY4, "0" ) field( DOL4, "3" ) field( LNK4, "$(P)$(R)CamlinkDataMode" )
+	field( DLY5, "0" ) field( DOL5, "1" ) field( LNK5, "$(P)$(R)CamlinkLinkMode" )
+	field( DLY6, "0" ) field( DOL6, "2" ) field( LNK6, "$(P)$(R)CamlinkHTap" )
+}
+record( seq, "$(P)$(R)SeqCamModeMedium" )
+{
+	#	First stop aquisition triggers
+	field( DLY0, "0" ) field( DOL0, "0" ) field( LNK0, "$(P)$(R)Acquire  PP NMS" )
+
+	field( DESC, "Medium Mode: 121fps, 12 bits, 4 taps" )
+	field( DLY1, "2" ) field( DOL1, "2" ) field( LNK1, "$(P)$(R)ImperxA2D_Bits PP NMS" )
+	field( DLY2, "0" ) field( DOL2, "2" ) field( LNK2, "$(P)$(R)ImperxDataOutputBits PP NMS" )
+	field( DLY3, "0" ) field( DOL3, "2" ) field( LNK3, "$(P)$(R)ImperxCamlinkMode PP NMS" )
+	field( DLY4, "0" ) field( DOL4, "3" ) field( LNK4, "$(P)$(R)CamlinkDataMode" )
+	field( DLY5, "0" ) field( DOL5, "2" ) field( LNK5, "$(P)$(R)CamlinkLinkMode" )
+	field( DLY6, "0" ) field( DOL6, "4" ) field( LNK6, "$(P)$(R)CamlinkHTap" )
+}
+record( seq, "$(P)$(R)SeqCamModeFull" )
+{
+	#	First stop aquisition triggers
+	field( DLY0, "0" ) field( DOL0, "0" ) field( LNK0, "$(P)$(R)Acquire  PP NMS" )
+
+	field( DESC, "Full Mode: 174fps, 8 bits, 8 taps" )
+	field( DLY1, "2" ) field( DOL1, "0" ) field( LNK1, "$(P)$(R)ImperxA2D_Bits PP NMS" )
+	field( DLY2, "0" ) field( DOL2, "0" ) field( LNK2, "$(P)$(R)ImperxDataOutputBits PP NMS" )
+	field( DLY3, "0" ) field( DOL3, "3" ) field( LNK3, "$(P)$(R)ImperxCamlinkMode PP NMS" )
+	field( DLY4, "0" ) field( DOL4, "1" ) field( LNK4, "$(P)$(R)CamlinkDataMode" )
+	field( DLY5, "0" ) field( DOL5, "3" ) field( LNK5, "$(P)$(R)CamlinkLinkMode" )
+	field( DLY6, "0" ) field( DOL6, "8" ) field( LNK6, "$(P)$(R)CamlinkHTap" )
+}
+record( seq, "$(P)$(R)SeqCamModeDeca" )
+{
+	#	First stop aquisition triggers
+	field( DLY0, "0" ) field( DOL0, "0" ) field( LNK0, "$(P)$(R)Acquire  PP NMS" )
+
+	field( DESC, "Deca Mode: 143fps, 10 bits, 8 taps" )
+	field( DLY1, "2" ) field( DOL1, "1" ) field( LNK1, "$(P)$(R)ImperxA2D_Bits PP NMS" )
+	field( DLY2, "0" ) field( DOL2, "1" ) field( LNK2, "$(P)$(R)ImperxDataOutputBits PP NMS" )
+	field( DLY3, "0" ) field( DOL3, "4" ) field( LNK3, "$(P)$(R)ImperxCamlinkMode PP NMS" )
+	field( DLY4, "0" ) field( DOL4, "2" ) field( LNK4, "$(P)$(R)CamlinkDataMode" )
+	field( DLY5, "0" ) field( DOL5, "4" ) field( LNK5, "$(P)$(R)CamlinkLinkMode" )
+	field( DLY6, "0" ) field( DOL6, "8" ) field( LNK6, "$(P)$(R)CamlinkHTap" )
+}
+
 # Provide defaults for ADCore SizeX and SizeY
 record( longout, "$(P)$(R)SizeX" )
 {
@@ -643,6 +730,53 @@ record( longout, "$(P)$(R)ImperxSoftReset" )
 	field( DOL,  "0xDEADBEEF" )
 	field( DTYP, "stream" )
 	field( OUT,  "@ImperxC1921.proto SoftReset($(P)$(R)) $(PORT).SER" )
+}
+
+#record( mbbi, "$(P)$(R)CamTriggerMode" )
+#{
+#	field( FLNK, "$(P)$(R)ImperxTriggerModeFanout" )
+#}
+# Select fanout off TriggerMode to a sequence record for each supported TriggerMode.
+record( fanout, "$(P)$(R)ImperxTriggerModeFanout" )
+{
+	field( SELL, "$(P)$(R)TriggerMode CPP" )
+	field( SELM, "Specified" )
+	field( LNK0, "$(P)$(R)SeqTriggerModeFreeRun" )
+	field( LNK1, "$(P)$(R)SeqTriggerModeExternal" )
+	field( LNK2, "$(P)$(R)SeqTriggerModePulse" )
+}
+record( seq, "$(P)$(R)SeqTriggerModeFreeRun" )
+{
+	#	First stop aquisition triggers
+	field( DLY0, "0" ) field( DOL0, "0" ) field( LNK0, "$(P)$(R)Acquire  PP NMS" )
+
+	field( DESC, "FreeRun TriggerMode" )
+	field( DLY1, "1" ) field( DOL1, "2" ) field( LNK1, "$(P)$(R)ImperxTrigInput PP NMS" )
+	field( DLY2, "0" ) field( DOL2, "2" ) field( LNK2, "$(P)$(R)ImperxExpCtrlMode PP NMS" )
+	field( DLY3, "0" ) field( DOL3, "0" ) field( LNK3, "$(P)$(R)ImperxTriggerEnable PP NMS" )
+	field( DLY4, "0" ) field( DOL4, "0" ) field( LNK4, "$(P)$(R)TriggerMode_RBV PP NMS" )
+}
+record( seq, "$(P)$(R)SeqTriggerModeExternal" )
+{
+	#	First stop aquisition triggers
+	field( DLY0, "0" ) field( DOL0, "0" ) field( LNK0, "$(P)$(R)Acquire  PP NMS" )
+
+	field( DESC, "External TriggerMode" )
+	field( DLY1, "1" ) field( DOL1, "3" ) field( LNK1, "$(P)$(R)ImperxTrigInput PP NMS" )
+	field( DLY2, "0" ) field( DOL2, "2" ) field( LNK2, "$(P)$(R)ImperxExpCtrlMode PP NMS" )
+	field( DLY3, "0" ) field( DOL3, "1" ) field( LNK3, "$(P)$(R)ImperxTriggerEnable PP NMS" )
+	field( DLY4, "0" ) field( DOL4, "1" ) field( LNK4, "$(P)$(R)TriggerMode_RBV PP NMS" )
+}
+record( seq, "$(P)$(R)SeqTriggerModePulse" )
+{
+	#	First stop aquisition triggers
+	field( DLY0, "0" ) field( DOL0, "0" ) field( LNK0, "$(P)$(R)Acquire  PP NMS" )
+
+	field( DESC, "Pulse TriggerMode" )
+	field( DLY1, "1" ) field( DOL1, "3" ) field( LNK1, "$(P)$(R)ImperxTrigInput PP NMS" )
+	field( DLY2, "0" ) field( DOL2, "1" ) field( LNK2, "$(P)$(R)ImperxExpCtrlMode PP NMS" )
+	field( DLY3, "0" ) field( DOL3, "1" ) field( LNK3, "$(P)$(R)ImperxTriggerEnable PP NMS" )
+	field( DLY4, "0" ) field( DOL4, "2" ) field( LNK4, "$(P)$(R)TriggerMode_RBV PP NMS" )
 }
 
 # Include a serialMonitor.template monitor
