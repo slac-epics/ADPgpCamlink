@@ -223,6 +223,7 @@ record( longin, "$(P)$(R)Feb$(F):TapCount_RBV" )
 record( longout, "$(P)$(R)Feb$(F):TapCount" )
 {
 	field( DTYP, "RogueLO" )
+	field( DOL,  "2" )
 	field( PINI, "YES" )
 	field( OUT,  "@B$(B) L$(L) ClinkDevRoot.ClinkFeb[$(F)].ClinkTop.Ch[0].TapCount" )
 	field( FLNK, "$(P)$(R)Feb$(F):TapCount_RBV" )
@@ -230,15 +231,15 @@ record( longout, "$(P)$(R)Feb$(F):TapCount" )
 	field( SDIS, "$(P)$(R)PgpMon:RxRemLinkReady_RBV CP" )
 }
 
-record( longin, "$(P)$(R)Feb$(F):Rate_RBV" )
-{
-	field( DTYP, "RogueLI" )
-	field( INP,  "@B$(B) L$(L) ClinkDevRoot.ClinkFeb[$(F)].TrigCtrl[0].TrigRate" )
-	field( SCAN, "$(SCAN=1 second)" )
-	field( DISV, "0" )
-	field( SDIS, "$(P)$(R)PgpMon:RxRemLinkReady_RBV CP" )
-	info( autosaveFields, "" )
-}
+#record( longin, "$(P)$(R)Feb$(F):Rate_RBV" )
+#{
+#	field( DTYP, "RogueLI" )
+#	field( INP,  "@B$(B) L$(L) ClinkDevRoot.ClinkFeb[$(F)].TrigCtrl[0].TrigRate" )
+#	field( SCAN, "$(SCAN=1 second)" )
+#	field( DISV, "0" )
+#	field( SDIS, "$(P)$(R)PgpMon:RxRemLinkReady_RBV CP" )
+#	info( autosaveFields, "" )
+#}
 
 record( mbbi, "$(P)$(R)Feb$(F):Map_RBV" )
 {
