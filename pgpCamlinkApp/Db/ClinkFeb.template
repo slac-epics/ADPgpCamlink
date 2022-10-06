@@ -47,7 +47,7 @@ record( sub, "$(P)$(R)Feb$(F):PllConfig" )
 {
 	field( INPA, "$(B)" )
 	field( INPB, "$(F)" )
-	field( INPC, "$(P)$(R)Feb$(F):PixelClk CPP NMS" )
+	field( INPC, "$(P)$(R)Feb$(F):PixelClk NPP NMS" )
 	field( SNAM, "FebPllConfig" )
 	field( DISV, "0" )
 	field( SDIS, "$(P)$(R)PgpMon:RxRemLinkReady_RBV CP" )
