@@ -289,19 +289,23 @@ record( mbbi, "$(P)$(R)ImperxCamlinkMode_RBV" )
 }
 
 # TrigModeSelect
-record( longout, "$(P)$(R)ImperxTrigModeSelect" )
+record( mbbo, "$(P)$(R)ImperxTrigModeSelect" )
 {
 	field( DOL,  "1" )
 	field( PINI, "YES" )
 	field( DTYP, "stream" )
 	field( OUT,  "@ImperxC1921.proto SetTrigModeSelect($(P)$(R)) $(PORT).SER" )
+	field( ZRVL, "0" ) field( ZRST, "Slow" ) field( ZRSV, "MINOR" )
+	field( ONVL, "1" ) field( ONST, "Fast" )
 	field( FLNK, "$(P)$(R)ImperxTrigModeSelect_RBV" )
 	info( autosaveFields, "VAL" )
 }
-record( longin, "$(P)$(R)ImperxTrigModeSelect_RBV" )
+record( mbbi, "$(P)$(R)ImperxTrigModeSelect_RBV" )
 {
 	field( DTYP, "stream" )
 	field( INP,  "@ImperxC1921.proto GetTrigModeSelect($(P)$(R)) $(PORT).SER" )
+	field( ZRVL, "0" ) field( ZRST, "Slow" ) field( ZRSV, "MINOR" )
+	field( ONVL, "1" ) field( ONST, "Fast" )
 }
 
 # FramesPerTrigger
@@ -392,21 +396,25 @@ record( longin, "$(P)$(R)ImperxTrigFilterTime_RBV" )
 }
 
 # TrigOverlapMode
-record( longout, "$(P)$(R)ImperxTrigOverlapMode" )
+record( mbbo, "$(P)$(R)ImperxTrigOverlapMode" )
 {
 	field( DESC, "0=IgnoreExtraTrig, 1=Retrigger" )
 	field( DOL,  "1" )
 	field( PINI, "YES" )
 	field( DTYP, "stream" )
 	field( OUT,  "@ImperxC1921.proto SetTrigOverlapMode($(P)$(R)) $(PORT).SER" )
+	field( ZRVL, "0" ) field( ZRST, "Ignore" )
+	field( ONVL, "1" ) field( ONST, "Restart" )
 	field( FLNK, "$(P)$(R)ImperxTrigOverlapMode_RBV" )
 	info( autosaveFields, "VAL" )
 }
-record( longin, "$(P)$(R)ImperxTrigOverlapMode_RBV" )
+record( mbbi, "$(P)$(R)ImperxTrigOverlapMode_RBV" )
 {
 	field( DESC, "0=IgnoreExtraTrig, 1=Retrigger" )
 	field( DTYP, "stream" )
 	field( INP,  "@ImperxC1921.proto GetTrigOverlapMode($(P)$(R)) $(PORT).SER" )
+	field( ZRVL, "0" ) field( ZRST, "Ignore" )
+	field( ONVL, "1" ) field( ONST, "Restart" )
 }
 
 # AOI_Mode
@@ -609,6 +617,32 @@ record( mbbi, "$(P)$(R)ImperxTestPattern_RBV" )
 	field( SVVL, "7" ) field( SVST, "Moving" )
 	field( EIVL, "8" ) field( EIST, "Bars" )
 	field( NIVL, "9" ) field( NIST, "Cross" )
+}
+
+# CamFrameTime
+record( longin, "$(P)$(R)ImperxCamFrameTime_RBV" )
+{
+	field( DTYP, "stream" )
+	field( INP,  "@ImperxC1921.proto GetCamFrameTime($(P)$(R)) $(PORT).SER" )
+	field( EGU,  "us" )
+	field( PINI, "YES" )
+}
+
+# MinFrameTime
+record( longin, "$(P)$(R)ImperxMinFrameTime_RBV" )
+{
+	field( DTYP, "stream" )
+	field( INP,  "@ImperxC1921.proto GetMinFrameTime($(P)$(R)) $(PORT).SER" )
+	field( EGU,  "us" )
+	field( PINI, "YES" )
+}
+
+# SoftReset
+record( longout, "$(P)$(R)ImperxSoftReset" )
+{
+	field( DOL,  "0xDEADBEEF" )
+	field( DTYP, "stream" )
+	field( OUT,  "@ImperxC1921.proto SoftReset($(P)$(R)) $(PORT).SER" )
 }
 
 # Include a serialMonitor.template monitor

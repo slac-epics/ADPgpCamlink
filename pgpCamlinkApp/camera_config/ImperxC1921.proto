@@ -41,10 +41,10 @@
 inTerminator	= "";
 outTerminator	= "";
 #PeekSize		= 0;
-ReplyTimeout	= 1500;
+ReplyTimeout	= 500;
 ReadTimeout 	= 200;
 #WriteTimeout	= 500;
-ExtraInput		= Ignore;
+#ExtraInput		= Ignore;
 
 # Imperx C1921 Register Addresses
 # Composed of 2 bytes, LSB then MSB of register address
@@ -86,7 +86,9 @@ FirmwareVer		= \x60\x06;	# Bits FirmwareVers=0:23, CMOScolor=24:27, FirmwareImag
 SerialOK		= \x60\x0C;	# Bits Temp=246.312-(D(9:0)*0.304)
 CamTemp			= \x60\x10;	# Bits Temp=246.312-(D(9:0)*0.304)
 SoftReset		= \x60\x1C;	# Write 0xDEADBEEF to reset camera
-SWTrigger		= \x60\x30;
+SWTrigger		= \x60\x30;	# Software Trigger command
+CamFrameTime	= \x60\x80; # Returns current camera frame time in microseconds
+MinFrameTime	= \x60\x84; # Returns current minimum frame time in microseconds
 
 # Read Operation
 # Send 3 bytes to camera
@@ -403,4 +405,20 @@ SetTestPattern
 	in  "\x06";
     @mismatch { in  "\x15" "%(\$1ImperxCommError)1r"; }
 }
+SoftReset
+{
+    out "\x57\$SoftReset" "\xDE\xAD\xBE\xEF";
+	in  "\x06";
+    @mismatch { in  "\x15" "%(\$1ImperxCommError)1r"; }
+}
 
+GetCamFrameTime
+{
+    out "\x52\$CamFrameTime";
+	in  "\x06%04r";
+}
+GetMinFrameTime
+{
+    out "\x52\$MinFrameTime";
+	in  "\x06%04r";
+}

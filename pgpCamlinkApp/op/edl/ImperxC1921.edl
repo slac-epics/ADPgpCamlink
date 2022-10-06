@@ -358,34 +358,7 @@ major 4
 minor 7
 release 0
 x 596
-y 532
-w 96
-h 20
-controlPv "$(P)$(R)AcquireTime_RBV"
-format "gfloat"
-font "helvetica-medium-r-12.0"
-fontAlign "center"
-fgColor index 15
-fgAlarm
-bgColor index 12
-limitsFromDb
-nullColor index 40
-smartRefresh
-useHexPrefix
-showUnits
-newPos
-objType "monitors"
-noExecuteClipMask
-endObjectProperties
-
-# (Text Monitor)
-object activeXTextDspClass:noedit
-beginObjectProperties
-major 4
-minor 7
-release 0
-x 596
-y 508
+y 560
 w 96
 h 20
 controlPv "$(P)$(R)TriggerMode_RBV"
@@ -410,7 +383,7 @@ major 4
 minor 7
 release 0
 x 508
-y 508
+y 560
 w 80
 h 20
 controlPv "$(P)$(R)CamTriggerMode_RBV"
@@ -428,33 +401,6 @@ objType "monitors"
 noExecuteClipMask
 endObjectProperties
 
-# (Text Monitor)
-object activeXTextDspClass:noedit
-beginObjectProperties
-major 4
-minor 7
-release 0
-x 508
-y 532
-w 80
-h 20
-controlPv "$(P)$(R)CamAcquireTime_RBV"
-format "gfloat"
-font "helvetica-medium-r-12.0"
-fontAlign "center"
-fgColor index 15
-fgAlarm
-bgColor index 12
-limitsFromDb
-nullColor index 40
-smartRefresh
-useHexPrefix
-showUnits
-newPos
-objType "monitors"
-noExecuteClipMask
-endObjectProperties
-
 # (Static Text)
 object activeXTextClass
 beginObjectProperties
@@ -462,7 +408,7 @@ major 4
 minor 1
 release 1
 x 508
-y 484
+y 536
 w 80
 h 20
 font "helvetica-medium-r-12.0"
@@ -481,7 +427,7 @@ major 4
 minor 1
 release 1
 x 596
-y 484
+y 536
 w 96
 h 20
 font "helvetica-medium-r-12.0"
@@ -500,7 +446,7 @@ major 4
 minor 7
 release 0
 x 372
-y 508
+y 560
 w 88
 h 20
 controlPv "$(P)$(R)ImperxTrigInput_RBV"
@@ -525,7 +471,7 @@ major 4
 minor 1
 release 1
 x 372
-y 484
+y 536
 w 88
 h 20
 font "helvetica-medium-r-12.0"
@@ -543,9 +489,9 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 300
-y 484
-w 64
+x 284
+y 536
+w 80
 h 20
 font "helvetica-medium-r-12.0"
 fontAlign "center"
@@ -562,38 +508,11 @@ beginObjectProperties
 major 4
 minor 7
 release 0
-x 372
-y 532
-w 88
+x 284
+y 560
+w 80
 h 20
-controlPv "$(P)$(R)ImperxRawShutterSpeed_RBV"
-format "gfloat"
-font "helvetica-medium-r-12.0"
-fontAlign "center"
-fgColor index 15
-fgAlarm
-bgColor index 12
-limitsFromDb
-nullColor index 40
-smartRefresh
-useHexPrefix
-showUnits
-newPos
-objType "monitors"
-noExecuteClipMask
-endObjectProperties
-
-# (Text Monitor)
-object activeXTextDspClass:noedit
-beginObjectProperties
-major 4
-minor 7
-release 0
-x 300
-y 508
-w 64
-h 20
-controlPv "$(P)$(R)ImperxTrigEdgeSelect"
+controlPv "$(P)$(R)ImperxTrigInput"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
 fgColor index 15
@@ -615,7 +534,7 @@ major 4
 minor 7
 release 0
 x 172
-y 508
+y 560
 w 68
 h 20
 controlPv "$(P)$(R)CamTriggerMode"
@@ -633,33 +552,6 @@ objType "monitors"
 noExecuteClipMask
 endObjectProperties
 
-# (Text Monitor)
-object activeXTextDspClass:noedit
-beginObjectProperties
-major 4
-minor 7
-release 0
-x 172
-y 532
-w 68
-h 20
-controlPv "$(P)$(R)CamAcquireTime"
-format "gfloat"
-font "helvetica-medium-r-12.0"
-fontAlign "center"
-fgColor index 15
-fgAlarm
-bgColor index 12
-limitsFromDb
-nullColor index 40
-smartRefresh
-useHexPrefix
-showUnits
-newPos
-objType "monitors"
-noExecuteClipMask
-endObjectProperties
-
 # (Static Text)
 object activeXTextClass
 beginObjectProperties
@@ -667,7 +559,7 @@ major 4
 minor 1
 release 1
 x 172
-y 484
+y 536
 w 68
 h 20
 font "helvetica-medium-r-12.0"
@@ -686,7 +578,7 @@ major 4
 minor 7
 release 0
 x 84
-y 508
+y 560
 w 80
 h 20
 controlPv "$(P)$(R)TriggerMode"
@@ -704,33 +596,6 @@ objType "monitors"
 noExecuteClipMask
 endObjectProperties
 
-# (Text Monitor)
-object activeXTextDspClass:noedit
-beginObjectProperties
-major 4
-minor 7
-release 0
-x 84
-y 532
-w 80
-h 20
-controlPv "$(P)$(R)AcquireTime"
-format "gfloat"
-font "helvetica-medium-r-12.0"
-fontAlign "center"
-fgColor index 15
-fgAlarm
-bgColor index 12
-limitsFromDb
-nullColor index 40
-smartRefresh
-useHexPrefix
-showUnits
-newPos
-objType "monitors"
-noExecuteClipMask
-endObjectProperties
-
 # (Static Text)
 object activeXTextClass
 beginObjectProperties
@@ -738,7 +603,7 @@ major 4
 minor 1
 release 1
 x 84
-y 484
+y 536
 w 80
 h 20
 font "helvetica-medium-r-12.0"
@@ -750,33 +615,6 @@ value {
 }
 endObjectProperties
 
-# (Text Monitor)
-object activeXTextDspClass:noedit
-beginObjectProperties
-major 4
-minor 7
-release 0
-x 300
-y 532
-w 64
-h 20
-controlPv "$(P)$(R)ImperxRawShutterSpeed"
-format "gfloat"
-font "helvetica-medium-r-12.0"
-fontAlign "center"
-fgColor index 15
-fgAlarm
-bgColor index 12
-limitsFromDb
-nullColor index 40
-smartRefresh
-useHexPrefix
-showUnits
-newPos
-objType "monitors"
-noExecuteClipMask
-endObjectProperties
-
 # (Static Text)
 object activeXTextClass
 beginObjectProperties
@@ -784,7 +622,7 @@ major 4
 minor 1
 release 1
 x 4
-y 508
+y 560
 w 76
 h 20
 font "helvetica-medium-r-12.0"
@@ -793,25 +631,6 @@ fgColor index 14
 bgColor index 3
 value {
   "TriggerMode"
-}
-endObjectProperties
-
-# (Static Text)
-object activeXTextClass
-beginObjectProperties
-major 4
-minor 1
-release 1
-x 4
-y 532
-w 76
-h 20
-font "helvetica-medium-r-12.0"
-fontAlign "right"
-fgColor index 14
-bgColor index 3
-value {
-  "AcquireTime"
 }
 endObjectProperties
 
@@ -2666,5 +2485,137 @@ setPosition {
 symbols {
   0 "desc0=0: Ignore overlapping trig,desc1=1: Restart on overlap trig,desc2='',desc3='',desc4='',desc5=''"
 }
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 372
+y 456
+w 100
+h 20
+font "helvetica-medium-r-12.0"
+fontAlign "right"
+fgColor index 14
+bgColor index 3
+value {
+  "ImperxSoftReset"
+}
+endObjectProperties
+
+# (Message Button)
+object activeMessageButtonClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 476
+y 452
+w 112
+h 24
+fgColor index 14
+onColor index 9
+offColor index 6
+topShadowColor index 1
+botShadowColor index 11
+controlPv "$(CAM):ImperxSoftReset.PROC"
+pressValue "1"
+onLabel "Reset!"
+offLabel "Reset"
+3d
+font "helvetica-medium-r-12.0"
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 596
+y 480
+w 108
+h 20
+controlPv "$(P)$(R)ImperxCamFrameTime_RBV"
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+fgColor index 15
+fgAlarm
+bgColor index 12
+limitsFromDb
+nullColor index 40
+smartRefresh
+useHexPrefix
+showUnits
+newPos
+objType "monitors"
+noExecuteClipMask
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 372
+y 480
+w 100
+h 20
+font "helvetica-medium-r-12.0"
+fontAlign "right"
+fgColor index 14
+bgColor index 3
+value {
+  "CamFrameTime"
+}
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 372
+y 504
+w 100
+h 20
+font "helvetica-medium-r-12.0"
+fontAlign "right"
+fgColor index 14
+bgColor index 3
+value {
+  "MinFrameTime"
+}
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 596
+y 504
+w 108
+h 20
+controlPv "$(P)$(R)ImperxMinFrameTime_RBV"
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+fgColor index 15
+fgAlarm
+bgColor index 12
+limitsFromDb
+nullColor index 40
+smartRefresh
+useHexPrefix
+showUnits
+newPos
+objType "monitors"
+noExecuteClipMask
 endObjectProperties
 
