@@ -1453,6 +1453,7 @@ int pgpCamlink::LoadNDArray(
 	assert( pNDArray->pData	!= NULL );
 	assert( pImageCbInfo->m_ImageDataPtr );
 
+#if 0
 	if ( DEBUG_PGP_CAMLINK < 4 )
 	if ( pImageCbInfo->m_ImageDataPtr->size() < (m_ClCurWidth * m_ClCurHeight) )
 	{
@@ -1461,6 +1462,7 @@ int pgpCamlink::LoadNDArray(
 				(m_ClCurWidth * m_ClCurHeight) );
 		return -1;
 	}
+#endif
 
 	if ( DEBUG_PGP_CAMLINK >= 5 )
 	{

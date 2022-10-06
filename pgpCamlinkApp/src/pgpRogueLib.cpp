@@ -872,7 +872,7 @@ template<class R> int pgpRogueLib::writeVarPath( rim::VariablePtr pVar, const R 
 					<< ", typeid = "	<< typeid(R).name()
 					<< ", modelId = "	<< modelId2String(pVar->modelId()) << pVar->bitTotal()
 					<< ", value = "	<< value << std::endl;
-		printf( "%s type is %s, nBits %u, byteSize %u!\n",
+		printf( "%s type is %s, nBits %u, byteSize %u\n",
 				pVar->path().c_str(),
 				modelId2String( pVar->modelId() ), pVar->bitTotal(),
 				pVar->byteSize() );

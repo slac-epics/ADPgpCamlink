@@ -38,7 +38,7 @@
 
 using namespace	std;
 
-int		DEBUG_PGP_CAMLINK	= 2;
+int		DEBUG_PGP_CAMLINK	= 1;
 
 
 int		pgpClDev::setTriggerEnable( unsigned int triggerNum, bool fEnable )
