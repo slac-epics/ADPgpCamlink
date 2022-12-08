@@ -1,0 +1,12 @@
+# A simple MODEL substitutions file which preserves macro defaults
+# but expands any inluded rbvMonitor.template or other templates.
+file JaiCm140M.template
+{
+	{
+		P				= "\$(P)",
+		R				= "\$(R)",
+		PORT			= "\$(PORT)",
+		PWIDTH			= "\$(PWIDTH=TRIG:PULSE:WIDTH)",
+		PW_SCALE		= "\$(PW_SCALE=1e9)",
+	}
+}

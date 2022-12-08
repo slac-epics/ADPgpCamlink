@@ -1,0 +1,39 @@
+###################
+ClinkTop:
+###################
+  PllConfig[:]: '40MHz'
+  ###################
+  Ch[:]:
+    LinkMode: Base
+    DataMode: 10Bit
+    FrameMode: Frame
+    TapCount: 1
+    DataEn: True
+    Blowoff: False
+    BaudRate: 9600 # units of bps
+    SerThrottle: 30000 # (30ms x 1us throttle rate) = 10000
+    SwControlValue: 0x0
+    SwControlEn: 0x0
+    HSkip: 0x0
+    HActive: 0xFFFF
+    VSkip: 0x0
+    VActive: 0xFFFF
+    ###################
+    UartJaiCm140: # JAI CM-140MCL-UV UART interface
+      SM: '0'      # 0=Preset Shutter
+      SH: '0'      # 0=Off
+      TR: '1'      # 1=EPS(Edge pre select)
+      TP: '0'      # 0=Active Low
+      TI: '0'      # 0=Camera Link
+      BA: '1'      # 10-bit
+      SC: '0'      # 0=Full Frame
+      VB: '0'      # 0=OFF
+###################
+TrigCtrl[0]:
+  EnableTrig: True
+  # InvCC: False # Active High Pulse
+  InvCC: True # Active LOW Pulse
+  TrigMap: ChA # ChA = pgpTrigger(0)
+  TrigPulseWidth: 100.0 # units of us
+  TrigMask: 0x1 # CC1 trigger
+#########################################################################################################
