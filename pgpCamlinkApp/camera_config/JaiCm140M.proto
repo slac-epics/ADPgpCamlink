@@ -1,74 +1,39 @@
 #
-InTerminator	= "\01";
-OutTerminator	= CR;
+InTerminator	= CR LF;
+OutTerminator	= CR LF;
 ReplyTimeout	= 800;
-ReadTimeout	= 100;
+ReadTimeout		= 100;
 WriteTimeout	= 100;
-ExtraInput	= Ignore;
+ExtraInput		= Ignore;
 
 # Safe command to send to test communications
 ComTest
 {
-	out	"rp";
-	in	"G %*x R %*x SM %*x %*{NS|DS} %*s %*{AM|NM}\r"
+	out	"ID?";
+	in	"%*s"
 }
 
 # Report camera settings
 Report
 {
-	out	"rp";
-	in	"G %*x R %*x SM %*x %*{NS|DS} %*s %{AM|NM}\r"
-#	     G 000 R 000 SM 0   NS         PC  AM  
+	out	"ST?";
+	in	"%*s"
 }
 
-ReadGain
+GetInt
 {
-	out	"rp";
-	in	"G %x R %*x SM %*x %*{NS|DS} %*s %*{AM|NM}\r"
+    out "\$1?";
+	in  "\$1=%d";
 }
 
-ReadReference
+SetInt
 {
-	out	"rp";
-	in	"G %*x R %x SM %*x %*{NS|DS} %*s %*{AM|NM}\r"
+	out "\$1=%d";
+	in  "COMPLETE";
 }
 
-ReadShutterMode
+GetString
 {
-	out	"rp";
-	in	"G %*x R %*x SM %x %*{NS|DS} %*s %*{AM|NM}\r"
-#	     G 000 R 000 SM 0   NS         PC  AM      
-}
-
-ReadFreeRun
-{
-	out	"rp";
-	in	"G %*x R %*x SM %*x %*{NS|DS} %*s %{AM|NM}\r"
-}
-
-ReadDoubleSpeed
-{
-	out	"rp";
-	in	"G %*x R %*x SM %*x %{NS|DS} %*s %*{AM|NM}\r"
-}
-
-# Set shutter speed
-SetShutterSpeed
-{
-	out	"sm%x";
-	in	"\r";
-}
-
-# Set shutter mode
-SetShutterMode
-{
-	out	"%{am|nm}";
-	in	"\r";
-}
-
-# Set gain
-SetGain
-{
-	out	"gn%03x";
-	in	"\r";
+    out "\$1?";
+	in  "\$1=%s";
 }
