@@ -1210,7 +1210,7 @@ record( longin, "$(P)$(R)ReadoutTimeRaw" )
 
 # 4.6 Exposure Control Registers
 
-record( mbbi, "$(P)$(R)CamTriggerMode" )
+record( mbbo, "$(P)$(R)CamTriggerMode" )
 {
 	field( FLNK, "$(P)$(R)BaslerCalcExposureMode" )
 }
@@ -1257,22 +1257,20 @@ record( mbbi, "$(P)$(R)BaslerExposureMode_RBV" )
 	field( FLNK, "$(P)$(R)BaslerCalcCamTriggerMode" )
 }
 
-record( calc, "$(P)$(R)BaslerCalcCamTriggerMode" )
+record( calcout, "$(P)$(R)BaslerCalcCamTriggerMode" )
 {
 #	field( TPRO, 2 )
 	field( DESC, "Map BaslerExposureMode to TriggerMode" )
 	field( INPA, "$(P)$(R)BaslerExposureMode_RBV NPP NMS" )
 	field( INPB, "$(P)$(R)CamTriggerMode NPP NMS" )
 	field( CALC, "A==2?2:(B==0?0:1)" )
-	field( FLNK, "$(P)$(R)CamTriggerMode_RBV" )
+	field( OUT,  "$(P)$(R)CamTriggerMode_RBV CA MS" )
 }
 
-# Make CamTriggerMode_RBV get it's value from BaslerCalcCamTriggerMode
-record( mbbo, "$(P)$(R)CamTriggerMode_RBV" )
+# CamTriggerMode_RBV gets it's value from BaslerCalcCamTriggerMode
+record( mbbi, "$(P)$(R)CamTriggerMode_RBV" )
 {
 #	field( TPRO, 2 )
-	field( OMSL, "closed_loop" )
-	field( DOL,  "$(P)$(R)BaslerCalcCamTriggerMode NPP MS" )
 }
 
 record( longout, "$(P)$(R)ExposureTimeRaw" )

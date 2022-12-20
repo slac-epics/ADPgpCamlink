@@ -621,6 +621,7 @@ record( mbbo, "$(P)$(R)TriggerMode" )
 	field( ZRVL, "0" )	field( ZRST, "FreeRun" )
 	field( ONVL, "1" )	field( ONST, "External" )
 	field( TWVL, "2" )	field( TWST, "Pulse" )
+	field( FLNK, "$(P)$(R)CamTriggerMode" )
 }
 # Replace ADBase TriggerMode_RBV fields w/ pgpCamlink options
 record( mbbi, "$(P)$(R)TriggerMode_RBV" )
@@ -630,26 +631,24 @@ record( mbbi, "$(P)$(R)TriggerMode_RBV" )
 	field( ONVL, "1" )	field( ONST, "External" )
 	field( TWVL, "2" )	field( TWST, "Pulse" )
 }
-# CamTriggerMode should not be FLNK'd from TriggerMode, as it shouldn't
-# get processed till we've shutdown acquisition.
-# Note also it needs to be an input record so it processes via I/O Scan
-# once camera is reconfigured.
-record( mbbi, "$(P)$(R)CamTriggerMode" )
+record( mbbo, "$(P)$(R)CamTriggerMode" )
+{
+#	field( TPRO, 2 )
+	field( DOL,  "$(P)$(R)TriggerMode NPP NMS" )
+	field( OMSL, "closed_loop" )
+	field( DTYP, "asynInt32" )
+	field( OUT,  "@asyn($(PORT),$(ADDR=0),$(TIMEOUT=1))CLCAM_TRIGGER_MODE" )
+	field( ZRVL, "0" )	field( ZRST, "FreeRun" )
+	field( ONVL, "1" )	field( ONST, "External" )
+	field( TWVL, "2" )	field( TWST, "Pulse" )
+#	field( SCAN, "I/O Intr" )
+	info( archiveFields,  "DESC" )
+}
+record( mbbi, "$(P)$(R)CamTriggerMode_RBV" )
 {
 #	field( TPRO, 2 )
 	field( DTYP, "asynInt32" )
 	field( INP,  "@asyn($(PORT),$(ADDR=0),$(TIMEOUT=1))CLCAM_TRIGGER_MODE" )
-	field( ZRVL, "0" )	field( ZRST, "FreeRun" )
-	field( ONVL, "1" )	field( ONST, "External" )
-	field( TWVL, "2" )	field( TWST, "Pulse" )
-	field( SCAN, "I/O Intr" )
-	info( archiveFields,  "DESC" )
-}
-record( mbbo, "$(P)$(R)CamTriggerMode_RBV" )
-{
-#	field( TPRO, 2 )
-	field( DTYP, "asynInt32" )
-	field( OUT,  "@asyn($(PORT),$(ADDR=0),$(TIMEOUT=1))CLCAM_TRIGGER_MODE" )
 	field( ZRVL, "0" )	field( ZRST, "FreeRun" )
 	field( ONVL, "1" )	field( ONST, "External" )
 	field( TWVL, "2" )	field( TWST, "Pulse" )

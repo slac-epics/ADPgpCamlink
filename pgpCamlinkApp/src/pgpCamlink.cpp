@@ -1912,12 +1912,6 @@ int	pgpCamlink::RequestTriggerMode(	int	value	)
 		break;
 	}
 
-	// Make sure we enable the synchronous data acquisition
-	// This jump starts it after boot when autosave updates trigger mode
-#if 0
-	if( m_pSyncDataAcquirer != NULL )
-		m_pSyncDataAcquirer->SetEnabled();
-#endif
 	return asynSuccess;
 }
 
@@ -2030,20 +2024,36 @@ asynStatus pgpCamlink::readFloat64(	asynUser *	pasynUser, epicsFloat64	value )
 #endif
 
 // TODO: Don't think we need this function as it's main purpose is to query params from ADCore
-// Gets invoked for POOL_ALLOC_BUFFERS and POOL_FREE_BUFFERS which are hanled by the base class
+// Gets invoked for POOL_ALLOC_BUFFERS and POOL_FREE_BUFFERS which are handled by the base class
 asynStatus pgpCamlink::readInt32(	asynUser *	pasynUser, epicsInt32	* pValueRet )
 {
     static const char	*	functionName	= "pgpCamlink::readInt32";
     const char			*	reasonName		= "unknownReason";
+	asynStatus				status			= asynSuccess;
+
 	getParamName( 0, pasynUser->reason, &reasonName );
-	if ( DEBUG_PGP_CAMLINK >= 6 )
+	if ( DEBUG_PGP_CAMLINK >= 6 && pasynUser->reason != NDPoolAllocBuffers && pasynUser->reason != NDPoolFreeBuffers )
 		printf(	"%s: Reason %d %s\n", functionName, pasynUser->reason, reasonName );
 	asynPrint(	pasynUser,	ASYN_TRACE_FLOW,
 				"%s: Reason %d %s\n", functionName, pasynUser->reason, reasonName );
 
-	// Call base class
-	// asynStatus	status	= asynPortDriver::readInt32( pasynUser, pValueRet );
-	asynStatus	status	= ADDriver::readInt32( pasynUser, pValueRet );
+	//
+	// pgpCamlink implements these AD parameters
+	//
+	if (		pasynUser->reason == SerTriggerMode ) {
+		*pValueRet = m_TriggerModeReq;
+		status	= asynSuccess;
+	} else if ( pasynUser->reason == ADTriggerMode		) {
+		*pValueRet = m_TriggerMode;
+		status	= asynSuccess;
+	//
+	// No more overrides of ND and AD parameters
+	// Any below FIRST_CAMLINK_PARAM get handled by base class ADDriver
+	//
+    } else if (	pasynUser->reason < FIRST_CAMLINK_PARAM ) {
+		// Call base class
+		status	= ADDriver::readInt32( pasynUser, pValueRet );
+	}
     return status;
 }
 

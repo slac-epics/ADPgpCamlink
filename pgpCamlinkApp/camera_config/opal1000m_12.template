@@ -737,7 +737,7 @@ record( calcout, "$(P)$(R)OpalCalcAcquireTime_RBV" )
 #	Pulse mode is used for exposure timing via external trigger pulse.
 #		Pulse width controls exposure, readout begins approx 418us after the end of the trigger pulse
 #	The Delayed and double modes are provided for slow framegrabbers and not used by this driver
-record( mbbi, "$(P)$(R)CamTriggerMode" )
+record( mbbo, "$(P)$(R)CamTriggerMode" )
 {
 	field( FLNK, "$(P)$(R)OpalCalcTriggerMode" )
 }
@@ -782,21 +782,19 @@ record( mbbi, "$(P)$(R)OpalTriggerMode_RBV" )
 	field( PINI, "YES" )
 	field( FLNK, "$(P)$(R)OpalCalcCamTriggerMode" )
 }
-record( calc, "$(P)$(R)OpalCalcCamTriggerMode" )
+record( calcout, "$(P)$(R)OpalCalcCamTriggerMode" )
 {
 #	field( TPRO, 2 )
 	field( DESC, "Maps Opal TriggerMode to ADTriggerMode" )
 	field( INPA, "$(P)$(R)OpalTriggerMode_RBV NPP NMS" )
 	field( CALC, "A==0?0:(A==5?1:2)" )
-	field( FLNK, "$(P)$(R)CamTriggerMode_RBV" )
+	field( OUT,  "$(P)$(R)CamTriggerMode_RBV CA MS" )
 }
 
-# Make CamTriggerMode_RBV get it's value from OpalCalcCamTriggerMode
-record( mbbo, "$(P)$(R)CamTriggerMode_RBV" )
+# CamTriggerMode_RBV get it's value from OpalCalcCamTriggerMode
+record( mbbi, "$(P)$(R)CamTriggerMode_RBV" )
 {
 #	field( TPRO, 2 )
-	field( OMSL, "closed_loop" )
-	field( DOL,  "$(P)$(R)OpalCalcCamTriggerMode NPP MS" )
 }
 
 record( bo, "$(P)$(R)OpalSetOLUTE" )

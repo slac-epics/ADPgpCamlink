@@ -732,14 +732,14 @@ record( longout, "$(P)$(R)ImperxSoftReset" )
 	field( OUT,  "@ImperxC1921.proto SoftReset($(P)$(R)) $(PORT).SER" )
 }
 
-#record( mbbi, "$(P)$(R)CamTriggerMode" )
-#{
-#	field( FLNK, "$(P)$(R)ImperxTriggerModeFanout" )
-#}
+record( mbbo, "$(P)$(R)CamTriggerMode" )
+{
+	field( FLNK, "$(P)$(R)ImperxTriggerModeFanout" )
+}
 # Select fanout off TriggerMode to a sequence record for each supported TriggerMode.
 record( fanout, "$(P)$(R)ImperxTriggerModeFanout" )
 {
-	field( SELL, "$(P)$(R)TriggerMode CPP" )
+	field( SELL, "$(P)$(R)CamTriggerMode NPP NMS" )
 	field( SELM, "Specified" )
 	field( LNK0, "$(P)$(R)SeqTriggerModeFreeRun" )
 	field( LNK1, "$(P)$(R)SeqTriggerModeExternal" )
@@ -754,7 +754,7 @@ record( seq, "$(P)$(R)SeqTriggerModeFreeRun" )
 	field( DLY1, "1" ) field( DOL1, "2" ) field( LNK1, "$(P)$(R)ImperxTrigInput PP NMS" )
 	field( DLY2, "0" ) field( DOL2, "2" ) field( LNK2, "$(P)$(R)ImperxExpCtrlMode PP NMS" )
 	field( DLY3, "0" ) field( DOL3, "0" ) field( LNK3, "$(P)$(R)ImperxTriggerEnable PP NMS" )
-	field( DLY4, "0" ) field( DOL4, "0" ) field( LNK4, "$(P)$(R)TriggerMode_RBV PP NMS" )
+	field( DLY4, "0" ) field( DOL4, "0" ) field( LNK4, "$(P)$(R)CamTriggerMode_RBV PP NMS" )
 }
 record( seq, "$(P)$(R)SeqTriggerModeExternal" )
 {
@@ -765,7 +765,7 @@ record( seq, "$(P)$(R)SeqTriggerModeExternal" )
 	field( DLY1, "1" ) field( DOL1, "3" ) field( LNK1, "$(P)$(R)ImperxTrigInput PP NMS" )
 	field( DLY2, "0" ) field( DOL2, "2" ) field( LNK2, "$(P)$(R)ImperxExpCtrlMode PP NMS" )
 	field( DLY3, "0" ) field( DOL3, "1" ) field( LNK3, "$(P)$(R)ImperxTriggerEnable PP NMS" )
-	field( DLY4, "0" ) field( DOL4, "1" ) field( LNK4, "$(P)$(R)TriggerMode_RBV PP NMS" )
+	field( DLY4, "0" ) field( DOL4, "1" ) field( LNK4, "$(P)$(R)CamTriggerMode_RBV PP NMS" )
 }
 record( seq, "$(P)$(R)SeqTriggerModePulse" )
 {
@@ -776,7 +776,7 @@ record( seq, "$(P)$(R)SeqTriggerModePulse" )
 	field( DLY1, "1" ) field( DOL1, "3" ) field( LNK1, "$(P)$(R)ImperxTrigInput PP NMS" )
 	field( DLY2, "0" ) field( DOL2, "1" ) field( LNK2, "$(P)$(R)ImperxExpCtrlMode PP NMS" )
 	field( DLY3, "0" ) field( DOL3, "1" ) field( LNK3, "$(P)$(R)ImperxTriggerEnable PP NMS" )
-	field( DLY4, "0" ) field( DOL4, "2" ) field( LNK4, "$(P)$(R)TriggerMode_RBV PP NMS" )
+	field( DLY4, "0" ) field( DOL4, "2" ) field( LNK4, "$(P)$(R)CamTriggerMode_RBV PP NMS" )
 }
 
 # Include a serialMonitor.template monitor

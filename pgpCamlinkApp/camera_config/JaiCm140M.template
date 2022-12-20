@@ -401,9 +401,11 @@ record( mbbi,	"$(P)$(R)JaiRawTriggerInput_RBV" )
 # We don't use it.
 record( mbbo, "$(P)$(R)JaiRawTriggerMode" )
 {
+#	field( TPRO, 2 )
 	field( DESC,	"Trigger Mode" )
 	field( DTYP,	"stream" )
-	field( DOL,     "2" )
+	field( DOL,     "$(P)$(R)CamTriggerMode NPP NMS" )
+	field( OMSL,    "closed_loop" )
 	field( OUT,		"@JaiCm140M.proto SetInt(TR) $(PORT).SER" )
 	field( ZRVL,	"0"	)
 	field( ONVL,	"1"	)
@@ -413,12 +415,14 @@ record( mbbo, "$(P)$(R)JaiRawTriggerMode" )
 	field( ONST,	"External"	)
 	field( TWST,	"Pulse"	)
 	field( THST,	"TrigFreeRun"	)
+	field( PINI,	"YES" )
 	field( FLNK,	"$(P)$(R)JaiRawTriggerMode_RBV" )
 #	info( autosaveFields, "VAL" )
 }
 
 record( mbbi,	"$(P)$(R)JaiRawTriggerMode_RBV" )
 {
+#	field( TPRO, 2 )
 	field( DESC,	"Trigger Mode" )
 	field( DTYP,	"stream" )
 	field( INP,		"@JaiCm140M.proto GetInt(TR) $(PORT).SER" )
@@ -430,6 +434,16 @@ record( mbbi,	"$(P)$(R)JaiRawTriggerMode_RBV" )
 	field( ONST,	"External"	)
 	field( TWST,	"Pulse"	)
 	field( THST,	"TrigFreeRun"	)
+	field( FLNK,	"$(P)$(R)CamTriggerMode_RBV" )
+}
+record( mbbo, "$(P)$(R)CamTriggerMode" )
+{
+	field( FLNK,	"$(P)$(R)JaiRawTriggerMode" )
+}
+record( mbbi, "$(P)$(R)CamTriggerMode_RBV" )
+{
+#	field( DOL,		"$(P)$(R)JaiTriggerMode_RBV CPP MS" )
+#	field( OMSL,	"closed_loop" )
 }
 
 record( mbbo, "$(P)$(R)JaiRawTriggerPolarity" )
