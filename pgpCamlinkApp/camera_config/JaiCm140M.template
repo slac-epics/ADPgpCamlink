@@ -149,8 +149,7 @@ record( longin,	"$(P)$(R)JaiGain_RBV" )
 {
 	field( DESC,	"Gain from camera report" )
 	field( DTYP,	"stream" )
-	field( INP,		"@JaiCm140M.proto ReadGain $(PORT).SER" )
-#	field( SCAN,	"I/O Intr" )
+	field( INP,		"@JaiCm140M.proto GetInt(GA) $(PORT).SER" )
     field( FLNK,	"$(P)$(R)JaiCalcGain_RBV" )
 }
 record( calcout, "$(P)$(R)JaiCalcGain_RBV" )
@@ -196,17 +195,41 @@ record( longin,	"$(P)$(R)JaiBlackLevel_RBV" )
 	field( PINI,	"YES"	)
 }
 
+record( stringin, "$(P)$(R)JaiCameraID_RBV" )
+{
+	field( DESC,	"JAI camera ID" )
+	field( DTYP,	"stream" )
+	field( INP,		"@JaiCm140M.proto GetString(ID) $(PORT).SER" )
+	field( PINI,	"YES" )
+}
+
+record( stringin, "$(P)$(R)JaiFirmware_RBV" )
+{
+	field( DESC,	"JAI camera firmware version" )
+	field( DTYP,	"stream" )
+	field( INP,		"@JaiCm140M.proto GetString(VN) $(PORT).SER" )
+	field( PINI,	"YES" )
+}
+
+record( stringin, "$(P)$(R)JaiModel_RBV" )
+{
+	field( DESC,	"JAI camera model" )
+	field( DTYP,	"stream" )
+	field( INP,		"@JaiCm140M.proto GetString(MD) $(PORT).SER" )
+	field( PINI,	"YES" )
+}
+
 record( mbbo, "$(P)$(R)JaiRawPixelDepth" )
 {
 	field( DESC,	"Pixel Depth" )
 	field( DTYP,	"stream" )
-	field( DOL,     "1" )
+	field( DOL,     "0" )
 	field( OUT,		"@JaiCm140M.proto SetInt(BA) $(PORT).SER" )
 	field( ZRVL,	"0"	)
-	field( ZRVL,	"0"	)
 	field( ONVL,	"1"	)
-	field( ZRST,	"8-bit"	)
-	field( ONST,	"10-bit" )
+	field( ZRST,	"10-bit"	)
+	field( ONST,	"8-bit" )
+	field( PINI,	"YES"	)
 	field( FLNK,	"$(P)$(R)JaiRawPixelDepth_RBV" )
 #	info( autosaveFields, "VAL" )
 }
@@ -215,17 +238,17 @@ record( mbbi,	"$(P)$(R)JaiRawPixelDepth_RBV" )
 {
 	field( DESC,	"Pixel Depth" )
 	field( DTYP,	"stream" )
-	field( INP,		"@JaiCm140M.proto GetInt(TI) $(PORT).SER" )
+	field( INP,		"@JaiCm140M.proto GetInt(BA) $(PORT).SER" )
 	field( ZRVL,	"0"	)
 	field( ONVL,	"1"	)
-	field( ZRST,	"8-bit"	)
-	field( ONST,	"10-bit" )
+	field( ZRST,	"10-bit" )
+	field( ONST,	"8-bit" )
 }
 record( mbbo, "$(P)$(R)JaiRawPresetShutter" )
 {
 	field( DESC,	"JAI Preset Shutter Speeds" )
 	field( DTYP,	"stream" )
-	field( OUT,		"@up900.proto SetInt(SH) $(PORT).SER" )
+	field( OUT,		"@JaiCm140M.proto SetInt(SH) $(PORT).SER" )
 	field( ZRVL,	"0"	)	field( ZRST,	"Off"		)
 	field( ONVL,	"1"	)	field( ONST,	"1/60"		)
 	field( TWVL,	"2"	)	field( TWST,	"1/100"		)
@@ -236,13 +259,14 @@ record( mbbo, "$(P)$(R)JaiRawPresetShutter" )
 	field( SVVL,	"7"	)	field( SVST,	"1/4000"	)
 	field( EIVL,	"8"	)	field( EIST,	"1/8000"	)
 	field( NIVL,	"9"	)	field( NIST,	"1/10000"	)
+	field( PINI,	"YES"	)
 	field( FLNK,	"$(P)$(R)JaiRawPresetShutter_RBV" )
 }
 record( mbbi,	"$(P)$(R)JaiRawPresetShutter_RBV" )
 {
 	field( DESC,	"JAI Preset Shutter Speeds" )
 	field( DTYP,	"stream" )
-	field( INP,		"@up900.proto GetInt(SH) $(PORT).SER " )
+	field( INP,		"@JaiCm140M.proto GetInt(SH) $(PORT).SER " )
 	field( ZRVL,	"0"	)	field( ZRST,	"Off"		)
 	field( ONVL,	"1"	)	field( ONST,	"1/60"		)
 	field( TWVL,	"2"	)	field( TWST,	"1/100"		)
@@ -268,7 +292,8 @@ record( longout, "$(P)$(R)JaiRawProgExposure" )
 	field( OUT,		"@JaiCm140M.proto SetInt(PE) $(PORT).SER" )
 	field( DRVL,    "2" )
 	field( DRVH,    "1051" )
-	field( EGU,		"30.58us" )
+	field( EGU,		"x30.6us" )
+	field( PINI,	"YES"	)
 	field( FLNK,	"$(P)$(R)JaiRawProgExposure_RBV" )
 #	info( autosaveFields, "VAL" )
 }
@@ -278,7 +303,7 @@ record( longin,	"$(P)$(R)JaiRawProgExposure_RBV" )
 	field( DESC,	"Programmable Exposure Length" )
 	field( DTYP,	"stream" )
 	field( INP,		"@JaiCm140M.proto GetInt(PE) $(PORT).SER" )
-	field( EGU,		"30.58us" )
+	field( EGU,		"x30.6us" )
 }
 
 record( mbbo, "$(P)$(R)JaiRawScanMode" )
@@ -297,6 +322,7 @@ record( mbbo, "$(P)$(R)JaiRawScanMode" )
 	field( TWST,	"1/2 Fr"	)
 	field( THST,	"1/4 Fr"	)
 	field( FRST,	"1/8 Fr"	)
+	field( PINI,	"YES"	)
 	field( FLNK,	"$(P)$(R)JaiRawScanMode_RBV" )
 #	info( autosaveFields, "VAL" )
 }
@@ -310,10 +336,12 @@ record( mbbi,	"$(P)$(R)JaiRawScanMode_RBV" )
 	field( ONVL,	"1"	)
 	field( TWVL,	"2"	)
 	field( THVL,	"3"	)
-	field( ZRST,	"FreeRun"	)
-	field( ONST,	"External"	)
-	field( TWST,	"Pulse"	)
-	field( THST,	"TrigFreeRun"	)
+	field( FRVL,	"4"	)
+	field( ZRST,	"FullFr"	)
+	field( ONST,	"2/3 Fr"	)
+	field( TWST,	"1/2 Fr"	)
+	field( THST,	"1/4 Fr"	)
+	field( FRST,	"1/8 Fr"	)
 }
 
 record( mbbo, "$(P)$(R)JaiRawShutterMode" )
@@ -351,7 +379,7 @@ record( mbbo, "$(P)$(R)JaiRawTriggerInput" )
 	field( ONVL,	"1"	)
 	field( ZRST,	"Camlink"	)
 	field( ONST,	"External"	)
-    field( PINI, "YES" )
+    field( PINI,	"YES" )
 	field( FLNK,	"$(P)$(R)JaiRawTriggerInput_RBV" )
 #	info( autosaveFields, "VAL" )
 }
@@ -443,12 +471,10 @@ record( ao, "$(P)$(R)XmitRate" )
 # Set SerThrottle to 30000
 record( longout, "$(P)$(R)Jai:SerThrottle" )
 {
-	field( DOL,  "30000" )
-	field( OUT,  "$(P)$(R)Feb$(PGP_LANE):SerThrottle" )
+	field( DOL,		"30000" )
+    field( PINI,	"YES" )
+	field( OUT,		"$(P)$(R)Feb$(PGP_LANE):SerThrottle" )
 }
-
-# Possible TODO: Add support for
-#	BL,BL?	Set and read black level
 
 # Include a serialMonitor.template monitor
 # This should be the first PV you process in the CamReConfigSeq
