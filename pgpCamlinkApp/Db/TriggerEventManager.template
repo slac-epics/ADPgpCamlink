@@ -157,7 +157,7 @@ record( calcout, "$(P)$(R)EvrV2:RateSelCalc" )
 
 record( longout, "$(P)$(R)EvrV2:RateSel" )
 {
-	field( DESC, "Ch0 EvrV2 RateSel LCLS-I & LCLS-II" )
+	field( DESC, "EvrV2 RateSel LCLS-I & LCLS-II" )
 	field( OUT,  "@B$(B) L$(L) ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TriggerEventManager.EvrV2CoreTriggers.EvrV2ChannelReg[$(L)].RateSel" )
 	field( DTYP, "RogueLO" )
 	field( PINI, "YES" )
