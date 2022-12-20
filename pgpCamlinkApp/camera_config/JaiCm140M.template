@@ -219,7 +219,7 @@ record( stringin, "$(P)$(R)JaiModel_RBV" )
 	field( PINI,	"YES" )
 }
 
-record( mbbo, "$(P)$(R)JaiRawPixelDepth" )
+record( mbbo, "$(P)$(R)JaiPixelDepth" )
 {
 	field( DESC,	"Pixel Depth" )
 	field( DTYP,	"stream" )
@@ -230,11 +230,11 @@ record( mbbo, "$(P)$(R)JaiRawPixelDepth" )
 	field( ZRST,	"10-bit"	)
 	field( ONST,	"8-bit" )
 	field( PINI,	"YES"	)
-	field( FLNK,	"$(P)$(R)JaiRawPixelDepth_RBV" )
+	field( FLNK,	"$(P)$(R)JaiPixelDepth_RBV" )
 #	info( autosaveFields, "VAL" )
 }
 
-record( mbbi,	"$(P)$(R)JaiRawPixelDepth_RBV" )
+record( mbbi,	"$(P)$(R)JaiPixelDepth_RBV" )
 {
 	field( DESC,	"Pixel Depth" )
 	field( DTYP,	"stream" )
@@ -244,7 +244,7 @@ record( mbbi,	"$(P)$(R)JaiRawPixelDepth_RBV" )
 	field( ZRST,	"10-bit" )
 	field( ONST,	"8-bit" )
 }
-record( mbbo, "$(P)$(R)JaiRawPresetShutter" )
+record( mbbo, "$(P)$(R)JaiPresetShutter" )
 {
 	field( DESC,	"JAI Preset Shutter Speeds" )
 	field( DTYP,	"stream" )
@@ -260,9 +260,9 @@ record( mbbo, "$(P)$(R)JaiRawPresetShutter" )
 	field( EIVL,	"8"	)	field( EIST,	"1/8000"	)
 	field( NIVL,	"9"	)	field( NIST,	"1/10000"	)
 	field( PINI,	"YES"	)
-	field( FLNK,	"$(P)$(R)JaiRawPresetShutter_RBV" )
+	field( FLNK,	"$(P)$(R)JaiPresetShutter_RBV" )
 }
-record( mbbi,	"$(P)$(R)JaiRawPresetShutter_RBV" )
+record( mbbi,	"$(P)$(R)JaiPresetShutter_RBV" )
 {
 	field( DESC,	"JAI Preset Shutter Speeds" )
 	field( DTYP,	"stream" )
@@ -277,14 +277,14 @@ record( mbbi,	"$(P)$(R)JaiRawPresetShutter_RBV" )
 	field( SVVL,	"7"	)	field( SVST,	"1/4000"	)
 	field( EIVL,	"8"	)	field( EIST,	"1/8000"	)
 	field( NIVL,	"9"	)	field( NIST,	"1/10000"	)
-#	field( FLNK,	"$(P)$(R)JaiRawPresetShutter_ASub" )
+#	field( FLNK,	"$(P)$(R)JaiPresetShutter_ASub" )
 }
 
 # JAI Units vary w/ camera type and vertical binning mode
 #	MCL/PMCL Cameras
 #	No vertical binning: 30.58us
 #	W/ vertical binning: 58.9us
-record( longout, "$(P)$(R)JaiRawProgExposure" )
+record( longout, "$(P)$(R)JaiProgExposure" )
 {
 	field( DESC,	"Programmable Exposure Length" )
 	field( DTYP,	"stream" )
@@ -294,11 +294,11 @@ record( longout, "$(P)$(R)JaiRawProgExposure" )
 	field( DRVH,    "1051" )
 	field( EGU,		"x30.6us" )
 	field( PINI,	"YES"	)
-	field( FLNK,	"$(P)$(R)JaiRawProgExposure_RBV" )
+	field( FLNK,	"$(P)$(R)JaiProgExposure_RBV" )
 #	info( autosaveFields, "VAL" )
 }
 
-record( longin,	"$(P)$(R)JaiRawProgExposure_RBV" )
+record( longin,	"$(P)$(R)JaiProgExposure_RBV" )
 {
 	field( DESC,	"Programmable Exposure Length" )
 	field( DTYP,	"stream" )
@@ -306,7 +306,7 @@ record( longin,	"$(P)$(R)JaiRawProgExposure_RBV" )
 	field( EGU,		"x30.6us" )
 }
 
-record( mbbo, "$(P)$(R)JaiRawScanMode" )
+record( mbbo, "$(P)$(R)JaiScanMode" )
 {
 	field( DESC,	"Scan Mode" )
 	field( DTYP,	"stream" )
@@ -323,11 +323,11 @@ record( mbbo, "$(P)$(R)JaiRawScanMode" )
 	field( THST,	"1/4 Fr"	)
 	field( FRST,	"1/8 Fr"	)
 	field( PINI,	"YES"	)
-	field( FLNK,	"$(P)$(R)JaiRawScanMode_RBV" )
+	field( FLNK,	"$(P)$(R)JaiScanMode_RBV" )
 #	info( autosaveFields, "VAL" )
 }
 
-record( mbbi,	"$(P)$(R)JaiRawScanMode_RBV" )
+record( mbbi,	"$(P)$(R)JaiScanMode_RBV" )
 {
 	field( DESC,	"Trigger Mode" )
 	field( DTYP,	"stream" )
@@ -344,7 +344,7 @@ record( mbbi,	"$(P)$(R)JaiRawScanMode_RBV" )
 	field( FRST,	"1/8 Fr"	)
 }
 
-record( mbbo, "$(P)$(R)JaiRawShutterMode" )
+record( mbbo, "$(P)$(R)JaiShutterMode" )
 {
 	field( DESC,	"Numeric shutter value" )
 	field( DTYP,	"stream" )
@@ -354,11 +354,11 @@ record( mbbo, "$(P)$(R)JaiRawShutterMode" )
 	field( ONVL,	"1"	)
 	field( ZRST,	"Presets"	)
 	field( ONST,	"ProgExp"	)
-	field( FLNK,	"$(P)$(R)JaiRawShutterMode_RBV" )
+	field( FLNK,	"$(P)$(R)JaiShutterMode_RBV" )
 	field( PINI,	"YES"	)
 #	info( autosaveFields, "VAL" )
 }
-record( mbbi,	"$(P)$(R)JaiRawShutterMode_RBV" )
+record( mbbi,	"$(P)$(R)JaiShutterMode_RBV" )
 {
 	field( DESC,	"Camera shutter mode" )
 	field( DTYP,	"stream" )
@@ -369,7 +369,7 @@ record( mbbi,	"$(P)$(R)JaiRawShutterMode_RBV" )
 	field( ONST,	"ProgExp"	)
 }
 
-record( mbbo, "$(P)$(R)JaiRawTriggerInput" )
+record( mbbo, "$(P)$(R)JaiTriggerInput" )
 {
 	field( DESC,	"Trigger Input" )
 	field( DTYP,	"stream" )
@@ -380,11 +380,11 @@ record( mbbo, "$(P)$(R)JaiRawTriggerInput" )
 	field( ZRST,	"Camlink"	)
 	field( ONST,	"External"	)
     field( PINI,	"YES" )
-	field( FLNK,	"$(P)$(R)JaiRawTriggerInput_RBV" )
+	field( FLNK,	"$(P)$(R)JaiTriggerInput_RBV" )
 #	info( autosaveFields, "VAL" )
 }
 
-record( mbbi,	"$(P)$(R)JaiRawTriggerInput_RBV" )
+record( mbbi,	"$(P)$(R)JaiTriggerInput_RBV" )
 {
 	field( DESC,	"Trigger Input" )
 	field( DTYP,	"stream" )
@@ -399,7 +399,7 @@ record( mbbi,	"$(P)$(R)JaiRawTriggerInput_RBV" )
 # JAI has option 3, TrigFreeRun, which interrupts any current frame readout,
 # does one triggered readout, then reverts to FreeRun mode.
 # We don't use it.
-record( mbbo, "$(P)$(R)JaiRawTriggerMode" )
+record( mbbo, "$(P)$(R)JaiTriggerMode" )
 {
 #	field( TPRO, 2 )
 	field( DESC,	"Trigger Mode" )
@@ -415,12 +415,12 @@ record( mbbo, "$(P)$(R)JaiRawTriggerMode" )
 	field( ONST,	"External"	)
 	field( TWST,	"Pulse"	)
 	field( THST,	"TrigFreeRun"	)
-	field( PINI,	"YES" )
-	field( FLNK,	"$(P)$(R)JaiRawTriggerMode_RBV" )
+    field( PINI,	"YES" )
+	field( FLNK,	"$(P)$(R)JaiTriggerMode_RBV" )
 #	info( autosaveFields, "VAL" )
 }
 
-record( mbbi,	"$(P)$(R)JaiRawTriggerMode_RBV" )
+record( mbbi,	"$(P)$(R)JaiTriggerMode_RBV" )
 {
 #	field( TPRO, 2 )
 	field( DESC,	"Trigger Mode" )
@@ -438,7 +438,7 @@ record( mbbi,	"$(P)$(R)JaiRawTriggerMode_RBV" )
 }
 record( mbbo, "$(P)$(R)CamTriggerMode" )
 {
-	field( FLNK,	"$(P)$(R)JaiRawTriggerMode" )
+	field( FLNK,	"$(P)$(R)JaiTriggerMode" )
 }
 record( mbbi, "$(P)$(R)CamTriggerMode_RBV" )
 {
@@ -446,7 +446,7 @@ record( mbbi, "$(P)$(R)CamTriggerMode_RBV" )
 #	field( OMSL,	"closed_loop" )
 }
 
-record( mbbo, "$(P)$(R)JaiRawTriggerPolarity" )
+record( mbbo, "$(P)$(R)JaiTriggerPolarity" )
 {
 	field( DESC,	"Trigger Polarity" )
 	field( DTYP,	"stream" )
@@ -457,11 +457,11 @@ record( mbbo, "$(P)$(R)JaiRawTriggerPolarity" )
 	field( ZRST,	"Normal"	)
 	field( ONST,	"Invert"	)
     field( PINI,	 "YES" )
-	field( FLNK,	"$(P)$(R)JaiRawTriggerPolarity_RBV" )
+	field( FLNK,	"$(P)$(R)JaiTriggerPolarity_RBV" )
 #	info( autosaveFields, "VAL" )
 }
 
-record( mbbi,	"$(P)$(R)JaiRawTriggerPolarity_RBV" )
+record( mbbi,	"$(P)$(R)JaiTriggerPolarity_RBV" )
 {
 	field( DESC,	"Trigger Polarity" )
 	field( DTYP,	"stream" )
@@ -483,7 +483,7 @@ record( ao, "$(P)$(R)XmitRate" )
 }   
 
 # Set SerThrottle to 30000
-record( longout, "$(P)$(R)Jai:SerThrottle" )
+record( longout, "$(P)$(R)JaiSerThrottle" )
 {
 	field( DOL,		"30000" )
     field( PINI,	"YES" )
@@ -493,8 +493,8 @@ record( longout, "$(P)$(R)Jai:SerThrottle" )
 # Include a serialMonitor.template monitor
 # This should be the first PV you process in the CamReConfigSeq
 substitute "MON_SCAN=10 second"
-#substitute "SER_OK_PV= $(P)$(R)JaiReport"
-#include "serialMonitor.template"
+substitute "SER_OK_PV= $(P)$(R)JaiModel_RBV"
+include "serialMonitor.template"
 
 # 1 second RBV monitors
 substitute "MON_SCAN=1 second"
@@ -502,11 +502,56 @@ substitute "MON_SCAN=1 second"
 # 10 second RBV monitors
 substitute "MON_SCAN=10 second"
 substitute "MON_DISABLED=0"
-#substitute "MON_PV= $(P)$(R)JaiRawProgExposure_RBV"
+substitute "MON_PV=$(P)$(R)JaiBlackLevel_RBV"
+include "rbvMonitor.template"
+substitute "MON_PV=$(P)$(R)JaiCameraID_RBV"
+include "rbvMonitor.template"
+substitute "MON_PV=$(P)$(R)JaiFirmware_RBV"
+include "rbvMonitor.template"
+substitute "MON_PV=$(P)$(R)JaiGain_RBV"
+include "rbvMonitor.template"
+#substitute "MON_PV=$(P)$(R)JaiModel_RBV"
 #include "rbvMonitor.template"
+substitute "MON_PV=$(P)$(R)JaiPixelDepth_RBV"
+include "rbvMonitor.template"
+substitute "MON_PV=$(P)$(R)JaiPresetShutter_RBV"
+include "rbvMonitor.template"
+substitute "MON_PV=$(P)$(R)JaiProgExposure_RBV"
+include "rbvMonitor.template"
+substitute "MON_PV=$(P)$(R)JaiScanMode_RBV"
+include "rbvMonitor.template"
+substitute "MON_PV=$(P)$(R)JaiShutterMode_RBV"
+include "rbvMonitor.template"
+substitute "MON_PV=$(P)$(R)JaiTriggerInput_RBV"
+include "rbvMonitor.template"
+substitute "MON_PV=$(P)$(R)JaiTriggerMode_RBV"
+include "rbvMonitor.template"
+substitute "MON_PV=$(P)$(R)JaiTriggerPolarity_RBV"
+include "rbvMonitor.template"
 
 # Put monitors
 substitute "MON_SCAN=1 second"
 substitute "MON_DISABLED=1"
-#substitute "MON_PV= $(P)$(R)JaiGain"
-#include "putMonitor.template"
+substitute "MON_PV=$(P)$(R)JaiBlackLevel"
+include "putMonitor.template"
+substitute "MON_PV=$(P)$(R)JaiCameraID"
+include "putMonitor.template"
+substitute "MON_PV=$(P)$(R)JaiGain"
+include "putMonitor.template"
+substitute "MON_PV=$(P)$(R)JaiPixelDepth"
+include "putMonitor.template"
+substitute "MON_PV=$(P)$(R)JaiPresetShutter"
+include "putMonitor.template"
+substitute "MON_PV=$(P)$(R)JaiProgExposure"
+include "putMonitor.template"
+substitute "MON_PV=$(P)$(R)JaiScanMode"
+include "putMonitor.template"
+substitute "MON_PV=$(P)$(R)JaiShutterMode"
+include "putMonitor.template"
+substitute "MON_PV=$(P)$(R)JaiTriggerInput"
+include "putMonitor.template"
+substitute "MON_PV=$(P)$(R)JaiTriggerMode"
+include "putMonitor.template"
+substitute "MON_PV=$(P)$(R)JaiTriggerPolarity"
+include "putMonitor.template"
+
