@@ -592,8 +592,8 @@ int rogueDev::_Reconfigure( )
 //	setStringParam(			PgpAxiVersion, m_AxiVersion.c_str()	);
 
 	// Already shown in _Reopen()
-	//printf( "rogueDev Driver  version: %s\n", m_DrvVersion.c_str() ); 
-	//printf( "rogueDev Library version: %s\n", m_LibVersion.c_str() );
+	printf( "rogueDev Driver  version: %s\n", m_DrvVersion.c_str() ); 
+	printf( "rogueDev Library version: %s\n", m_LibVersion.c_str() );
 #if 0
 	{
 	// Fetch the camera manufacturer and model and write them to ADBase parameters

@@ -796,6 +796,10 @@ int pgpCamlink::_Reconfigure( )
 
 	m_LibVersion = m_pDev->GetLibVersion();
 	setStringParam( CamlinkLibVersion, m_LibVersion.c_str()	);
+	if ( DEBUG_PGP_CAMLINK >= 1 )
+	{
+		printf( "%s: Driver Version %s, Lib Version %s\n", functionName, m_DrvVersion.c_str(), m_LibVersion.c_str() );
+	}
 
 //	int64_t		int64Value	= 0;
 //	uint64_t	uint64Value	= 0;
