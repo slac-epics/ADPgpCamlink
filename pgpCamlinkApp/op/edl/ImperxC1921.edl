@@ -2378,11 +2378,12 @@ onColor index 6
 offColor index 3
 topShadowColor index 1
 botShadowColor index 11
-controlPv "$(P)$(R)SeqCamModeBase.PROC"
+controlPv "$(P)$(R)CamMode"
 pressValue "1"
 onLabel "Base: 60fps, 12bit"
 offLabel "Select Base: 60fps, 12bit"
 3d
+useEnumNumeric
 font "helvetica-medium-r-12.0"
 endObjectProperties
 
@@ -2401,11 +2402,12 @@ onColor index 6
 offColor index 3
 topShadowColor index 1
 botShadowColor index 11
-controlPv "$(P)$(R)SeqCamModeMedium.PROC"
-pressValue "1"
+controlPv "$(P)$(R)CamMode"
+pressValue "2"
 onLabel "Medium: 121fps, 12bit"
 offLabel "Medium: 121fps, 12bit"
 3d
+useEnumNumeric
 font "helvetica-medium-r-12.0"
 endObjectProperties
 
@@ -2424,11 +2426,12 @@ onColor index 6
 offColor index 3
 topShadowColor index 1
 botShadowColor index 11
-controlPv "$(P)$(R)SeqCamModeFull.PROC"
-pressValue "1"
+controlPv "$(P)$(R)CamMode"
+pressValue "3"
 onLabel "Full: 174fps, 8bit"
 offLabel "Full: 174fps, 8bit"
 3d
+useEnumNumeric
 font "helvetica-medium-r-12.0"
 endObjectProperties
 
@@ -2447,11 +2450,12 @@ onColor index 6
 offColor index 3
 topShadowColor index 1
 botShadowColor index 11
-controlPv "$(P)$(R)SeqCamModeDeca.PROC"
-pressValue "1"
+controlPv "$(P)$(R)CamMode"
+pressValue "4"
 onLabel "Deca: 143fps, 10bit"
 offLabel "Deca: 143fps, 10bit"
 3d
+useEnumNumeric
 font "helvetica-medium-r-12.0"
 endObjectProperties
 
