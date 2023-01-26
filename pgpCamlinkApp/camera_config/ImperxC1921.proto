@@ -2,7 +2,7 @@
 # Imperx Serial Protocol
 #
 # Read Operation:
-#	Send 7 Bytes:
+#	Send 3 Bytes:
 #		Byte 1:	0x52
 #		Byte 2:	Addr MSB
 #		Byte 3:	Addr LSB
@@ -41,8 +41,8 @@
 inTerminator	= "";
 outTerminator	= "";
 #PeekSize		= 0;
-ReplyTimeout	= 500;
-ReadTimeout 	= 200;
+ReplyTimeout	= 800;
+ReadTimeout 	= 300;
 #WriteTimeout	= 500;
 #ExtraInput		= Ignore;
 
