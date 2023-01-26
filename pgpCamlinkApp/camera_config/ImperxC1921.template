@@ -106,6 +106,12 @@ record( bo, "$(P)$(R)CamlinkInvCC" )
 record( mbbo, "$(P)$(R)CamMode" )
 {
 	field( DOL,  "2" )
+	field( ZRVL, "0" ) field( ZRST, "Base 2 taps" )
+	field( ONVL, "1" ) field( ONST, "Base 3 taps" )
+	field( TWVL, "2" ) field( TWST, "Medium" )
+	field( THVL, "3" ) field( THST, "Full" )
+	field( FRVL, "4" ) field( FRST, "DECA" )
+	info( autosaveFields, "VAL" )
 }
 # Select fanout off CamMode to a sequence record for each supported CamMode.
 record( fanout, "$(P)$(R)CamModeFanout" )
@@ -198,6 +204,14 @@ record( bo, "$(P)$(R)ResetDevice" )
     field( ZNAM, "Reset" )
     field( ONAM, "Resetting!"  )
 #    field( SDIS, "$(P)$(R)SerialDisable" )
+}
+
+# Set SerThrottle to 30000
+record( longout, "$(P)$(R)ImperxSerThrottle" )
+{
+	field( DOL,		"30000" )
+    field( PINI,	"YES" )
+	field( OUT,		"$(P)$(R)Feb$(PGP_LANE):SerThrottle" )
 }
 
 record( mbbo, "$(P)$(R)ImperxCommError" )
@@ -841,6 +855,7 @@ include "rbvMonitor.template"
 # Put monitors
 substitute "MON_SCAN=1 second"
 substitute "MON_DISABLED=1"
+#substitute "MON_VALUE=1"
 substitute "MON_PV=$(P)$(R)ImperxCamlinkMode"
 include "putMonitor.template"
 substitute "MON_PV=$(P)$(R)ImperxTriggerEnable"
