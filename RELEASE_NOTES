@@ -1,6 +1,9 @@
 #
 # SLAC RELEASE_NOTES
 #
+R2.1.1	2023-02-21 Bruce Hill
+	Updated to ADCore/R3.10-1.1.0
+
 R2.1.0	2022-12-20 Bruce Hill
 	Updated to cameralink v7.16.0 firmware (no changes to address map since v7.12.0)
 	Added support for JAI Cm140M camera
