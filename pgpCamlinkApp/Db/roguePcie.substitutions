@@ -7,10 +7,10 @@ file ClinkPcie.template
 
 file TriggerEventManager.template
 {
-	{ P = "\$(P)", R = "\$(R)Ch0:", L=0, F=0 }
-	{ P = "\$(P)", R = "\$(R)Ch1:", L=1, F=1 }
-	{ P = "\$(P)", R = "\$(R)Ch2:", L=2, F=2 }
-	{ P = "\$(P)", R = "\$(R)Ch3:", L=3, F=3 }
+	{ P = "\$(P)", R = "\$(R)Ch0:", L=0, F=0, PTOP = "ClinkDevRoot.ClinkPcie.Hsio.TimingRx" }
+	{ P = "\$(P)", R = "\$(R)Ch1:", L=1, F=1, PTOP = "ClinkDevRoot.ClinkPcie.Hsio.TimingRx" }
+	{ P = "\$(P)", R = "\$(R)Ch2:", L=2, F=2, PTOP = "ClinkDevRoot.ClinkPcie.Hsio.TimingRx" }
+	{ P = "\$(P)", R = "\$(R)Ch3:", L=3, F=3, PTOP = "ClinkDevRoot.ClinkPcie.Hsio.TimingRx" }
 }
 
 #file biDevRogue.template
