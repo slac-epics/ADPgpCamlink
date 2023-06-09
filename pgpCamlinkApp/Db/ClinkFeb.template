@@ -300,7 +300,7 @@ record( calcout, "$(P)$(R)Feb$(F):PulseWidth_RBVCalc" )
 {
 	field( INPA, "$(P)$(R)Feb$(F):PulseWidthRaw_RBV" )
 	field( CALC, "(A + 1) * 0.008" )
-	field( OUT,  "$(P)$(R)Feb$(F):PulseWidth_RBV CPP MS" )
+	field( OUT,  "$(P)$(R)Feb$(F):PulseWidth_RBV PP MS" )
 	field( EGU,  "1/125MHz" )
 	field( FLNK, "$(P)$(R)Feb$(F):PulseWidth_RBV" )
 	field( DISV, "0" )

@@ -481,7 +481,7 @@ record( longout, "$(P)$(R)CamHwVROI_RBV" )
 
 record( mbbo, "$(P)$(R)CamMode" )
 {
-	field( OUT,  "$(P)$(R)CamlinkLinkMode CPP" )
+	field( OUT,  "$(P)$(R)CamlinkLinkMode PP" )
 	field( ZRVL, "0" ) field( ZRST, "Disable" )
 	field( ONVL, "1" ) field( ONST, "Base" )
 	field( TWVL, "2" ) field( TWST, "Medium" )
