@@ -116,6 +116,23 @@ record( mbbo, "$(P)$(R)Timing:ModeSelEn" )
 	info( autosaveFields, "VAL" )
 }
 
+# Message Delay
+record( mbbi, "$(P)$(R)Timing:MSGDLY_RBV" )
+{
+	field( DTYP, "RogueMBBI" )
+	field( INP,  "@B$(B) L0 ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TimingFrameRx.MsgDelay" )
+	info( autosaveFields, "" )
+}
+
+record( mbbo, "$(P)$(R)Timing:MSGDLY" )
+{
+	field( DTYP, "RogueMBBO" )
+	field( OUT,  "@B$(B) L0 ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TimingFrameRx.MsgDelay" )
+	field( PINI, "YES" )
+	field( FLNK, "$(P)$(R)Timing:MSGDLY_RBV" )
+	info( autosaveFields, "VAL" )
+}
+
 # XpmMini LCLS-II Rate Select
 record( mbbi, "$(P)$(R)XpmMini:Config_L0Select_RateSel_RBV" )
 {
