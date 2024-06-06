@@ -117,19 +117,35 @@ record( mbbo, "$(P)$(R)Timing:ModeSelEn" )
 }
 
 # Message Delay
-record( mbbi, "$(P)$(R)Timing:MSGDLY_RBV" )
+record( ao, "$(P)$(R)Timing:MSGDLY" )
 {
-	field( DTYP, "RogueMBBI" )
-	field( INP,  "@B$(B) L0 ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TimingFrameRx.MsgDelay" )
-	info( autosaveFields, "" )
+  field( DESC, "Message Delay LCLS-II Timing Frame (ns)")
+	field( DTYP, "RogueAO" )
+  field( EGU,  "nsec")
+  field( VAL,  "107692.3076923077")
+  field( PREC, "0")
+  field( PINI, "YES")
+  field( OMSL, "supervisory")
+	field( FLNK, "$(P)$(R)Timing:MSGDLYTKS" )
+  info( autosaveFields, "VAL" )
 }
 
-record( mbbo, "$(P)$(R)Timing:MSGDLY" )
+ record(calcout, "$(P)$(R)Timing:MSGDLYTKS") {
+  field( DESC,   "Message Delay LCLS-II Timing Frame (clock ticks)")
+	field( DTYP,   "RogueLO" )
+  field( EGU,    "ticks")
+  field( INPA,   "$(P)$(R)Timing:MSGDLY")
+  field( CALC,   "(A*1300/7000+0.5)")
+	field( OUT,    "@B$(B) L0 ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TimingFrameRx.MsgDelay" )
+	field( FLNK,   "$(P)$(R)Timing:MSGDLY_RBV" )
+	info( autosaveFields, "VAL" )
+}
+
+record( longin, "$(P)$(R)Timing:MSGDLY_RBV" )
 {
-	field( DTYP, "RogueMBBO" )
-	field( OUT,  "@B$(B) L0 ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TimingFrameRx.MsgDelay" )
-	field( PINI, "YES" )
-	field( FLNK, "$(P)$(R)Timing:MSGDLY_RBV" )
+	field( DTYP, "RogueLI" )
+	field( INP,  "@B$(B) L0 ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TimingFrameRx.MsgDelay" )
+	field( SCAN, "$(SCAN=1 second)" )
 	info( autosaveFields, "VAL" )
 }
 
