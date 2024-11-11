@@ -17,6 +17,10 @@ ClinkDev:
         SerThrottle: 30000 # (30ms x 1us throttle rate) = 10000
         SwControlValue: 0x0
         SwControlEn: 0x0     
+        HSkip: 18
+        HActive: 1392
+        VSkip: 1
+        VActive: 1040
         ###################
         UartUp900cl12b: # UP-900CL-12B
           SM: 'f'   

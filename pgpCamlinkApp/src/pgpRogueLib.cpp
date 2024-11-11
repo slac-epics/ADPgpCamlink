@@ -534,7 +534,7 @@ void pgpRogueLib::ConfigureLclsTimingV1()
 
 bool pgpRogueLib::FebReady( size_t iFeb )
 {
-	const char	*	pszVarPathRxRemLinkReady	= "ClinkDevRoot.ClinkPcie.Hsio.PgpMon[%u].RxStatus.RemRxLinkReady";
+	const char	*	pszVarPathRxRemLinkReady	= "ClinkDevRoot.ClinkPcie.Hsio.PgpMon[%zu].RxStatus.RemRxLinkReady";
 	char			febVarPath[256];
 	bool			febReady	= false;
 	snprintf( febVarPath, 256, pszVarPathRxRemLinkReady, iFeb );
@@ -544,7 +544,7 @@ bool pgpRogueLib::FebReady( size_t iFeb )
 
 void pgpRogueLib::FebFpgaReload()
 {
-	const char * pszVarPathFpgaReload		= "ClinkDevRoot.ClinkFeb[%1u].AxiVersion.FpgaReload";
+	const char * pszVarPathFpgaReload		= "ClinkDevRoot.ClinkFeb[%zu].AxiVersion.FpgaReload";
 
 	bool	febFound[N_AXI_LANES] = { false, false, false, false };
 	for ( size_t lane = 0; lane < N_AXI_LANES; lane++ )

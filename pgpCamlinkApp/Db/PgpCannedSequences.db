@@ -36,8 +36,8 @@ record( seq, "$(PGP):SeqLcls1Timing" )
 	# Set EventBuilder Bypass to mask out XPM Timing Message for LCLS1 timing 
 	field( DLYA, "0.1" ) field( DOLA, "4" ) field( LNKA, "$(PGP):ChAll:EventBuilder:BypassXPM  PP NMS" )
 
-	# Set RateType to ControlWord for LCLS1 timing rates
-	field( DLYB, "0.1" ) field( DOLB, "2" ) field( LNKB, "$(PGP):ChAll:EvrV2:RateTypeControlWord PP NMS" )
+	# Set RateType to AcRates for LCLS1 timing rates
+	field( DLYB, "0.1" ) field( DOLB, "1" ) field( LNKB, "$(PGP):ChAll:EvrV2:RateTypeAcRates.PROC PP NMS" )
 
 	# Set RateSel for each channel to that channel's LCLS1 timing rate
 	field( DLYC, "0.1" ) field( DOLC, "1" ) field( LNKC, "$(PGP):ChAll:Lcls1:RateSel.PROC  PP NMS" )
@@ -76,7 +76,7 @@ record( seq, "$(PGP):SeqTpgMiniTiming" )
 	field( DLYA, "0" ) field( DOLA, "4" ) field( LNKA, "$(PGP):ChAll:EventBuilder:BypassXPM  PP NMS" )
 
 	# Set RateType to ControlWord for LCLS1 timing rates
-	field( DLYB, "0" ) field( DOLB, "2" ) field( LNKB, "$(PGP):ChAll:EvrV2:RateTypeControlWord PP NMS" )
+	field( DLYB, "0" ) field( DOLB, "1" ) field( LNKB, "$(PGP):ChAll:EvrV2:RateTypeControlWord.PROC PP NMS" )
 
 	# Set RateSel for each channel to that channel's LCLS1 timing rate
 	field( DLYC, "0" ) field( DOLC, "1" ) field( LNKC, "$(PGP):ChAll:Lcls1:RateSel.PROC  PP NMS" )
@@ -118,7 +118,7 @@ record( seq, "$(PGP):SeqLcls2Timing" )
 	field( DLYA, "0.1" ) field( DOLA, "4" ) field( LNKA, "$(PGP):ChAll:EventBuilder:BypassXPM  PP NMS" )
 
 	# Set RateType to FixedRates for LCLS2 timing rates
-	field( DLYB, "0.1" ) field( DOLB, "0" ) field( LNKB, "$(PGP):ChAll:EvrV2:RateTypeControlWord PP NMS" )
+	field( DLYB, "0.1" ) field( DOLB, "1" ) field( LNKB, "$(PGP):ChAll:EvrV2:RateTypeFixedRates.PROC PP NMS" )
 
 	# Set RateSel for each channel to that channel's LCLS2 timing rate
 	field( DLYC, "0.1" ) field( DOLC, "1" ) field( LNKC, "$(PGP):ChAll:Lcls2:RateSel.PROC  PP NMS" )
@@ -157,8 +157,8 @@ record( seq, "$(PGP):SeqXpmMiniTiming" )
 	# Set EventBuilder Bypass to mask out XPM Timing Message for LCLS2 timing 
 	field( DLYA, "0" ) field( DOLA, "4" ) field( LNKA, "$(PGP):ChAll:EventBuilder:BypassXPM  PP NMS" )
 
-	# Set RateType to FixedRates for LCLS2 timing rates
-	field( DLYB, "0" ) field( DOLB, "0" ) field( LNKB, "$(PGP):ChAll:EvrV2:RateTypeControlWord PP NMS" )
+	# Set RateType to ControlWord for LCLS2 timing rates
+	field( DLYB, "0" ) field( DOLB, "1" ) field( LNKB, "$(PGP):ChAll:EvrV2:RateTypeControlWord.PROC PP NMS" )
 
 	# Set RateSel for each channel to that channel's LCLS2 timing rate
 	field( DLYC, "0" ) field( DOLC, "1" ) field( LNKC, "$(PGP):ChAll:Lcls2:RateSel.PROC  PP NMS" )
@@ -184,6 +184,26 @@ record( dfanout, "$(PGP):ChAll:EventBuilder:BypassXPM" )
 	field( OUTD, "$(PGP):Ch3:EventBuilder:Bypass  PP NMS" )
 }
 
+record( dfanout, "$(PGP):ChAll:EvrV2:RateTypeFixedRates" )
+{
+	field( DESC, "Set RateType to FixedRates" )
+	field( DOL,  "0" )
+	field( OUTA, "$(PGP):Ch0:EvrV2:RateType  PP NMS" )
+	field( OUTB, "$(PGP):Ch1:EvrV2:RateType  PP NMS" )
+	field( OUTC, "$(PGP):Ch2:EvrV2:RateType  PP NMS" )
+	field( OUTD, "$(PGP):Ch3:EvrV2:RateType  PP NMS" )
+}
+
+record( dfanout, "$(PGP):ChAll:EvrV2:RateTypeAcRates" )
+{
+	field( DESC, "Set RateType to AcRates" )
+	field( DOL,  "1" )
+	field( OUTA, "$(PGP):Ch0:EvrV2:RateType  PP NMS" )
+	field( OUTB, "$(PGP):Ch1:EvrV2:RateType  PP NMS" )
+	field( OUTC, "$(PGP):Ch2:EvrV2:RateType  PP NMS" )
+	field( OUTD, "$(PGP):Ch3:EvrV2:RateType  PP NMS" )
+}
+
 record( dfanout, "$(PGP):ChAll:EvrV2:RateTypeControlWord" )
 {
 	field( DESC, "Set RateType to ControlWord for LCLS1" )
@@ -192,6 +212,16 @@ record( dfanout, "$(PGP):ChAll:EvrV2:RateTypeControlWord" )
 	field( OUTB, "$(PGP):Ch1:EvrV2:RateType  PP NMS" )
 	field( OUTC, "$(PGP):Ch2:EvrV2:RateType  PP NMS" )
 	field( OUTD, "$(PGP):Ch3:EvrV2:RateType  PP NMS" )
+}
+
+record( dfanout, "$(PGP):ChAll:EvrV2:EnableReg" )
+{
+	field( DESC, "Set EnableReg on all channels" )
+	field( DOL,  "1" )
+	field( OUTA, "$(PGP):Ch0:EvrV2:EnableReg  PP NMS" )
+	field( OUTB, "$(PGP):Ch1:EvrV2:EnableReg  PP NMS" )
+	field( OUTC, "$(PGP):Ch2:EvrV2:EnableReg  PP NMS" )
+	field( OUTD, "$(PGP):Ch3:EvrV2:EnableReg  PP NMS" )
 }
 
 record( seq, "$(PGP):ChAll:Lcls1:RateSel" )

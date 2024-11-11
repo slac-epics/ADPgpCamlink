@@ -19,7 +19,7 @@ record( seq, "$(PGP):Ch$(CH):EvrV2Config" )
 	field( DLYC, "0.1" ) field( DOLC, "1" ) field( LNKC, "$(PGP):Ch$(CH):EvrV2:EnableReg      PP NMS" )
 	field( DLYD, "0.1" ) field( DOLD, "1" ) field( LNKD, "$(PGP):Ch$(CH):EvrV2:FebTrigWidth   PP NMS" )
 	field( DLYE, "0.1" ) field( DOLE, "1" ) field( LNKE, "$(PGP):Ch$(CH):EvrV2:EnableFebTrig  PP NMS" )
-	field( DLYF, "0.1" ) field( DOLF, "1" ) field( LNKF, "$(PGP):Ch$(CH):EvrV2:EnableTrig     PP NMS" )
+	field( DLYF, "0.1" ) field( DOLF, "1" ) field( LNKF, "$(PGP):Ch$(CH):Feb$(CH):EnableTrig     PP NMS" )
 
 	info( autosaveFields, "DESC" )
 }

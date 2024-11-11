@@ -92,6 +92,11 @@ record( longout, "$(P)$(R)CamlinkPixelClk" )
 	info( autosaveFields, "" )
 }
 
+record( longin, "$(P)$(R)CamlinkPixelClk_RBV" )
+{
+	field( INP,  "$(PGP):Ch$(PGP_LANE):Feb$(PGP_LANE):PixelClk_RBV CPP MS" )
+}
+
 record( longout, "$(P)$(R)CamlinkBaudRate" )
 {
 	field( OUT,  "$(PGP):Ch$(PGP_LANE):Feb$(PGP_LANE):BaudRate CA" )
@@ -750,7 +755,7 @@ record( mbbo, "$(P)$(R)CamLcls2RateSel" )
     field(FVST, "71.5kHz")
     field(SXST, "1MHz")	
 	field( PINI, "YES" )
-	info( autosaveFields, "HHSV HIGH HIHI HSV LLSV LOLO LOW LSV EGU DESC HOPR LOPR VAL" )
+	info( autosaveFields, "DESC VAL" )
 	info( archiveFields,  "VAL" )
 }
 
@@ -771,7 +776,7 @@ record( mbbi, "$(P)$(R)CamLcls2RateSel_RBV" )
     field(FRST, "10kHz")
     field(FVST, "71.5kHz")
     field(SXST, "1MHz")		
-	info( autosaveFields, "HHSV HIGH HIHI HSV LLSV LOLO LOW LSV EGU DESC" )
+	info( autosaveFields, "DESC VAL" )
 	info( archiveFields,  "VAL" )
 }
 
