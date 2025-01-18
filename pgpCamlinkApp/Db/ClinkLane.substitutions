@@ -224,12 +224,12 @@ file liDevRogue.template
     }
     {
         NAME    = "PgpRx:Bandwidth",
-        PATH    = "ClinkDevRoot.ClinkPcie.Hsio.PgpRxAxisMon[$(L)].Ch[1].RawBandwidth"
+        PATH    = "ClinkDevRoot.ClinkPcie.Hsio.PgpRxVcMon[$(L)].Ch[1].RawBandwidth"
         SCAN    = "\$(SCAN=1 second)"
     }
     {
         NAME    = "PgpRx:FrameCnt",
-        PATH    = "ClinkDevRoot.ClinkPcie.Hsio.PgpRxAxisMon[$(L)].Ch[1].FrameCnt"
+        PATH    = "ClinkDevRoot.ClinkPcie.Hsio.PgpRxVcMon[$(L)].Ch[1].FrameCnt"
         SCAN    = "\$(SCAN=1 second)"
     }
     
@@ -271,14 +271,14 @@ file liDevRogue.template
 
     {
         NAME    = "PgpRx:FrameRate",
-        PATH    = "ClinkDevRoot.ClinkPcie.Hsio.PgpRxAxisMon[$(L)].Ch[1].FrameRate"
+        PATH    = "ClinkDevRoot.ClinkPcie.Hsio.PgpRxVcMon[$(L)].Ch[1].FrameRate"
         DESC    = "Incoming frame rate on PGP RX PHY"
         SCAN    = "\$(SCAN=1 second)"
         EGU     = "Hz"
     }
     {
         NAME    = "PgpRx:FrameSize",
-        PATH    = "ClinkDevRoot.ClinkPcie.Hsio.PgpRxAxisMon[$(L)].Ch[1].FrameSize"
+        PATH    = "ClinkDevRoot.ClinkPcie.Hsio.PgpRxVcMon[$(L)].Ch[1].FrameSize"
         DESC    = "Incoming frame size on PGP RX PHY"
         SCAN    = "\$(SCAN=1 second)"
     }

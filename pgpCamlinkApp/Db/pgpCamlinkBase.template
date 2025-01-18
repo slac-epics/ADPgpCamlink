@@ -94,7 +94,7 @@ record( longout, "$(P)$(R)CamlinkPixelClk" )
 
 record( longin, "$(P)$(R)CamlinkPixelClk_RBV" )
 {
-	field( INP,  "$(PGP):Ch$(PGP_LANE):Feb$(PGP_LANE):PixelClk_RBV CPP MS" )
+	field( INP,  "$(PGP):Ch$(PGP_LANE):Feb$(PGP_LANE):PixelClk CPP MS" )
 }
 
 record( longout, "$(P)$(R)CamlinkBaudRate" )

@@ -3,9 +3,9 @@
 # UNIQ UP900/UP900CL Camera
 #
 # Required macros:
-#	P			PV prefix part 1 $P$R
-#	R			PV prefix part 2 $P$R
-#	PGP_PV		PV prefix for rogue register PVs
+#	P			    PV prefix part 1 $P$R
+#	R			    PV prefix part 2 $P$R
+#	PGP		    PV prefix for rogue register PVs
 #	PGP_LANE	PGP_LANE number 0-3
 #
 
@@ -306,16 +306,6 @@ record( calcout,	"$(P)$(R)Up900PulseShutter" )
 	info( archiveFields,  "HHSV HIGH HIHI HSV LLSV LOLO LOW LSV PREC VAL" )
 }
 
-record( calcout, "$(P)$(R)Up900CalcShutterOut" )
-{
-	field( DESC,	"Calc shtr val" )
-	field( INPA,	"$(P)$(R)Up900Shutter CPP" )
-	field( INPB,	"$(P)$(R)Up900RawShutterMode_RBV CPP" )
-	field( CALC,	"B ? A : (A>2?A-1:1)" )
-	field( OUT,		"$(P)$(R)Up900RawShutterSpeed PP" )
-	field( OOPT,	"On Change" )
-}
-
 record( longout, "$(P)$(R)Up900RawShutterSpeed" )
 {
 	field( DESC,	"Numeric shutter value" )
@@ -409,7 +399,7 @@ record( ao, "$(P)$(R)XmitRate" )
 record( longout, "$(P)$(R)Up900:SerThrottle" )
 {
 	field( DOL,  "30000" )
-	field( OUT,  "$(P)$(R)Feb$(PGP_LANE):SerThrottle" )
+	field( OUT,  "$(PGP):Ch$(PGP_LANE):Feb$(PGP_LANE):SerThrottle" )
 }
 
 # Possible TODO: Add support for

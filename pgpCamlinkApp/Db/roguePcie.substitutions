@@ -97,6 +97,16 @@ file loDevRogue.template
 	}
 }
 
+file loDevRogue.template
+{
+	{
+		NAME	= "Timing:RxUserRst",
+		PATH	= "ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TimingPhyMonitor.RxUserRst"
+		SAVE	= ""
+		L		= "0"
+	}
+}
+
 file longDevRogue.template
 {
 	{
