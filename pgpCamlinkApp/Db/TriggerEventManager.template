@@ -67,30 +67,6 @@ record( mbbo, "$(P)$(R)EvrV2:DestType" )
 	info( autosaveFields, "VAL" )
 }
 
-# Trigger Channel EnableReg
-record( bi, "$(P)$(R)EvrV2:EnableReg_RBV" )
-{
-	field( DESC, "Enables trigger channel for EvrV2 Timing" )
-	field( INP,  "@B$(B) L$(L) $(PTOP).TriggerEventManager.EvrV2CoreTriggers.EvrV2ChannelReg[$(L)].EnableReg" )
-	field( DTYP, "RogueBI" )
-	field( ZNAM, "Disabled" )
-	field( ONAM, "Enabled" )
-	field( SCAN, "$(SCAN=1 second)" )
-	info( autosaveFields, "" )
-}
-record( bo, "$(P)$(R)EvrV2:EnableReg" )
-{
-	field( DESC, "Enables trigger channel for EvrV2 Timing" )
-	field( OUT,  "@B$(B) L$(L) $(PTOP).TriggerEventManager.EvrV2CoreTriggers.EvrV2ChannelReg[$(L)].EnableReg" )
-	field( DTYP, "RogueBO" )
-	field( ZNAM, "Disabled" )
-	field( ONAM, "Enabled" )
-	field( DOL,  "1" )
-	field( PINI, "YES" )
-	field( FLNK, "$(P)$(R)EvrV2:EnableReg_RBV" )
-	info( autosaveFields, "VAL" )
-}
-
 # Timing Rate Type
 record( mbbi, "$(P)$(R)EvrV2:RateType_RBV" )
 {
