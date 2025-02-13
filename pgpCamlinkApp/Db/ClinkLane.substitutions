@@ -223,6 +223,12 @@ file liDevRogue.template
         SDIS    = "$(P)$(R)PgpMon:RxRemLinkReady_RBV CP"
     }
     {
+        NAME    = "Timing:TriggerCount",
+        PATH    = "ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TriggerEventManager.TriggerEventBuffer[$(L)].TriggerCount"
+        DESC    = "TriggerEventManager Trigger count"
+        SCAN    = "\$(SCAN=1 second)"
+    }
+    {
         NAME    = "PgpRx:Bandwidth",
         PATH    = "ClinkDevRoot.ClinkPcie.Hsio.PgpRxVcMon[$(L)].Ch[1].RawBandwidth"
         SCAN    = "\$(SCAN=1 second)"
@@ -468,15 +474,6 @@ file longDevRogue.template
     {
         NAME    = "Timing:PauseThreshold",
         PATH    = "ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TriggerEventManager.TriggerEventBuffer[$(L)].PauseThreshold"
-    }
-    {
-        NAME    = "Timing:TriggerCount",
-        PATH    = "ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TriggerEventManager.TriggerEventBuffer[$(L)].TriggerCount"
-        DESC    = "TriggerEventManager Trigger count"
-        SCAN    = "\$(SCAN=1 second)"
-        DOL     = "0"
-        PINI    = "YES"
-        SAVE    = ""
     }
     {
         NAME    = "EvrV2:TriggerDelay",
