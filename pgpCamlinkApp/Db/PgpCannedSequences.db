@@ -11,8 +11,8 @@ record( seq, "$(PGP):SeqLcls1Timing" )
 {
 	field( DESC, "Select LCLS-I Timing" )
 
-	#	First Disable triggers
-	#field( DLY0, "0.1" ) field( DOL0, "1" ) field( LNK0, "$(PGP):ChAll:EvrV2:DisableReg.PROC  PP NMS" )
+	#	First stop the current run if still active
+	field( DLY0, "0.1" ) field( DOL0, "1" ) field( LNK0, "$(PGP):ChAll:SeqStopRun.PROC  PP NMS" )
   
   # Assert TxPhyReset for 1 sec
   field( DLY1, "0"   ) field( DOL1, "1" ) field( LNK1, "$(PGP):Timing:TxPhyReset    PP NMS" )
@@ -52,8 +52,8 @@ record( seq, "$(PGP):SeqTpgMiniTiming" )
 {
 	field( DESC, "Select TpgMini Internal LCLS-I Clock" )
 
-	#	First Disable triggers
-	#field( DLY0, "0.1" ) field( DOL0, "1" ) field( LNK0, "$(PGP):ChAll:EvrV2:DisableReg.PROC  PP NMS" )
+	#	First stop the current run if still active
+	field( DLY0, "0.1" ) field( DOL0, "1" ) field( LNK0, "$(PGP):ChAll:SeqStopRun.PROC  PP NMS" )
   
   # Assert TxPhyReset for 1 sec
   field( DLY1, "0"   ) field( DOL1, "1" ) field( LNK1, "$(PGP):Timing:TxPhyReset    PP NMS" )
@@ -93,8 +93,8 @@ record( seq, "$(PGP):SeqLcls2Timing" )
 {
 	field( DESC, "Select LCLS-II Timing" )
 
-	#	First Disable triggers
-	#field( DLY0, "0.1" ) field( DOL0, "1" ) field( LNK0, "$(PGP):ChAll:EvrV2:DisableReg.PROC  PP NMS" )
+	#	First stop the current run if still active
+	field( DLY0, "0.1" ) field( DOL0, "1" ) field( LNK0, "$(PGP):ChAll:SeqStopRun.PROC  PP NMS" )
   
   # Assert TxPhyReset for 1 sec
   field( DLY1, "0"   ) field( DOL1, "1" ) field( LNK1, "$(PGP):Timing:TxPhyReset    PP NMS" )
@@ -135,8 +135,8 @@ record( seq, "$(PGP):SeqXpmMiniTiming" )
 {
 	field( DESC, "Select XpmMini Internal LCLS-II Clock" )
 
-	#	First Disable triggers
-	#field( DLY0, "0.1" ) field( DOL0, "1" ) field( LNK0, "$(PGP):ChAll:EvrV2:DisableReg.PROC  PP NMS" )
+	#	First stop the current run if still active
+	field( DLY0, "0.1" ) field( DOL0, "1" ) field( LNK0, "$(PGP):ChAll:SeqStopRun.PROC  PP NMS" )
   
   # Assert TxPhyReset for 1 sec
   field( DLY1, "0"   ) field( DOL1, "1" ) field( LNK1, "$(PGP):Timing:TxPhyReset    PP NMS" )
@@ -367,4 +367,14 @@ record( seq, "$(PGP):ChAll:Lcls2:RateSel" )
 	field( DLY1, "0" ) field( DOL1, "$(PGP):Ch1:Lcls2:RateSel" ) field( LNK1, "$(PGP):Ch1:EvrV2:RateSel  PP NMS" )
 	field( DLY2, "0" ) field( DOL2, "$(PGP):Ch2:Lcls2:RateSel" ) field( LNK2, "$(PGP):Ch2:EvrV2:RateSel  PP NMS" )
 	field( DLY3, "0" ) field( DOL3, "$(PGP):Ch3:Lcls2:RateSel" ) field( LNK3, "$(PGP):Ch3:EvrV2:RateSel  PP NMS" )
+}
+
+record( dfanout, "$(PGP):ChAll:SeqStopRun" )
+{
+	field( DESC, "Stop run on all channels" )
+	field( DOL,  "1" )
+	field( OUTA, "$(PGP):Ch0:SeqStopRun.PROC  PP NMS" )
+	field( OUTB, "$(PGP):Ch1:SeqStopRun.PROC  PP NMS" )
+	field( OUTC, "$(PGP):Ch2:SeqStopRun.PROC  PP NMS" )
+	field( OUTD, "$(PGP):Ch3:SeqStopRun.PROC  PP NMS" )
 }
