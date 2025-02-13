@@ -1079,6 +1079,16 @@ record( stringin, "$(P)$(R)OpalModelID_RBV" )
     field( INP,	 "@opal1000m_12.proto GetQStr(MID) $(PORT).SER" )
 }
 
+record( longout, "$(P)$(R)CamlinkHSkip" )
+{
+    field( VAL, "0" )
+}
+    
+record( longout, "$(P)$(R)CamlinkVSkip" )
+{
+    field( VAL, "0" )
+}
+
 # Monitor and reprocess these records automatically when they're undefined
 # Macros:
 #	SER_OK_PV:	PV used to verify serial link, blocks reprocess when UDF 

@@ -793,6 +793,16 @@ record( seq, "$(P)$(R)SeqTriggerModePulse" )
 	field( DLY4, "0" ) field( DOL4, "2" ) field( LNK4, "$(P)$(R)CamTriggerMode_RBV PP NMS" )
 }
 
+record( longout, "$(P)$(R)CamlinkHSkip" )
+{
+    field( VAL, "0" )
+}
+    
+record( longout, "$(P)$(R)CamlinkVSkip" )
+{
+    field( VAL, "0" )
+}
+
 # Include a serialMonitor.template monitor
 # This should be the first PV you process in the CamReConfigSeq
 substitute "MON_SCAN=10 second"
