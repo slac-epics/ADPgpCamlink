@@ -1,0 +1,384 @@
+# FEB PLL registers 
+file liDevRogue.template
+{
+    {
+        NAME    = "Feb$(F):Pll$(C):POWER",
+        PATH    = "ClinkDevRoot.ClinkFeb[$(F)].ClinkTop.Pll[$(C)].POWER",
+        SCAN    = "\$(SCAN=1 second)"
+    }
+    {
+        NAME    = "Feb$(F):Pll$(C):PHASE_MUX0",
+        PATH    = "ClinkDevRoot.ClinkFeb[$(F)].ClinkTop.Pll[$(C)].PHASE_MUX[0]",
+        SCAN    = "\$(SCAN=1 second)"
+    }
+    {
+        NAME    = "Feb$(F):Pll$(C):HIGH_TIME0",
+        PATH    = "ClinkDevRoot.ClinkFeb[$(F)].ClinkTop.Pll[$(C)].HIGH_TIME[0]",
+        SCAN    = "\$(SCAN=1 second)"
+    }
+    {
+        NAME    = "Feb$(F):Pll$(C):LOW_TIME0",
+        PATH    = "ClinkDevRoot.ClinkFeb[$(F)].ClinkTop.Pll[$(C)].LOW_TIME[0]",
+        SCAN    = "\$(SCAN=1 second)"
+    }
+    {
+        NAME    = "Feb$(F):Pll$(C):PHASE_MUX1",
+        PATH    = "ClinkDevRoot.ClinkFeb[$(F)].ClinkTop.Pll[$(C)].PHASE_MUX[1]",
+        SCAN    = "\$(SCAN=1 second)"
+    }
+    {
+        NAME    = "Feb$(F):Pll$(C):HIGH_TIME1",
+        PATH    = "ClinkDevRoot.ClinkFeb[$(F)].ClinkTop.Pll[$(C)].HIGH_TIME[1]",
+        SCAN    = "\$(SCAN=1 second)"
+    }
+    {
+        NAME    = "Feb$(F):Pll$(C):LOW_TIME1",
+        PATH    = "ClinkDevRoot.ClinkFeb[$(F)].ClinkTop.Pll[$(C)].LOW_TIME[1]",
+        SCAN    = "\$(SCAN=1 second)"
+    }
+    {
+        NAME    = "Feb$(F):Pll$(C):PHASE_MUX2",
+        PATH    = "ClinkDevRoot.ClinkFeb[$(F)].ClinkTop.Pll[$(C)].PHASE_MUX[2]",
+        SCAN    = "\$(SCAN=1 second)"
+    }
+    {
+        NAME    = "Feb$(F):Pll$(C):HIGH_TIME2",
+        PATH    = "ClinkDevRoot.ClinkFeb[$(F)].ClinkTop.Pll[$(C)].HIGH_TIME[2]",
+        SCAN    = "\$(SCAN=1 second)"
+    }
+    {
+        NAME    = "Feb$(F):Pll$(C):LOW_TIME2",
+        PATH    = "ClinkDevRoot.ClinkFeb[$(F)].ClinkTop.Pll[$(C)].LOW_TIME[2]",
+        SCAN    = "\$(SCAN=1 second)"
+    }
+    {
+        NAME    = "Feb$(F):Pll$(C):PHASE_MUX3",
+        PATH    = "ClinkDevRoot.ClinkFeb[$(F)].ClinkTop.Pll[$(C)].PHASE_MUX[3]",
+        SCAN    = "\$(SCAN=1 second)"
+    }
+    {
+        NAME    = "Feb$(F):Pll$(C):HIGH_TIME3",
+        PATH    = "ClinkDevRoot.ClinkFeb[$(F)].ClinkTop.Pll[$(C)].HIGH_TIME[3]",
+        SCAN    = "\$(SCAN=1 second)"
+    }
+    {
+        NAME    = "Feb$(F):Pll$(C):LOW_TIME3",
+        PATH    = "ClinkDevRoot.ClinkFeb[$(F)].ClinkTop.Pll[$(C)].LOW_TIME[3]",
+        SCAN    = "\$(SCAN=1 second)"
+    }
+    {
+        NAME    = "Feb$(F):Pll$(C):PHASE_MUX4",
+        PATH    = "ClinkDevRoot.ClinkFeb[$(F)].ClinkTop.Pll[$(C)].PHASE_MUX[4]",
+        SCAN    = "\$(SCAN=1 second)"
+    }
+    {
+        NAME    = "Feb$(F):Pll$(C):HIGH_TIME4",
+        PATH    = "ClinkDevRoot.ClinkFeb[$(F)].ClinkTop.Pll[$(C)].HIGH_TIME[4]",
+        SCAN    = "\$(SCAN=1 second)"
+    }
+    {
+        NAME    = "Feb$(F):Pll$(C):LOW_TIME4",
+        PATH    = "ClinkDevRoot.ClinkFeb[$(F)].ClinkTop.Pll[$(C)].LOW_TIME[4]",
+        SCAN    = "\$(SCAN=1 second)"
+    }
+    {
+        NAME    = "Feb$(F):Pll$(C):PHASE_MUX5",
+        PATH    = "ClinkDevRoot.ClinkFeb[$(F)].ClinkTop.Pll[$(C)].PHASE_MUX[5]",
+        SCAN    = "\$(SCAN=1 second)"
+    }
+    {
+        NAME    = "Feb$(F):Pll$(C):HIGH_TIME5",
+        PATH    = "ClinkDevRoot.ClinkFeb[$(F)].ClinkTop.Pll[$(C)].HIGH_TIME[5]",
+        SCAN    = "\$(SCAN=1 second)"
+    }
+    {
+        NAME    = "Feb$(F):Pll$(C):LOW_TIME5",
+        PATH    = "ClinkDevRoot.ClinkFeb[$(F)].ClinkTop.Pll[$(C)].LOW_TIME[5]",
+        SCAN    = "\$(SCAN=1 second)"
+    }
+    {
+        NAME    = "Feb$(F):Pll$(C):PHASE_MUX6",
+        PATH    = "ClinkDevRoot.ClinkFeb[$(F)].ClinkTop.Pll[$(C)].PHASE_MUX[6]",
+        SCAN    = "\$(SCAN=1 second)"
+    }
+    {
+        NAME    = "Feb$(F):Pll$(C):HIGH_TIME6",
+        PATH    = "ClinkDevRoot.ClinkFeb[$(F)].ClinkTop.Pll[$(C)].HIGH_TIME[6]",
+        SCAN    = "\$(SCAN=1 second)"
+    }
+    {
+        NAME    = "Feb$(F):Pll$(C):LOW_TIME6",
+        PATH    = "ClinkDevRoot.ClinkFeb[$(F)].ClinkTop.Pll[$(C)].LOW_TIME[6]",
+        SCAN    = "\$(SCAN=1 second)"
+    }
+    {
+        NAME    = "Feb$(F):Pll$(C):PHASE_MUX_FB",
+        PATH    = "ClinkDevRoot.ClinkFeb[$(F)].ClinkTop.Pll[$(C)].PHASE_MUX_FB",
+        SCAN    = "\$(SCAN=1 second)"
+    }
+    {
+        NAME    = "Feb$(F):Pll$(C):HIGH_TIME_FB",
+        PATH    = "ClinkDevRoot.ClinkFeb[$(F)].ClinkTop.Pll[$(C)].HIGH_TIME_FB",
+        SCAN    = "\$(SCAN=1 second)"
+    }
+    {
+        NAME    = "Feb$(F):Pll$(C):LOW_TIME_FB",
+        PATH    = "ClinkDevRoot.ClinkFeb[$(F)].ClinkTop.Pll[$(C)].LOW_TIME_FB",
+        SCAN    = "\$(SCAN=1 second)"
+    }
+    {
+        NAME    = "Feb$(F):Pll$(C):FRAC0",
+        PATH    = "ClinkDevRoot.ClinkFeb[$(F)].ClinkTop.Pll[$(C)].FRAC[0]",
+        SCAN    = "\$(SCAN=1 second)"
+    }
+    {
+        NAME    = "Feb$(F):Pll$(C):FRAC_EN0",
+        PATH    = "ClinkDevRoot.ClinkFeb[$(F)].ClinkTop.Pll[$(C)].FRAC_EN[0]",
+        SCAN    = "\$(SCAN=1 second)"
+    }
+    {
+        NAME    = "Feb$(F):Pll$(C):FRAC_WF_R0",
+        PATH    = "ClinkDevRoot.ClinkFeb[$(F)].ClinkTop.Pll[$(C)].FRAC_WF_R[0]",
+        SCAN    = "\$(SCAN=1 second)"
+    }
+    {
+        NAME    = "Feb$(F):Pll$(C):MX0",
+        PATH    = "ClinkDevRoot.ClinkFeb[$(F)].ClinkTop.Pll[$(C)].MX[0]",
+        SCAN    = "\$(SCAN=1 second)"
+    }
+    {
+        NAME    = "Feb$(F):Pll$(C):EDGE0",
+        PATH    = "ClinkDevRoot.ClinkFeb[$(F)].ClinkTop.Pll[$(C)].EDGE[0]",
+        SCAN    = "\$(SCAN=1 second)"
+    }
+    {
+        NAME    = "Feb$(F):Pll$(C):NO_COUNT0",
+        PATH    = "ClinkDevRoot.ClinkFeb[$(F)].ClinkTop.Pll[$(C)].NO_COUNT[0]",
+        SCAN    = "\$(SCAN=1 second)"
+    }
+    {
+        NAME    = "Feb$(F):Pll$(C):DELAY_TIME0",
+        PATH    = "ClinkDevRoot.ClinkFeb[$(F)].ClinkTop.Pll[$(C)].DELAY_TIME[0]",
+        SCAN    = "\$(SCAN=1 second)"
+    }
+    {
+        NAME    = "Feb$(F):Pll$(C):MX1",
+        PATH    = "ClinkDevRoot.ClinkFeb[$(F)].ClinkTop.Pll[$(C)].MX[1]",
+        SCAN    = "\$(SCAN=1 second)"
+    }
+    {
+        NAME    = "Feb$(F):Pll$(C):EDGE1",
+        PATH    = "ClinkDevRoot.ClinkFeb[$(F)].ClinkTop.Pll[$(C)].EDGE[1]",
+        SCAN    = "\$(SCAN=1 second)"
+    }
+    {
+        NAME    = "Feb$(F):Pll$(C):NO_COUNT1",
+        PATH    = "ClinkDevRoot.ClinkFeb[$(F)].ClinkTop.Pll[$(C)].NO_COUNT[1]",
+        SCAN    = "\$(SCAN=1 second)"
+    }
+    {
+        NAME    = "Feb$(F):Pll$(C):DELAY_TIME1",
+        PATH    = "ClinkDevRoot.ClinkFeb[$(F)].ClinkTop.Pll[$(C)].DELAY_TIME[1]",
+        SCAN    = "\$(SCAN=1 second)"
+    }
+    {
+        NAME    = "Feb$(F):Pll$(C):MX2",
+        PATH    = "ClinkDevRoot.ClinkFeb[$(F)].ClinkTop.Pll[$(C)].MX[2]",
+        SCAN    = "\$(SCAN=1 second)"
+    }
+    {
+        NAME    = "Feb$(F):Pll$(C):EDGE2",
+        PATH    = "ClinkDevRoot.ClinkFeb[$(F)].ClinkTop.Pll[$(C)].EDGE[2]",
+        SCAN    = "\$(SCAN=1 second)"
+    }
+    {
+        NAME    = "Feb$(F):Pll$(C):NO_COUNT2",
+        PATH    = "ClinkDevRoot.ClinkFeb[$(F)].ClinkTop.Pll[$(C)].NO_COUNT[2]",
+        SCAN    = "\$(SCAN=1 second)"
+    }
+    {
+        NAME    = "Feb$(F):Pll$(C):DELAY_TIME2",
+        PATH    = "ClinkDevRoot.ClinkFeb[$(F)].ClinkTop.Pll[$(C)].DELAY_TIME[2]",
+        SCAN    = "\$(SCAN=1 second)"
+    }
+    {
+        NAME    = "Feb$(F):Pll$(C):MX3",
+        PATH    = "ClinkDevRoot.ClinkFeb[$(F)].ClinkTop.Pll[$(C)].MX[3]",
+        SCAN    = "\$(SCAN=1 second)"
+    }
+    {
+        NAME    = "Feb$(F):Pll$(C):EDGE3",
+        PATH    = "ClinkDevRoot.ClinkFeb[$(F)].ClinkTop.Pll[$(C)].EDGE[3]",
+        SCAN    = "\$(SCAN=1 second)"
+    }
+    {
+        NAME    = "Feb$(F):Pll$(C):NO_COUNT3",
+        PATH    = "ClinkDevRoot.ClinkFeb[$(F)].ClinkTop.Pll[$(C)].NO_COUNT[3]",
+        SCAN    = "\$(SCAN=1 second)"
+    }
+    {
+        NAME    = "Feb$(F):Pll$(C):DELAY_TIME3",
+        PATH    = "ClinkDevRoot.ClinkFeb[$(F)].ClinkTop.Pll[$(C)].DELAY_TIME[3]",
+        SCAN    = "\$(SCAN=1 second)"
+    }
+    {
+        NAME    = "Feb$(F):Pll$(C):MX4",
+        PATH    = "ClinkDevRoot.ClinkFeb[$(F)].ClinkTop.Pll[$(C)].MX[4]",
+        SCAN    = "\$(SCAN=1 second)"
+    }
+    {
+        NAME    = "Feb$(F):Pll$(C):EDGE4",
+        PATH    = "ClinkDevRoot.ClinkFeb[$(F)].ClinkTop.Pll[$(C)].EDGE[4]",
+        SCAN    = "\$(SCAN=1 second)"
+    }
+    {
+        NAME    = "Feb$(F):Pll$(C):NO_COUNT4",
+        PATH    = "ClinkDevRoot.ClinkFeb[$(F)].ClinkTop.Pll[$(C)].NO_COUNT[4]",
+        SCAN    = "\$(SCAN=1 second)"
+    }
+    {
+        NAME    = "Feb$(F):Pll$(C):DELAY_TIME4",
+        PATH    = "ClinkDevRoot.ClinkFeb[$(F)].ClinkTop.Pll[$(C)].DELAY_TIME[4]",
+        SCAN    = "\$(SCAN=1 second)"
+    }
+    {
+        NAME    = "Feb$(F):Pll$(C):MX5",
+        PATH    = "ClinkDevRoot.ClinkFeb[$(F)].ClinkTop.Pll[$(C)].MX[5]",
+        SCAN    = "\$(SCAN=1 second)"
+    }
+    {
+        NAME    = "Feb$(F):Pll$(C):EDGE5",
+        PATH    = "ClinkDevRoot.ClinkFeb[$(F)].ClinkTop.Pll[$(C)].EDGE[5]",
+        SCAN    = "\$(SCAN=1 second)"
+    }
+    {
+        NAME    = "Feb$(F):Pll$(C):NO_COUNT5",
+        PATH    = "ClinkDevRoot.ClinkFeb[$(F)].ClinkTop.Pll[$(C)].NO_COUNT[5]",
+        SCAN    = "\$(SCAN=1 second)"
+    }
+    {
+        NAME    = "Feb$(F):Pll$(C):DELAY_TIME5",
+        PATH    = "ClinkDevRoot.ClinkFeb[$(F)].ClinkTop.Pll[$(C)].DELAY_TIME[5]",
+        SCAN    = "\$(SCAN=1 second)"
+    }
+    {
+        NAME    = "Feb$(F):Pll$(C):MX6",
+        PATH    = "ClinkDevRoot.ClinkFeb[$(F)].ClinkTop.Pll[$(C)].MX[6]",
+        SCAN    = "\$(SCAN=1 second)"
+    }
+    {
+        NAME    = "Feb$(F):Pll$(C):EDGE6",
+        PATH    = "ClinkDevRoot.ClinkFeb[$(F)].ClinkTop.Pll[$(C)].EDGE[6]",
+        SCAN    = "\$(SCAN=1 second)"
+    }
+    {
+        NAME    = "Feb$(F):Pll$(C):NO_COUNT6",
+        PATH    = "ClinkDevRoot.ClinkFeb[$(F)].ClinkTop.Pll[$(C)].NO_COUNT[6]",
+        SCAN    = "\$(SCAN=1 second)"
+    }
+    {
+        NAME    = "Feb$(F):Pll$(C):DELAY_TIME6",
+        PATH    = "ClinkDevRoot.ClinkFeb[$(F)].ClinkTop.Pll[$(C)].DELAY_TIME[6]",
+        SCAN    = "\$(SCAN=1 second)"
+    }
+    {
+        NAME    = "Feb$(F):Pll$(C):PHASE_MUX_F_CLKOUT0",
+        PATH    = "ClinkDevRoot.ClinkFeb[$(F)].ClinkTop.Pll[$(C)].PHASE_MUX_F_CLKOUT[0]",
+        SCAN    = "\$(SCAN=1 second)"
+    }
+    {
+        NAME    = "Feb$(F):Pll$(C):FRAC_WF_F_CLKOUT0",
+        PATH    = "ClinkDevRoot.ClinkFeb[$(F)].ClinkTop.Pll[$(C)].FRAC_WF_F_CLKOUT[0]",
+        SCAN    = "\$(SCAN=1 second)"
+    }
+    {
+        NAME    = "Feb$(F):Pll$(C):PHASE_MUX_F_CLKOUT_FB",
+        PATH    = "ClinkDevRoot.ClinkFeb[$(F)].ClinkTop.Pll[$(C)].PHASE_MUX_F_CLKOUT_FB",
+        SCAN    = "\$(SCAN=1 second)"
+    }
+    {
+        NAME    = "Feb$(F):Pll$(C):FRAC_WF_F_CLKOUT_FB",
+        PATH    = "ClinkDevRoot.ClinkFeb[$(F)].ClinkTop.Pll[$(C)].FRAC_WF_F_CLKOUT_FB",
+        SCAN    = "\$(SCAN=1 second)"
+    }
+    {
+        NAME    = "Feb$(F):Pll$(C):FRAC_FB",
+        PATH    = "ClinkDevRoot.ClinkFeb[$(F)].ClinkTop.Pll[$(C)].FRAC_FB",
+        SCAN    = "\$(SCAN=1 second)"
+    }
+    {
+        NAME    = "Feb$(F):Pll$(C):FRAC_EN_FB",
+        PATH    = "ClinkDevRoot.ClinkFeb[$(F)].ClinkTop.Pll[$(C)].FRAC_EN_FB",
+        SCAN    = "\$(SCAN=1 second)"
+    }
+    {
+        NAME    = "Feb$(F):Pll$(C):FRAC_WF_R_FB",
+        PATH    = "ClinkDevRoot.ClinkFeb[$(F)].ClinkTop.Pll[$(C)].FRAC_WF_R_FB",
+        SCAN    = "\$(SCAN=1 second)"
+    }
+    {
+        NAME    = "Feb$(F):Pll$(C):MX_FB",
+        PATH    = "ClinkDevRoot.ClinkFeb[$(F)].ClinkTop.Pll[$(C)].MX_FB",
+        SCAN    = "\$(SCAN=1 second)"
+    }
+    {
+        NAME    = "Feb$(F):Pll$(C):EDGE_FB",
+        PATH    = "ClinkDevRoot.ClinkFeb[$(F)].ClinkTop.Pll[$(C)].EDGE_FB",
+        SCAN    = "\$(SCAN=1 second)"
+    }
+    {
+        NAME    = "Feb$(F):Pll$(C):NO_COUNT_FB",
+        PATH    = "ClinkDevRoot.ClinkFeb[$(F)].ClinkTop.Pll[$(C)].NO_COUNT_FB",
+        SCAN    = "\$(SCAN=1 second)"
+    }
+    {
+        NAME    = "Feb$(F):Pll$(C):DELAY_TIME_FB",
+        PATH    = "ClinkDevRoot.ClinkFeb[$(F)].ClinkTop.Pll[$(C)].DELAY_TIME_FB",
+        SCAN    = "\$(SCAN=1 second)"
+    }
+    {
+        NAME    = "Feb$(F):Pll$(C):EDGE_DIV",
+        PATH    = "ClinkDevRoot.ClinkFeb[$(F)].ClinkTop.Pll[$(C)].EDGE_DIV",
+        SCAN    = "\$(SCAN=1 second)"
+    }
+    {
+        NAME    = "Feb$(F):Pll$(C):NO_COUNT_DIV",
+        PATH    = "ClinkDevRoot.ClinkFeb[$(F)].ClinkTop.Pll[$(C)].NO_COUNT_DIV",
+        SCAN    = "\$(SCAN=1 second)"
+    }
+    {
+        NAME    = "Feb$(F):Pll$(C):HIGH_TIME_DIV",
+        PATH    = "ClinkDevRoot.ClinkFeb[$(F)].ClinkTop.Pll[$(C)].HIGH_TIME_DIV",
+        SCAN    = "\$(SCAN=1 second)"
+    }
+    {
+        NAME    = "Feb$(F):Pll$(C):LOW_TIME_DIV",
+        PATH    = "ClinkDevRoot.ClinkFeb[$(F)].ClinkTop.Pll[$(C)].LOW_TIME_DIV",
+        SCAN    = "\$(SCAN=1 second)"
+    }
+    {
+        NAME    = "Feb$(F):Pll$(C):LockReg0",
+        PATH    = "ClinkDevRoot.ClinkFeb[$(F)].ClinkTop.Pll[$(C)].LockReg[0]",
+        SCAN    = "\$(SCAN=1 second)"
+    }
+    {
+        NAME    = "Feb$(F):Pll$(C):LockReg1",
+        PATH    = "ClinkDevRoot.ClinkFeb[$(F)].ClinkTop.Pll[$(C)].LockReg[1]",
+        SCAN    = "\$(SCAN=1 second)"
+    }
+    {
+        NAME    = "Feb$(F):Pll$(C):LockReg2",
+        PATH    = "ClinkDevRoot.ClinkFeb[$(F)].ClinkTop.Pll[$(C)].LockReg[2]",
+        SCAN    = "\$(SCAN=1 second)"
+    }
+    {
+        NAME    = "Feb$(F):Pll$(C):FiltReg0",
+        PATH    = "ClinkDevRoot.ClinkFeb[$(F)].ClinkTop.Pll[$(C)].FiltReg[0]",
+        SCAN    = "\$(SCAN=1 second)"
+    }
+    {
+        NAME    = "Feb$(F):Pll$(C):FiltReg[1]",
+        PATH    = "ClinkDevRoot.ClinkFeb[$(F)].ClinkTop.Pll[$(C)].FiltReg[1]",
+        SCAN    = "\$(SCAN=1 second)"
+    }
+}
