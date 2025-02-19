@@ -315,13 +315,6 @@ file liDevRogue.template
         DISV    = "0"
         SDIS    = "$(P)$(R)PgpMon:RxRemLinkReady_RBV CP"
     }
-    {
-        NAME    = "Feb$(F):FrameSize",
-        PATH    = "ClinkDevRoot.ClinkFeb[$(F)].ClinkTop.Ch[0].FrameSize"
-        SCAN    = "\$(SCAN=1 second)"
-        DISV    = "0"
-        SDIS    = "$(P)$(R)PgpMon:RxRemLinkReady_RBV CP"
-    }
 }
 
 file loDevRogue.template
@@ -488,6 +481,14 @@ file longDevRogue.template
         SAVE    = "VAL"
         DESC    = "Select XPM Partition 0..15"
         SCAN    = "\$(SCAN=1 second)"
+    }
+    {
+        NAME    = "Feb$(F):CntRst",
+        PATH    = "ClinkDevRoot.ClinkFeb[$(F)].ClinkTop.Ch[0].CntRst"
+        PINI    = ""
+        SAVE    = ""
+        DISV    = "0"
+        SDIS    = "$(P)$(R)PgpMon:RxRemLinkReady_RBV CP"
     }
 }
 
