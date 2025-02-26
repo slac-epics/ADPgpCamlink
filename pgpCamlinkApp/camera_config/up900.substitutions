@@ -7,6 +7,6 @@ file up900.template
 		R				= "\$(R)",
 		PORT			= "\$(PORT)",
 		PWIDTH			= "\$(PWIDTH=TRIG:PULSE:WIDTH)",
-		PW_SCALE		= "\$(PW_SCALE=1e9)",
+		PW_SCALE		= "\$(PW_SCALE=1e6)",
 	}
 }
