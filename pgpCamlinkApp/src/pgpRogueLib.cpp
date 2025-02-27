@@ -410,9 +410,8 @@ pgpRogueLib::pgpRogueLib(
 	// Hack: Configure for LCLS-I timing
 	ConfigureLclsTimingV1();
 
-	LoadConfigFile( "db/defaults_LCLS-II.txt", 0.003 );
-	//LoadConfigFile( "db/defaults_LCLS-I.txt", 0.003 );
-	//LoadConfigFile( "cfg/defaults_LCLS-I.cfg", 0.003 );
+	LoadConfigFile( "db/defaults_LCLS-I.txt", 0.003 );
+	//LoadConfigFile( "db/defaults_LCLS-II.txt", 0.003 );
 
 	// Misc python resets, etc
 #if 1
