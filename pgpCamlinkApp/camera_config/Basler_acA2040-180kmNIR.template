@@ -1210,17 +1210,12 @@ record( longin, "$(P)$(R)ReadoutTimeRaw" )
 
 # 4.6 Exposure Control Registers
 
-record( mbbo, "$(P)$(R)CamTriggerMode" )
-{
-	field( FLNK, "$(P)$(R)BaslerCalcExposureMode" )
-}
-
 record( calc, "$(P)$(R)BaslerCalcExposureMode" )
 {
 #	field( TPRO, 2 )
 	field( DESC, "Maps ADTriggerMode to BaslerExposureMode" )
-	field( INPA, "$(P)$(R)CamTriggerMode NPP NMS" )
-	field( CALC, "A==2?2:1" )
+	field( INPA, "$(P)$(R)CamTriggerMode CPP MS" )
+	field( CALC, "A==1||A==2?2:1" )
 	field( FLNK, "$(P)$(R)BaslerExposureMode" )
 }
 
@@ -1229,8 +1224,7 @@ record( mbbo, "$(P)$(R)BaslerExposureMode" )
 	field( DESC, "Exposure Mode" )
 	field( DTYP, "stream" )
 	field( OMSL, "closed_loop" )
-#	field( DOL,  "$(P)$(R)BaslerCalcExposureMode NPP NMS" )
-	field( DOL,  "2" )
+	field( DOL,  "$(P)$(R)BaslerCalcExposureMode NPP NMS" )
 	field( OUT,  "@Basler.proto SetUInt32(\\x00,\\x04,\\x04,\\x04) $(PORT).SER" )
 	field( ZRVL, "0" )
 	field( ONVL, "1" )
