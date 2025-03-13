@@ -68,7 +68,7 @@ record( seq, "$(CAM):GoTo120HzMode" )
 	field( DLY8, "0.0" )
 
 	field( DOL9, "0.0" )
-	field( LNK9, "$(CAM):Image:MinCallbackTime PP NMS" )
+	field( LNK9, "$(CAM):IMAGE1:MinCallbackTime PP NMS" )
 	field( DLY9, "0.0" )
 
 	field( DOLA, "1" )
@@ -102,7 +102,7 @@ record( seq, "$(CAM):GoToFullMode" )
 	field( DLY6, "0.0" )
 
 	field( DOL7, "0.5" )
-	field( LNK7, "$(CAM):Image:MinCallbackTime PP NMS" )
+	field( LNK7, "$(CAM):IMAGE1:MinCallbackTime PP NMS" )
 	field( DLY7, "0.0" )
 
 #	field( DOL8, "44" )
