@@ -27,6 +27,7 @@ DB += serialMonitor.template
 DB += PgpCannedSequences.db
 DB += PgpChCannedSequences.db
 DB += CamCannedSequences.db
+DB += ClinkFebPll.db
 
 # Install archive files
 #ARCHIVE += foo.tpl-arch

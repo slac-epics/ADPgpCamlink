@@ -127,8 +127,8 @@ alias( "$(P)$(R)Feb$(F):Sfp$(N):Connector_RBV", "$(P)$(R)$(PTOP):Sfp[$(N)]:Conne
 
 record( calc, "$(P)$(R)Feb$(F):Sfp$(N):RxWatts_RBV" )
 {
-	field( INPA, "$(P)$(R)Feb$(F):Sfp$(N):Diagnostics8 CPP MS" )  # RX Power MSB
-	field( INPB, "$(P)$(R)Feb$(F):Sfp$(N):Diagnostics9 CPP MS" )  # RX Power LSB
+	field( INPA, "$(P)$(R)Feb$(F):Sfp$(N):Diagnostics8_RBV CPP MS" )  # RX Power MSB
+	field( INPB, "$(P)$(R)Feb$(F):Sfp$(N):Diagnostics9_RBV CPP MS" )  # RX Power LSB
 	field( CALC, "((A<<8)|B)*0.0001" )
 	field( EGU,  "mW" )
 	field( PREC, "1" )
@@ -144,8 +144,8 @@ record( calc, "$(P)$(R)Feb$(F):Sfp$(N):RxPower_RBV" )
 
 record( calc, "$(P)$(R)Feb$(F):Sfp$(N):TxWatts_RBV" )
 {
-	field( INPA, "$(P)$(R)Feb$(F):Sfp$(N):Diagnostics6 CPP MS" )  # TX Power MSB
-	field( INPB, "$(P)$(R)Feb$(F):Sfp$(N):Diagnostics7 CPP MS" )  # TX Power LSB
+	field( INPA, "$(P)$(R)Feb$(F):Sfp$(N):Diagnostics6_RBV CPP MS" )  # TX Power MSB
+	field( INPB, "$(P)$(R)Feb$(F):Sfp$(N):Diagnostics7_RBV CPP MS" )  # TX Power LSB
 	field( CALC, "((A<<8)|B)*0.0001" )
 	field( EGU,  "mW" )
 	field( PREC, "1" )
@@ -161,8 +161,8 @@ record( calc, "$(P)$(R)Feb$(F):Sfp$(N):TxPower_RBV" )
 
 record( calc, "$(P)$(R)Feb$(F):Sfp$(N):Temperture_RBV" )
 {
-	field( INPA, "$(P)$(R)Feb$(F):Sfp$(N):Diagnostics0 CPP MS" )  # Temperature MSB
-	field( INPB, "$(P)$(R)Feb$(F):Sfp$(N):Diagnostics1 CPP MS" )  # Temperature LSB
+	field( INPA, "$(P)$(R)Feb$(F):Sfp$(N):Diagnostics0_RBV CPP MS" )  # Temperature MSB
+	field( INPB, "$(P)$(R)Feb$(F):Sfp$(N):Diagnostics1_RBV CPP MS" )  # Temperature LSB
 	field( CALC, "((A<<8)|B)/256" )
 	field( EGU,  "C" )
 }

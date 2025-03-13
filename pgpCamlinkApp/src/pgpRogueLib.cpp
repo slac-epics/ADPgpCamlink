@@ -411,7 +411,7 @@ pgpRogueLib::pgpRogueLib(
 	ConfigureLclsTimingV1();
 
 	LoadConfigFile( "db/defaults_LCLS-I.txt", 0.003 );
-	//LoadConfigFile( "cfg/defaults_LCLS-I.cfg", 0.003 );
+	//LoadConfigFile( "db/defaults_LCLS-II.txt", 0.003 );
 
 	// Misc python resets, etc
 #if 1
@@ -428,19 +428,19 @@ pgpRogueLib::pgpRogueLib(
 //	setVariable( "ClinkDevRoot.ClinkPcie.Hsio.PgpMon[0].Flush", 1 );
 //	setVariable( "ClinkDevRoot.ClinkPcie.Hsio.PgpMon[0].Flush", 0 );
 //	setVariable( "ClinkDevRoot.ClinkPcie.Hsio.PgpTxAxisMon[0].CntRst", 1 );
-	setVariable( "ClinkDevRoot.ClinkPcie.Hsio.PgpRxAxisMon[0].CntRst", 1 );
+	setVariable( "ClinkDevRoot.ClinkPcie.Hsio.PgpRxVcMon[0].CntRst", 1 );
 //	setVariable( "ClinkDevRoot.ClinkPcie.Hsio.PgpMon[1].Flush", 1 );
 //	setVariable( "ClinkDevRoot.ClinkPcie.Hsio.PgpMon[1].Flush", 0 );
 //	setVariable( "ClinkDevRoot.ClinkPcie.Hsio.PgpTxAxisMon[1].CntRst", 1 );
-	setVariable( "ClinkDevRoot.ClinkPcie.Hsio.PgpRxAxisMon[1].CntRst", 1 );
+	setVariable( "ClinkDevRoot.ClinkPcie.Hsio.PgpRxVcMon[1].CntRst", 1 );
 //	setVariable( "ClinkDevRoot.ClinkPcie.Hsio.PgpMon[2].Flush", 1 );
 //	setVariable( "ClinkDevRoot.ClinkPcie.Hsio.PgpMon[2].Flush", 0 );
 //	setVariable( "ClinkDevRoot.ClinkPcie.Hsio.PgpTxAxisMon[2].CntRst", 1 );
-	setVariable( "ClinkDevRoot.ClinkPcie.Hsio.PgpRxAxisMon[2].CntRst", 1 );
+	setVariable( "ClinkDevRoot.ClinkPcie.Hsio.PgpRxVcMon[2].CntRst", 1 );
 //	setVariable( "ClinkDevRoot.ClinkPcie.Hsio.PgpMon[3].Flush", 1 );
 //	setVariable( "ClinkDevRoot.ClinkPcie.Hsio.PgpMon[3].Flush", 0 );
 //	setVariable( "ClinkDevRoot.ClinkPcie.Hsio.PgpTxAxisMon[3].CntRst", 1 );
-	setVariable( "ClinkDevRoot.ClinkPcie.Hsio.PgpRxAxisMon[3].CntRst", 1 );
+	setVariable( "ClinkDevRoot.ClinkPcie.Hsio.PgpRxVcMon[3].CntRst", 1 );
 	setVariable( "ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TimingPhyMonitor.CntRst", 1 );
 #endif
 //	if ( doFebConfig )
@@ -534,7 +534,7 @@ void pgpRogueLib::ConfigureLclsTimingV1()
 
 bool pgpRogueLib::FebReady( size_t iFeb )
 {
-	const char	*	pszVarPathRxRemLinkReady	= "ClinkDevRoot.ClinkPcie.Hsio.PgpMon[%u].RxStatus.RemRxLinkReady";
+	const char	*	pszVarPathRxRemLinkReady	= "ClinkDevRoot.ClinkPcie.Hsio.PgpMon[%zu].RxStatus.RemRxLinkReady";
 	char			febVarPath[256];
 	bool			febReady	= false;
 	snprintf( febVarPath, 256, pszVarPathRxRemLinkReady, iFeb );
@@ -544,7 +544,7 @@ bool pgpRogueLib::FebReady( size_t iFeb )
 
 void pgpRogueLib::FebFpgaReload()
 {
-	const char * pszVarPathFpgaReload		= "ClinkDevRoot.ClinkFeb[%1u].AxiVersion.FpgaReload";
+	const char * pszVarPathFpgaReload		= "ClinkDevRoot.ClinkFeb[%zu].AxiVersion.FpgaReload";
 
 	bool	febFound[N_AXI_LANES] = { false, false, false, false };
 	for ( size_t lane = 0; lane < N_AXI_LANES; lane++ )

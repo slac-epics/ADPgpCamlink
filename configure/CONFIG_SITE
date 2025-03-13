@@ -52,7 +52,7 @@ endif
 
 #ROGUE_DIR=/reg/neh/home/bhill/git-wa-neh/slaclab/rogue-git
 #ROGUE_DIR=/reg/neh/home/bhill/git-wa-neh/slaclab/rogue-no-python-git
-ROGUE_DIR=$(PACKAGE_SITE_TOP)/rogue/v5.10.0/$(T_A)
+ROGUE_DIR=$(PACKAGE_SITE_TOP)/rogue/v6.4.0/$(T_A)
 
 # Specify buildroot version for linuxRT toolchain
 BUILDROOT	:= buildroot-2019.08-x86_64
@@ -60,7 +60,7 @@ BUILDROOT	:= buildroot-2019.08-x86_64
 ifneq (,$(wildcard /cds/group/pcds/package))
 PGP_DRIVER_DIR=$(PACKAGE_SITE_TOP)/slaclab/aes-stream-drivers/R5.14.2
 else
-PGP_DRIVER_DIR=$(PACKAGE_SITE_TOP)/linuxKernel_Modules/aes-stream-drivers/ESLCOMMON-302/
+PGP_DRIVER_DIR=$(PACKAGE_SITE_TOP)/linuxKernel_Modules/aes-stream-drivers/v6.4.0/$(T_A)/
 endif
 PGP_DRIVER_INCLUDE	= $(PGP_DRIVER_DIR)/include
 
@@ -103,5 +103,5 @@ else
 endif
 
 SHARED_LIBRARIES = YES
-STATIC_BUILD     = NO
+STATIC_BUILD     = YES
 

@@ -652,7 +652,7 @@ record( calcout, "$(P)$(R)OpalCalcAcquireTime" )
 record( calcout, "$(P)$(R)OpalPulseAcquireTime" )
 {
 	field( INPA, "$(P)$(R)CamAcquireTime NPP NMS"  )
-	field( INPB, "$(PW_SCALE=1e9)"  )
+	field( INPB, "$(PW_SCALE=1e6)"  )
 	field( CALC, "A*B" )
 	field( OUT,  "$(PGP):Ch$(PGP_LANE):Feb$(PGP_LANE):PulseWidth CA NMS" )
 	field( PREC, "0" )
@@ -665,7 +665,7 @@ record( calcout, "$(P)$(R)OpalPulseAcquireTime" )
 record( calcout, "$(P)$(R)OpalPulseAcquireTime_RBV" )
 {
 	field( INPA, "$(PGP):Ch$(PGP_LANE):Feb$(PGP_LANE):PulseWidth_RBV CPP MS" )
-	field( INPB, "$(PW_SCALE=1e9)"  )
+	field( INPB, "$(PW_SCALE=1e6)"  )
 	field( CALC, "A/B" )
 	field( PREC, "5" )
 	field( OOPT, "On Change" )
@@ -1077,6 +1077,16 @@ record( stringin, "$(P)$(R)OpalModelID_RBV" )
     field( DESC, "Model ID" )
     field( DTYP, "stream" )
     field( INP,	 "@opal1000m_12.proto GetQStr(MID) $(PORT).SER" )
+}
+
+record( longout, "$(P)$(R)CamlinkHSkip" )
+{
+    field( VAL, "0" )
+}
+    
+record( longout, "$(P)$(R)CamlinkVSkip" )
+{
+    field( VAL, "0" )
 }
 
 # Monitor and reprocess these records automatically when they're undefined

@@ -223,13 +223,19 @@ file liDevRogue.template
         SDIS    = "$(P)$(R)PgpMon:RxRemLinkReady_RBV CP"
     }
     {
+        NAME    = "Timing:TriggerCount",
+        PATH    = "ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TriggerEventManager.TriggerEventBuffer[$(L)].TriggerCount"
+        DESC    = "TriggerEventManager Trigger count"
+        SCAN    = "\$(SCAN=1 second)"
+    }
+    {
         NAME    = "PgpRx:Bandwidth",
-        PATH    = "ClinkDevRoot.ClinkPcie.Hsio.PgpRxAxisMon[$(L)].Ch[1].RawBandwidth"
+        PATH    = "ClinkDevRoot.ClinkPcie.Hsio.PgpRxVcMon[$(L)].Ch[1].RawBandwidth"
         SCAN    = "\$(SCAN=1 second)"
     }
     {
         NAME    = "PgpRx:FrameCnt",
-        PATH    = "ClinkDevRoot.ClinkPcie.Hsio.PgpRxAxisMon[$(L)].Ch[1].FrameCnt"
+        PATH    = "ClinkDevRoot.ClinkPcie.Hsio.PgpRxVcMon[$(L)].Ch[1].FrameCnt"
         SCAN    = "\$(SCAN=1 second)"
     }
     
@@ -271,14 +277,14 @@ file liDevRogue.template
 
     {
         NAME    = "PgpRx:FrameRate",
-        PATH    = "ClinkDevRoot.ClinkPcie.Hsio.PgpRxAxisMon[$(L)].Ch[1].FrameRate"
+        PATH    = "ClinkDevRoot.ClinkPcie.Hsio.PgpRxVcMon[$(L)].Ch[1].FrameRate"
         DESC    = "Incoming frame rate on PGP RX PHY"
         SCAN    = "\$(SCAN=1 second)"
         EGU     = "Hz"
     }
     {
         NAME    = "PgpRx:FrameSize",
-        PATH    = "ClinkDevRoot.ClinkPcie.Hsio.PgpRxAxisMon[$(L)].Ch[1].FrameSize"
+        PATH    = "ClinkDevRoot.ClinkPcie.Hsio.PgpRxVcMon[$(L)].Ch[1].FrameSize"
         DESC    = "Incoming frame size on PGP RX PHY"
         SCAN    = "\$(SCAN=1 second)"
     }
@@ -305,13 +311,6 @@ file liDevRogue.template
     {
         NAME    = "Feb$(F):LinkLockedCntA",
         PATH    = "ClinkDevRoot.ClinkFeb[$(F)].ClinkTop.LinkLockedCntA",
-        SCAN    = "\$(SCAN=1 second)"
-        DISV    = "0"
-        SDIS    = "$(P)$(R)PgpMon:RxRemLinkReady_RBV CP"
-    }
-    {
-        NAME    = "Feb$(F):FrameSize",
-        PATH    = "ClinkDevRoot.ClinkFeb[$(F)].ClinkTop.Ch[0].FrameSize"
         SCAN    = "\$(SCAN=1 second)"
         DISV    = "0"
         SDIS    = "$(P)$(R)PgpMon:RxRemLinkReady_RBV CP"
@@ -470,15 +469,6 @@ file longDevRogue.template
         PATH    = "ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TriggerEventManager.TriggerEventBuffer[$(L)].PauseThreshold"
     }
     {
-        NAME    = "Timing:TriggerCount",
-        PATH    = "ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TriggerEventManager.TriggerEventBuffer[$(L)].TriggerCount"
-        DESC    = "TriggerEventManager Trigger count"
-        SCAN    = "\$(SCAN=1 second)"
-        DOL     = "0"
-        PINI    = "YES"
-        SAVE    = ""
-    }
-    {
         NAME    = "EvrV2:TriggerDelay",
         PATH    = "ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TriggerEventManager.EvrV2CoreTriggers.EvrV2TriggerReg[$(L)].Delay"
         DOL     = "0"
@@ -491,6 +481,14 @@ file longDevRogue.template
         SAVE    = "VAL"
         DESC    = "Select XPM Partition 0..15"
         SCAN    = "\$(SCAN=1 second)"
+    }
+    {
+        NAME    = "Feb$(F):CntRst",
+        PATH    = "ClinkDevRoot.ClinkFeb[$(F)].ClinkTop.Ch[0].CntRst"
+        PINI    = ""
+        SAVE    = ""
+        DISV    = "0"
+        SDIS    = "$(P)$(R)PgpMon:RxRemLinkReady_RBV CP"
     }
 }
 

@@ -92,6 +92,11 @@ record( longout, "$(P)$(R)CamlinkPixelClk" )
 	info( autosaveFields, "" )
 }
 
+record( longin, "$(P)$(R)CamlinkPixelClk_RBV" )
+{
+	field( INP,  "$(PGP):Ch$(PGP_LANE):Feb$(PGP_LANE):PixelClk CPP MS" )
+}
+
 record( longout, "$(P)$(R)CamlinkBaudRate" )
 {
 	field( OUT,  "$(PGP):Ch$(PGP_LANE):Feb$(PGP_LANE):BaudRate CA" )
@@ -271,6 +276,7 @@ record( ao, "$(P)$(R)AcquireTime" )
 	field( DOL,  "0.001" )
 	field( VAL,  "0.001" )
 	field( FLNK, "$(P)$(R)CamAcquireTime" )
+  info( autosaveFields, "PREC VAL HIHI HIGH LOW LOLO HHSV HSV LSV LLSV" )
 }
 
 # CamAcquireTime (Exposure Time)
@@ -281,6 +287,7 @@ record( ao, "$(P)$(R)CamAcquireTime" )
 	field( OMSL, "closed_loop" )
 	field( PREC, "5" )
 	field( EGU,  "sec" )
+  info( autosaveFields, "PREC VAL HIHI HIGH LOW LOLO HHSV HSV LSV LLSV" )
 }
 
 record( calcout, "$(P)$(R)CamAcquireTimeCalc" )
@@ -294,6 +301,7 @@ record( calcout, "$(P)$(R)CamAcquireTimeCalc" )
 	field( EGU,  "us" )
 	field( OUT,  "$(PGP):Ch$(PGP_LANE):Feb$(PGP_LANE):PulseWidth CA" )
 	info( archiveFields,  "VAL" )
+  info( autosaveFields, "PREC VAL HIHI HIGH LOW LOLO HHSV HSV LSV LLSV" )
 }
 # CamAcquireTime_RBV (Exposure Time)
 # This record updates the asyn serial driver
@@ -308,6 +316,7 @@ record( calc, "$(P)$(R)CamAcquireTime_RBV" )
 	field( PREC, "4" )
 #	field( TPRO, "2" )
 	field( FLNK, "$(P)$(R)AcquireTime_RBV" )
+  info( autosaveFields, "PREC VAL HIHI HIGH LOW LOLO HHSV HSV LSV LLSV" )
 }
 
 # Update ADCore AcquireTime_RBV from CamAcquireTime_RBV
@@ -320,6 +329,7 @@ record( ai, "$(P)$(R)AcquireTime_RBV" )
 	field( INP,  "$(P)$(R)CamAcquireTime_RBV NPP MS" )
 	field( SCAN, "Passive" )
 #	field( TPRO, "2" )
+  info( autosaveFields, "PREC VAL HIHI HIGH LOW LOLO HHSV HSV LSV LLSV" )
 }
 
 #
@@ -641,8 +651,8 @@ record( mbbo, "$(P)$(R)CamTriggerMode" )
 	field( ZRVL, "0" )	field( ZRST, "FreeRun" )
 	field( ONVL, "1" )	field( ONST, "External" )
 	field( TWVL, "2" )	field( TWST, "Pulse" )
-#	field( SCAN, "I/O Intr" )
-	info( archiveFields,  "DESC" )
+  field( FLNK, "$(P)$(R)CamTriggerMode_RBV" )
+  info( archiveFields,  "DESC" )
 }
 record( mbbi, "$(P)$(R)CamTriggerMode_RBV" )
 {
@@ -652,7 +662,7 @@ record( mbbi, "$(P)$(R)CamTriggerMode_RBV" )
 	field( ZRVL, "0" )	field( ZRST, "FreeRun" )
 	field( ONVL, "1" )	field( ONST, "External" )
 	field( TWVL, "2" )	field( TWST, "Pulse" )
-#	field( FLNK, "$(P)$(R)TriggerMode_RBV" )
+	field( FLNK, "$(P)$(R)TriggerMode_RBV" )
 	info( archiveFields,  "DESC" )
 }
 
@@ -670,7 +680,7 @@ record( ao, "$(CAM):CamTrigDelay" )
 	field( EGU,  "sec" )
 	field( PINI, "YES" )
 	field( FLNK, "$(CAM):CamTrigDelayCalc" )
-	info( autosaveFields, "HHSV HIGH HIHI HSV LLSV LOLO LOW LSV     DESC HOPR LOPR PREC VAL" )
+	info( autosaveFields, "PREC HHSV HIGH HIHI HSV LLSV LOLO LOW LSV     DESC HOPR LOPR PREC VAL" )
 	info( archiveFields,  "EGU HOPR LOPR VAL" )
 }
 
@@ -682,11 +692,11 @@ record( calcout, "$(CAM):CamTrigDelayCalc" )
 #	field( INPB, "$(CAM):CamDelayScale NPP MS" )
 	field( INPB, "125000000" )
 	field( CALC, "MAX(0,MIN(A*B,0xFFFFFF))" )
-#	field( OOPT, "On Change" )
+	field( OOPT, "On Change" )
 	field( OUT,  "$(PGP):Ch$(PGP_LANE):EvrV2:TriggerDelay CA NMS" )
 	field( EGU,  "1/125MHz" )
 	field( PREC, "4" )
-	info( autosaveFields, "HHSV HIGH HIHI HSV LLSV LOLO LOW LSV     DESC PREC" )
+	info( autosaveFields, "PREC HHSV HIGH HIHI HSV LLSV LOLO LOW LSV     DESC PREC" )
 	info( archiveFields,  "EGU VAL" )
 }
 
@@ -709,11 +719,8 @@ record( calcout, "$(CAM):CamTrigDelay_RBV" )
 	field( CALC, "B==0?A:(A/B)" )
 	field( EGU,  "sec" )
 	field( PREC, "4" )
-#	field( OOPT, "On Change" )
-#	field( IVOA, "Don't drive outputs" )
-#	field( OUT,  "$(CAM):CamTrigDelay PP MS" )
-#	field( PINI, "YES"
-	info( autosaveFields, "" )
+	field( OOPT, "On Change" )
+	info( autosaveFields, "PREC HHSV HIGH HIHI HSV LLSV LOLO LOW LSV     DESC HOPR LOPR PREC VAL" )
 	info( archiveFields,  "EGU VAL" )
 }
 
@@ -748,7 +755,7 @@ record( mbbo, "$(P)$(R)CamLcls2RateSel" )
     field(FVST, "71.5kHz")
     field(SXST, "1MHz")	
 	field( PINI, "YES" )
-	info( autosaveFields, "HHSV HIGH HIHI HSV LLSV LOLO LOW LSV EGU DESC HOPR LOPR VAL" )
+	info( autosaveFields, "DESC VAL" )
 	info( archiveFields,  "VAL" )
 }
 
@@ -769,7 +776,7 @@ record( mbbi, "$(P)$(R)CamLcls2RateSel_RBV" )
     field(FRST, "10kHz")
     field(FVST, "71.5kHz")
     field(SXST, "1MHz")		
-	info( autosaveFields, "HHSV HIGH HIHI HSV LLSV LOLO LOW LSV EGU DESC" )
+	info( autosaveFields, "DESC VAL" )
 	info( archiveFields,  "VAL" )
 }
 

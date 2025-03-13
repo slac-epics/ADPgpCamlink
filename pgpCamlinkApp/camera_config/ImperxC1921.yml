@@ -24,13 +24,13 @@ ClinkTop:
     # TapCount: 2 # Base (2 taps or 3 taps)
     # DataMode: 12Bit
     ################################################################
-    # LinkMode: Medium
-    # TapCount: 4 # Medium (4 taps)
-    # DataMode: 12Bit
+    LinkMode: Medium
+    TapCount: 4 # Medium (4 taps)
+    DataMode: 12Bit
     ################################################################
-    LinkMode: Full
-    TapCount: 8 # Full (8 taps)
-    DataMode: 10Bit
+    # LinkMode: Full
+    # TapCount: 8 # Full (8 taps)
+    # DataMode: 8Bit
     ################################################################
     FrameMode: Frame
     DataEn: True

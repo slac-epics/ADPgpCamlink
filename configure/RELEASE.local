@@ -19,9 +19,10 @@
 # Don't set your version to anything such as "test" that
 # could match a directory name.
 # ==========================================================
-ASYN_MODULE_VERSION   = R4.39-1.0.1
-ADSUPPORT_MODULE_VERSION  = R1.9-0.1.0
-ADCORE_MODULE_VERSION = R3.10-1.1.0
+ASYN_MODULE_VERSION = R4.39-1.0.1
+ADSUPPORT_MODULE_VERSION = R1.9-0.1.0
+#ADCORE_MODULE_VERSION = R3.10-1.1.0
+ADCORE_MODULE_VERSION = R3.9-1.1.0
 
 # ==========================================================
 # Define module paths using pattern
@@ -29,16 +30,12 @@ ADCORE_MODULE_VERSION = R3.10-1.1.0
 #  or
 # FOO = /Full/Path/To/Development/Version 
 # ==========================================================
-ASYN   = $(EPICS_MODULES)/asyn/$(ASYN_MODULE_VERSION)
+ASYN = $(EPICS_MODULES)/asyn/$(ASYN_MODULE_VERSION)
 ADSUPPORT = $(EPICS_MODULES)/ADSupport/$(ADSUPPORT_MODULE_VERSION)
 ADCORE = $(EPICS_MODULES)/ADCore/$(ADCORE_MODULE_VERSION)
 
-#MY_MODULES = /cds/group/pcds/epics-dev/bhill/modules
-
-#ADCORE = $(MY_MODULES)/ADCore-git
-
 # Set EPICS_BASE last so it appears last in the DB, DBD, INCLUDE, and LIB search paths
-EPICS_BASE              = $(EPICS_SITE_TOP)/base/$(BASE_MODULE_VERSION)
+EPICS_BASE = $(EPICS_SITE_TOP)/base/$(BASE_MODULE_VERSION)
 
 # Check for undefined EPICS_BASE
 -include $(TOP)/../../EPICS_BASE.check

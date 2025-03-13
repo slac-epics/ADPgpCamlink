@@ -60,7 +60,7 @@ extern "C" long Up900Shutter_Process( aSubRecord	*	pSub	)
 	epicsInt32	*	pRawShutterMode	= static_cast<epicsInt32 *>( pSub->valb );
 	double		*	pPulseWidthVal	= static_cast<double	 *>( pSub->valc );
 	
-	if ( pTriggerModeVal == NULL || pTriggerModeVal	== NULL || pPulseWidthScale == NULL )
+	if ( pAcquireTimeVal == NULL || pTriggerModeVal	== NULL || pPulseWidthScale == NULL )
 		return 0;
 
 	double		acquireTime 	= *pAcquireTimeVal;
@@ -72,6 +72,7 @@ extern "C" long Up900Shutter_Process( aSubRecord	*	pSub	)
 	switch ( triggerMode )
 	{
 	case 0:
+    // Free run mode
 		rawShutterMode   = 1;			//	NM, Normal FreeRun Mode
 		if ( acquireTime >= 1.0/15    ) { rawShutterSpeed = 0;  break; }
 		if ( acquireTime >= 1.0/30    ) { rawShutterSpeed = 1;  break; }
@@ -113,7 +114,7 @@ extern "C" long Up900Shutter_Process( aSubRecord	*	pSub	)
 		break;
 
 	case 2:
-		// External trigger mode
+		// Pulse mode
 		rawShutterMode  = 0;	// AM, Async Triggered Mode
 		rawShutterSpeed = 15;	// Pulse Width Mode
 		break;
@@ -198,7 +199,7 @@ extern "C" long Up900Shutter_RBV_Process( aSubRecord	*	pSub	)
 	}
 	else
 	{
-		triggerMode = 2;	// External
+		triggerMode = 1;	// External
 
 		//	AM, Async Triggered Mode
 		switch ( rawShutterSpeed )

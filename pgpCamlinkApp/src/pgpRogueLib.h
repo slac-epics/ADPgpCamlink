@@ -23,7 +23,6 @@
 
 // rogue headers 
 #include <rogue/Helpers.h>
-#include <rogue/LibraryBase.h>
 #include <rogue/hardware/axi/AxiMemMap.h>
 #include <rogue/hardware/axi/AxiStreamDma.h>
 #include <rogue/interfaces/memory/Constants.h>
@@ -34,6 +33,7 @@
 // ADPgpCamlink headers
 #include "ClMemoryMaster.h"
 #include "FebMemoryMaster.h"
+#include "LibraryBase.h"
 
 #define	N_AXI_LANES	4
 #define	N_AXI_CHAN	4	// Needed?
