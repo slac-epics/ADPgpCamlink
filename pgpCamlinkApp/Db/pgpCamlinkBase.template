@@ -637,6 +637,7 @@ record( mbbo, "$(P)$(R)TriggerMode" )
 record( mbbi, "$(P)$(R)TriggerMode_RBV" )
 {
 #	field( TPRO, 2 )
+	field( INP, "$(P)$(R)CamTriggerMode_RBV" )
 	field( ZRVL, "0" )	field( ZRST, "FreeRun" )
 	field( ONVL, "1" )	field( ONST, "External" )
 	field( TWVL, "2" )	field( TWST, "Pulse" )
