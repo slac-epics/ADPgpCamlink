@@ -17,7 +17,7 @@ record( stringin, "$(P)$(R)CamModel" )
 
 record( stringin, "$(P)$(R)CamModelScreen" )
 {
-	field( VAL,  "ADPgpCamlinkScreens/JaiGO5000M.edl" )
+	field( VAL,  "ADPgpCamlinkScreens/Jai_GO_5000M_PMCL_UV.edl" )
 	field( PINI, "YES" )
 }
 
