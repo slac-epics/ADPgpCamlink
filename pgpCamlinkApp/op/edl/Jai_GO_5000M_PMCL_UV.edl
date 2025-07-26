@@ -3,8 +3,8 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 1044
-y 400
+x 512
+y 933
 w 730
 h 624
 font "helvetica-medium-r-12.0"
@@ -193,7 +193,7 @@ major 4
 minor 7
 release 0
 x 232
-y 268
+y 292
 w 88
 h 20
 controlPv "$(P)$(R)CLPixelClock_RBV"
@@ -218,7 +218,7 @@ major 4
 minor 1
 release 1
 x 28
-y 268
+y 292
 w 100
 h 20
 font "helvetica-medium-r-12.0"
@@ -385,10 +385,10 @@ major 4
 minor 7
 release 0
 x 232
-y 296
+y 320
 w 88
 h 20
-controlPv "$(P)$(R)JaiPixelDepth_RBV"
+controlPv "$(P)$(R)JaiPixelFormat_RBV"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
 fgColor index 15
@@ -410,7 +410,7 @@ major 4
 minor 1
 release 1
 x 28
-y 296
+y 320
 w 100
 h 20
 font "helvetica-medium-r-12.0"
@@ -418,7 +418,7 @@ fontAlign "right"
 fgColor index 14
 bgColor index 3
 value {
-  "JaiBitsPerPixel"
+  "Pixel Format"
 }
 endObjectProperties
 
@@ -702,9 +702,9 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 340
-y 224
-w 156
+x 36
+y 196
+w 92
 h 20
 font "helvetica-medium-r-12.0"
 fontAlign "right"
@@ -713,32 +713,6 @@ bgColor index 3
 value {
   "Trigger Control"
 }
-endObjectProperties
-
-# (Text Monitor)
-object activeXTextDspClass:noedit
-beginObjectProperties
-major 4
-minor 7
-release 0
-x 604
-y 224
-w 88
-h 20
-controlPv "$(P)$(R)JaiTriggerControl_RBV"
-format "hex"
-font "helvetica-medium-r-12.0"
-fontAlign "center"
-fgColor index 15
-fgAlarm
-bgColor index 12
-limitsFromDb
-nullColor index 40
-smartRefresh
-useHexPrefix
-newPos
-objType "monitors"
-noExecuteClipMask
 endObjectProperties
 
 # (Static Text)
@@ -838,7 +812,7 @@ major 4
 minor 1
 release 1
 x 396
-y 176
+y 200
 w 100
 h 20
 font "helvetica-medium-r-12.0"
@@ -860,7 +834,7 @@ x 324
 y 500
 w 88
 h 20
-controlPv "$(P)$(R)JaiExposureMode"
+controlPv "$(P)$(R)JaiTriggerMode"
 format "hex"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
@@ -886,7 +860,7 @@ x 420
 y 500
 w 80
 h 20
-controlPv "$(P)$(R)JaiExposureMode_RBV"
+controlPv "$(P)$(R)JaiTriggerMode_RBV"
 format "hex"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
@@ -951,7 +925,7 @@ major 4
 minor 7
 release 0
 x 232
-y 244
+y 268
 w 88
 h 20
 controlPv "$(P)$(R)JaiTapGeometry_RBV"
@@ -977,7 +951,7 @@ major 4
 minor 1
 release 1
 x 40
-y 244
+y 268
 w 88
 h 20
 font "helvetica-medium-r-12.0"
@@ -996,10 +970,10 @@ major 4
 minor 7
 release 0
 x 232
-y 320
+y 244
 w 88
 h 20
-controlPv "$(P)$(R)JaiPixelFormat_RBV"
+controlPv "$(P)$(R)JaiTriggerMode_RBV"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
 fgColor index 15
@@ -1021,7 +995,7 @@ major 4
 minor 1
 release 1
 x 28
-y 320
+y 244
 w 100
 h 20
 font "helvetica-medium-r-12.0"
@@ -1029,7 +1003,7 @@ fontAlign "right"
 fgColor index 14
 bgColor index 3
 value {
-  "Pixel Format"
+  "Trigger Mode"
 }
 endObjectProperties
 
@@ -1439,7 +1413,7 @@ major 4
 minor 7
 release 0
 x 604
-y 200
+y 224
 w 88
 h 20
 controlPv "$(P)$(R)JaiGainAuto_RBV"
@@ -1465,7 +1439,7 @@ major 4
 minor 1
 release 1
 x 364
-y 200
+y 224
 w 132
 h 20
 font "helvetica-medium-r-12.0"
@@ -1874,7 +1848,7 @@ major 4
 minor 0
 release 0
 x 504
-y 200
+y 224
 w 92
 h 20
 fgColor index 25
@@ -1893,8 +1867,8 @@ beginObjectProperties
 major 4
 minor 0
 release 0
-x 504
-y 224
+x 132
+y 196
 w 92
 h 20
 fgColor index 25
@@ -1903,7 +1877,6 @@ inconsistentColor index 40
 topShadowColor index 1
 botShadowColor index 11
 controlPv "$(P)$(R)JaiTriggerControl"
-indicatorPv "$(P)$(R)JaiTriggerControl_RBV"
 font "helvetica-medium-r-12.0"
 endObjectProperties
 
@@ -1954,7 +1927,7 @@ major 4
 minor 0
 release 0
 x 132
-y 244
+y 268
 w 92
 h 20
 fgColor index 25
@@ -1974,7 +1947,7 @@ major 4
 minor 0
 release 0
 x 132
-y 268
+y 292
 w 92
 h 20
 fgColor index 25
@@ -1984,26 +1957,6 @@ topShadowColor index 1
 botShadowColor index 11
 controlPv "$(P)$(R)CLPixelClock"
 indicatorPv "$(P)$(R)CLPixelClock_RBV"
-font "helvetica-medium-r-12.0"
-endObjectProperties
-
-# (Menu Button)
-object activeMenuButtonClass
-beginObjectProperties
-major 4
-minor 0
-release 0
-x 132
-y 296
-w 92
-h 20
-fgColor index 25
-bgColor index 5
-inconsistentColor index 40
-topShadowColor index 1
-botShadowColor index 11
-controlPv "$(P)$(R)JaiPixelDepth"
-indicatorPv "$(P)$(R)JaiPixelDepth_RBV"
 font "helvetica-medium-r-12.0"
 endObjectProperties
 
@@ -2024,6 +1977,26 @@ topShadowColor index 1
 botShadowColor index 11
 controlPv "$(P)$(R)JaiPixelFormat"
 indicatorPv "$(P)$(R)JaiPixelFormat_RBV"
+font "helvetica-medium-r-12.0"
+endObjectProperties
+
+# (Menu Button)
+object activeMenuButtonClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 132
+y 244
+w 92
+h 20
+fgColor index 25
+bgColor index 5
+inconsistentColor index 40
+topShadowColor index 1
+botShadowColor index 11
+controlPv "$(P)$(R)JaiTriggerMode"
+indicatorPv "$(P)$(R)JaiTriggerMode_RBV"
 font "helvetica-medium-r-12.0"
 endObjectProperties
 
@@ -2088,7 +2061,7 @@ botShadowColor index 11
 controlPv "$(P)$(R)JaiModelName_RBV.PROC"
 pressValue "1"
 onLabel "Rereading Model..."
-offLabel "Basler Model"
+offLabel "JAI Model"
 3d
 font "helvetica-medium-r-12.0"
 endObjectProperties
@@ -2209,7 +2182,7 @@ major 4
 minor 0
 release 0
 x 504
-y 176
+y 200
 w 92
 h 20
 fgColor index 25
@@ -2229,7 +2202,7 @@ major 4
 minor 7
 release 0
 x 604
-y 176
+y 200
 w 88
 h 20
 controlPv "$(P)$(R)JaiTriggerSoftware_RBV"
@@ -2419,6 +2392,326 @@ limitsFromDb
 nullColor index 40
 smartRefresh
 useHexPrefix
+newPos
+objType "monitors"
+noExecuteClipMask
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 396
+y 88
+w 100
+h 20
+font "helvetica-medium-r-12.0"
+fontAlign "right"
+fgColor index 14
+bgColor index 3
+value {
+  "Image Width"
+}
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 504
+y 88
+w 88
+h 20
+controlPv "$(P)$(R)JaiROIWidth"
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+fgColor index 15
+fgAlarm
+bgColor index 12
+limitsFromDb
+nullColor index 40
+smartRefresh
+newPos
+objType "monitors"
+noExecuteClipMask
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 604
+y 88
+w 88
+h 20
+controlPv "$(P)$(R)JaiROIWidth_RBV"
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+fgColor index 15
+fgAlarm
+bgColor index 12
+limitsFromDb
+nullColor index 40
+smartRefresh
+newPos
+objType "monitors"
+noExecuteClipMask
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 808
+y 124
+w 88
+h 20
+controlPv "$(P)$(R)JaiROIWidth"
+format "hex"
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+fgColor index 15
+fgAlarm
+bgColor index 12
+limitsFromDb
+nullColor index 40
+smartRefresh
+useHexPrefix
+newPos
+objType "monitors"
+noExecuteClipMask
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 908
+y 124
+w 88
+h 20
+controlPv "$(P)$(R)JaiROIWidth_RBV"
+format "hex"
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+fgColor index 15
+fgAlarm
+bgColor index 12
+limitsFromDb
+nullColor index 40
+smartRefresh
+useHexPrefix
+newPos
+objType "monitors"
+noExecuteClipMask
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 396
+y 112
+w 100
+h 20
+font "helvetica-medium-r-12.0"
+fontAlign "right"
+fgColor index 14
+bgColor index 3
+value {
+  "Offset X"
+}
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 504
+y 112
+w 88
+h 20
+controlPv "$(P)$(R)JaiROIOffsetX"
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+fgColor index 15
+fgAlarm
+bgColor index 12
+limitsFromDb
+nullColor index 40
+smartRefresh
+newPos
+objType "monitors"
+noExecuteClipMask
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 604
+y 112
+w 88
+h 20
+controlPv "$(P)$(R)JaiROIOffsetX_RBV"
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+fgColor index 15
+fgAlarm
+bgColor index 12
+limitsFromDb
+nullColor index 40
+smartRefresh
+newPos
+objType "monitors"
+noExecuteClipMask
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 396
+y 136
+w 100
+h 20
+font "helvetica-medium-r-12.0"
+fontAlign "right"
+fgColor index 14
+bgColor index 3
+value {
+  "Image Height"
+}
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 396
+y 160
+w 100
+h 20
+font "helvetica-medium-r-12.0"
+fontAlign "right"
+fgColor index 14
+bgColor index 3
+value {
+  "Offset Y"
+}
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 504
+y 136
+w 88
+h 20
+controlPv "$(P)$(R)JaiROIHeight"
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+fgColor index 15
+fgAlarm
+bgColor index 12
+limitsFromDb
+nullColor index 40
+smartRefresh
+newPos
+objType "monitors"
+noExecuteClipMask
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 504
+y 160
+w 88
+h 20
+controlPv "$(P)$(R)JaiROIOffsetY"
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+fgColor index 15
+fgAlarm
+bgColor index 12
+limitsFromDb
+nullColor index 40
+smartRefresh
+newPos
+objType "monitors"
+noExecuteClipMask
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 604
+y 136
+w 88
+h 20
+controlPv "$(P)$(R)JaiROIHeight_RBV"
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+fgColor index 15
+fgAlarm
+bgColor index 12
+limitsFromDb
+nullColor index 40
+smartRefresh
+newPos
+objType "monitors"
+noExecuteClipMask
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 604
+y 160
+w 88
+h 20
+controlPv "$(P)$(R)JaiROIOffsetY_RBV"
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+fgColor index 15
+fgAlarm
+bgColor index 12
+limitsFromDb
+nullColor index 40
+smartRefresh
 newPos
 objType "monitors"
 noExecuteClipMask

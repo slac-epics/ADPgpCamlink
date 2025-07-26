@@ -37,3 +37,9 @@ GetString
     out "\$1?";
 	in  "\$1=%s";
 }
+
+Debug
+{    
+    ExtraInput = Ignore;
+    out "%s"; in "%39c"
+}
