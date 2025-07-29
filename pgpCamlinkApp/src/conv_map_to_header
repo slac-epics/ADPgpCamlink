@@ -1,0 +1,10 @@
+#!/bin/bash
+
+prefix=\"
+postfix="|\"\\"
+
+#while read -r line; do
+while read line; do
+    echo $line
+    echo $prefix$line$postfix 
+    done < $1 

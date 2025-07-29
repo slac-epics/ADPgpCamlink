@@ -1,0 +1,16 @@
+In Larry's firmware, Base, Medium and Full modes will pad zeros if 10b, 12b, or 14b. No zero padding if 8b.
+DECA mode never pads zero.  Also, 10bit data is packed and need to be unpacked as explained below:
+
+--Packing 10bit Pixel Data--
+MIPI RAW10 packing refers to how 10-bit pixel data from an image sensor is organized into a stream of bytes for transmission over a MIPI CSI-2 interface. Four 10-bit pixels are packed into five bytes, with the higher 8 bits of each pixel transmitted first, followed by the lower 2 bits. This packing method ensures efficient use of the data bandwidth while maintaining the 10-bit resolution. 
+
+Here's a breakdown of the packing process: 
+
+First byte: Contains bits [9:2] of the first pixel (P1).
+Second byte: Contains bits [9:2] of the second pixel (P2).
+Third byte: Contains bits [9:2] of the third pixel (P3).
+Fourth byte: Contains bits [9:2] of the fourth pixel (P4).
+Fifth byte: Contains bits [1:0] of P1, bits [1:0] of P2, bits [1:0] of P3, and bits [1:0] of P4, effectively packing the least significant bits of all four pixels.
+
+This method allows for a continuous stream of pixel data, even though the underlying data is 10-bit, while minimizing the number of bytes needed for transmission. If the image width is not a multiple of four pixels, padding with zeros may be necessary to complete the last byte. 
+
