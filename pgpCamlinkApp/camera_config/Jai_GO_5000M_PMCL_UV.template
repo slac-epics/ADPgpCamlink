@@ -701,6 +701,14 @@ record( longout,	"$(P)$(R)JaiTrigSourceHigh" )
     field( OUT,     "$(P)$(R)JaiFrameStartTrigSource PP" )
 }
 
+record( longout,	"$(P)$(R)JaiTrigSourceCLCC1In" )
+{
+	field( DESC,	"Set Trigger Source To CL_CC1_In" )
+	field( DOL,     "13" )
+    field( OMSL,    "closed_loop" )
+    field( OUT,     "$(P)$(R)JaiFrameStartTrigSource PP" )
+}
+
 # Trigger Activation
 record( mbbo, "$(P)$(R)JaiFrameStartTrigActivation" )
 {
@@ -950,7 +958,7 @@ record( seq, "$(P)$(R)JaiTriggerModeTrigTimed" )
     field( DLY0, "0.2" ) field( DOL0, "1" ) field( LNK0, "$(P)$(R)JaiFrameStartTrigModeOn.PROC" )
     field( DLY1, "0.2" ) field( DOL1, "1" ) field( LNK1, "$(P)$(R)JaiExposureModeTimed.PROC"  )
     field( DLY2, "0.2" ) field( DOL2, "1" ) field( LNK2, "$(P)$(R)JaiTriggerOptionOff.PROC"  )
-    field( DLY3, "0.2" ) field( DOL3, "1" ) field( LNK3, "$(P)$(R)JaiTrigSourceHigh.PROC"  )
+    field( DLY3, "0.2" ) field( DOL3, "1" ) field( LNK3, "$(P)$(R)JaiTrigSourceCLCC1In.PROC"  )
     field( DLY4, "0.2" ) field( DOL4, "1" ) field( LNK4, "$(P)$(R)JaiTrigActivationLow.PROC"  )
 }
 
@@ -962,7 +970,7 @@ record( seq, "$(P)$(R)JaiTriggerModeTrigRCT" )
     field( DLY0, "0.2" ) field( DOL0, "1" ) field( LNK0, "$(P)$(R)JaiFrameStartTrigModeOn.PROC" )
     field( DLY1, "0.2" ) field( DOL1, "1" ) field( LNK1, "$(P)$(R)JaiExposureModeTimed.PROC"  )
     field( DLY2, "0.2" ) field( DOL2, "1" ) field( LNK2, "$(P)$(R)JaiTriggerOptionRCT.PROC"  )
-    field( DLY3, "0.2" ) field( DOL3, "1" ) field( LNK3, "$(P)$(R)JaiTrigSourceHigh.PROC"  )
+    field( DLY3, "0.2" ) field( DOL3, "1" ) field( LNK3, "$(P)$(R)JaiTrigSourceCLCC1In.PROC"  )
     field( DLY4, "0.2" ) field( DOL4, "1" ) field( LNK4, "$(P)$(R)JaiTrigActivationLow.PROC"  )
 }
 
@@ -974,7 +982,7 @@ record( seq, "$(P)$(R)JaiTriggerModeTrigPulse" )
     field( DLY0, "0.2" ) field( DOL0, "1" ) field( LNK0, "$(P)$(R)JaiFrameStartTrigModeOn.PROC" )
     field( DLY1, "0.2" ) field( DOL1, "1" ) field( LNK1, "$(P)$(R)JaiExposureModeWidth.PROC"  )
     field( DLY2, "0.2" ) field( DOL2, "1" ) field( LNK2, "$(P)$(R)JaiTriggerOptionOff.PROC"  )
-    field( DLY3, "0.2" ) field( DOL3, "1" ) field( LNK3, "$(P)$(R)JaiTrigSourceHigh.PROC"  )
+    field( DLY3, "0.2" ) field( DOL3, "1" ) field( LNK3, "$(P)$(R)JaiTrigSourceCLCC1In.PROC"  )
     field( DLY4, "0.2" ) field( DOL4, "1" ) field( LNK4, "$(P)$(R)JaiTrigActivationLow.PROC"  )
 }
 
