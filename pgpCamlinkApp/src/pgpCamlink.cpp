@@ -79,6 +79,7 @@ const char * CamlinkModeToString( pgpCamlink::CamlinkMode_t	clMode )
 	case pgpCamlink::CL_MODE_BASE:		pstrCamlinkMode	= "Base";		break;
 	case pgpCamlink::CL_MODE_MEDIUM:	pstrCamlinkMode	= "Medium";		break;
 	case pgpCamlink::CL_MODE_FULL:		pstrCamlinkMode	= "Full";		break;
+	case pgpCamlink::CL_MODE_DECA:		pstrCamlinkMode	= "Deca";		break;
 	}
 	return pstrCamlinkMode;
 }
@@ -187,6 +188,7 @@ pgpCamlink::pgpCamlink(
 		m_ClHTaps(			2					),
 		m_ClVTaps(			2					),
 		m_CamlinkMode(		CL_MODE_BASE		),
+		m_CamlinkBits(		CL_BITS_TWELVE		),
 		m_TriggerMode(		TRIGMODE_PULSE		),
 		m_TriggerModeReq(	TRIGMODE_PULSE		),
 		m_BinX(				1					),
@@ -244,6 +246,8 @@ pgpCamlink::pgpCamlink(
 		m_CamlinkMode	= CL_MODE_MEDIUM;
 	else if ( strcmp( clMode, "Full" ) == 0 )
 		m_CamlinkMode	= CL_MODE_FULL;
+	else if ( strcmp( clMode, "Deca" ) == 0 )
+		m_CamlinkMode	= CL_MODE_DECA;
 
 #if 0
     // Configure an asyn port for serial commands
@@ -262,6 +266,7 @@ pgpCamlink::pgpCamlink(
 	createParam( CamlinkHwHRoiString,		asynParamInt32,		&CamlinkHwHRoi		);
 	createParam( CamlinkHwVRoiString,		asynParamInt32,		&CamlinkHwVRoi		);
 	createParam( CamlinkModeString,			asynParamInt32,		&CamlinkMode		);
+	createParam( CamlinkBitsString,			asynParamInt32,		&CamlinkBits		);
 	createParam( CamlinkVSkipString,		asynParamInt32,		&CamlinkVSkip		);
 	createParam( CamlinkVSizeString,		asynParamInt32,		&CamlinkVSize		);
 	createParam( CamlinkVTapsString,		asynParamInt32,		&CamlinkVTaps		);
@@ -292,9 +297,14 @@ pgpCamlink::pgpCamlink(
     createParam( CamlinkSyncBadTSCntString,     asynParamInt32,     &SyncBadTS  );
     createParam( CamlinkSyncBadSyncCntString,   asynParamInt32,     &SyncBadSync  );
 
-	// Get the Camlink mode from the mbbo PV
-	int		paramValue	= static_cast<int>( m_CamlinkMode );
-	setIntegerParam( CamlinkMode,		paramValue );
+	// Update Camlink mode in asyn params list
+	int	paramValue = static_cast<int>( m_CamlinkMode );
+	setIntegerParam( CamlinkMode, paramValue );
+
+    // Update data mode in asyn params list
+	paramValue = static_cast<int>( m_CamlinkBits );
+	setIntegerParam( CamlinkBits, paramValue );
+    m_ClNumBits = GetDataMode();
 
     // Install exit hook for clean shutdown
     epicsAtExit( (EPICSTHREADFUNC)pgpCamlink::ExitHook, (void *) this );
@@ -469,6 +479,30 @@ void pgpCamlink::ExitHook(void * arg)
 	pgpCamlink	*	pCam = static_cast<pgpCamlink *>( arg );
 	if( pCam != NULL )
 		pCam->Shutdown();
+}
+
+unsigned int pgpCamlink::GetDataMode()
+{
+    // Convert data mode enum from mbbo pv to integer
+    unsigned int bits;
+    switch( m_CamlinkBits ){
+
+        case CL_BITS_NONE:
+            bits = 0;
+            break;
+        case CL_BITS_EIGHT:
+            bits = 8;
+            break;
+        case CL_BITS_TEN:
+            bits = 10;
+            break;
+        case CL_BITS_TWELVE:
+            bits = 12;
+            break;
+        default:
+            break;
+    }
+    return bits;
 }
 
 void pgpCamlink::Shutdown( )
@@ -1327,6 +1361,37 @@ int pgpCamlink::ProcessImage(
 	}
 
 	unlock();
+    
+    // In some modes the pixel data is packed (i.e. Deca), in other cases there is no zero padding.
+    // Below, each case is separately examined in order to produce 16bit zero-padded pixel data. 
+    if ( m_CamlinkMode == CL_MODE_DECA && m_CamlinkBits == CL_BITS_TEN ) {
+
+        // Deca mode involves packed pixels without zero padding.
+        // We will need to unpack the pixels and cast to uint16_t.
+        //printf( "pgpCamlink::ProcessImage: Unpacking 10bit pixels (Deca Mode)\n" );
+        //printf( "pgpCamlink::ProcessImage: pixels from class member variable --> %d\n", m_ClNumBits );
+
+        // Lock NDArrayPool driver
+	    lock();
+
+	    // Allocate another NDArray from the pool to host the unpacked pixels
+        NDArray	* pNDArrayUnpack = AllocNDArray();
+	    if ( pNDArray != NULL && pNDArrayUnpack != NULL )
+	    {
+            UnpackRAW10( static_cast<uint8_t*>( pNDArray->pData ),
+                         ( pNDArray -> dims[0].size ) * ( pNDArray -> dims[1].size ) * 10 / 8, 
+                         static_cast<uint16_t*>( pNDArrayUnpack -> pData ) );  
+	    }
+        
+        // Release NDArray with the packed 10bit pixels
+        pNDArray -> release();
+        pNDArray = NULL;
+
+        // Reassign the pNDArray pointer to the unpacked pixels
+        pNDArray = pNDArrayUnpack;
+
+	    unlock();
+    }
 
 	{
 	CONTEXT_TIMER( "ProcessImage-wrapup" );
@@ -1515,6 +1580,46 @@ int pgpCamlink::LoadNDArray(
 	return status;
 }
 
+void pgpCamlink::UnpackRAW10(
+     const uint8_t* Src, 
+     size_t srcSize, 
+     uint16_t* Dst )
+{
+    // RAW10 packs 4 pixels (4*10 = 40 bits) into 5 bytes.
+    const size_t BYTES_PER_ROW   = ( m_ClCurWidth * 10 ) / 8;
+    const size_t FRAME_BYTE_SIZE = BYTES_PER_ROW * m_ClCurHeight;
+
+    // Unpack RAW10 into uint16 container (lower 10 bits used).
+    // Layout: Dst[x][y] per your request (width-major).
+    if (!Src) throw std::invalid_argument("pgpCamlink::UnpackRAW10: Src pointer is null");
+    if (srcSize != FRAME_BYTE_SIZE) throw std::invalid_argument("pgpCamlink::UnpackRAW10: unexpected buffer size");
+
+    for (int y = 0; y < static_cast<int>( m_ClCurHeight ); ++y) {
+        const uint8_t* row = Src + y * BYTES_PER_ROW;
+
+        int x = 0;
+        for (int group = 0; group < static_cast<int>( m_ClCurWidth ); group += 4) {
+            uint8_t b0 = row[0];
+            uint8_t b1 = row[1];
+            uint8_t b2 = row[2];
+            uint8_t b3 = row[3];
+            uint8_t b4 = row[4];
+
+            // MIPI RAW10 packing:
+            // p0 = b0 | ((b4 & 0x03) << 8)
+            // p1 = b1 | (((b4 >> 2) & 0x03) << 8)
+            // p2 = b2 | (((b4 >> 4) & 0x03) << 8)
+            // p3 = b3 | (((b4 >> 6) & 0x03) << 8)
+
+            Dst[(x++) + y * m_ClCurWidth] = static_cast<uint16_t>(b0) | static_cast<uint16_t>((b4 & 0x03u) << 8);
+            Dst[(x++) + y * m_ClCurWidth] = static_cast<uint16_t>(b1) | static_cast<uint16_t>(((b4 >> 2) & 0x03u) << 8);
+            Dst[(x++) + y * m_ClCurWidth] = static_cast<uint16_t>(b2) | static_cast<uint16_t>(((b4 >> 4) & 0x03u) << 8);
+            Dst[(x++) + y * m_ClCurWidth] = static_cast<uint16_t>(b3) | static_cast<uint16_t>(((b4 >> 6) & 0x03u) << 8);
+
+            row += 5;
+        }
+    }
+}
 
 int	pgpCamlink::SubmitNDArray(
     NDArray				*	pNDArray,
@@ -2189,6 +2294,13 @@ asynStatus pgpCamlink::writeInt32(	asynUser *	pasynUser, epicsInt32	value )
 		status = SetSizeX(	value );
     } else if ( pasynUser->reason == SerSizeY			) {
 		status = SetSizeY(	value );
+    } else if ( pasynUser->reason == CamlinkMode        ) {
+		status = setIntegerParam( CamlinkMode, value );
+        m_CamlinkMode = static_cast<CamlinkMode_t>( value );
+    } else if ( pasynUser->reason == CamlinkBits        ) {
+		status = setIntegerParam( CamlinkBits, value );
+        m_CamlinkBits = static_cast<CamlinkBits_t>( value );
+        m_ClNumBits = GetDataMode();
     }
 
     callParamCallbacks( 0, 0 );

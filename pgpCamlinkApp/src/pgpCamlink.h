@@ -89,7 +89,8 @@ public:		//	Public member functions
 
 	enum TriggerMode_t { TRIGMODE_FREERUN, TRIGMODE_EXT, TRIGMODE_PULSE };
 
-	enum CamlinkMode_t { CL_MODE_BASE, CL_MODE_MEDIUM, CL_MODE_FULL };
+	enum CamlinkMode_t { CL_MODE_DISABLE, CL_MODE_BASE, CL_MODE_MEDIUM, CL_MODE_FULL, CL_MODE_DECA };
+	enum CamlinkBits_t { CL_BITS_NONE, CL_BITS_EIGHT, CL_BITS_TEN, CL_BITS_TWELVE };
 
 	///	Update AreaDetector params related to camera configuration
 	int UpdateADConfigParams( );
@@ -127,6 +128,9 @@ public:		//	Public member functions
 
 	/// Registered with epicsAtExit() for clean disconnect
 	static void ExitHook( void * pThis );
+   
+    /// Convert bit pixels from mbbo/enum to integer
+    unsigned int GetDataMode();
  
  	/// Shutdown driver
 	void Shutdown( );
@@ -251,6 +255,11 @@ public:		//	Public member functions
 	{
 		return m_CamlinkMode;
 	}
+	
+    CamlinkBits_t GetCamlinkBits( ) const
+	{
+		return m_CamlinkBits;
+	}
 
 	int				RequestTriggerMode(	int	value	);
 	int				SetTriggerMode(	int	value	);
@@ -259,9 +268,9 @@ public:		//	Public member functions
 		return m_TriggerMode;
 	}
 
-	unsigned int	GetNumBits( ) const
+	unsigned int GetNumBits( ) const
 	{
-		return m_ClNumBits;
+        return m_ClNumBits;
 	}
 
 	bool	HasHwHRoi() const
@@ -409,6 +418,8 @@ private:	//	Private class functions
 	static	void			CameraAdd(		pgpCamlink * pCamera );
 	static	void			CameraRemove(	pgpCamlink * pCamera );
 
+    void UnpackRAW10( const uint8_t* src, size_t src_size, uint16_t* dst );
+
 public:		//	Public member variables	(Make these private!)
 
 protected:	//	Protected member variables
@@ -446,6 +457,7 @@ private:	//	Private member variables
 	int				m_ClVTaps;		// CamLink connection vert  taps
 
 	CamlinkMode_t	m_CamlinkMode;
+	CamlinkBits_t	m_CamlinkBits;
 
 	TriggerMode_t	m_TriggerMode;
 	TriggerMode_t	m_TriggerModeReq;
@@ -494,6 +506,7 @@ private:	//	Private member variables
 	int		CamlinkHwHRoi;
 	int		CamlinkHwVRoi;
 	int		CamlinkMode;
+    int     CamlinkBits;
 	int		CamlinkReCfgCnt;
 	int		CamlinkVSkip;
 	int		CamlinkVSize;
@@ -552,6 +565,7 @@ private:	//	Private class variables
 #define CamlinkHwHRoiString		"CLCAM_HW_HROI"
 #define CamlinkHwVRoiString		"CLCAM_HW_VROI"
 #define CamlinkModeString		"CLCAM_MODE"
+#define CamlinkBitsString	    "CLCAM_BITS"
 #define CamlinkReCfgCntString	"CLCAM_RECFG_CNT"
 #define CamlinkVSkipString		"CLCAM_VSKIP"
 #define CamlinkVSizeString		"CLCAM_VSIZE"
@@ -561,6 +575,7 @@ private:	//	Private class variables
 #define CamlinkTrigLevelString	"CLCAM_TRIG_LEVEL"
 #define CamlinkDebugLevelString	"CLCAM_DEBUG"
 #define CamlinkDebugSerString	"CLCAM_DEBUG_SER"
+
 
 // TODO: These don't look right.  Can we nuke them?
 #define PgpAxiVersionString			"ClinkDevRoot.ClinkPcie.AxiPcieCore.AxiVersion.BuildStamp"
