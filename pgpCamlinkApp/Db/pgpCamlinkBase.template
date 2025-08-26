@@ -667,6 +667,66 @@ record( mbbi, "$(P)$(R)CamTriggerMode_RBV" )
 	info( archiveFields,  "DESC" )
 }
 
+record( mbbo, "$(P)$(R)DrvCamlinkMode" )
+{
+	field( DOL,  "$(P)$(R)CamlinkLinkMode CP NMS" )
+	field( OMSL, "closed_loop" )
+	field( DTYP, "asynInt32" )
+	field( OUT,  "@asyn($(PORT),$(ADDR=0),$(TIMEOUT=1))CLCAM_MODE" )
+	field( ZRVL, "0" ) field( ZRST, "Disable" )
+	field( ONVL, "1" ) field( ONST, "Base" )
+	field( TWVL, "2" ) field( TWST, "Medium" )
+	field( THVL, "3" ) field( THST, "Full" )
+	field( FRVL, "4" ) field( FRST, "Deca" )
+    field( FLNK, "$(P)$(R)DrvCamlinkMode_RBV" )
+  info( archiveFields,  "DESC" )
+}
+record( mbbi, "$(P)$(R)DrvCamlinkMode_RBV" )
+{
+	field( DTYP, "asynInt32" )
+	field( INP,  "@asyn($(PORT),$(ADDR=0),$(TIMEOUT=1))CLCAM_MODE" )
+	field( ZRVL, "0" ) field( ZRST, "Disable" )
+	field( ONVL, "1" ) field( ONST, "Base" )
+	field( TWVL, "2" ) field( TWST, "Medium" )
+	field( THVL, "3" ) field( THST, "Full" )
+	field( FRVL, "4" ) field( FRST, "Deca" )
+	info( archiveFields,  "DESC" )
+}
+
+record( mbbo, "$(P)$(R)DrvCamlinkBits" )
+{
+	field( DOL,  "$(P)$(R)CamlinkDataMode CP NMS" )
+	field( OMSL, "closed_loop" )
+	field( DTYP, "asynInt32" )
+	field( OUT,  "@asyn($(PORT),$(ADDR=0),$(TIMEOUT=1))CLCAM_BITS" )
+	field( ZRVL, "0" ) field( ZRST, "None" )
+	field( ONVL, "1" ) field( ONST, "8 Bit" )
+	field( TWVL, "2" ) field( TWST, "10 Bit" )
+	field( THVL, "3" ) field( THST, "12 Bit" )
+	field( FRVL, "4" ) field( FRST, "14 Bit" )
+	field( FVVL, "5" ) field( FVST, "16 Bit" )
+	field( SXVL, "6" ) field( SXST, "24 Bit" )
+	field( SVVL, "7" ) field( SVST, "30 Bit" )
+	field( EIVL, "8" ) field( EIST, "36 Bit" )
+    field( FLNK, "$(P)$(R)DrvCamlinkBits_RBV" )
+  info( archiveFields,  "DESC" )
+}
+record( mbbi, "$(P)$(R)DrvCamlinkBits_RBV" )
+{
+	field( DTYP, "asynInt32" )
+	field( INP,  "@asyn($(PORT),$(ADDR=0),$(TIMEOUT=1))CLCAM_BITS" )
+	field( ZRVL, "0" ) field( ZRST, "None" )
+	field( ONVL, "1" ) field( ONST, "8 Bit" )
+	field( TWVL, "2" ) field( TWST, "10 Bit" )
+	field( THVL, "3" ) field( THST, "12 Bit" )
+	field( FRVL, "4" ) field( FRST, "14 Bit" )
+	field( FVVL, "5" ) field( FVST, "16 Bit" )
+	field( SXVL, "6" ) field( SXST, "24 Bit" )
+	field( SVVL, "7" ) field( SVST, "30 Bit" )
+	field( EIVL, "8" ) field( EIST, "36 Bit" )
+	info( archiveFields,  "DESC" )
+}
+
 # TODO: Add Pulse Width based AcquireTime support here
 
 #
