@@ -3,8 +3,8 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 512
-y 933
+x 1526
+y 1104
 w 730
 h 624
 font "helvetica-medium-r-12.0"
@@ -702,8 +702,8 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 36
-y 196
+x 404
+y 64
 w 92
 h 20
 font "helvetica-medium-r-12.0"
@@ -1867,8 +1867,8 @@ beginObjectProperties
 major 4
 minor 0
 release 0
-x 132
-y 196
+x 500
+y 64
 w 92
 h 20
 fgColor index 25
@@ -2404,7 +2404,7 @@ major 4
 minor 1
 release 1
 x 396
-y 88
+y 96
 w 100
 h 20
 font "helvetica-medium-r-12.0"
@@ -2423,7 +2423,7 @@ major 4
 minor 7
 release 0
 x 504
-y 88
+y 96
 w 88
 h 20
 controlPv "$(P)$(R)JaiROIWidth"
@@ -2447,7 +2447,7 @@ major 4
 minor 7
 release 0
 x 604
-y 88
+y 96
 w 88
 h 20
 controlPv "$(P)$(R)JaiROIWidth_RBV"
@@ -2523,7 +2523,7 @@ major 4
 minor 1
 release 1
 x 396
-y 112
+y 120
 w 100
 h 20
 font "helvetica-medium-r-12.0"
@@ -2542,7 +2542,7 @@ major 4
 minor 7
 release 0
 x 504
-y 112
+y 120
 w 88
 h 20
 controlPv "$(P)$(R)JaiROIOffsetX"
@@ -2566,7 +2566,7 @@ major 4
 minor 7
 release 0
 x 604
-y 112
+y 120
 w 88
 h 20
 controlPv "$(P)$(R)JaiROIOffsetX_RBV"
@@ -2590,7 +2590,7 @@ major 4
 minor 1
 release 1
 x 396
-y 136
+y 144
 w 100
 h 20
 font "helvetica-medium-r-12.0"
@@ -2609,7 +2609,7 @@ major 4
 minor 1
 release 1
 x 396
-y 160
+y 168
 w 100
 h 20
 font "helvetica-medium-r-12.0"
@@ -2628,7 +2628,7 @@ major 4
 minor 7
 release 0
 x 504
-y 136
+y 144
 w 88
 h 20
 controlPv "$(P)$(R)JaiROIHeight"
@@ -2652,7 +2652,7 @@ major 4
 minor 7
 release 0
 x 504
-y 160
+y 168
 w 88
 h 20
 controlPv "$(P)$(R)JaiROIOffsetY"
@@ -2676,7 +2676,7 @@ major 4
 minor 7
 release 0
 x 604
-y 136
+y 144
 w 88
 h 20
 controlPv "$(P)$(R)JaiROIHeight_RBV"
@@ -2700,7 +2700,7 @@ major 4
 minor 7
 release 0
 x 604
-y 160
+y 168
 w 88
 h 20
 controlPv "$(P)$(R)JaiROIOffsetY_RBV"
@@ -2715,5 +2715,51 @@ smartRefresh
 newPos
 objType "monitors"
 noExecuteClipMask
+endObjectProperties
+
+# (Message Button)
+object activeMessageButtonClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 4
+y 180
+w 156
+h 20
+fgColor index 14
+onColor index 6
+offColor index 3
+topShadowColor index 1
+botShadowColor index 11
+controlPv "$(P)$(R)JaiDeviceReset.PROC"
+pressValue "1"
+onLabel "Reset Cam"
+offLabel "Reset Cam"
+3d
+font "helvetica-medium-r-12.0"
+endObjectProperties
+
+# (Message Button)
+object activeMessageButtonClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 168
+y 180
+w 152
+h 20
+fgColor index 14
+onColor index 6
+offColor index 3
+topShadowColor index 1
+botShadowColor index 11
+controlPv "$(P)$(R)LoadDefaultConfig.PROC"
+pressValue "1"
+onLabel "Default Config"
+offLabel "Default Config"
+3d
+font "helvetica-medium-r-12.0"
 endObjectProperties
 

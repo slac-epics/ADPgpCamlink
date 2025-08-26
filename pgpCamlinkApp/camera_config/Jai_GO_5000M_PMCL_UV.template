@@ -133,6 +133,15 @@ record( stringout, "$(P)$(R)GenericSerialCommand" )
     field( OUT,     "@Jai_GO_5000M_PMCL_UV.proto Debug $(PORT).SER" )
 }
 
+record( longout, "$(P)$(R)LoadDefaultConfig" )
+{
+	field( DESC,	"Load default user configuration" )
+	field( DTYP,	"stream" )
+	field( DOL,     "0" )
+    field( OMSL,    "closed_loop" )
+	field( OUT,		"@Jai_GO_5000M_PMCL_UV.proto SetInt(LD) $(PORT).SER" )
+}
+
 record( mbbo,	"$(P)$(R)JaiAnalogBaseGain" )
 {
 	field( DESC,	"JAI GO-5000M-PMCL-UV Analog Base Gain" )
@@ -328,8 +337,7 @@ record( longout, "$(P)$(R)JaiDeviceReset" )
 
 record( mbbo,	"$(P)$(R)JaiTapGeometry" )
 {
-	field( DESC,	"JAI GO-5000M-PMCL-UV Tap Geometry" )
-	field( DTYP,	"stream" )
+
 	field( DOL,     "5" )
 	field( PINI,	"YES"	)
 	field( OUT,		"@Jai_GO_5000M_PMCL_UV.proto SetInt(TAGM) $(PORT).SER" )
