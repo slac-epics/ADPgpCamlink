@@ -490,6 +490,15 @@ file longDevRogue.template
         DISV    = "0"
         SDIS    = "$(P)$(R)PgpMon:RxRemLinkReady_RBV CP"
     }
+    {
+        NAME    = "Feb$(F):ClinkDecaMode",
+        DESC    = "0 for non-Deca Mode, 1 for Deca"
+        PATH    = "ClinkDevRoot.ClinkPcie.Application.AppLane[$(L)].ClinkDecaMode"
+        DOL     = "0"
+        PINI    = "YES"
+        SAVE    = ""
+        SCAN    = "\$(SCAN=1 second)"
+    }
 }
 
 #       DESC    = "0         1         2         3         "
