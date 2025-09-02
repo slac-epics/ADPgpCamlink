@@ -136,6 +136,7 @@ record( seq, "$(P)$(R)SeqCamModeBase" )
 	field( DLY4, "0" ) field( DOL4, "3" ) field( LNK4, "$(P)$(R)CamlinkDataMode" )
 	field( DLY5, "0" ) field( DOL5, "0" ) field( LNK5, "$(P)$(R)CamlinkLinkMode" )
 	field( DLY6, "0" ) field( DOL6, "2" ) field( LNK6, "$(P)$(R)CamlinkHTap" )
+	field( DLY7, "0" ) field( DOL7, "0" ) field( LNK7, "$(PGP):Ch$(PGP_LANE):Feb$(PGP_LANE):ClinkDecaMode" )
 }
 record( seq, "$(P)$(R)SeqCamModeMedium" )
 {
@@ -149,6 +150,7 @@ record( seq, "$(P)$(R)SeqCamModeMedium" )
 	field( DLY4, "0" ) field( DOL4, "3" ) field( LNK4, "$(P)$(R)CamlinkDataMode" )
 	field( DLY5, "0" ) field( DOL5, "2" ) field( LNK5, "$(P)$(R)CamlinkLinkMode" )
 	field( DLY6, "0" ) field( DOL6, "4" ) field( LNK6, "$(P)$(R)CamlinkHTap" )
+	field( DLY7, "0" ) field( DOL7, "0" ) field( LNK7, "$(PGP):Ch$(PGP_LANE):Feb$(PGP_LANE):ClinkDecaMode" )
 }
 record( seq, "$(P)$(R)SeqCamModeFull" )
 {
@@ -162,6 +164,7 @@ record( seq, "$(P)$(R)SeqCamModeFull" )
 	field( DLY4, "0" ) field( DOL4, "1" ) field( LNK4, "$(P)$(R)CamlinkDataMode" )
 	field( DLY5, "0" ) field( DOL5, "3" ) field( LNK5, "$(P)$(R)CamlinkLinkMode" )
 	field( DLY6, "0" ) field( DOL6, "8" ) field( LNK6, "$(P)$(R)CamlinkHTap" )
+	field( DLY7, "0" ) field( DOL7, "0" ) field( LNK7, "$(PGP):Ch$(PGP_LANE):Feb$(PGP_LANE):ClinkDecaMode" )
 }
 record( seq, "$(P)$(R)SeqCamModeDeca" )
 {
@@ -175,6 +178,7 @@ record( seq, "$(P)$(R)SeqCamModeDeca" )
 	field( DLY4, "0" ) field( DOL4, "2" ) field( LNK4, "$(P)$(R)CamlinkDataMode" )
 	field( DLY5, "0" ) field( DOL5, "4" ) field( LNK5, "$(P)$(R)CamlinkLinkMode" )
 	field( DLY6, "0" ) field( DOL6, "8" ) field( LNK6, "$(P)$(R)CamlinkHTap" )
+	field( DLY7, "0" ) field( DOL7, "1" ) field( LNK7, "$(PGP):Ch$(PGP_LANE):Feb$(PGP_LANE):ClinkDecaMode" )
 }
 
 # Provide defaults for ADCore SizeX and SizeY
