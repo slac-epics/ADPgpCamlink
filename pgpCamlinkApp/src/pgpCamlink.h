@@ -25,11 +25,11 @@
 #include "pgpClDev.h"
 #include <rogue/protocols/batcher/Data.h>
 
-
 #ifdef	USE_DIAG_TIMER
 #include "HiResTime.h"
 #include "ContextTimerMax.h"
 #endif	//	USE_DIAG_TIMER
+
 
 class pgpImage	// TODO: Do I need this class
 {
@@ -418,7 +418,8 @@ private:	//	Private class functions
 	static	void			CameraAdd(		pgpCamlink * pCamera );
 	static	void			CameraRemove(	pgpCamlink * pCamera );
 
-    void UnpackRAW10( const uint8_t* src, size_t src_size, uint16_t* dst );
+    void UnpackRAW10( const uint8_t* Src, size_t srcSize, uint16_t* Dst );
+    void UnpackRAW10Opt( const uint8_t* Src, size_t srcSize, uint16_t* Dst );
 
 public:		//	Public member variables	(Make these private!)
 
@@ -551,6 +552,8 @@ private:	//	Private member variables
 private:	//	Private class variables
 	static	std::map<std::string, pgpCamlink *>	ms_cameraMap;
 };
+
+void UnpackRAW10SingleThread( uint8_t* Src, uint16_t* Dst, unsigned int Width, unsigned int rowStart, unsigned int rowEnd );
 
 /* PgpCamlink Parameters, common to all PgpCamlink cameras */
 #define NUM_CAMLINK_PARAMS ((int)(&LAST_CAMLINK_PARAM - &FIRST_CAMLINK_PARAM + 1))
