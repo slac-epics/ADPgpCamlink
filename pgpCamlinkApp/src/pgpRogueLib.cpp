@@ -820,19 +820,24 @@ template<class R> int pgpRogueLib::readVarPath( const char * pszVarPath, R & val
 		// TODO: print the first error for each varPath and suppress duplicate errors after that.
 		std::string	idStr( ".Identifier" );
 		size_t		idPos = pVar->name().rfind( idStr );
-		if ( idPos == std::string::npos )
+		if ( idPos == std::string::npos ) { 
 			// Variable name doesn't contain ".Identifier"
-			printf( "%s %s rogue error: %s!\n", functionName, varPath.c_str(), e.what() );
-		else if ( pVar->name().find( ".Sfp" ) == std::string::npos )
+		    if ( DEBUG_PGP_ROGUE >= 4 )
+			    printf( "%s %s rogue error: %s!\n", functionName, varPath.c_str(), e.what() );
+		} else if ( pVar->name().find( ".Sfp" ) == std::string::npos ) {
 			// Variable name doesn't contain ".Sfp"
-			printf( "%s %s rogue error from %s: %s!\n", functionName, pVar->name().c_str(), varPath.c_str(), e.what() );
-		else if ( pVar->name().compare( idPos, pVar->name().length(), idStr ) == std::string::npos )
+		    if ( DEBUG_PGP_ROGUE >= 4 )
+			    printf( "%s %s rogue error from %s: %s!\n", functionName, pVar->name().c_str(), varPath.c_str(), e.what() );
+		} else if ( pVar->name().compare( idPos, pVar->name().length(), idStr ) == std::string::npos ) {
 			// Sfp Variable name doesn't end with ".Identifier"
-			printf( "%s %s rogue error from SFP %s: %s!\n", functionName, pVar->name().c_str(), varPath.c_str(), e.what() );
+		    if ( DEBUG_PGP_ROGUE >= 4 )
+			    printf( "%s %s rogue error from SFP %s: %s!\n", functionName, pVar->name().c_str(), varPath.c_str(), e.what() );
+        }
 	}
 	catch ( std::exception & e )
 	{
-		printf( "%s %s error: %s!\n", functionName, varPath.c_str(), e.what() );
+		if ( DEBUG_PGP_ROGUE >= 4 )
+		    printf( "%s %s error: %s!\n", functionName, varPath.c_str(), e.what() );
 	}
 	//pVar->setLogLevel( rogue::Logging::Warning );
 
