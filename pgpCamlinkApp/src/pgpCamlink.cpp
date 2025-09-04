@@ -488,6 +488,7 @@ unsigned int pgpCamlink::GetDataMode()
     unsigned int bits;
     switch( m_CamlinkBits ){
 
+        default:
         case CL_BITS_NONE:
             bits = 0;
             break;
@@ -499,8 +500,6 @@ unsigned int pgpCamlink::GetDataMode()
             break;
         case CL_BITS_TWELVE:
             bits = 12;
-            break;
-        default:
             break;
     }
     return bits;
@@ -1269,47 +1268,6 @@ int pgpCamlink::StartAcquisition( )
     return 0;
 }
 
-void pgpCamlink::UnpackRAW10(
-     const uint8_t* Src, 
-     size_t srcSize, 
-     uint16_t* Dst )
-{
-    // RAW10 packs 4 pixels (4*10 = 40 bits) into 5 bytes.
-    const size_t BYTES_PER_ROW   = ( m_ClCurWidth * 10 ) / 8;
-    const size_t FRAME_BYTE_SIZE = BYTES_PER_ROW * m_ClCurHeight;
-
-    // Unpack RAW10 into uint16 container (lower 10 bits used).
-    // Layout: Dst[x][y] per your request (width-major).
-    if (!Src) throw std::invalid_argument("pgpCamlink::UnpackRAW10: Src pointer is null");
-    if (srcSize != FRAME_BYTE_SIZE) throw std::invalid_argument("pgpCamlink::UnpackRAW10: unexpected buffer size");
-
-    for (int y = 0; y < static_cast<int>( m_ClCurHeight ); ++y) {
-        const uint8_t* row = Src + y * BYTES_PER_ROW;
-
-        int x = 0;
-        for (int group = 0; group < static_cast<int>( m_ClCurWidth ); group += 4) {
-            uint8_t b0 = row[0];
-            uint8_t b1 = row[1];
-            uint8_t b2 = row[2];
-            uint8_t b3 = row[3];
-            uint8_t b4 = row[4];
-
-            // MIPI RAW10 packing:
-            // p0 = b0 | ((b4 & 0x03) << 8)
-            // p1 = b1 | (((b4 >> 2) & 0x03) << 8)
-            // p2 = b2 | (((b4 >> 4) & 0x03) << 8)
-            // p3 = b3 | (((b4 >> 6) & 0x03) << 8)
-
-            Dst[(x++) + y * m_ClCurWidth] = static_cast<uint16_t>(b0) | static_cast<uint16_t>((b4 & 0x03u) << 8);
-            Dst[(x++) + y * m_ClCurWidth] = static_cast<uint16_t>(b1) | static_cast<uint16_t>(((b4 >> 2) & 0x03u) << 8);
-            Dst[(x++) + y * m_ClCurWidth] = static_cast<uint16_t>(b2) | static_cast<uint16_t>(((b4 >> 4) & 0x03u) << 8);
-            Dst[(x++) + y * m_ClCurWidth] = static_cast<uint16_t>(b3) | static_cast<uint16_t>(((b4 >> 6) & 0x03u) << 8);
-
-            row += 5;
-        }
-    }
-}
-
 void pgpCamlink::UnpackRAW10Opt(
      const uint8_t* Src, 
      size_t srcSize, 
@@ -1659,6 +1617,45 @@ int pgpCamlink::LoadNDArray(
 #endif
 
 	return status;
+}
+
+void pgpCamlink::UnpackRAW10(
+     const uint8_t* Src, 
+     size_t srcSize, 
+     uint16_t* Dst )
+{
+	CONTEXT_TIMER( "UnpackRAW10" );
+    // RAW10 packs 4 pixels (4*10 = 40 bits) into 5 bytes.
+    const size_t BYTES_PER_ROW   = ( m_ClCurWidth * 10 ) / 8;
+    const size_t FRAME_BYTE_SIZE = BYTES_PER_ROW * m_ClCurHeight;
+
+    // Unpack RAW10 into uint16 container (lower 10 bits used).
+    // Layout: Dst[x][y] per your request (width-major).
+    if (!Src) throw std::invalid_argument("pgpCamlink::UnpackRAW10: Src pointer is null");
+    if (srcSize != FRAME_BYTE_SIZE) throw std::invalid_argument("pgpCamlink::UnpackRAW10: unexpected buffer size");
+
+	const uint8_t* srcPtr = Src;
+	uint8_t* dstPtr = reinterpret_cast<uint8_t*>(Dst);
+	const uint8_t* dstEnd = reinterpret_cast<uint8_t*>(Dst + m_ClCurWidth * m_ClCurHeight);
+	while( dstPtr < dstEnd ) {
+		uint8_t b4 = *(srcPtr+4);
+
+		// MIPI RAW10 packing:
+		// p0 = b0 | ((b4 & 0x03) << 8)
+		// p1 = b1 | (((b4 >> 2) & 0x03) << 8)
+		// p2 = b2 | (((b4 >> 4) & 0x03) << 8)
+		// p3 = b3 | (((b4 >> 6) & 0x03) << 8)
+
+		*dstPtr++ = *srcPtr++;
+		*dstPtr++ = b4 & 0x03u;
+		*dstPtr++ = *srcPtr++;
+		*dstPtr++ = (b4>>2) & 0x03u;
+		*dstPtr++ = *srcPtr++;
+		*dstPtr++ = (b4>>4) & 0x03u;
+		*dstPtr++ = *srcPtr++;
+		*dstPtr++ = (b4>>6) & 0x03u;
+		srcPtr++;
+    }
 }
 
 int	pgpCamlink::SubmitNDArray(
