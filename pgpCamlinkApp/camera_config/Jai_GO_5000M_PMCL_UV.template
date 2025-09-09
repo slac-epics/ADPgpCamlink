@@ -393,6 +393,41 @@ record( mbbi,	"$(P)$(R)JaiPixelFormat_RBV" )
 	info( autosaveFields, "VAL" )
 }
 
+record( mbbo, "$(P)$(R)JaiTestImage" )
+{
+	field( DESC,	"Jai camera test image selector" )
+	field( DTYP,	"stream" )
+	field( DOL,     "0" )
+	field( OUT,     "@Jai_GO_5000M_PMCL_UV.proto SetInt(TPN) $(PORT).SER" )
+	field( ZRVL,	"0"	)
+	field( ONVL,	"1"	)
+	field( TWVL,	"2"	)
+	field( THVL,	"3"	)
+	field( ZRST,	"Off" )
+	field( ONST,	"GreyHorizontalRamp" )
+	field( TWST,	"GreyVerticalRamp" )
+	field( THST,	"GreyHorizontalRampMoving" )
+	field( PINI,	"YES" )
+	field( FLNK,	"$(P)$(R)JaiTestImage_RBV" )
+	info( autosaveFields, "VAL" )
+}
+
+record( mbbi,	"$(P)$(R)JaiTestImage_RBV" )
+{
+	field( DESC,	"Jai camera test image selector" )
+	field( DTYP,	"stream" )
+	field( INP,     "@Jai_GO_5000M_PMCL_UV.proto GetInt(TPN) $(PORT).SER" )
+	field( ZRVL,	"0"	)
+	field( ONVL,	"1"	)
+	field( TWVL,	"2"	)
+	field( THVL,	"3"	)
+	field( ZRST,	"Off" )
+	field( ONST,	"GreyHorizontalRamp" )
+	field( TWST,	"GreyVerticalRamp" )
+	field( THST,	"GreyHorizontalRampMoving" )
+	info( autosaveFields, "VAL" )
+}
+
 # Camlink Configuration
 # When the user selects a new configuration, we set the following:
 # 1. Tap geometry in camera & taps in framegrabber
