@@ -1,9 +1,9 @@
 #
 InTerminator    = CR LF;
 OutTerminator   = CR LF;
-ReplyTimeout    = 2000;
-ReadTimeout     = 100;
-WriteTimeout    = 100;
+ReplyTimeout    = 4000;
+ReadTimeout     = 1000;
+WriteTimeout    = 1000;
 ExtraInput      = Ignore;
 
 # Safe command to send to test communications
