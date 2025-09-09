@@ -138,7 +138,7 @@ file longDevRogue.template
 		L		= "0"
 	}
 	{
-		NAME	= "Timing:MsgDelay",
+		NAME	= "MSGDLY",
 		PATH	= "ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TimingFrameRx.MsgDelay"
 		DESC	= "LCLS-II timing frame pipeline delay"
 		SCAN	= "\$(SCAN=1 second)"

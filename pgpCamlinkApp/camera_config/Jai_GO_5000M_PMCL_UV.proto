@@ -1,10 +1,10 @@
 #
-InTerminator	= CR LF;
-OutTerminator	= CR LF;
-ReplyTimeout	= 800;
-ReadTimeout		= 100;
-WriteTimeout	= 100;
-ExtraInput		= Ignore;
+InTerminator    = CR LF;
+OutTerminator   = CR LF;
+ReplyTimeout    = 2000;
+ReadTimeout     = 100;
+WriteTimeout    = 100;
+ExtraInput      = Ignore;
 
 # Safe command to send to test communications
 DeviceID
@@ -40,6 +40,5 @@ GetString
 
 Debug
 {    
-    ExtraInput = Ignore;
     out "%s"; in "%39c"
 }
