@@ -50,6 +50,8 @@ ifdef T_A
   -include $(AREA_DETECTOR)/configure/CONFIG_SITE.$(EPICS_HOST_ARCH).$(T_A)
 endif
 
+USR_CPPFLAGS += -DUSE_DIAG_TIMER
+
 #ROGUE_DIR=/reg/neh/home/bhill/git-wa-neh/slaclab/rogue-git
 #ROGUE_DIR=/reg/neh/home/bhill/git-wa-neh/slaclab/rogue-no-python-git
 ROGUE_DIR=$(PACKAGE_SITE_TOP)/rogue/v6.4.3/$(T_A)
