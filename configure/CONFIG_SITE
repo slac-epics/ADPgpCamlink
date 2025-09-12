@@ -93,12 +93,12 @@ else
 		bz2_DIR			= $(PACKAGE_SITE_TOP)/bzip2/1.0.8/$(BUILDROOT)/lib
 		lzma_DIR		= $(PACKAGE_SITE_TOP)/xz/5.2.2/$(BUILDROOT)/lib
 		xml2_DIR		= $(PACKAGE_SITE_TOP)/libxml2/2.9.10/$(BUILDROOT)/lib
-		zmq_DIR			= $(PACKAGE_SITE_TOP)/libzmq/zeromq-4.3.4/$(BUILDROOT)/lib
+		zmq_DIR			= $(PACKAGE_SITE_TOP)/libzmq/v4.3.4/$(BUILDROOT)/lib
 	else
 		bz2_DIR			= $(PACKAGE_SITE_TOP)/bzip2/1.0.8/$(T_A)/lib
 		lzma_DIR		= $(PACKAGE_SITE_TOP)/xz/5.2.2/$(T_A)/lib
 		xml2_DIR		= /usr/lib64
-		zmq_DIR			= $(PACKAGE_SITE_TOP)/zeromq/4.1.5/$(T_A)/lib
+		zmq_DIR			= $(PACKAGE_SITE_TOP)/libzmq/v4.3.4/$(T_A)/lib
 	endif
 endif
 
