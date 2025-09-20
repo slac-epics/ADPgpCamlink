@@ -1,6 +1,7 @@
 #
 # SLAC RELEASE_NOTES
 #
+
 R3.2.0-1.0.0  2025-09-20 Marcio Donadio
     * This is a parallel branch because it uses versions of modules that are
       older compared to the main branch.
