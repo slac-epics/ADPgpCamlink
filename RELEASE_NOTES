@@ -1,6 +1,8 @@
 #
 # SLAC RELEASE_NOTES
 #
+R3.2.0  ???  No information from author
+
 R3.0.0  2025-03-13 Michael Skoufis
   Updates to make module compatible with Rogue v6.4.0, aes-stream-driver (datadev kernel driver) v6.4.0, 
   PCIe framegrabber firmware v3.10.0 and FEB firmware v8.2.7.  Various other changes were made in the Rogue 
