@@ -22,7 +22,7 @@
 ASYN_MODULE_VERSION = R4.39-1.0.2
 ADSUPPORT_MODULE_VERSION = R1.9-0.1.0
 ADCORE_MODULE_VERSION = R3.10-1.1.1
-DIAGTIMER_MODULE_VERSION = R1.9.2.1
+DIAGTIMER_MODULE_VERSION = R1.9.4
 
 # ==========================================================
 # Define module paths using pattern
