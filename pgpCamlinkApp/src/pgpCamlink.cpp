@@ -1749,18 +1749,24 @@ int	pgpCamlink::SubmitNDArray(
 		{
 			// Do NDArray callbacks unlocked to avoid deadlocks if the plugin
 			// tries to lock the driver.
-			this->unlock();
+			{
+            CONTEXT_TIMER( "pgpCamlink-SubmitNDArray-arrayCallbacks" );
+            this->unlock();
 			if ( DEBUG_PGP_CAMLINK >= 4 )
 				printf(	"%s: Processing image callbacks ...\n", functionName );
 			doCallbacksGenericPointer( pNDArray, NDArrayData, 0 );
 			this->lock();
+            }
 		}
 
 		if ( DEBUG_PGP_CAMLINK >= 4 )
 			printf(	"%s: Processing parameter callbacks ...\n", functionName );
 
 		// Call parameter callbacks
+        {
+        CONTEXT_TIMER( "pgpCamlink-SubmitNDArray-paramCallbacks" );
 		callParamCallbacks();
+        }
 	}
 	this->unlock();
 	return 0;
