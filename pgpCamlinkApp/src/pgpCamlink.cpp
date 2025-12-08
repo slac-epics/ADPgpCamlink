@@ -1268,6 +1268,7 @@ int pgpCamlink::StartAcquisition( )
     return 0;
 }
 
+/*
 void pgpCamlink::UnpackRAW10(
      const uint8_t* Src, 
      size_t srcSize, 
@@ -1308,6 +1309,7 @@ void pgpCamlink::UnpackRAW10(
         }
     }
 }
+*/
 
 void pgpCamlink::UnpackRAW10Opt(
      const uint8_t* Src, 
@@ -1319,7 +1321,7 @@ void pgpCamlink::UnpackRAW10Opt(
 
    int x = 0;
    int totalBytes = ( m_ClCurWidth * m_ClCurHeight * 10 ) / 8;
-   for (uint8_t* ptr = const_cast<uint8_t*>( Src ); ptr < const_cast<uint8_t*>( Src ) + totalBytes; ptr += 5) {
+   for (const uint8_t* ptr = Src; ptr < Src + totalBytes; ptr += 5) {
        // Low bytes
        uint8_t p0b0 = ptr[0];
        uint8_t p1b0 = ptr[1];
@@ -1358,7 +1360,7 @@ void UnpackRAW10SingleThread(
         const uint8_t* row = Src + y * BYTES_PER_ROW;
 
         int x = 0;
-        for (int group = 0; group < static_cast<int>( Width ); group += 4) {
+        for (unsigned int group = 0; group < Width; group += 4) {
             uint8_t b0 = row[0];
             uint8_t b1 = row[1];
             uint8_t b2 = row[2];
