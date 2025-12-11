@@ -3,14 +3,14 @@
 #
 
 R3.2.0-2.0.0  2025-12-04 Michael Skoufis
-    Add support for Deca mode, following an update in the PCIe firmware
-    Add the diagnostics timer module
-    Upgrade packages/modules to build on RHEL9
+	Add support for Deca mode, following an update in the PCIe firmware
+	Add the diagnostics timer module
+	Upgrade packages/modules to build on RHEL9
 
 R3.2.0-1.0.0  2025-09-20 Marcio Donadio
-    * This is a parallel branch because it uses versions of modules that are
-      older compared to the main branch.
-    * The packages, though, are more recent versions.
+	* This is a parallel branch because it uses versions of modules that are
+	  older compared to the main branch.
+	* The packages, though, are more recent versions.
 
 R3.2.0  ???  No information from author
 
