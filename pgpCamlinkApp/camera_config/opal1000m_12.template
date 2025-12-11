@@ -584,7 +584,7 @@ record( calcout, "$(P)$(R)OpalCalcGain_RBV" )
 {
 #	field( TPRO, 2 )
 	field( INPA, "$(P)$(R)OpalGain_RBV NPP NMS" )
-	field( CALC, "A<100?0:(A-100/31)" )
+	field( CALC, "A<100?0:(A-100)/31" )
 	field( OUT,  "$(P)$(R)Gain_RBV PP MS" )
 	field( PREC, "2" )
 }

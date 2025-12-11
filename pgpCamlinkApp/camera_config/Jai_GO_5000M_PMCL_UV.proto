@@ -1,0 +1,44 @@
+#
+InTerminator    = CR LF;
+OutTerminator   = CR LF;
+ReplyTimeout    = 4000;
+ReadTimeout     = 1000;
+WriteTimeout    = 1000;
+ExtraInput      = Ignore;
+
+# Safe command to send to test communications
+DeviceID
+{
+	out	"ID?";
+	in	"%*s"
+}
+
+# Report camera settings
+Report
+{
+	out	"ST?";
+	in	"%*s"
+}
+
+GetInt
+{
+    out "\$1?";
+	in  "\$1=%d";
+}
+
+SetInt
+{
+	out "\$1=%d";
+	in  "COMPLETE";
+}
+
+GetString
+{
+    out "\$1?";
+	in  "\$1=%s";
+}
+
+Debug
+{    
+    out "%s"; in "%39c"
+}

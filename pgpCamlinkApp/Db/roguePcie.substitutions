@@ -137,6 +137,13 @@ file longDevRogue.template
 		PATH	= "ClinkDevRoot.ClinkPcie.Hsio.TimingRx.XpmMiniWrapper.XpmMini.Link"
 		L		= "0"
 	}
+	{
+		NAME	= "MSGDLY",
+		PATH	= "ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TimingFrameRx.MsgDelay"
+		DESC	= "LCLS-II timing frame pipeline delay"
+		SCAN	= "\$(SCAN=1 second)"
+		L		= "0"
+	}
 }
 
 #       DESC    = "0         1         2         3         "

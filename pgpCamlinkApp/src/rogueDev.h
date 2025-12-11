@@ -44,7 +44,7 @@ public:		//	Public member functions
 	/// Destructor
 	virtual ~rogueDev();
 
-	enum CamlinkMode_t { CL_MODE_BASE, CL_MODE_MEDIUM, CL_MODE_FULL };
+	enum CamlinkMode_t { CL_MODE_DISABLE, CL_MODE_BASE, CL_MODE_MEDIUM, CL_MODE_FULL, CL_MODE_DECA };
 
 	/// Open a fresh connection to Rogue
     int ConnectRogue( );
