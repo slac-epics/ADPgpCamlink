@@ -956,3 +956,32 @@ record( calc, "$(P)$(R)BeamRepDur" )
 	info( archiveFields,  "VAL" )
 }
 
+record( fanout, "$(CAM):CheckFebState" )
+{
+	#field( SELL, "$(PGP):Ch$(PGP_LANE):PgpMon:RxRemLinkReady_RBV.RVAL CP MS" )
+    field( SELL, "$(PGP):Ch$(PGP_LANE):Feb$(PGP_LANE):Running.RVAL CP MS" )
+	field( SELM, "Specified" )
+	field( LNK0, "$(CAM):ResetFebState" )
+}
+
+record( seq, "$(CAM):ResetFebState" )
+{
+    # Run all of the steps below to realign FEB and camera registers
+	field( SELM, "All" )
+	field( SCAN, "Passive" )
+
+    # Switch back and forth between CL modes
+	field( DLY0, "0.0" )  field( DOL0, "3" ) field( LNK0, "$(CAM):CamlinkLinkMode PP NMS" )
+	field( DLY1, "10.0" ) field( DOL1, "2" ) field( LNK1, "$(CAM):CamlinkLinkMode PP NMS" )
+
+    # Switch back and forth between triggering modes
+	field( DLY2, "10.0" ) field( DOL2, "0" ) field( LNK2, "$(CAM):TriggerMode PP NMS" )
+	field( DLY3, "10.0" ) field( DOL3, "2" ) field( LNK3, "$(CAM):TriggerMode PP NMS" )
+    
+    # Switch back and forth between timing modes
+	#field( DLY4, "10.0" ) field( DOL4, "0" ) field( LNK4, "$(PGP):SeqTpgMiniTiming PP NMS" )
+	#field( DLY5, "10.0" ) field( DOL5, "2" ) field( LNK5, "$(PGP):SeqXpmMiniTiming PP NMS" )
+
+    # Check FEB state again
+	field( DLY6, "10.0" ) field( DOL6, "1" ) field( LNK6, "$(CAM):CheckFebState.PROC PP NMS" )
+}
