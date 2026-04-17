@@ -956,13 +956,13 @@ record( calc, "$(P)$(R)BeamRepDur" )
 	info( archiveFields,  "VAL" )
 }
 
-record( fanout, "$(CAM):CheckFebState" )
-{
-	#field( SELL, "$(PGP):Ch$(PGP_LANE):PgpMon:RxRemLinkReady_RBV.RVAL CP MS" )
-    field( SELL, "$(PGP):Ch$(PGP_LANE):Feb$(PGP_LANE):Running.RVAL CP MS" )
-	field( SELM, "Specified" )
-	field( LNK0, "$(CAM):ResetFebState" )
-}
+#record( fanout, "$(CAM):CheckFebState" )
+#{
+#	#field( SELL, "$(PGP):Ch$(PGP_LANE):PgpMon:RxRemLinkReady_RBV.RVAL CP MS" )
+#    field( SELL, "$(PGP):Ch$(PGP_LANE):Feb$(PGP_LANE):Running.RVAL CP MS" )
+#	field( SELM, "Specified" )
+#	field( LNK0, "$(CAM):ResetFebState" )
+#}
 
 record( seq, "$(CAM):ResetFebState" )
 {
