@@ -891,6 +891,71 @@ record( longout, "$(P)$(R)CamlinkVSkip" )
     field( VAL, "0" )
 }
 
+record( ao, "$(P)$(R)Gain" )
+{
+	field( HOPR,	"251" )
+	field( LOPR,	"1" )
+	field( EGU,     "1x, 4x, etc." )
+	field( PREC,    "2" )
+	field( FLNK,	"$(P)$(R)CamGain" )
+}
+
+record( ao, "$(P)$(R)CamGain" )
+{
+	field( DOL,		"$(P)$(R)Gain" )
+	field( OMSL,	"closed_loop" )
+	field( HOPR,	"251" )
+	field( LOPR,	"1" )
+	field( EGU,     "1x, 4x, etc." )
+	field( PREC,    "2" )
+	field( FLNK,	"$(P)$(R)ImperxCalcGain" )
+}
+
+record( calc, "$(P)$(R)ImperxCalcGain" )
+{
+	field( INPA, "$(P)$(R)CamGain NPP NMS" )
+	field( CALC, "NINT(20*LOG(A)/0.1)" )
+	field( FLNK, "$(P)$(R)ImperxGain" )
+}
+
+record( ao, "$(P)$(R)ImperxGain" )
+{
+	field( DESC,	"Camera gain (0..480)" )
+	field( DOL,		"$(P)$(R)ImperxCalcGain" )
+	field( OMSL,	"closed_loop" )
+	field( DTYP,	"stream" )
+	field( OUT,     "@ImperxC1921.proto SetAnalogGain $(PORT).SER" )
+	field( DRVH,	"480" )
+	field( DRVL,	"0" )
+	field( HOPR,	"480" )
+	field( LOPR,	"0" )
+	field( FLNK,	"$(P)$(R)ImperxGain_RBV" )
+}
+
+record( longin,	"$(P)$(R)ImperxGain_RBV" )
+{
+	field( DESC,	"Gain from camera report (0..480)" )
+	field( DTYP,	"stream" )
+	field( INP,		"@ImperxC1921.proto GetAnalogGain $(PORT).SER" )
+    field( FLNK,	"$(P)$(R)ImperxCalcGain_RBV" )
+}
+
+# Use mathematical identity for the CALC field: 10^A=e^(A⋅ln(10))
+record( calcout, "$(P)$(R)ImperxCalcGain_RBV" )
+{
+	field( INPA, "$(P)$(R)ImperxGain_RBV NPP NMS" )
+	field( CALC, "EXP((0.1*A/20)*LN(10))" )
+	field( OUT,  "$(P)$(R)CamGain_RBV PP MS" )
+	field( PREC, "2" )
+}
+
+record( ao, "$(P)$(R)CamGain_RBV" )
+{
+	field( EGU,  "1x, 4x, etc." )
+	field( PREC, "2" )
+	field( OUT,  "$(P)$(R)Gain_RBV PP MS" )
+}
+
 # Include a serialMonitor.template monitor
 # This should be the first PV you process in the CamReConfigSeq
 substitute "MON_SCAN=10 second"
