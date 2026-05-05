@@ -41,9 +41,9 @@
 inTerminator	= "";
 outTerminator	= "";
 #PeekSize		= 0;
-ReplyTimeout	= 800;
-ReadTimeout 	= 300;
-#WriteTimeout	= 500;
+ReplyTimeout	= 5000;
+ReadTimeout 	= 3000;
+#WriteTimeout	= 1000;
 #ExtraInput		= Ignore;
 
 # Imperx C1921 Register Addresses
@@ -422,3 +422,16 @@ GetMinFrameTime
     out "\x52\$MinFrameTime";
 	in  "\x06%04r";
 }
+
+GetAnalogGain
+{
+    out "\x52\$AnalogGain";
+    in  "\x06%04r";
+}
+SetAnalogGain
+{
+    out "\x57\$AnalogGain" "%04.4r";
+    in  "\x06";
+    @mismatch { in  "\x15" "%(\$1ImperxCommError)1r"; }
+}
+
