@@ -55,6 +55,16 @@ int ClSerialSlave::readBytes( unsigned char * buffer, double timeout, size_t nBy
 		if ( nBytesRead > 0 )
 		{
 			pBufNext += nBytesRead;
+
+            // CHECK FOR TERMINATOR
+            if ( (pBufNext - buffer) >= 2 )
+            {
+                if ( pBufNext[-2] == '\r' && pBufNext[-1] == '\n' )
+                {
+                    break;
+                }
+            }
+
 			if ( clSerialSlaveDebug >= 4 )
 			{
 				epicsTimeStamp	now;
@@ -138,7 +148,7 @@ void ClSerialSlave::addToBuffer( unsigned char c )
 {
 	std::lock_guard<std::mutex> lockBuffer( m_bufferLock );
 	m_replyBuffer.push( c );
-	if ( m_nBytesReq != 0 && m_replyBuffer.size() >= m_nBytesReq )
+	if ( m_nBytesReq != 0 && (m_replyBuffer.size() >= m_nBytesReq || c == '\r' || c == '\n') )
 		m_replyReady.notify_one();
 }
 
