@@ -924,7 +924,7 @@ record( ao, "$(P)$(R)ImperxGain" )
 	field( DOL,		"$(P)$(R)ImperxCalcGain" )
 	field( OMSL,	"closed_loop" )
 	field( DTYP,	"stream" )
-	field( OUT,     "@ImperxC1921.proto SetAnalogGain $(PORT).SER" )
+	field( OUT,     "@ImperxC1921.proto SetAnalogGain($(P)$(R)) $(PORT).SER" )
 	field( DRVH,	"480" )
 	field( DRVL,	"0" )
 	field( HOPR,	"480" )
@@ -936,7 +936,7 @@ record( longin,	"$(P)$(R)ImperxGain_RBV" )
 {
 	field( DESC,	"Gain from camera report (0..480)" )
 	field( DTYP,	"stream" )
-	field( INP,		"@ImperxC1921.proto GetAnalogGain $(PORT).SER" )
+	field( INP,		"@ImperxC1921.proto GetAnalogGain($(P)$(R)) $(PORT).SER" )
     field( FLNK,	"$(P)$(R)ImperxCalcGain_RBV" )
 }
 
