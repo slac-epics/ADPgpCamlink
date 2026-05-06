@@ -237,234 +237,186 @@ bool isAscii( const char * pBuf, int sBuf )
 }
 
 
-asynStatus	asynPgpClSerial::readOctet(
-	asynUser			*	pasynUser,
-	char				*	pBuffer,
-	size_t					nBytesReadMax,
-	size_t				*	pnRead,
-	int					*	eomReason	)
+asynStatus asynPgpClSerial::readOctet(
+    asynUser    *pasynUser,
+    char        *pBuffer,
+    size_t       nBytesReadMax,
+    size_t      *pnRead,
+    int         *eomReason )
 {
-	asynStatus				status			= asynSuccess;
-    static const char	*	functionName	= "asynPgpClSerial::readOctet";
-	int						nAvailToRead	= 0;
+    asynStatus          status = asynSuccess;
+    static const char  *functionName = "asynPgpClSerial::readOctet";
+    int                 nAvailToRead = 0;
 
-	if ( pnRead )
-		*pnRead = 0;
-	if ( eomReason )
-		*eomReason = ASYN_EOM_EOS;
+    if ( pnRead )
+        *pnRead = 0;
 
-	if ( nBytesReadMax == 0 )
-	{
-		epicsSnprintf(	pasynUser->errorMessage, pasynUser->errorMessageSize,
-						"%s: %s nBytesReadMax is 0! Why?\n", functionName, this->portName );
-		return asynError;
-	}
+    // *** CHANGED: Default to 0, not ASYN_EOM_EOS ***
+    if ( eomReason )
+        *eomReason = 0;
 
-	unsigned char	*	pReadBuffer	= (unsigned char *) pBuffer;
-	size_t				sReadBuffer	= nBytesReadMax;
+    if ( nBytesReadMax == 0 )
+    {
+        epicsSnprintf( pasynUser->errorMessage, pasynUser->errorMessageSize,
+            "%s: %s nBytesReadMax is 0! Why?\n", functionName, this->portName );
+        return asynError;
+    }
 
-#if 0
-	if( pasynUser->timeout == 0 )
-	{
-		printf( "asynUser timeout is zero.  Setting to 0.2\n" );
-		pasynUser->timeout = 0.2;	// TODO: Shouldn't need this
-	}
-#endif
+    unsigned char *pReadBuffer = (unsigned char *) pBuffer;
+    size_t sReadBuffer = nBytesReadMax;
 
-	int		nRead	= 0;
-	for (;;)
-	{
-		epicsMutexLock(m_serialLock);
-		if ( DEBUG_PGPCL_SER >= 4 )
-			printf( "%s: %s Have serial lock, nBytesReadMax %zu, sReadBuffer %zu, timeout %.3f ...\n",
-					functionName, this->portName, nBytesReadMax, sReadBuffer, pasynUser->timeout );
-		/*
-		 * Follow streamdevice usage on timeout: <= 0 is don't wait, > 0 specifies delay in sec
-		 */
-		if ( m_fConnected )
-		{
-			nAvailToRead = m_SerDev.getNumAvailBytes();
-			if ( DEBUG_PGPCL_SER >= 4 )
-			{
-				epicsTimeStamp	now;
-				char tsBuffer[40];
-				(void) epicsTimeGetCurrent(&now);
-				tsBuffer[0] = 0;
-				epicsTimeToStrftime( tsBuffer, sizeof(tsBuffer),
-					"%Y/%m/%d %H:%M:%S.%03f", &now );
-				printf("%s %s: nAvailToRead %d\n", tsBuffer, functionName, nAvailToRead);
-			}
-		}
-		if( 1 || nAvailToRead > 0 )
-		{
-			int		nToRead = static_cast<int>(sReadBuffer);
+    int nRead = 0;
 
-			asynPrint(	pasynUser, ASYN_TRACE_FLOW,
-						"%s: %s nToRead %d\n", functionName, this->portName, nToRead );
+    for (;;)
+    {
+        epicsMutexLock(m_serialLock);
+        if ( DEBUG_PGPCL_SER >= 4 )
+            printf( "%s: %s Have serial lock, nBytesReadMax %zu, sReadBuffer %zu, timeout %.3f ...\n",
+                functionName, this->portName, nBytesReadMax, sReadBuffer, pasynUser->timeout );
 
-			epicsMutexLock(m_serialLock);
-			if ( DEBUG_PGPCL_SER >= 4 )
-				printf( "%s: %s Have serial lock, reading %d ...\n", functionName, this->portName, nToRead );
-			if ( m_fConnected )
-			{
-				double		timeout	= 0.2;
-				if ( pasynUser->timeout > 0 )
-					timeout = pasynUser->timeout;
-				nRead = m_SerDev.readBytes( pReadBuffer, timeout, nToRead );
-			}
-			else
-				nRead = 0;
-			epicsMutexUnlock(m_serialLock);
-			if ( DEBUG_PGPCL_SER >= 4 )
-				printf( "%s: %s Released serial lock, read %d ...\n", functionName, this->portName, nRead );
-		}
-#if 0
-		else
-		{	// Obsolete?
-            // nAvailToRead <=0 so nothing to do here... fly away!
-            *pnRead = 0;
+        if ( m_fConnected )
+        {
+            nAvailToRead = m_SerDev.getNumAvailBytes();
+            if ( DEBUG_PGPCL_SER >= 4 )
+            {
+                epicsTimeStamp  now;
+                char            tsBuffer[40];
+                (void) epicsTimeGetCurrent(&now);
+                tsBuffer[0] = 0;
+                epicsTimeToStrftime( tsBuffer, sizeof(tsBuffer),
+                    "%Y/%m/%d %H:%M:%S.%03f", &now );
+                printf("%s %s: nAvailToRead %d\n", tsBuffer, functionName, nAvailToRead);
+            }
+        }
+
+        if ( 1 || nAvailToRead > 0 )
+        {
+            int nToRead = static_cast<int>(sReadBuffer);
+
+            asynPrint( pasynUser, ASYN_TRACE_FLOW,
+                "%s: %s nToRead %d\n", functionName, this->portName, nToRead );
+
+            epicsMutexLock(m_serialLock);
+            if ( DEBUG_PGPCL_SER >= 4 )
+                printf( "%s: %s Have serial lock, reading %d ...\n",
+                    functionName, this->portName, nToRead );
+
+            if ( m_fConnected )
+            {
+                double timeout = 0.2;
+                if ( pasynUser->timeout > 0 )
+                    timeout = pasynUser->timeout;
+                nRead = m_SerDev.readBytes( pReadBuffer, timeout, nToRead );
+            }
+            else
+                nRead = 0;
+
             epicsMutexUnlock(m_serialLock);
             if ( DEBUG_PGPCL_SER >= 4 )
-                printf( "%s: %s Released serial lock, nRead=0, nAvailToRead %d ...\n", functionName, this->portName, nAvailToRead );
-
-            return asynSuccess;
+                printf( "%s: %s Released serial lock, read %d ...\n",
+                    functionName, this->portName, nRead );
         }
-#endif
 
         epicsMutexUnlock(m_serialLock);
-		if ( DEBUG_PGPCL_SER >= 4 )
-			printf( "%s: %s Released serial lock, Read %d, nBytesReadMax %zu ...\n", functionName, this->portName, nRead, nBytesReadMax );
+        if ( DEBUG_PGPCL_SER >= 4 )
+            printf( "%s: %s Released serial lock, Read %d, nBytesReadMax %zu ...\n",
+                functionName, this->portName, nRead, nBytesReadMax );
 
-		// If we read something
-		if( nRead > 0 )
-		{
-			static bool reminded = false;
-			if ( DEBUG_PGPCL_MASKBIT7 )
-			{
-				if (!reminded)
-				{
-					printf("%s: Revisit line %d hack to mask off bit 7\n", functionName, __LINE__);
-					reminded = true;
-				}
-				maskBit7(pBuffer, nRead);
-			}
+        if ( nRead > 0 )
+        {
+            break; /* If we have something, we're done. */
+        }
 
-			// Make sure we have a valid ascii response, and not garbage on the camlink Rx/Tx lines
-			if ( 0 && isAscii( pBuffer, nRead ) == false )
-			{
-				epicsSnprintf(	pasynUser->errorMessage, pasynUser->errorMessageSize, "Invalid ascii response!" );
-				asynPrint(	pasynUser, ASYN_TRACE_ERROR,
-							"%s port %s: Read error: %s\n",
-							functionName, this->portName, pasynUser->errorMessage );
-				status = asynError;
-#if 0
-				//epicsMutexLock(m_serialLock);
-				//// TODO: Close device
-				//m_SerDev.disconnect();
-				//m_fConnected	= false;
-				//epicsMutexUnlock(m_serialLock);
-#else
-				m_fConnected	= false;
-#endif
-				m_fInputFlushNeeded = true;
-				pasynManager->exceptionDisconnect( this->pasynUserSelf );
-				if ( eomReason )
-					*eomReason = ASYN_EOM_EOS;
-				break;		/* If we have an error, we're done. */
-			}
+        // Handle errors
+        if ( (nAvailToRead < 0 || nRead < 0)
+            && (errno != EWOULDBLOCK)
+            && (errno != EINTR)
+            && (errno != EAGAIN) )
+        {
+            epicsSnprintf( pasynUser->errorMessage, pasynUser->errorMessageSize,
+                "%s: %s read error: %s\n",
+                functionName, this->portName, strerror(errno) );
+            status = asynError;
+            m_fInputFlushNeeded = true;
+            break;
+        }
 
-			break;			/* If we have something, we're done. */
-		}
+        break;
+    } // end forever loop
 
-		// Handle errors
-		if (	(nAvailToRead < 0 || nRead < 0)
-				&&	(errno != EWOULDBLOCK)
-				&&	(errno != EINTR)
-				&&	(errno != EAGAIN) )
-		{
-			epicsSnprintf(	pasynUser->errorMessage, pasynUser->errorMessageSize,
-							"%s: %s read error: %s\n",
-							functionName, this->portName, strerror(errno)	);
-			status = asynError;
-			m_fInputFlushNeeded = true;
-			break;		/* If we have an error, we're done. */
-		}
-		break;
-	}	// end forever loop
+    // *** CHANGED: Timeout handling — don't set ASYN_EOM_EOS ***
+    if ( nRead == 0 && (pasynUser->timeout > 0) && (status == asynSuccess) )
+    {
+        status = asynTimeout;
+        // eomReason stays 0
+    }
 
+    if ( pnRead )
+        *pnRead = nRead;
 
-	if ( nRead == 0 && (pasynUser->timeout > 0) && (status == asynSuccess))	/* If we don't have anything, not even an error	*/
-	{
-		status = asynTimeout;					/* then we must have timed out.					*/
-		if ( eomReason )
-			*eomReason = ASYN_EOM_EOS;
-	}
+    // *** CHANGED: Set eomReason based on actual conditions ***
+    if ( nRead > 0 )
+    {
+        if ( eomReason )
+        {
+            *eomReason = 0;
 
-	*pnRead = nRead;
-	if ( nRead < static_cast<int>( sReadBuffer ) )
-	{
-		/* If there is room add a null byte */
-		pBuffer[nRead] = 0;
-		if ( eomReason )
-			*eomReason = ASYN_EOM_EOS;
-	}
-	else if ( nRead == static_cast<int>( sReadBuffer ) )
-	{
-		if ( eomReason )
-			*eomReason = ASYN_EOM_CNT;
-	}
+            // Was the buffer completely filled?
+            if ( nRead >= static_cast<int>(sReadBuffer) )
+            {
+                *eomReason |= ASYN_EOM_CNT;
+            }
 
-	if ( nRead > 0 )
-	{
-		asynPrintIO(	pasynUser, ASYN_TRACEIO_DRIVER, pBuffer, nRead,
-						"%s: %s  read  %d of %d\n",
-						functionName, this->portName, nRead, nAvailToRead );
+            // Was the configured EOS actually found in the data?
+            if ( m_SerDev.wasEosFound() )
+            {
+                *eomReason |= ASYN_EOM_EOS;
+            }
+        }
 
-		static bool reminded = false;
-		if ( DEBUG_PGPCL_MASKBIT7 )
-		{
-			if (!reminded)
-			{
-				printf("%s: Revisit line %d hack to mask off bit 7\n", functionName, __LINE__);
-				reminded = true;
-			}
-			maskBit7(pBuffer, nRead);
-		}
+        // Null-terminate if there's room (convenience, doesn't affect binary)
+        if ( nRead < static_cast<int>(sReadBuffer) )
+        {
+            pBuffer[nRead] = 0;
+        }
 
-		if ( isAscii( pBuffer, nRead ) )
-		{
-			if ( DEBUG_PGPCL_SER >= 3 )
-				printf( "%s: %s Read %zu: %s\n", functionName, this->portName, *pnRead, pBuffer );
-			asynPrint(		pasynUser, ASYN_TRACE_FLOW,
-							"%s: %s  read  %zu, status %d, Buffer: %s\n",
-							functionName, this->portName, *pnRead, status, pBuffer	);
-		}
-		else
-		{
-			if ( DEBUG_PGPCL_SER >= 3 )
-			{
-				printf( "%s: %s Read %zu\n", functionName, this->portName, *pnRead );
-				printf( "%s: ", functionName );
-				for (unsigned i = 0; i < *pnRead; ++i)
-					printf("%02hhx ", pBuffer[i]);
-				printf("\n");
-			}
-			asynPrint(		pasynUser, ASYN_TRACE_FLOW,
-							"%s: %s read %zu, status %d\n",
-							functionName, this->portName, *pnRead, status );
-		}
+        // Logging
+        asynPrintIO( pasynUser, ASYN_TRACEIO_DRIVER, pBuffer, nRead,
+            "%s: %s  read  %d of %d\n",
+            functionName, this->portName, nRead, nAvailToRead );
 
-		// TODO: Do we need callParamCallbacks() here?
-		// Call the parameter callbacks
-		callParamCallbacks();
-	}
+        if ( isAscii( pBuffer, nRead ) )
+        {
+            if ( DEBUG_PGPCL_SER >= 3 )
+                printf( "%s: %s Read %d: %s\n", functionName, this->portName, nRead, pBuffer );
+            asynPrint( pasynUser, ASYN_TRACE_FLOW,
+                "%s: %s  read  %d, status %d, Buffer: %s\n",
+                functionName, this->portName, nRead, status, pBuffer );
+        }
+        else
+        {
+            if ( DEBUG_PGPCL_SER >= 3 )
+            {
+                printf( "%s: %s Read %d\n", functionName, this->portName, nRead );
+                printf( "%s: ", functionName );
+                for ( int i = 0; i < nRead; ++i )
+                    printf( "%02hhx ", pBuffer[i] );
+                printf( "\n" );
+            }
+            asynPrint( pasynUser, ASYN_TRACE_FLOW,
+                "%s: %s read %d, status %d\n",
+                functionName, this->portName, nRead, status );
+        }
 
-	if ( DEBUG_PGPCL_SER >= 4 )
-	{
-		printf(	"%s: returning status %d, pBuffer '%s', pnRead %zu, eomReason %d\n",
-				functionName, status, pBuffer, *pnRead, *eomReason );
-				//	"(of %d, %d)\n", ASYN_EOM_EOS, ASYN_EOM_CNT
-	}
+        callParamCallbacks();
+    }
+
+    if ( DEBUG_PGPCL_SER >= 4 )
+    {
+        printf( "%s: returning status %d, pBuffer '%s', pnRead %zu, eomReason %d\n",
+            functionName, status, pBuffer, pnRead ? *pnRead : 0,
+            eomReason ? *eomReason : -1 );
+    }
 
     return status;
 }
@@ -571,53 +523,82 @@ asynStatus	asynPgpClSerial::writeOctet(
     return status;
 }
 
-
-#if 0
-# TODO: Should we support flushOctet?
-asynStatus asynPgpClSerial::flushOctet(
-	asynUser			*	pasynUser	)
-{
-static const char	*	functionName	= "asynPgpClSerial::flushOctet";
-double     savetimeout = pasynUser->timeout;
-char       buffer[100];
-size_t     nbytesTransfered;
-
-pasynUser->timeout = .05;
-while(1) {
-nbytesTransfered = 0;
-readOctet(pasynUser, buffer, sizeof(buffer), &nbytesTransfered, 0);
-if (nbytesTransfered==0) break;
-asynPrintIO(pasynUser, ASYN_TRACEIO_DRIVER,
-buffer, nbytesTransfered, "%s:%s\n", driverName, functionName);
-}
-pasynUser->timeout = savetimeout;
-return asynSuccess;
-}
-
-
-// Do we need these?
 asynStatus asynPgpClSerial::setInputEosOctet(
-	asynUser		*	pasynUser,
-	const char		*	eos,
-	int					eosLen	)
+    asynUser    *pasynUser,
+    const char  *eos,
+    int          eosLen )
+{
+    static const char *functionName = "asynPgpClSerial::setInputEosOctet";
+
+    if ( DEBUG_PGPCL_SER >= 2 )
+    {
+        printf( "%s: port %s, eosLen=%d", functionName, this->portName, eosLen );
+        if ( eosLen > 0 )
+        {
+            printf( ", eos=" );
+            for ( int i = 0; i < eosLen; i++ )
+                printf( " 0x%02x", (unsigned char)eos[i] );
+        }
+        printf( "\n" );
+    }
+
+    // Store locally
+    if ( m_inputEosOctet )
+    {
+        free( m_inputEosOctet );
+        m_inputEosOctet = NULL;
+    }
+
+    if ( eosLen > 0 && eos != NULL )
+    {
+        m_inputEosOctet = (char *) calloc( 1, eosLen + 1 );
+        if ( m_inputEosOctet )
+            memcpy( m_inputEosOctet, eos, eosLen );
+        m_inputEosLenOctet = eosLen;
+    }
+    else
+    {
+        m_inputEosLenOctet = 0;
+    }
+
+    // Pass down to the serial device layer
+    m_SerDev.setInputEos( m_inputEosOctet, m_inputEosLenOctet );
+
+    asynPrint( pasynUser, ASYN_TRACE_FLOW,
+        "%s: port %s, eosLen=%d\n", functionName, this->portName, eosLen );
+
+    return asynSuccess;
+}
 
 asynStatus asynPgpClSerial::getInputEosOctet(
-	asynUser		*	pasynUser,
-	char			*	eos,
-	int					eosSize,
-	int				*	eosLen	)
+    asynUser    *pasynUser,
+    char        *eos,
+    int          eosSize,
+    int         *eosLen )
+{
+    static const char *functionName = "asynPgpClSerial::getInputEosOctet";
 
-asynStatus	asynPgpClSerial::setOutputEosOctet(
-	asynUser		*	pasynUser,
-	const char		*	eos,
-	int					eosLen	)
+    if ( m_inputEosLenOctet > 0 && m_inputEosOctet != NULL )
+    {
+        int copyLen = m_inputEosLenOctet;
+        if ( copyLen >= eosSize )
+            copyLen = eosSize - 1;
+        memcpy( eos, m_inputEosOctet, copyLen );
+        eos[copyLen] = '\0';
+        *eosLen = copyLen;
+    }
+    else
+    {
+        if ( eosSize > 0 )
+            eos[0] = '\0';
+        *eosLen = 0;
+    }
 
-asynStatus	asynPgpClSerial::getOutputEosOctet(
-	asynUser		*	pasynUser,
-	char			*	eos,
-	int					eosSize,
-	int				*	eosLen	)
-#endif
+    asynPrint( pasynUser, ASYN_TRACE_FLOW,
+        "%s: port %s, eosLen=%d\n", functionName, this->portName, *eosLen );
+
+    return asynSuccess;
+}
 
 void asynPgpClSerial::report( FILE * fp, int details )
 {

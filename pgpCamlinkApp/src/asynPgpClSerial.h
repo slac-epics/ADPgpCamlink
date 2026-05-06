@@ -92,6 +92,17 @@ public:		//	Public member functions
 		size_t				maxChars,
 		size_t			*	nActual	);
 
+    virtual asynStatus setInputEosOctet(
+        asynUser    *pasynUser,
+        const char  *eos,
+        int          eosLen );
+
+    virtual asynStatus getInputEosOctet(
+        asynUser    *pasynUser,
+        char        *eos,
+        int          eosSize,
+        int         *eosLen );
+
     void	report(	FILE	*	fp,	int	details	);
 
 public:	// Public class functions
