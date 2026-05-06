@@ -1,9 +1,9 @@
 InTerminator = CR LF;
 OutTerminator = CR LF;
-ReplyTimeout = 10000;   # 10 seconds total
-ReadTimeout = 8000;     # 8 seconds between bytes
-WriteTimeout = 1000;
-LockTimeout = 30000;    # 30 seconds to wait for lock
+ReplyTimeout = 2000;    # 2 seconds total
+ReadTimeout = 1000;     # 1 seconds between bytes
+WriteTimeout = 500;
+LockTimeout = 10000;    # 10 seconds to wait for lock
 ExtraInput = Ignore;
 
 DeviceID
