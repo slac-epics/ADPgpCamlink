@@ -286,7 +286,7 @@ record( longin,	"$(P)$(R)JaiBlackLevel_RBV" )
 	field( DTYP,	"stream" )
 	field( INP,		"@Jai_GO_5000M_PMCL_UV.proto GetInt(BL) $(PORT).SER" )
 	field( PINI,	"YES"	)
-    field( SCAN,    "10 second" )
+    field( SCAN,    "Passive" )
 	info( autosaveFields, "VAL" )
 }
 
@@ -296,7 +296,7 @@ record( stringin, "$(P)$(R)JaiCameraID_RBV" )
 	field( DTYP,	"stream" )
 	field( INP,		"@Jai_GO_5000M_PMCL_UV.proto GetString(ID) $(PORT).SER" )
 	field( PINI,	"YES" )
-    field( SCAN,    "10 second" )
+    field( SCAN,    "Passive" )
 }
 
 record( stringin, "$(P)$(R)JaiFirmware_RBV" )
@@ -305,7 +305,7 @@ record( stringin, "$(P)$(R)JaiFirmware_RBV" )
 	field( DTYP,	"stream" )
 	field( INP,		"@Jai_GO_5000M_PMCL_UV.proto GetString(VN) $(PORT).SER" )
 	field( PINI,	"YES" )
-    field( SCAN,    "10 second" )
+    field( SCAN,    "Passive" )
 }
 
 record( stringin, "$(P)$(R)JaiVendorName_RBV" )
@@ -314,7 +314,7 @@ record( stringin, "$(P)$(R)JaiVendorName_RBV" )
 	field( DTYP,	"stream" )
 	field( INP,		"@Jai_GO_5000M_PMCL_UV.proto GetString(DVN) $(PORT).SER" )
 	field( PINI,	"YES" )
-    field( SCAN,    "10 second" )
+    field( SCAN,    "Passive" )
 }
 
 record( stringin, "$(P)$(R)JaiModelName_RBV" )
@@ -323,7 +323,7 @@ record( stringin, "$(P)$(R)JaiModelName_RBV" )
 	field( DTYP,	"stream" )
 	field( INP,		"@Jai_GO_5000M_PMCL_UV.proto GetString(MD) $(PORT).SER" )
 	field( PINI,	"YES" )
-    field( SCAN,    "10 second" )
+    field( SCAN,    "Passive" )
 }
 
 record( longout, "$(P)$(R)JaiDeviceReset" )
@@ -475,13 +475,14 @@ record( seq, "$(P)$(R)SeqCLConfigBase2" )
 	field( DLY0, "0" ) field( DOL0, "0" ) field( LNK0, "$(P)$(R)Acquire  PP NMS" )
 
 	field( DESC, "Base Mode: 31.9fps, 12 bits, 2 taps" )
-	field( DLY2, "1.0" ) field( DOL2, "1" ) field( LNK2, "$(P)$(R)CLPixelClock PP NMS" )
-	field( DLY3, "1.0" ) field( DOL3, "1" ) field( LNK3, "$(P)$(R)JaiTapGeometry PP NMS" )
-	field( DLY4, "1.0" ) field( DOL4, "2" ) field( LNK4, "$(P)$(R)JaiPixelFormat PP NMS" )
-	field( DLY5, "1.0" ) field( DOL5, "2" ) field( LNK5, "$(P)$(R)CLPixelClock PP NMS" )
+	field( DLY2, "0.5" ) field( DOL2, "1" ) field( LNK2, "$(P)$(R)CLPixelClock PP NMS" )
+	field( DLY3, "0.5" ) field( DOL3, "1" ) field( LNK3, "$(P)$(R)JaiTapGeometry PP NMS" )
+	field( DLY4, "0.5" ) field( DOL4, "2" ) field( LNK4, "$(P)$(R)JaiPixelFormat PP NMS" )
+	field( DLY5, "0.5" ) field( DOL5, "2" ) field( LNK5, "$(P)$(R)CLPixelClock PP NMS" )
 	field( DLY6, "0.5" ) field( DOL6, "3" ) field( LNK6, "$(P)$(R)CamlinkDataMode" )
 	field( DLY7, "0.5" ) field( DOL7, "1" ) field( LNK7, "$(P)$(R)CamlinkLinkMode" )
 	field( DLY8, "0.5" ) field( DOL8, "2" ) field( LNK8, "$(P)$(R)CamlinkHTap" )
+	field( DLY9, "0.5" ) field( DOL9, "0" ) field( LNK9, "$(PGP):Ch$(PGP_LANE):Feb$(PGP_LANE):ClinkDecaMode" )
 }
 
 record( seq, "$(P)$(R)SeqCLConfigBase3" )
@@ -490,13 +491,14 @@ record( seq, "$(P)$(R)SeqCLConfigBase3" )
 	field( DLY0, "0" ) field( DOL0, "0" ) field( LNK0, "$(P)$(R)Acquire  PP NMS" )
 
 	field( DESC, "Base Mode: 47.8fps, 8 bits, 3 taps" )
-	field( DLY2, "1.0" ) field( DOL2, "1" ) field( LNK2, "$(P)$(R)CLPixelClock PP NMS" )
-	field( DLY3, "1.0" ) field( DOL3, "7" ) field( LNK3, "$(P)$(R)JaiTapGeometry PP NMS" )
-	field( DLY4, "1.0" ) field( DOL4, "0" ) field( LNK4, "$(P)$(R)JaiPixelFormat PP NMS" )
-	field( DLY5, "1.0" ) field( DOL5, "2" ) field( LNK5, "$(P)$(R)CLPixelClock PP NMS" )
+	field( DLY2, "0.5" ) field( DOL2, "1" ) field( LNK2, "$(P)$(R)CLPixelClock PP NMS" )
+	field( DLY3, "0.5" ) field( DOL3, "7" ) field( LNK3, "$(P)$(R)JaiTapGeometry PP NMS" )
+	field( DLY4, "0.5" ) field( DOL4, "0" ) field( LNK4, "$(P)$(R)JaiPixelFormat PP NMS" )
+	field( DLY5, "0.5" ) field( DOL5, "2" ) field( LNK5, "$(P)$(R)CLPixelClock PP NMS" )
 	field( DLY6, "0.5" ) field( DOL6, "1" ) field( LNK6, "$(P)$(R)CamlinkDataMode" )
 	field( DLY7, "0.5" ) field( DOL7, "1" ) field( LNK7, "$(P)$(R)CamlinkLinkMode" )
 	field( DLY8, "0.5" ) field( DOL8, "3" ) field( LNK8, "$(P)$(R)CamlinkHTap" )
+	field( DLY9, "0.5" ) field( DOL9, "0" ) field( LNK9, "$(PGP):Ch$(PGP_LANE):Feb$(PGP_LANE):ClinkDecaMode" )
 }
 
 record( seq, "$(P)$(R)SeqCLConfigMedium" )
@@ -505,13 +507,14 @@ record( seq, "$(P)$(R)SeqCLConfigMedium" )
 	field( DLY0, "0" ) field( DOL0, "0" ) field( LNK0, "$(P)$(R)Acquire  PP NMS" )
 
 	field( DESC, "Medium Mode: 63.6fps, 12 bits, 4 taps" )
-	field( DLY2, "1.0" ) field( DOL2, "1" ) field( LNK2, "$(P)$(R)CLPixelClock PP NMS" )
-	field( DLY3, "1.0" ) field( DOL3, "3" ) field( LNK3, "$(P)$(R)JaiTapGeometry PP NMS" )
-	field( DLY4, "1.0" ) field( DOL4, "2" ) field( LNK4, "$(P)$(R)JaiPixelFormat PP NMS" )
-	field( DLY5, "1.0" ) field( DOL5, "2" ) field( LNK5, "$(P)$(R)CLPixelClock PP NMS" )
+	field( DLY2, "0.5" ) field( DOL2, "1" ) field( LNK2, "$(P)$(R)CLPixelClock PP NMS" )
+	field( DLY3, "0.5" ) field( DOL3, "3" ) field( LNK3, "$(P)$(R)JaiTapGeometry PP NMS" )
+	field( DLY4, "0.5" ) field( DOL4, "2" ) field( LNK4, "$(P)$(R)JaiPixelFormat PP NMS" )
+	field( DLY5, "0.5" ) field( DOL5, "2" ) field( LNK5, "$(P)$(R)CLPixelClock PP NMS" )
 	field( DLY6, "0.5" ) field( DOL6, "3" ) field( LNK6, "$(P)$(R)CamlinkDataMode" )
 	field( DLY7, "0.5" ) field( DOL7, "2" ) field( LNK7, "$(P)$(R)CamlinkLinkMode" )
 	field( DLY8, "0.5" ) field( DOL8, "4" ) field( LNK8, "$(P)$(R)CamlinkHTap" )
+	field( DLY9, "0.5" ) field( DOL9, "0" ) field( LNK9, "$(PGP):Ch$(PGP_LANE):Feb$(PGP_LANE):ClinkDecaMode" )
 }
 
 record( seq, "$(P)$(R)SeqCLConfigFull" )
@@ -520,13 +523,14 @@ record( seq, "$(P)$(R)SeqCLConfigFull" )
 	field( DLY0, "0" ) field( DOL0, "0" ) field( LNK0, "$(P)$(R)Acquire  PP NMS" )
 
 	field( DESC, "Full Mode: 107.2fps, 8 bits, 8 taps" )
-	field( DLY2, "1.0" ) field( DOL2, "1" ) field( LNK2, "$(P)$(R)CLPixelClock PP NMS" )
-	field( DLY3, "1.0" ) field( DOL3, "0" ) field( LNK3, "$(P)$(R)JaiPixelFormat PP NMS" )
-	field( DLY4, "1.0" ) field( DOL4, "5" ) field( LNK4, "$(P)$(R)JaiTapGeometry PP NMS" )
-	field( DLY5, "1.0" ) field( DOL5, "0" ) field( LNK5, "$(P)$(R)CLPixelClock PP NMS" )
+	field( DLY2, "0.5" ) field( DOL2, "1" ) field( LNK2, "$(P)$(R)CLPixelClock PP NMS" )
+	field( DLY3, "0.5" ) field( DOL3, "0" ) field( LNK3, "$(P)$(R)JaiPixelFormat PP NMS" )
+	field( DLY4, "0.5" ) field( DOL4, "5" ) field( LNK4, "$(P)$(R)JaiTapGeometry PP NMS" )
+	field( DLY5, "0.5" ) field( DOL5, "0" ) field( LNK5, "$(P)$(R)CLPixelClock PP NMS" )
 	field( DLY6, "0.5" ) field( DOL6, "1" ) field( LNK6, "$(P)$(R)CamlinkDataMode" )
 	field( DLY7, "0.5" ) field( DOL7, "3" ) field( LNK7, "$(P)$(R)CamlinkLinkMode" )
 	field( DLY8, "0.5" ) field( DOL8, "8" ) field( LNK8, "$(P)$(R)CamlinkHTap" )
+	field( DLY9, "0.5" ) field( DOL9, "0" ) field( LNK9, "$(PGP):Ch$(PGP_LANE):Feb$(PGP_LANE):ClinkDecaMode" )
 }
 
 record( seq, "$(P)$(R)SeqCLConfigDeca" )
@@ -535,13 +539,14 @@ record( seq, "$(P)$(R)SeqCLConfigDeca" )
 	field( DLY0, "0" ) field( DOL0, "0" ) field( LNK0, "$(P)$(R)Acquire  PP NMS" )
 
 	field( DESC, "Deca Mode: 84.9fps, 10 bits, 8 taps" )
-	field( DLY2, "1.0" ) field( DOL2, "1" ) field( LNK2, "$(P)$(R)CLPixelClock PP NMS" )
-	field( DLY3, "1.0" ) field( DOL3, "1" ) field( LNK3, "$(P)$(R)JaiPixelFormat PP NMS" )
-	field( DLY4, "1.0" ) field( DOL4, "5" ) field( LNK4, "$(P)$(R)JaiTapGeometry PP NMS" )
-	field( DLY5, "1.0" ) field( DOL5, "3" ) field( LNK5, "$(P)$(R)CLPixelClock PP NMS" )
+	field( DLY2, "0.5" ) field( DOL2, "1" ) field( LNK2, "$(P)$(R)CLPixelClock PP NMS" )
+	field( DLY3, "0.5" ) field( DOL3, "1" ) field( LNK3, "$(P)$(R)JaiPixelFormat PP NMS" )
+	field( DLY4, "0.5" ) field( DOL4, "5" ) field( LNK4, "$(P)$(R)JaiTapGeometry PP NMS" )
+	field( DLY5, "0.5" ) field( DOL5, "3" ) field( LNK5, "$(P)$(R)CLPixelClock PP NMS" )
 	field( DLY6, "0.5" ) field( DOL6, "2" ) field( LNK6, "$(P)$(R)CamlinkDataMode" )
 	field( DLY7, "0.5" ) field( DOL7, "4" ) field( LNK7, "$(P)$(R)CamlinkLinkMode" )
 	field( DLY8, "0.5" ) field( DOL8, "8" ) field( LNK8, "$(P)$(R)CamlinkHTap" )
+	field( DLY9, "0.5" ) field( DOL9, "1" ) field( LNK9, "$(PGP):Ch$(PGP_LANE):Feb$(PGP_LANE):ClinkDecaMode" )
 }
 
 # Acquisition Frame Rate
@@ -925,8 +930,8 @@ record( mbbo, "$(P)$(R)JaiTriggerSoftware" )
 record( mbbi,	"$(P)$(R)JaiTriggerSoftware_RBV" )
 {
 	field( DESC,	"Software Trigger" )
-	field( DTYP,	"stream" )
-	field( INP,		"@Jai_GO_5000M_PMCL_UV.proto GetInt(STRG) $(PORT).SER" )
+	field( DTYP,	"Soft Channel" )
+	field( INP,     "$(P)$(R)JaiTriggerSoftware.RVAL CP MS" )
 	field( ZRVL,	"0"	)
 	field( ONVL,	"1"	)
 	field( ZRST,	"Off"	)
@@ -1170,7 +1175,6 @@ record( longout, "$(P)$(R)JaiROIOffsetX" )
 	field( DESC,	"Offset X 0..(2052-Width)" )
 	field( DOL,     "$(P)$(R)MinX CP NMS" )
 	field( OMSL,    "closed_loop" )
-	field( PINI,    "YES" )
 	field( DTYP,    "stream" )
 	field( OUT,		"@Jai_GO_5000M_PMCL_UV.proto SetInt(OFC) $(PORT).SER" )
 	field( FLNK,    "$(P)$(R)JaiROIOffsetX_RBV" )
@@ -1209,7 +1213,6 @@ record( longout, "$(P)$(R)JaiROIOffsetY" )
 	field( DESC,	"Offset Y 0..(2047-Height)" )
 	field( DOL,     "$(P)$(R)MinY CP NMS" )
 	field( OMSL,    "closed_loop" )
-	field( PINI,    "YES" )
 	field( DTYP,    "stream" )
 	field( OUT,		"@Jai_GO_5000M_PMCL_UV.proto SetInt(OFL) $(PORT).SER" )
 	field( FLNK,    "$(P)$(R)JaiROIOffsetY_RBV" )
@@ -1248,7 +1251,6 @@ record( longout, "$(P)$(R)JaiROIWidth" )
 	field( DESC,	"ROI Width 8..(2560-Offset X)" )
 	field( DOL,     "$(P)$(R)SizeX CP NMS" )
 	field( OMSL,    "closed_loop" )
-	field( PINI,    "YES" )
 	field( DTYP,    "stream" )
 	field( OUT,		"@Jai_GO_5000M_PMCL_UV.proto SetInt(WTC) $(PORT).SER" )
 	field( FLNK,    "$(P)$(R)JaiROIWidth_RBV" )
@@ -1287,7 +1289,6 @@ record( longout, "$(P)$(R)JaiROIHeight" )
 	field( DESC,	"ROI Height 1..(2048-Offset Y)" )
 	field( DOL,     "$(P)$(R)SizeY CP NMS" )
 	field( OMSL,    "closed_loop" )
-	field( PINI,    "YES" )
 	field( DTYP,    "stream" )
 	field( OUT,		"@Jai_GO_5000M_PMCL_UV.proto SetInt(HTL) $(PORT).SER" )
 	field( FLNK,    "$(P)$(R)JaiROIHeight_RBV" )
@@ -1370,37 +1371,37 @@ record( mbbi,	"$(P)$(R)JaiBinVertical_RBV" )
    info( autosaveFields, "VAL" )
 }
 
-# Include a serialMonitor.template monitor
-# This should be the first PV you process in the CamReConfigSeq
-substitute "MON_SCAN=10 second"
-substitute "SER_OK_PV= $(P)$(R)JaiModel_RBV"
-include "serialMonitor.template"
-
-# 1 second RBV monitors
-substitute "MON_SCAN=1 second"
-
-# 10 second RBV monitors
-substitute "MON_SCAN=10 second"
-substitute "MON_DISABLED=0"
-substitute "MON_PV=$(P)$(R)JaiBlackLevel_RBV"
-include "rbvMonitor.template"
-substitute "MON_PV=$(P)$(R)JaiCameraID_RBV"
-include "rbvMonitor.template"
-substitute "MON_PV=$(P)$(R)JaiFirmware_RBV"
-include "rbvMonitor.template"
-substitute "MON_PV=$(P)$(R)JaiDigitalGain_RBV"
-include "rbvMonitor.template"
-substitute "MON_PV=$(P)$(R)JaiPixelFormat_RBV"
-include "rbvMonitor.template"
-
-# Put monitors
-substitute "MON_SCAN=1 second"
-substitute "MON_DISABLED=1"
-substitute "MON_PV=$(P)$(R)JaiBlackLevel"
-include "putMonitor.template"
-substitute "MON_PV=$(P)$(R)JaiCameraID"
-include "putMonitor.template"
-substitute "MON_PV=$(P)$(R)JaiDigitalGain"
-include "putMonitor.template"
-substitute "MON_PV=$(P)$(R)JaiPixelFormat"
-include "putMonitor.template"
+## Include a serialMonitor.template monitor
+## This should be the first PV you process in the CamReConfigSeq
+#substitute "MON_SCAN=10 second"
+#substitute "SER_OK_PV= $(P)$(R)JaiModel_RBV"
+#include "serialMonitor.template"
+#
+## 1 second RBV monitors
+#substitute "MON_SCAN=1 second"
+#
+## 10 second RBV monitors
+#substitute "MON_SCAN=10 second"
+#substitute "MON_DISABLED=0"
+#substitute "MON_PV=$(P)$(R)JaiBlackLevel_RBV"
+#include "rbvMonitor.template"
+#substitute "MON_PV=$(P)$(R)JaiCameraID_RBV"
+#include "rbvMonitor.template"
+#substitute "MON_PV=$(P)$(R)JaiFirmware_RBV"
+#include "rbvMonitor.template"
+#substitute "MON_PV=$(P)$(R)JaiDigitalGain_RBV"
+#include "rbvMonitor.template"
+#substitute "MON_PV=$(P)$(R)JaiPixelFormat_RBV"
+#include "rbvMonitor.template"
+#
+## Put monitors
+#substitute "MON_SCAN=1 second"
+#substitute "MON_DISABLED=1"
+#substitute "MON_PV=$(P)$(R)JaiBlackLevel"
+#include "putMonitor.template"
+#substitute "MON_PV=$(P)$(R)JaiCameraID"
+#include "putMonitor.template"
+#substitute "MON_PV=$(P)$(R)JaiDigitalGain"
+#include "putMonitor.template"
+#substitute "MON_PV=$(P)$(R)JaiPixelFormat"
+#include "putMonitor.template"
