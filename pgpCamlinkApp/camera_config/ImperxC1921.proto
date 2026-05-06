@@ -41,10 +41,10 @@
 inTerminator	= "";
 outTerminator	= "";
 #PeekSize		= 0;
-ReplyTimeout	= 5000;
-ReadTimeout 	= 3000;
-#WriteTimeout	= 1000;
-#ExtraInput		= Ignore;
+ReplyTimeout	= 1000;
+ReadTimeout 	= 200;
+WriteTimeout	= 500;
+ExtraInput		= Ignore;
 
 # Imperx C1921 Register Addresses
 # Composed of 2 bytes, LSB then MSB of register address
