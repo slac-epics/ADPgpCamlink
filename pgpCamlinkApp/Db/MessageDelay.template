@@ -1,0 +1,22 @@
+record( longout, "$(P)$(R)MSGDLY" )
+{
+    field( DESC, "Message delay in ns (5.3846153908 ns/count)")
+    field( DTYP, "Soft Channel")
+	field( EGU,  "ns" )
+	field( PINI, "YES" )
+    field( VAL,  "0" )
+    field( UDFS, "NO_ALARM" )
+    field( FLNK, "$(P)$(R)MSGDLY:NS2CNTS" )
+	info( autosaveFields, "VAL" )
+}
+
+record( longin, "$(P)$(R)MSGDLY_RBV" )
+{
+    field( DESC, "Message delay in ns (RBV) (5.3846153908 ns/count)")
+    field( DTYP, "Soft Channel")
+	field( EGU,  "ns" )
+	field( INP,  "$(P)$(R)MSGDLY:CNTS2NS CP MS" )
+	field( SCAN, "Passive" )
+    field( UDFS, "NO_ALARM" )
+	info( autosaveFields, "VAL" )
+}
