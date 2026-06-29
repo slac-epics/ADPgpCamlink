@@ -979,7 +979,7 @@ record(ao, "$(CAM):TimerSet") {
     field(PINI, "YES")
     field(SCAN, "Passive")
     field(OUT,  "$(P):Timer PP")
-    field(DOL,  "30")
+    field(DOL,  "45")
     field(OMSL, "closed_loop")
     field(EGU,  "sec")
     field(DRVH, "3600")
