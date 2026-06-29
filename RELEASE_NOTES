@@ -2,6 +2,13 @@
 # SLAC RELEASE_NOTES
 #
 
+R3.2.0-3.0.0  2026-06-29 Michael Skoufis
+    Add analog gain PVs for Imperx (1x-251x or 0-48dB)
+    Add message delay PV (in nanoseconds)
+    Add timer-based auto-recovery for FEB's Stopped state (generic, not camera specific)
+    Revamp byte-reading logic in asyn serial driver to work with both binary/ASCII serial commands
+    Update timeout thresholds for Imperx and JAI GO 5000M
+
 R3.2.0-2.0.0  2025-12-04 Michael Skoufis
     Add support for Deca mode, following an update in the PCIe firmware
     Add the diagnostics timer module
