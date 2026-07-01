@@ -967,7 +967,7 @@ record( fanout, "$(CAM):TrigTimer" )
 record(calc, "$(CAM):Timer") {
     field(DESC, "Countdown Timer")
     field(SCAN, "1 second")
-    field(INPA, "$(P):Timer")
+    field(INPA, "$(CAM):Timer")
     field(CALC, "A>0?A-1:0")
     field(EGU,  "sec")
     field(HOPR, "3600")
@@ -978,7 +978,7 @@ record(ao, "$(CAM):TimerSet") {
     field(DESC, "Set Timer Value")
     field(PINI, "YES")
     field(SCAN, "Passive")
-    field(OUT,  "$(P):Timer PP")
+    field(OUT,  "$(CAM):Timer PP")
     field(DOL,  "45")
     field(OMSL, "closed_loop")
     field(EGU,  "sec")
@@ -988,7 +988,7 @@ record(ao, "$(CAM):TimerSet") {
 
 record(calc, "$(CAM):TimerExpired") {
     field(DESC, "Check Timer Expiration")
-    field(INPA, "$(P):Timer CP MS")
+    field(INPA, "$(CAM):Timer CP MS")
     field(INPB, "$(PGP):Ch$(PGP_LANE):Feb$(PGP_LANE):Running.RVAL")
     field(CALC, "(A=0 && B=0)?1:0")
 }
