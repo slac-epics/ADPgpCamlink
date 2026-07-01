@@ -1021,5 +1021,5 @@ record( seq, "$(CAM):ResetFebState" )
 	field( DLY5, "10.0" ) field( DOL5, "2" ) field( LNK5, "$(PGP):SeqXpmMiniTiming PP NMS" )
 
     # Reset the timer
-	field( DLY6, "10.0" )  field( DOL6, "1" ) field( LNK6, "$(CAM):TimerSet.PROC PP NMS" )
+	field( DLY6, "10.0" ) field( DOL6, "1" ) field( LNK6, "$(CAM):TimerSet.PROC PP NMS" )
 }
