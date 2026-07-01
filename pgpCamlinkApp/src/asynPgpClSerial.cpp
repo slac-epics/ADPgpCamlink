@@ -296,7 +296,6 @@ asynStatus asynPgpClSerial::readOctet(
             asynPrint( pasynUser, ASYN_TRACE_FLOW,
                 "%s: %s nToRead %d\n", functionName, this->portName, nToRead );
 
-            epicsMutexLock(m_serialLock);
             if ( DEBUG_PGPCL_SER >= 4 )
                 printf( "%s: %s Have serial lock, reading %d ...\n",
                     functionName, this->portName, nToRead );
@@ -311,7 +310,6 @@ asynStatus asynPgpClSerial::readOctet(
             else
                 nRead = 0;
 
-            epicsMutexUnlock(m_serialLock);
             if ( DEBUG_PGPCL_SER >= 4 )
                 printf( "%s: %s Released serial lock, read %d ...\n",
                     functionName, this->portName, nRead );
@@ -533,7 +531,7 @@ asynStatus asynPgpClSerial::setInputEosOctet(
     if ( DEBUG_PGPCL_SER >= 2 )
     {
         printf( "%s: port %s, eosLen=%d", functionName, this->portName, eosLen );
-        if ( eosLen > 0 )
+        if ( eosLen > 0 && eos != NULL )
         {
             printf( ", eos=" );
             for ( int i = 0; i < eosLen; i++ )
@@ -578,21 +576,26 @@ asynStatus asynPgpClSerial::getInputEosOctet(
 {
     static const char *functionName = "asynPgpClSerial::getInputEosOctet";
 
+    if ( eosLen )
+         *eosLen = 0;
+
+    if ( eos && eosSize > 0 )
+         eos[0] = '\0';
+
+    if ( !eosLen || !eos || eosSize <= 0 )
+         return asynError;
+
+    int copyLen = 0;
     if ( m_inputEosLenOctet > 0 && m_inputEosOctet != NULL )
     {
-        int copyLen = m_inputEosLenOctet;
-        if ( copyLen >= eosSize )
+        copyLen = m_inputEosLenOctet;
+        if ( copyLen > eosSize - 1 )
             copyLen = eosSize - 1;
         memcpy( eos, m_inputEosOctet, copyLen );
-        eos[copyLen] = '\0';
-        *eosLen = copyLen;
     }
-    else
-    {
-        if ( eosSize > 0 )
-            eos[0] = '\0';
-        *eosLen = 0;
-    }
+
+    eos[copyLen] = '\0';
+    *eosLen = copyLen;
 
     asynPrint( pasynUser, ASYN_TRACE_FLOW,
         "%s: port %s, eosLen=%d\n", functionName, this->portName, *eosLen );
