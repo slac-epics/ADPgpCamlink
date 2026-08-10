@@ -1,6 +1,6 @@
 record( longout, "$(P)$(R)MSGDLY" )
 {
-    field( DESC, "Message delay in ns (5.3846153908 ns/count)")
+    field( DESC, "Message delay in ns")
     field( DTYP, "Soft Channel")
 	field( EGU,  "ns" )
 	field( PINI, "YES" )
@@ -12,7 +12,7 @@ record( longout, "$(P)$(R)MSGDLY" )
 
 record( longin, "$(P)$(R)MSGDLY_RBV" )
 {
-    field( DESC, "Message delay in ns (RBV) (5.3846153908 ns/count)")
+    field( DESC, "Message delay in ns")
     field( DTYP, "Soft Channel")
 	field( EGU,  "ns" )
 	field( INP,  "$(P)$(R)MSGDLY:CNTS2NS CP MS" )
