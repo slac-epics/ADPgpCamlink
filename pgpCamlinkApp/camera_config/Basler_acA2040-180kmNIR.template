@@ -492,9 +492,10 @@ record( longout, "$(P)$(R)CLInterlineDelay" )
 record( mbbo, "$(P)$(R)BaslerCLConfig" )
 {
 	field( DOL,  "1" )
+	field( OMSL, "supervisory" )
 	field( DESC, "Camera Link configuration" )
 	field( DTYP, "stream" )
-	field( OUT,  "@Basler.proto GetUInt32(\\x00,\\x00,\\x07,\\x84) $(PORT).SER" )
+	field( OUT,  "@Basler.proto SetUInt32(\\x00,\\x00,\\x07,\\x84) $(PORT).SER" )
 	field( ZRVL, 1 )
 	field( ONVL, 2 )
 	field( TWVL, 3 )
@@ -529,6 +530,88 @@ record( mbbi, "$(P)$(R)BaslerCLConfig_RBV" )
 	field( PINI, "YES" )
 }
 
+record( fanout, "$(P)$(R)BaslerCLModeFanout" )
+{
+	field( SELL, "$(P)$(R)BaslerCLConfig_RBV CPP" )
+	field( SELM, "Specified" )
+	field( LNK0, "$(P)$(R)BaslerCLModeSeqBase" )
+	field( LNK1, "$(P)$(R)BaslerCLModeSeqMedium" )
+	field( LNK2, "$(P)$(R)BaslerCLModeSeqFull" )
+	field( LNK3, "" )
+	field( LNK4, "$(P)$(R)BaslerCLModeSeqDeca" )
+}
+
+record( seq, "$(P)$(R)BaslerCLModeSeqBase" )
+{
+	#	First stop acquisition triggers
+	field( DLY0, "0" ) field( DOL0, "0" ) field( LNK0, "$(P)$(R)Acquire  PP NMS" )
+	field( SCAN, "Passive" )
+
+	field( DESC, "Base Mode: 12 bits, 2 taps" )
+	field( DLY1, "1" ) field( DOL1, "12") field( LNK1, "$(P)$(R)BaslerBitsPerPixel PP NMS" )
+	field( DLY2, "1" ) field( DOL2, "2" ) field( LNK2, "$(P)$(R)PixelFormat PP NMS" )
+	field( DLY3, "1" ) field( DOL3, "12") field( LNK3, "$(P)$(R)PixelSize PP NMS" )
+	field( DLY4, "1" ) field( DOL4, "1" ) field( LNK4, "$(P)$(R)CLTapGeometry PP NMS" )
+	field( DLY5, "1" ) field( DOL5, "1" ) field( LNK5, "$(P)$(R)CLPixelClock PP NMS" )
+	field( DLY6, "0" ) field( DOL6, "3" ) field( LNK6, "$(P)$(R)CamlinkDataMode" )
+	field( DLY7, "0" ) field( DOL7, "0" ) field( LNK7, "$(P)$(R)CamlinkLinkMode" )
+	field( DLY8, "0" ) field( DOL8, "2" ) field( LNK8, "$(P)$(R)CamlinkHTap" )
+	field( DLY9, "0" ) field( DOL9, "0" ) field( LNK9, "$(PGP):Ch$(PGP_LANE):Feb$(PGP_LANE):ClinkDecaMode" )
+}
+
+record( seq, "$(P)$(R)BaslerCLModeSeqMedium" )
+{
+	#	First stop acquisition triggers
+	field( DLY0, "0" ) field( DOL0, "0" ) field( LNK0, "$(P)$(R)Acquire  PP NMS" )
+	field( SCAN, "Passive" )
+
+	field( DESC, "Medium Mode: 12 bits, 4 taps" )
+	field( DLY1, "1" ) field( DOL1, "12") field( LNK1, "$(P)$(R)BaslerBitsPerPixel PP NMS" )
+	field( DLY2, "1" ) field( DOL2, "2" ) field( LNK2, "$(P)$(R)PixelFormat PP NMS" )
+	field( DLY3, "1" ) field( DOL3, "12") field( LNK3, "$(P)$(R)PixelSize PP NMS" )
+	field( DLY4, "1" ) field( DOL4, "4" ) field( LNK4, "$(P)$(R)CLTapGeometry PP NMS" )
+	field( DLY5, "1" ) field( DOL5, "1" ) field( LNK5, "$(P)$(R)CLPixelClock PP NMS" )
+	field( DLY6, "0" ) field( DOL6, "3" ) field( LNK6, "$(P)$(R)CamlinkDataMode" )
+	field( DLY7, "0" ) field( DOL7, "2" ) field( LNK7, "$(P)$(R)CamlinkLinkMode" )
+	field( DLY8, "0" ) field( DOL8, "4" ) field( LNK8, "$(P)$(R)CamlinkHTap" )
+	field( DLY9, "0" ) field( DOL9, "0" ) field( LNK9, "$(PGP):Ch$(PGP_LANE):Feb$(PGP_LANE):ClinkDecaMode" )
+}
+
+record( seq, "$(P)$(R)BaslerCLModeSeqFull" )
+{
+	#	First stop acquisition triggers
+	field( DLY0, "0" ) field( DOL0, "0" ) field( LNK0, "$(P)$(R)Acquire  PP NMS" )
+	field( SCAN, "Passive" )
+
+	field( DESC, "Full Mode: 8 bits, 8 taps" )
+	field( DLY1, "1" ) field( DOL1, "8" ) field( LNK1, "$(P)$(R)BaslerBitsPerPixel PP NMS" )
+	field( DLY2, "1" ) field( DOL2, "0" ) field( LNK2, "$(P)$(R)PixelFormat PP NMS" )
+	field( DLY3, "1" ) field( DOL3, "8" ) field( LNK3, "$(P)$(R)PixelSize PP NMS" )
+	field( DLY4, "1" ) field( DOL4, "7" ) field( LNK4, "$(P)$(R)CLTapGeometry PP NMS" )
+	field( DLY5, "1" ) field( DOL5, "1" ) field( LNK5, "$(P)$(R)CLPixelClock PP NMS" )
+	field( DLY6, "0" ) field( DOL6, "1" ) field( LNK6, "$(P)$(R)CamlinkDataMode" )
+	field( DLY7, "0" ) field( DOL7, "3" ) field( LNK7, "$(P)$(R)CamlinkLinkMode" )
+	field( DLY8, "0" ) field( DOL8, "8" ) field( LNK8, "$(P)$(R)CamlinkHTap" )
+	field( DLY9, "0" ) field( DOL9, "0" ) field( LNK9, "$(PGP):Ch$(PGP_LANE):Feb$(PGP_LANE):ClinkDecaMode" )
+}
+
+record( seq, "$(P)$(R)BaslerCLModeSeqDeca" )
+{
+	#	First stop acquisition triggers
+	field( DLY0, "0" ) field( DOL0, "0" ) field( LNK0, "$(P)$(R)Acquire  PP NMS" )
+	field( SCAN, "Passive" )
+
+	field( DESC, "Deca Mode: 10 bits, 8 taps" )
+	field( DLY1, "1" ) field( DOL1, "10") field( LNK1, "$(P)$(R)BaslerBitsPerPixel PP NMS" )
+	field( DLY2, "1" ) field( DOL2, "1" ) field( LNK2, "$(P)$(R)PixelFormat PP NMS" )
+	field( DLY3, "1" ) field( DOL3, "10") field( LNK3, "$(P)$(R)PixelSize PP NMS" )
+	field( DLY4, "1" ) field( DOL4, "6" ) field( LNK4, "$(P)$(R)CLTapGeometry PP NMS" )
+	field( DLY5, "1" ) field( DOL5, "1" ) field( LNK5, "$(P)$(R)CLPixelClock PP NMS" )
+	field( DLY6, "0" ) field( DOL6, "2" ) field( LNK6, "$(P)$(R)CamlinkDataMode" )
+	field( DLY7, "0" ) field( DOL7, "4" ) field( LNK7, "$(P)$(R)CamlinkLinkMode" )
+	field( DLY8, "0" ) field( DOL8, "8" ) field( LNK8, "$(P)$(R)CamlinkHTap" )
+	field( DLY9, "0" ) field( DOL9, "1" ) field( LNK9, "$(PGP):Ch$(PGP_LANE):Feb$(PGP_LANE):ClinkDecaMode" )
+}
 
 # 4.3 Analog Control Registers
 
@@ -1132,7 +1215,7 @@ record( bi, "$(P)$(R)TrigSwFrameStart_RBV" )
 {
 	field( DESC, "Trigger Software Frame Start" )
 	field( DTYP, "stream" )
-	field( INP,  "@Basler.proto SetUInt32(\\x00,\\x04,\\x02,\\x24) $(PORT).SER" )
+	field( INP,  "@Basler.proto GetUInt32(\\x00,\\x04,\\x02,\\x24) $(PORT).SER" )
 	field( ZNAM, "OFF" )
 	field( ONAM, "ON"  )
 }
