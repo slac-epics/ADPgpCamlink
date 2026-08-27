@@ -7,6 +7,8 @@
 #include <rogue/interfaces/stream/FrameIterator.h>
 #include <rogue/interfaces/stream/FrameLock.h>
 
+extern int DEBUG_PGPCL_MASKBIT7;
+
 int clSerialSlaveDebug = 0;
 
 ClSerialSlave::ClSerialSlave()
@@ -247,6 +249,8 @@ void ClSerialSlave::acceptFrame( std::shared_ptr<rogue::interfaces::stream::Fram
         uint32_t    uartData;
         fromFrame( it, 4, &uartData );
         unsigned char   cData = uartData;
+        if ( DEBUG_PGPCL_MASKBIT7 )
+            cData &= 0x7F;
         addToBuffer( cData );
 
         if ( 0 )
