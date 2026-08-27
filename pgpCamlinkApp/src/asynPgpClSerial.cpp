@@ -370,6 +370,15 @@ asynStatus asynPgpClSerial::readOctet(
             {
                 *eomReason |= ASYN_EOM_EOS;
             }
+
+            // For binary protocols with no configured EOS (inTerminator=""),
+            // the inter-character timeout in ClSerialSlave is the
+            // end-of-message signal. Mark message complete so StreamDevice
+            // does not keep reading and eventually time out.
+            if ( m_inputEosLenOctet == 0 && !m_SerDev.wasEosFound() )
+            {
+                *eomReason |= ASYN_EOM_EOS;
+            }
         }
 
         // Null-terminate if there's room (convenience, doesn't affect binary)
