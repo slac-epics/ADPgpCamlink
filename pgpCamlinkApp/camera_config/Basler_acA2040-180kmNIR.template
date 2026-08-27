@@ -537,7 +537,7 @@ record( fanout, "$(P)$(R)BaslerCLModeFanout" )
 	field( LNK0, "$(P)$(R)BaslerCLModeSeqBase" )
 	field( LNK1, "$(P)$(R)BaslerCLModeSeqMedium" )
 	field( LNK2, "$(P)$(R)BaslerCLModeSeqFull" )
-	field( LNK3, "" )
+	field( LNK3, "$(P)$(R)BaslerCLModeSeqMedium" )
 	field( LNK4, "$(P)$(R)BaslerCLModeSeqDeca" )
 }
 
