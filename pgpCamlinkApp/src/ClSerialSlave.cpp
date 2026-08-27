@@ -78,7 +78,11 @@ int ClSerialSlave::readBytes( unsigned char * buffer, double timeout, size_t nBy
     while ( (pBufNext - buffer) < (int)nBytesReq )
     {
         nBytesRead = pBufNext - buffer;
-        int nBytesToRead = m_replyBuffer.size();
+        int nBytesToRead;
+        {
+            std::lock_guard<std::mutex> lockBuffer( m_bufferLock );
+            nBytesToRead = m_replyBuffer.size();
+        }
         if ( nBytesToRead > (int)(nBytesReq - nBytesRead) )
             nBytesToRead = (int)(nBytesReq - nBytesRead);
 
@@ -136,8 +140,11 @@ int ClSerialSlave::readBytes( unsigned char * buffer, double timeout, size_t nBy
 
         std::cv_status cvStatus = m_replyReady.wait_for( lockIt, waitTimeout );
 
-        if ( m_replyBuffer.size() > 0 )
-            continue;
+        {
+            std::lock_guard<std::mutex> lockBuffer( m_bufferLock );
+            if ( m_replyBuffer.size() > 0 )
+                continue;
+        }
 
         if ( cvStatus == std::cv_status::timeout )
         {
