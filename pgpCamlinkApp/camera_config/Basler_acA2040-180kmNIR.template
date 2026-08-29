@@ -532,7 +532,7 @@ record( mbbi, "$(P)$(R)BaslerCLConfig_RBV" )
 
 record( fanout, "$(P)$(R)BaslerCLModeFanout" )
 {
-	field( SELL, "$(P)$(R)BaslerCLConfig_RBV CPP" )
+	field( SELL, "$(P)$(R)BaslerCLConfig CPP" )
 	field( SELM, "Specified" )
 	field( LNK0, "$(P)$(R)BaslerCLModeSeqBase" )
 	field( LNK1, "$(P)$(R)BaslerCLModeSeqMedium" )
