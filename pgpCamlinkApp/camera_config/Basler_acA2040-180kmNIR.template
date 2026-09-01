@@ -494,19 +494,17 @@ record( mbbo, "$(P)$(R)BaslerCLConfig" )
 	field( DOL,  "1" )
 	field( OMSL, "supervisory" )
 	field( DESC, "Camera Link configuration" )
-	field( DTYP, "stream" )
-	field( OUT,  "@Basler.proto SetUInt32(\\x00,\\x00,\\x07,\\x84) $(PORT).SER" )
+	field( DTYP, "Soft Channel" )
 	field( ZRVL, 1 )
 	field( ONVL, 2 )
-	field( TWVL, 3 )
-	field( THVL, 4 )
-	field( FRVL, 5 )
+	#field( TWVL, 3 )
+	#field( THVL, 4 )
+	#field( FRVL, 5 )
 	field( ZRST, "Base" )      # The camera will use the base Camera Link configuration.
 	field( ONST, "Medium" )    # The camera will use the medium Camera Link configuration.
-	field( TWST, "Full" )      # The camera will use the full Camera Link configuration.
-	field( THST, "DualBase" )  # The camera will use the dual base Camera Link configuration.
-	field( FRST, "Deca" )      # The camera will use the deca Camera Link configuration.
-	field( FLNK, "$(P)$(R)BaslerCLConfig_RBV" )
+	#field( TWST, "Full" )      # The camera will use the full Camera Link configuration.
+	#field( THST, "DualBase" )  # The camera will use the dual base Camera Link configuration.
+	#field( FRST, "Deca" )      # The camera will use the deca Camera Link configuration.
 	field( SCAN, "Passive" )
 	field( PINI, "YES" )
 }
@@ -518,14 +516,14 @@ record( mbbi, "$(P)$(R)BaslerCLConfig_RBV" )
 	field( INP,  "@Basler.proto GetUInt32(\\x00,\\x00,\\x07,\\x84) $(PORT).SER" )
 	field( ZRVL, 1 )
 	field( ONVL, 2 )
-	field( TWVL, 3 )
-	field( THVL, 4 )
-	field( FRVL, 5 )
+	#field( TWVL, 3 )
+	#field( THVL, 4 )
+	#field( FRVL, 5 )
 	field( ZRST, "Base" )      # The camera will use the base Camera Link configuration.
 	field( ONST, "Medium" )    # The camera will use the medium Camera Link configuration.
-	field( TWST, "Full" )      # The camera will use the full Camera Link configuration.
-	field( THST, "DualBase" )  # The camera will use the dual base Camera Link configuration.
-	field( FRST, "Deca" )      # The camera will use the deca Camera Link configuration.
+	#field( TWST, "Full" )      # The camera will use the full Camera Link configuration.
+	#field( THST, "DualBase" )  # The camera will use the dual base Camera Link configuration.
+	#field( FRST, "Deca" )      # The camera will use the deca Camera Link configuration.
 	field( SCAN, "Passive" )
 	field( PINI, "YES" )
 }
@@ -536,9 +534,9 @@ record( fanout, "$(P)$(R)BaslerCLModeFanout" )
 	field( SELM, "Specified" )
 	field( LNK0, "$(P)$(R)BaslerCLModeSeqBase" )
 	field( LNK1, "$(P)$(R)BaslerCLModeSeqMedium" )
-	field( LNK2, "$(P)$(R)BaslerCLModeSeqFull" )
-	field( LNK3, "$(P)$(R)BaslerCLModeSeqMedium" )
-	field( LNK4, "$(P)$(R)BaslerCLModeSeqDeca" )
+	#field( LNK2, "$(P)$(R)BaslerCLModeSeqFull" )
+	#field( LNK3, "$(P)$(R)BaslerCLModeSeqMedium" )
+	#field( LNK4, "$(P)$(R)BaslerCLModeSeqDeca" )
 }
 
 record( seq, "$(P)$(R)BaslerCLModeSeqBase" )
@@ -548,15 +546,16 @@ record( seq, "$(P)$(R)BaslerCLModeSeqBase" )
 	field( SCAN, "Passive" )
 
 	field( DESC, "Base Mode: 12 bits, 2 taps" )
-	field( DLY1, "1" ) field( DOL1, "2" ) field( LNK1, "$(P)$(R)BaslerBitsPerPixel PP NMS" )
-	field( DLY2, "1" ) field( DOL2, "2" ) field( LNK2, "$(P)$(R)PixelFormat PP NMS" )
-	field( DLY3, "1" ) field( DOL3, "5" ) field( LNK3, "$(P)$(R)PixelSize PP NMS" )
-	field( DLY4, "1" ) field( DOL4, "1" ) field( LNK4, "$(P)$(R)CLTapGeometry PP NMS" )
-	field( DLY5, "1" ) field( DOL5, "5" ) field( LNK5, "$(P)$(R)CLPixelClock PP NMS" )
+	field( DLY1, "0.1" ) field( DOL1, "2" ) field( LNK1, "$(P)$(R)BaslerBitsPerPixel PP NMS" )
+	field( DLY2, "0.1" ) field( DOL2, "2" ) field( LNK2, "$(P)$(R)PixelFormat PP NMS" )
+	field( DLY3, "0.1" ) field( DOL3, "5" ) field( LNK3, "$(P)$(R)PixelSize PP NMS" )
+	field( DLY4, "0.1" ) field( DOL4, "1" ) field( LNK4, "$(P)$(R)CLTapGeometry PP NMS" )
+	field( DLY5, "0.1" ) field( DOL5, "5" ) field( LNK5, "$(P)$(R)CLPixelClock PP NMS" )
 	field( DLY6, "0" ) field( DOL6, "3" ) field( LNK6, "$(P)$(R)CamlinkDataMode PP NMS" )
 	field( DLY7, "0" ) field( DOL7, "1" ) field( LNK7, "$(P)$(R)CamlinkLinkMode PP NMS" )
 	field( DLY8, "0" ) field( DOL8, "2" ) field( LNK8, "$(P)$(R)CamlinkHTap PP NMS" )
 	field( DLY9, "0" ) field( DOL9, "0" ) field( LNK9, "$(PGP):Ch$(PGP_LANE):Feb$(PGP_LANE):ClinkDecaMode PP NMS" )
+	field( FLNK, "$(P)$(R)BaslerCLConfig_RBV" )
 }
 
 record( seq, "$(P)$(R)BaslerCLModeSeqMedium" )
@@ -566,15 +565,16 @@ record( seq, "$(P)$(R)BaslerCLModeSeqMedium" )
 	field( SCAN, "Passive" )
 
 	field( DESC, "Medium Mode: 12 bits, 4 taps" )
-	field( DLY1, "1" ) field( DOL1, "2" ) field( LNK1, "$(P)$(R)BaslerBitsPerPixel PP NMS" )
-	field( DLY2, "1" ) field( DOL2, "2" ) field( LNK2, "$(P)$(R)PixelFormat PP NMS" )
-	field( DLY3, "1" ) field( DOL3, "5" ) field( LNK3, "$(P)$(R)PixelSize PP NMS" )
-	field( DLY4, "1" ) field( DOL4, "4" ) field( LNK4, "$(P)$(R)CLTapGeometry PP NMS" )
-	field( DLY5, "1" ) field( DOL5, "4" ) field( LNK5, "$(P)$(R)CLPixelClock PP NMS" )
+	field( DLY1, "0.1" ) field( DOL1, "2" ) field( LNK1, "$(P)$(R)BaslerBitsPerPixel PP NMS" )
+	field( DLY2, "0.1" ) field( DOL2, "2" ) field( LNK2, "$(P)$(R)PixelFormat PP NMS" )
+	field( DLY3, "0.1" ) field( DOL3, "5" ) field( LNK3, "$(P)$(R)PixelSize PP NMS" )
+	field( DLY4, "0.1" ) field( DOL4, "4" ) field( LNK4, "$(P)$(R)CLTapGeometry PP NMS" )
+	field( DLY5, "0.1" ) field( DOL5, "4" ) field( LNK5, "$(P)$(R)CLPixelClock PP NMS" )
 	field( DLY6, "0" ) field( DOL6, "3" ) field( LNK6, "$(P)$(R)CamlinkDataMode PP NMS" )
 	field( DLY7, "0" ) field( DOL7, "2" ) field( LNK7, "$(P)$(R)CamlinkLinkMode PP NMS" )
 	field( DLY8, "0" ) field( DOL8, "4" ) field( LNK8, "$(P)$(R)CamlinkHTap PP NMS" )
 	field( DLY9, "0" ) field( DOL9, "0" ) field( LNK9, "$(PGP):Ch$(PGP_LANE):Feb$(PGP_LANE):ClinkDecaMode PP NMS" )
+	field( FLNK, "$(P)$(R)BaslerCLConfig_RBV" )
 }
 
 record( seq, "$(P)$(R)BaslerCLModeSeqFull" )
@@ -584,15 +584,16 @@ record( seq, "$(P)$(R)BaslerCLModeSeqFull" )
 	field( SCAN, "Passive" )
 
 	field( DESC, "Full Mode: 8 bits, 8 taps" )
-	field( DLY1, "1" ) field( DOL1, "0" ) field( LNK1, "$(P)$(R)BaslerBitsPerPixel PP NMS" )
-	field( DLY2, "1" ) field( DOL2, "0" ) field( LNK2, "$(P)$(R)PixelFormat PP NMS" )
-	field( DLY3, "1" ) field( DOL3, "3" ) field( LNK3, "$(P)$(R)PixelSize PP NMS" )
-	field( DLY4, "1" ) field( DOL4, "6" ) field( LNK4, "$(P)$(R)CLTapGeometry PP NMS" )
-	field( DLY5, "1" ) field( DOL5, "5" ) field( LNK5, "$(P)$(R)CLPixelClock PP NMS" )
+	field( DLY1, "0.1" ) field( DOL1, "0" ) field( LNK1, "$(P)$(R)BaslerBitsPerPixel PP NMS" )
+	field( DLY2, "0.1" ) field( DOL2, "0" ) field( LNK2, "$(P)$(R)PixelFormat PP NMS" )
+	field( DLY3, "0.1" ) field( DOL3, "3" ) field( LNK3, "$(P)$(R)PixelSize PP NMS" )
+	field( DLY4, "0.1" ) field( DOL4, "6" ) field( LNK4, "$(P)$(R)CLTapGeometry PP NMS" )
+	field( DLY5, "0.1" ) field( DOL5, "5" ) field( LNK5, "$(P)$(R)CLPixelClock PP NMS" )
 	field( DLY6, "0" ) field( DOL6, "1" ) field( LNK6, "$(P)$(R)CamlinkDataMode PP NMS" )
 	field( DLY7, "0" ) field( DOL7, "3" ) field( LNK7, "$(P)$(R)CamlinkLinkMode PP NMS" )
 	field( DLY8, "0" ) field( DOL8, "8" ) field( LNK8, "$(P)$(R)CamlinkHTap PP NMS" )
 	field( DLY9, "0" ) field( DOL9, "0" ) field( LNK9, "$(PGP):Ch$(PGP_LANE):Feb$(PGP_LANE):ClinkDecaMode PP NMS" )
+	field( FLNK, "$(P)$(R)BaslerCLConfig_RBV" )
 }
 
 record( seq, "$(P)$(R)BaslerCLModeSeqDeca" )
@@ -602,15 +603,16 @@ record( seq, "$(P)$(R)BaslerCLModeSeqDeca" )
 	field( SCAN, "Passive" )
 
 	field( DESC, "Deca Mode: 10 bits, 8 taps" )
-	field( DLY1, "1" ) field( DOL1, "1" ) field( LNK1, "$(P)$(R)BaslerBitsPerPixel PP NMS" )
-	field( DLY2, "1" ) field( DOL2, "1" ) field( LNK2, "$(P)$(R)PixelFormat PP NMS" )
-	field( DLY3, "1" ) field( DOL3, "4" ) field( LNK3, "$(P)$(R)PixelSize PP NMS" )
-	field( DLY4, "1" ) field( DOL4, "6" ) field( LNK4, "$(P)$(R)CLTapGeometry PP NMS" )
-	field( DLY5, "1" ) field( DOL5, "5" ) field( LNK5, "$(P)$(R)CLPixelClock PP NMS" )
+	field( DLY1, "0.1" ) field( DOL1, "1" ) field( LNK1, "$(P)$(R)BaslerBitsPerPixel PP NMS" )
+	field( DLY2, "0.1" ) field( DOL2, "1" ) field( LNK2, "$(P)$(R)PixelFormat PP NMS" )
+	field( DLY3, "0.1" ) field( DOL3, "4" ) field( LNK3, "$(P)$(R)PixelSize PP NMS" )
+	field( DLY4, "0.1" ) field( DOL4, "6" ) field( LNK4, "$(P)$(R)CLTapGeometry PP NMS" )
+	field( DLY5, "0.1" ) field( DOL5, "5" ) field( LNK5, "$(P)$(R)CLPixelClock PP NMS" )
 	field( DLY6, "0" ) field( DOL6, "2" ) field( LNK6, "$(P)$(R)CamlinkDataMode PP NMS" )
 	field( DLY7, "0" ) field( DOL7, "4" ) field( LNK7, "$(P)$(R)CamlinkLinkMode PP NMS" )
 	field( DLY8, "0" ) field( DOL8, "8" ) field( LNK8, "$(P)$(R)CamlinkHTap PP NMS" )
 	field( DLY9, "0" ) field( DOL9, "1" ) field( LNK9, "$(PGP):Ch$(PGP_LANE):Feb$(PGP_LANE):ClinkDecaMode PP NMS" )
+	field( FLNK, "$(P)$(R)BaslerCLConfig_RBV" )
 }
 
 # 4.3 Analog Control Registers
