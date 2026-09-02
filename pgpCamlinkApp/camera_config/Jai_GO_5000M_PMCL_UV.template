@@ -40,7 +40,7 @@ record( longout, "$(P)$(R)CamlinkBaudRate" )
 
 record( mbbo, "$(P)$(R)CamlinkDataMode" )
 {
-	field( DOL,  "2" ) # 10 Bit
+	field( DOL,  "3" ) # 12 Bit
 	field( ONSV, "MINOR" )
 	field( THSV, "MINOR" )
 	field( PINI, "YES" )
@@ -56,7 +56,7 @@ record( mbbo, "$(P)$(R)CamlinkFrameMode" )
 
 record( mbbo, "$(P)$(R)CamlinkLinkMode" )
 {
-	field( DOL,  "4" )
+	field( DOL,  "2" )
 	field( TWSV, "MINOR" )
 	field( ZRSV, "MINOR" )
 	field( PINI, "YES" )
