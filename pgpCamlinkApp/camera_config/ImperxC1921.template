@@ -111,6 +111,7 @@ record( mbbo, "$(P)$(R)CamMode" )
 	field( TWVL, "2" ) field( TWST, "Medium" )
 	field( THVL, "3" ) field( THST, "Full" )
 	field( FRVL, "4" ) field( FRST, "DECA" )
+	field( PINI, "YES" )
 	field( FLNK, "$(P)$(R)CamModeFanout" )
 	info( autosaveFields, "VAL" )
 }
