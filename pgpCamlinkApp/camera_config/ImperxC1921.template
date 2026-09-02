@@ -111,13 +111,13 @@ record( mbbo, "$(P)$(R)CamMode" )
 	field( TWVL, "2" ) field( TWST, "Medium" )
 	field( THVL, "3" ) field( THST, "Full" )
 	field( FRVL, "4" ) field( FRST, "DECA" )
-  field( PINI, "YES" )
+	field( FLNK, "$(P)$(R)CamModeFanout" )
 	info( autosaveFields, "VAL" )
 }
 # Select fanout off CamMode to a sequence record for each supported CamMode.
 record( fanout, "$(P)$(R)CamModeFanout" )
 {
-	field( SELL, "$(P)$(R)CamMode CP" )
+	field( SELL, "$(P)$(R)CamMode NPP NMS" )
 	field( SELM, "Specified" )
 	field( LNK0, "$(P)$(R)SeqCamModeBase PP" )
 	field( LNK1, "$(P)$(R)SeqCamModeBase3 PP" )
