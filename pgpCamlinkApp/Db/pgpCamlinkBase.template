@@ -961,13 +961,13 @@ record( fanout, "$(CAM):TrigTimer" )
 	#field( SELL, "$(PGP):Ch$(PGP_LANE):PgpMon:RxRemLinkReady_RBV.RVAL CP MS" )
     field( SELL, "$(PGP):Ch$(PGP_LANE):Feb$(PGP_LANE):Running.RVAL CP MS" )
 	field( SELM, "Specified" )
-	field( LNK0, "$(CAM):TimerSet" )
+	field( LNK0, "$(CAM):TimerSet PP" )
 }
 
 record(calc, "$(CAM):Timer") {
     field(DESC, "Countdown Timer")
     field(SCAN, "1 second")
-    field(INPA, "$(P):Timer")
+    field(INPA, "$(CAM):Timer")
     field(CALC, "A>0?A-1:0")
     field(EGU,  "sec")
     field(HOPR, "3600")
@@ -978,8 +978,8 @@ record(ao, "$(CAM):TimerSet") {
     field(DESC, "Set Timer Value")
     field(PINI, "YES")
     field(SCAN, "Passive")
-    field(OUT,  "$(P):Timer PP")
-    field(DOL,  "45")
+    field(OUT,  "$(CAM):Timer")
+    field(DOL,  "120")
     field(OMSL, "closed_loop")
     field(EGU,  "sec")
     field(DRVH, "3600")
@@ -988,7 +988,7 @@ record(ao, "$(CAM):TimerSet") {
 
 record(calc, "$(CAM):TimerExpired") {
     field(DESC, "Check Timer Expiration")
-    field(INPA, "$(P):Timer CP MS")
+    field(INPA, "$(CAM):Timer CP MS")
     field(INPB, "$(PGP):Ch$(PGP_LANE):Feb$(PGP_LANE):Running.RVAL")
     field(CALC, "(A=0 && B=0)?1:0")
 }
@@ -1020,9 +1020,6 @@ record( seq, "$(CAM):ResetFebState" )
 	field( DLY4, "10.0" ) field( DOL4, "0" ) field( LNK4, "$(PGP):SeqTpgMiniTiming PP NMS" )
 	field( DLY5, "10.0" ) field( DOL5, "2" ) field( LNK5, "$(PGP):SeqXpmMiniTiming PP NMS" )
 
-    # Check FEB state again
-	field( DLY6, "10.0" ) field( DOL6, "1" ) field( LNK6, "$(CAM):CheckFebState.PROC PP NMS" )
-
     # Reset the timer
-	field( DLY7, "0.0" )  field( DOL7, "1" ) field( LNK7, "$(CAM):TimerSet.PROC PP NMS" )
+	field( DLY6, "0.0" )  field( DOL6, "1" ) field( LNK6, "$(CAM):TimerSet.PROC PP NMS" )
 }
