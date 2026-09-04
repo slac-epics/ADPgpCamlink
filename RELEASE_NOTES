@@ -2,6 +2,20 @@
 # SLAC RELEASE_NOTES
 #
 
+R3.2.0-4.0.0  2026-09-03 Michael Skoufis
+    Add analog gain PVs for Imperx (1x-251x or 0-48dB)
+    Disable FEB auto-recovery logic
+    Turn off Master Enable register by default for the Rogue IOC
+    Rework Jai GO gain user-input from % (per-cent) change to x (mult.) change
+    Add seq records to Basler to switch to all CL modes (only Medium/Base currently work)
+    Additional changes to serial driver to process EOS terminator or the lack thereof
+    Introduce maskbit 7 logic again from legacy driver
+    Updates in the Basler template
+    Updates in the Jai GO template
+    Updates in the Imperx C1921 template
+    Increase read timeout for Imperx in .proto
+    Add TREF alias for MSGDLY
+    
 R3.2.0-3.0.0  2026-06-29 Michael Skoufis
     Add analog gain PVs for Imperx (1x-251x or 0-48dB)
     Add message delay PV (in nanoseconds)
