@@ -132,7 +132,7 @@ file boolDevRogue.template
     {
         NAME    = "Trigger:MasterEnable",
         PATH    = "ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TriggerEventManager.TriggerEventBuffer[$(L)].MasterEnable"
-        DOL     = "1"
+        DOL     = "0"
         PINI    = "YES"
         SAVE    = ""
         SCAN    = "\$(SCAN=1 second)"

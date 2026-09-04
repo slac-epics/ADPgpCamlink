@@ -31,65 +31,76 @@ class pgpClSerialDev
 {
 public:		//	Public member functions
 
-	///	Constructor
-	pgpClSerialDev(	unsigned int				board,
-					unsigned int				channel	);
+///	Constructor
+    pgpClSerialDev( unsigned int board, unsigned int channel );
 
-	/// Destructor
-	virtual ~pgpClSerialDev();
+    /// Destructor
+    virtual ~pgpClSerialDev();
 
-	int connect( );
-	void disconnect( );
+    int connect();
+    void disconnect();
 
-	const std::string	&	getName( ) const
-	{
-		return m_devName;
-	}
+    const std::string & getName() const
+    {
+        return m_devName;
+    }
 
-	int readBytes( unsigned char * buffer, double timeout, size_t nBytes );
+    int readBytes( unsigned char * buffer, double timeout, size_t nBytes );
 
-	int sendBytes( const unsigned char * buffer, size_t nBytes );
+    int sendBytes( const unsigned char * buffer, size_t nBytes );
 
-	/// sendString function treats zero as the end of the string.
-	int sendString( const char * toSend )
-	{
-		const unsigned char * buffer	= (const unsigned char *) toSend;
-		return sendBytes( buffer, strlen(toSend) );
-	}
+    /// sendString function treats zero as the end of the string.
+    int sendString( const char * toSend )
+    {
+        const unsigned char * buffer = (const unsigned char *) toSend;
+        return sendBytes( buffer, strlen(toSend) );
+    }
 
-	int sendString( const std::string	& toSend )
-	{
-		return sendBytes( (const unsigned char *) toSend.c_str(), toSend.size() );
-	}
+    int sendString( const std::string & toSend )
+    {
+        return sendBytes( (const unsigned char *) toSend.c_str(), toSend.size() );
+    }
 
-	void flush( )
-	{
-		m_pClSerialRx->flush();
-	}
+    void flush()
+    {
+        m_pClSerialRx->flush();
+    }
 
-	size_t	getNumAvailBytes( ) const
-	{
-		//return m_ReplyBuffer.size();
-		return m_pClSerialRx->getNumAvailBytes();
-	}
+    size_t getNumAvailBytes() const
+    {
+        return m_pClSerialRx->getNumAvailBytes();
+    }
+
+    // *** ADD: EOS pass-through methods ***
+    void setInputEos( const char *eos, int eosLen )
+    {
+        if ( m_pClSerialRx )
+            m_pClSerialRx->setInputEos( eos, eosLen );
+    }
+
+    bool wasEosFound() const
+    {
+        if ( m_pClSerialRx )
+            return m_pClSerialRx->wasEosFound();
+        return false;
+    }
+
+    void setInterCharTimeout( int ms )
+    {
+        if ( m_pClSerialRx )
+            m_pClSerialRx->setInterCharTimeout( ms );
+    }
 
 private:
-	//	Private member variables
-	unsigned int		m_board;
-	unsigned int		m_lane;
-	bool				m_fConnected;
-	std::string			m_devName;
-	epicsMutexId		m_devLock;
+    unsigned int        m_board;
+    unsigned int        m_lane;
+    bool                m_fConnected;
+    std::string         m_devName;
+    epicsMutexId        m_devLock;
 
-	// lane is always 0 for first camera and 1 for 2nd.
-	// Each lane has 4 channels
-	// Channel 0: SRPv3 (serial register protocol)
-	// Channel 1: Image Stream
-	// Channel 2: Camlink Serial I/O
-	// Channel 3: Unused
-	ClSerialSlavePtr						m_pClSerialRx;
-	ClSerialMasterPtr						m_pClSerialTx;
-	rogue::hardware::axi::AxiStreamDmaPtr	m_pDataChan;
+    ClSerialSlavePtr                        m_pClSerialRx;
+    ClSerialMasterPtr                       m_pClSerialTx;
+    rogue::hardware::axi::AxiStreamDmaPtr   m_pDataChan;
 };
 
 #endif	//	pgpClSerialDev_H

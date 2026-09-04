@@ -138,12 +138,42 @@ file longDevRogue.template
 		L		= "0"
 	}
 	{
-		NAME	= "MSGDLY",
+		NAME	= "MSGDLY:CNTS",
 		PATH	= "ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TimingFrameRx.MsgDelay"
 		DESC	= "LCLS-II timing frame pipeline delay"
 		SCAN	= "\$(SCAN=1 second)"
 		L		= "0"
 	}
+}
+
+file calc.template
+{
+	{
+        DESC    = "Message Delay in nanoseconds"
+		NAME	= "MSGDLY:CNTS2NS",
+		INPA	= "\$(P)\$(R)MSGDLY:CNTS_RBV CP MS"
+        CALC    = "FLOOR(A*1000/185.7142855)"
+        EGU     = "ns"
+		SAVE	= "HHSV HIGH HIHI HSV LLSV LOLO LOW LSV EGU DESC"
+	}
+}
+
+file calcout.template
+{
+	{
+        DESC    = "Message Delay in counts"
+		NAME	= "MSGDLY:NS2CNTS",
+		INPA	= "\$(P)\$(R)MSGDLY NPP NMS"
+        OUT     = "\$(P)\$(R)MSGDLY:CNTS PP MS"
+        CALC    = "FLOOR(A*185.7142855/1000)"
+        EGU     = "counts"
+		SAVE	= "HHSV HIGH HIHI HSV LLSV LOLO LOW LSV EGU DESC"
+	}
+}
+
+file MessageDelay.template
+{
+	{ P = "\$(P)", R = "\$(R)" }
 }
 
 #       DESC    = "0         1         2         3         "
