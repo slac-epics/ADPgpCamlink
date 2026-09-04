@@ -3,7 +3,6 @@
 #
 
 R3.2.0-4.0.0  2026-09-03 Michael Skoufis
-    Add analog gain PVs for Imperx (1x-251x or 0-48dB)
     Disable FEB auto-recovery logic
     Turn off Master Enable register by default for the Rogue IOC
     Rework Jai GO gain user-input from % (per-cent) change to x (mult.) change
