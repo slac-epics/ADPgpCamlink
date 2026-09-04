@@ -956,42 +956,42 @@ record( calc, "$(P)$(R)BeamRepDur" )
 	info( archiveFields,  "VAL" )
 }
 
-record( fanout, "$(CAM):TrigTimer" )
-{
-	#field( SELL, "$(PGP):Ch$(PGP_LANE):PgpMon:RxRemLinkReady_RBV.RVAL CP MS" )
-    field( SELL, "$(PGP):Ch$(PGP_LANE):Feb$(PGP_LANE):Running.RVAL CP MS" )
-	field( SELM, "Specified" )
-	field( LNK0, "$(CAM):TimerSet" )
-}
-
-record(calc, "$(CAM):Timer") {
-    field(DESC, "Countdown Timer")
-    field(SCAN, "1 second")
-    field(INPA, "$(CAM):Timer")
-    field(CALC, "A>0?A-1:0")
-    field(EGU,  "sec")
-    field(HOPR, "3600")
-    field(LOPR, "0")
-}
-
-record(ao, "$(CAM):TimerSet") {
-    field(DESC, "Set Timer Value")
-    field(PINI, "YES")
-    field(SCAN, "Passive")
-    field(OUT,  "$(CAM):Timer PP")
-    field(DOL,  "120")
-    field(OMSL, "closed_loop")
-    field(EGU,  "sec")
-    field(DRVH, "3600")
-    field(DRVL, "0")
-}
-
-record(calc, "$(CAM):TimerExpired") {
-    field(DESC, "Check Timer Expiration")
-    field(INPA, "$(CAM):Timer CP MS")
-    field(INPB, "$(PGP):Ch$(PGP_LANE):Feb$(PGP_LANE):Running.RVAL")
-    field(CALC, "(A=0 && B=0)?1:0")
-}
+#record( fanout, "$(CAM):TrigTimer" )
+#{
+#	#field( SELL, "$(PGP):Ch$(PGP_LANE):PgpMon:RxRemLinkReady_RBV.RVAL CP MS" )
+#    field( SELL, "$(PGP):Ch$(PGP_LANE):Feb$(PGP_LANE):Running.RVAL CP MS" )
+#	field( SELM, "Specified" )
+#	field( LNK0, "$(CAM):TimerSet" )
+#}
+#
+#record(calc, "$(CAM):Timer") {
+#    field(DESC, "Countdown Timer")
+#    field(SCAN, "1 second")
+#    field(INPA, "$(CAM):Timer")
+#    field(CALC, "A>0?A-1:0")
+#    field(EGU,  "sec")
+#    field(HOPR, "3600")
+#    field(LOPR, "0")
+#}
+#
+#record(ao, "$(CAM):TimerSet") {
+#    field(DESC, "Set Timer Value")
+#    field(PINI, "YES")
+#    field(SCAN, "Passive")
+#    field(OUT,  "$(CAM):Timer PP")
+#    field(DOL,  "120")
+#    field(OMSL, "closed_loop")
+#    field(EGU,  "sec")
+#    field(DRVH, "3600")
+#    field(DRVL, "0")
+#}
+#
+#record(calc, "$(CAM):TimerExpired") {
+#    field(DESC, "Check Timer Expiration")
+#    field(INPA, "$(CAM):Timer CP MS")
+#    field(INPB, "$(PGP):Ch$(PGP_LANE):Feb$(PGP_LANE):Running.RVAL")
+#    field(CALC, "(A=0 && B=0)?1:0")
+#}
 
 #record( fanout, "$(CAM):InitFebReset" )
 #{
