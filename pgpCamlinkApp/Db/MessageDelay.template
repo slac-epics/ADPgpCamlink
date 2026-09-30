@@ -7,7 +7,6 @@ record( longout, "$(P)$(R)MSGDLY" )
     field( VAL,  "0" )
     field( UDFS, "NO_ALARM" )
     field( FLNK, "$(P)$(R)MSGDLY:NS2CNTS" )
-    alias( "$(P)$(R)TREF" )
 	info( autosaveFields, "VAL" )
 }
 
@@ -19,6 +18,5 @@ record( longin, "$(P)$(R)MSGDLY_RBV" )
 	field( INP,  "$(P)$(R)MSGDLY:CNTS2NS CP MS" )
 	field( SCAN, "Passive" )
     field( UDFS, "NO_ALARM" )
-    alias( "$(P)$(R)TREF_RBV" )
 	info( autosaveFields, "VAL" )
 }
