@@ -469,8 +469,10 @@ file longDevRogue.template
         PATH    = "ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TriggerEventManager.TriggerEventBuffer[$(L)].PauseThreshold"
     }
     {
-        NAME    = "EvrV2:TriggerDelay",
-        PATH    = "ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TriggerEventManager.EvrV2CoreTriggers.EvrV2TriggerReg[$(L)].Delay"
+        #NAME    = "EvrV2:TriggerDelay",
+        #PATH    = "ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TriggerEventManager.EvrV2CoreTriggers.EvrV2TriggerReg[$(L)].Delay"
+        NAME    = "TriggerEventBuffer:TriggerDelay",
+        PATH    = "ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TriggerEventManager.TriggerEventBuffer[$(L)].TriggerDelay"
         DOL     = "0"
         EGU     = "1/125MHz"
         PINI    = "YES"
