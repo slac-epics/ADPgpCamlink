@@ -751,7 +751,7 @@ record( calcout, "$(CAM):CamTrigDelayCalc" )
 	field( INPB, "125000000" )
 	field( INPC, "$(CAM):TREF NPP MS" )
 	field( INPD, "1000000000" )
-	field( CALC, "MAX(0,MIN((A+C*D)*B,0xFFFFFF))" )
+	field( CALC, "MAX(0,MIN((A+C/D)*B,0xFFFFFF))" )
 	field( OOPT, "On Change" )
 	field( OUT,  "$(PGP):Ch$(PGP_LANE):TriggerEventBuffer:TriggerDelay CA NMS" )
 	field( EGU,  "1/125MHz" )
@@ -793,6 +793,7 @@ record(ao, "$(CAM):TREF") {
   field(PINI, "YES")
   field(VAL,  "$(TREF=0)")
   field(PREC, "0")
+  field(FLNK, "$(CAM):CamTrigDelayCalc" )
 }
 
 record( longout, "$(P)$(R)CamEventCode" )
