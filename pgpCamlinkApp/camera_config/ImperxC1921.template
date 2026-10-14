@@ -37,17 +37,17 @@ record( longout, "$(P)$(R)CamlinkBaudRate" )
 	field( LSV,  "MINOR" )
 	field( PINI, "YES" )
 }
-# Default to 4, Deca LinkMode
+# Default to 2, Medium LinkMode
 record( mbbo, "$(P)$(R)CamlinkLinkMode" )
 {
-	field( DOL,  "4" )
+	field( DOL,  "2" )
 	field( ZRSV, "MINOR" )
 	field( FVSV, "MINOR" )
 	field( PINI, "YES" )
 }
 record( mbbo, "$(P)$(R)CamlinkDataMode" )
 {
-	field( DOL,  "2" ) # 10 Bit
+	field( DOL,  "3" ) # 12 Bit
 	field( ZRSV, "MINOR" )
 	field( ONSV, "NO_ALARM" )
 	field( TWSV, "NO_ALARM" )
@@ -65,7 +65,7 @@ record( mbbo, "$(P)$(R)CamlinkFrameMode" )
 }
 record( longout, "$(P)$(R)CamlinkHTap" )
 {
-	field( DOL,  "8" )
+	field( DOL,  "4" )
 	field( HIGH, "9" )
 	field( HSV,  "MINOR" )
 	field( LOW,  "1" )
@@ -111,74 +111,103 @@ record( mbbo, "$(P)$(R)CamMode" )
 	field( TWVL, "2" ) field( TWST, "Medium" )
 	field( THVL, "3" ) field( THST, "Full" )
 	field( FRVL, "4" ) field( FRST, "DECA" )
+	field( PINI, "YES" )
+	field( FLNK, "$(P)$(R)CamModeFanout" )
 	info( autosaveFields, "VAL" )
 }
 # Select fanout off CamMode to a sequence record for each supported CamMode.
 record( fanout, "$(P)$(R)CamModeFanout" )
 {
-	field( SELL, "$(P)$(R)CamMode CPP" )
+	field( SELL, "$(P)$(R)CamMode NPP NMS" )
 	field( SELM, "Specified" )
-	field( LNK0, "" )
-	field( LNK1, "$(P)$(R)SeqCamModeBase" )
-	field( LNK2, "$(P)$(R)SeqCamModeMedium" )
-	field( LNK3, "$(P)$(R)SeqCamModeFull" )
-	field( LNK4, "$(P)$(R)SeqCamModeDeca" )
+	field( LNK0, "$(P)$(R)SeqCamModeBase PP" )
+	field( LNK1, "$(P)$(R)SeqCamModeBase3 PP" )
+	field( LNK2, "$(P)$(R)SeqCamModeMedium PP" )
+	field( LNK3, "$(P)$(R)SeqCamModeFull PP" )
+	field( LNK4, "$(P)$(R)SeqCamModeDeca PP" )
 }
 record( seq, "$(P)$(R)SeqCamModeBase" )
 {
 	#	First stop aquisition triggers
 	field( DLY0, "0" ) field( DOL0, "0" ) field( LNK0, "$(P)$(R)Acquire  PP NMS" )
+	field( SCAN, "Passive" )
 
 	field( DESC, "Base Mode: 60fps, 12 bits, 2 taps" )
-	field( DLY1, "2" ) field( DOL1, "2" ) field( LNK1, "$(P)$(R)ImperxA2D_Bits PP NMS" )
-	field( DLY2, "0" ) field( DOL2, "2" ) field( LNK2, "$(P)$(R)ImperxDataOutputBits PP NMS" )
-	field( DLY3, "0" ) field( DOL3, "0" ) field( LNK3, "$(P)$(R)ImperxCamlinkMode PP NMS" )
-	field( DLY4, "0" ) field( DOL4, "3" ) field( LNK4, "$(P)$(R)CamlinkDataMode" )
-	field( DLY5, "0" ) field( DOL5, "0" ) field( LNK5, "$(P)$(R)CamlinkLinkMode" )
-	field( DLY6, "0" ) field( DOL6, "2" ) field( LNK6, "$(P)$(R)CamlinkHTap" )
-	field( DLY7, "0" ) field( DOL7, "0" ) field( LNK7, "$(PGP):Ch$(PGP_LANE):Feb$(PGP_LANE):ClinkDecaMode" )
+	field( DLY1, "0.2" ) field( DOL1, "0" ) field( LNK1, "$(P)$(R)ImperxCamlinkMode PP NMS" )
+	field( DLY2, "0.2" ) field( DOL2, "2" ) field( LNK2, "$(P)$(R)ImperxA2D_Bits PP NMS" )
+	field( DLY3, "0.2" ) field( DOL3, "2" ) field( LNK3, "$(P)$(R)ImperxDataOutputBits PP NMS" )
+	field( DLY4, "0.2" ) field( DOL4, "1" ) field( LNK4, "$(P)$(R)CamlinkLinkMode PP" )
+	field( DLY5, "0.2" ) field( DOL5, "3" ) field( LNK5, "$(P)$(R)CamlinkDataMode PP" )
+	field( DLY6, "0.2" ) field( DOL6, "2" ) field( LNK6, "$(P)$(R)CamlinkHTap PP" )
+	field( DLY7, "0.2" ) field( DOL7, "0" ) field( LNK7, "$(PGP):Ch$(PGP_LANE):Feb$(PGP_LANE):ClinkDecaMode PP" )
+	field( DLY8, "1"   ) field( DOL8, "1" ) field( LNK8, "$(PGP):Ch$(PGP_LANE):Feb$(PGP_LANE):RstPll PP" )
+	field( DLY9, "1"   ) field( DOL9, "0" ) field( LNK9, "$(PGP):Ch$(PGP_LANE):Feb$(PGP_LANE):RstPll PP" )
+}
+record( seq, "$(P)$(R)SeqCamModeBase3" )
+{
+	#	First stop aquisition triggers
+	field( DLY0, "0" ) field( DOL0, "0" ) field( LNK0, "$(P)$(R)Acquire  PP NMS" )
+	field( SCAN, "Passive" )
+
+	field( DESC, "Base 3 Mode: ??? fps, 8 bits, 3 taps" )
+	field( DLY1, "0.2" ) field( DOL1, "1" ) field( LNK1, "$(P)$(R)ImperxCamlinkMode PP NMS" )
+	field( DLY2, "0.2" ) field( DOL2, "0" ) field( LNK2, "$(P)$(R)ImperxA2D_Bits PP NMS" )
+	field( DLY3, "0.2" ) field( DOL3, "0" ) field( LNK3, "$(P)$(R)ImperxDataOutputBits PP NMS" )
+	field( DLY4, "0.2" ) field( DOL4, "1" ) field( LNK4, "$(P)$(R)CamlinkLinkMode PP" )
+	field( DLY5, "0.2" ) field( DOL5, "1" ) field( LNK5, "$(P)$(R)CamlinkDataMode PP" )
+	field( DLY6, "0.2" ) field( DOL6, "3" ) field( LNK6, "$(P)$(R)CamlinkHTap PP" )
+	field( DLY7, "0.2" ) field( DOL7, "0" ) field( LNK7, "$(PGP):Ch$(PGP_LANE):Feb$(PGP_LANE):ClinkDecaMode PP" )
+	field( DLY8, "1"   ) field( DOL8, "1" ) field( LNK8, "$(PGP):Ch$(PGP_LANE):Feb$(PGP_LANE):RstPll PP" )
+	field( DLY9, "1"   ) field( DOL9, "0" ) field( LNK9, "$(PGP):Ch$(PGP_LANE):Feb$(PGP_LANE):RstPll PP" )
 }
 record( seq, "$(P)$(R)SeqCamModeMedium" )
 {
 	#	First stop aquisition triggers
 	field( DLY0, "0" ) field( DOL0, "0" ) field( LNK0, "$(P)$(R)Acquire  PP NMS" )
+	field( SCAN, "Passive" )
 
 	field( DESC, "Medium Mode: 121fps, 12 bits, 4 taps" )
-	field( DLY1, "2" ) field( DOL1, "2" ) field( LNK1, "$(P)$(R)ImperxA2D_Bits PP NMS" )
-	field( DLY2, "0" ) field( DOL2, "2" ) field( LNK2, "$(P)$(R)ImperxDataOutputBits PP NMS" )
-	field( DLY3, "0" ) field( DOL3, "2" ) field( LNK3, "$(P)$(R)ImperxCamlinkMode PP NMS" )
-	field( DLY4, "0" ) field( DOL4, "3" ) field( LNK4, "$(P)$(R)CamlinkDataMode" )
-	field( DLY5, "0" ) field( DOL5, "2" ) field( LNK5, "$(P)$(R)CamlinkLinkMode" )
-	field( DLY6, "0" ) field( DOL6, "4" ) field( LNK6, "$(P)$(R)CamlinkHTap" )
-	field( DLY7, "0" ) field( DOL7, "0" ) field( LNK7, "$(PGP):Ch$(PGP_LANE):Feb$(PGP_LANE):ClinkDecaMode" )
+	field( DLY1, "0.2" ) field( DOL1, "2" ) field( LNK1, "$(P)$(R)ImperxCamlinkMode PP NMS" )
+	field( DLY2, "0.2" ) field( DOL2, "2" ) field( LNK2, "$(P)$(R)ImperxA2D_Bits PP NMS" )
+	field( DLY3, "0.2" ) field( DOL3, "2" ) field( LNK3, "$(P)$(R)ImperxDataOutputBits PP NMS" )
+	field( DLY4, "0.2" ) field( DOL4, "2" ) field( LNK4, "$(P)$(R)CamlinkLinkMode PP" )
+	field( DLY5, "0.2" ) field( DOL5, "3" ) field( LNK5, "$(P)$(R)CamlinkDataMode PP" )
+	field( DLY6, "0.2" ) field( DOL6, "4" ) field( LNK6, "$(P)$(R)CamlinkHTap PP" )
+	field( DLY7, "0.2" ) field( DOL7, "0" ) field( LNK7, "$(PGP):Ch$(PGP_LANE):Feb$(PGP_LANE):ClinkDecaMode PP" )
+	field( DLY8, "1"   ) field( DOL8, "1" ) field( LNK8, "$(PGP):Ch$(PGP_LANE):Feb$(PGP_LANE):RstPll PP" )
+	field( DLY9, "1"   ) field( DOL9, "0" ) field( LNK9, "$(PGP):Ch$(PGP_LANE):Feb$(PGP_LANE):RstPll PP" )
 }
 record( seq, "$(P)$(R)SeqCamModeFull" )
 {
 	#	First stop aquisition triggers
 	field( DLY0, "0" ) field( DOL0, "0" ) field( LNK0, "$(P)$(R)Acquire  PP NMS" )
+	field( SCAN, "Passive" )
 
 	field( DESC, "Full Mode: 174fps, 8 bits, 8 taps" )
-	field( DLY1, "2" ) field( DOL1, "0" ) field( LNK1, "$(P)$(R)ImperxA2D_Bits PP NMS" )
-	field( DLY2, "0" ) field( DOL2, "0" ) field( LNK2, "$(P)$(R)ImperxDataOutputBits PP NMS" )
-	field( DLY3, "0" ) field( DOL3, "3" ) field( LNK3, "$(P)$(R)ImperxCamlinkMode PP NMS" )
-	field( DLY4, "0" ) field( DOL4, "1" ) field( LNK4, "$(P)$(R)CamlinkDataMode" )
-	field( DLY5, "0" ) field( DOL5, "3" ) field( LNK5, "$(P)$(R)CamlinkLinkMode" )
-	field( DLY6, "0" ) field( DOL6, "8" ) field( LNK6, "$(P)$(R)CamlinkHTap" )
-	field( DLY7, "0" ) field( DOL7, "0" ) field( LNK7, "$(PGP):Ch$(PGP_LANE):Feb$(PGP_LANE):ClinkDecaMode" )
+	field( DLY1, "0.2" ) field( DOL1, "3" ) field( LNK1, "$(P)$(R)ImperxCamlinkMode PP NMS" )
+	field( DLY2, "0.2" ) field( DOL2, "0" ) field( LNK2, "$(P)$(R)ImperxA2D_Bits PP NMS" )
+	field( DLY3, "0.2" ) field( DOL3, "0" ) field( LNK3, "$(P)$(R)ImperxDataOutputBits PP NMS" )
+	field( DLY4, "0.2" ) field( DOL4, "3" ) field( LNK4, "$(P)$(R)CamlinkLinkMode PP" )
+	field( DLY5, "0.2" ) field( DOL5, "1" ) field( LNK5, "$(P)$(R)CamlinkDataMode PP" )
+	field( DLY6, "0.2" ) field( DOL6, "8" ) field( LNK6, "$(P)$(R)CamlinkHTap PP" )
+	field( DLY7, "0.2" ) field( DOL7, "0" ) field( LNK7, "$(PGP):Ch$(PGP_LANE):Feb$(PGP_LANE):ClinkDecaMode PP" )
 }
 record( seq, "$(P)$(R)SeqCamModeDeca" )
 {
 	#	First stop aquisition triggers
 	field( DLY0, "0" ) field( DOL0, "0" ) field( LNK0, "$(P)$(R)Acquire  PP NMS" )
+	field( SCAN, "Passive" )
 
 	field( DESC, "Deca Mode: 143fps, 10 bits, 8 taps" )
-	field( DLY1, "2" ) field( DOL1, "1" ) field( LNK1, "$(P)$(R)ImperxA2D_Bits PP NMS" )
-	field( DLY2, "0" ) field( DOL2, "1" ) field( LNK2, "$(P)$(R)ImperxDataOutputBits PP NMS" )
-	field( DLY3, "0" ) field( DOL3, "4" ) field( LNK3, "$(P)$(R)ImperxCamlinkMode PP NMS" )
-	field( DLY4, "0" ) field( DOL4, "2" ) field( LNK4, "$(P)$(R)CamlinkDataMode" )
-	field( DLY5, "0" ) field( DOL5, "4" ) field( LNK5, "$(P)$(R)CamlinkLinkMode" )
-	field( DLY6, "0" ) field( DOL6, "8" ) field( LNK6, "$(P)$(R)CamlinkHTap" )
-	field( DLY7, "0" ) field( DOL7, "1" ) field( LNK7, "$(PGP):Ch$(PGP_LANE):Feb$(PGP_LANE):ClinkDecaMode" )
+	field( DLY1, "0.2" ) field( DOL1, "4" ) field( LNK1, "$(P)$(R)ImperxCamlinkMode PP NMS" )
+	field( DLY2, "0.2" ) field( DOL2, "1" ) field( LNK2, "$(P)$(R)ImperxA2D_Bits PP NMS" )
+	field( DLY3, "0.2" ) field( DOL3, "1" ) field( LNK3, "$(P)$(R)ImperxDataOutputBits PP NMS" )
+	field( DLY4, "0.2" ) field( DOL4, "4" ) field( LNK4, "$(P)$(R)CamlinkLinkMode PP" )
+	field( DLY5, "0.2" ) field( DOL5, "2" ) field( LNK5, "$(P)$(R)CamlinkDataMode PP" )
+	field( DLY6, "0.2" ) field( DOL6, "8" ) field( LNK6, "$(P)$(R)CamlinkHTap PP" )
+	field( DLY7, "0.2" ) field( DOL7, "1" ) field( LNK7, "$(PGP):Ch$(PGP_LANE):Feb$(PGP_LANE):ClinkDecaMode PP" )
+	field( DLY8, "1"   ) field( DOL8, "1" ) field( LNK8, "$(PGP):Ch$(PGP_LANE):Feb$(PGP_LANE):RstPll PP" )
+	field( DLY9, "1"   ) field( DOL9, "0" ) field( LNK9, "$(PGP):Ch$(PGP_LANE):Feb$(PGP_LANE):RstPll PP" )
 }
 
 # Provide defaults for ADCore SizeX and SizeY
@@ -326,7 +355,7 @@ record( mbbi, "$(P)$(R)ImperxExpCtrlMode_RBV" )
 # A2D_Bits
 record( mbbo, "$(P)$(R)ImperxA2D_Bits" )
 {
-	field( DOL,  "1" )
+	field( DOL,  "2" )
 	field( PINI, "YES" )
 	field( DTYP, "stream" )
 	field( OUT,  "@ImperxC1921.proto SetA2D_Bits($(P)$(R)) $(PORT).SER" )
@@ -348,7 +377,7 @@ record( mbbi, "$(P)$(R)ImperxA2D_Bits_RBV" )
 # DataOutputBits
 record( mbbo, "$(P)$(R)ImperxDataOutputBits" )
 {
-	field( DOL,  "1" )
+	field( DOL,  "2" )
 	field( PINI, "YES" )
 	field( DTYP, "stream" )
 	field( OUT,  "@ImperxC1921.proto SetDataOutputBits($(P)$(R)) $(PORT).SER" )
@@ -370,7 +399,7 @@ record( mbbi, "$(P)$(R)ImperxDataOutputBits_RBV" )
 # CamlinkMode
 record( mbbo, "$(P)$(R)ImperxCamlinkMode" )
 {
-	field( DOL,  "3" )
+	field( DOL,  "2" )
 	field( PINI, "YES" )
 	field( DTYP, "stream" )
 	field( OUT,  "@ImperxC1921.proto SetCamlinkMode($(P)$(R)) $(PORT).SER" )
@@ -889,6 +918,71 @@ record( longout, "$(P)$(R)CamlinkHSkip" )
 record( longout, "$(P)$(R)CamlinkVSkip" )
 {
     field( VAL, "0" )
+}
+
+record( ao, "$(P)$(R)Gain" )
+{
+	field( HOPR,	"251" )
+	field( LOPR,	"1" )
+	field( EGU,     "1x, 4x, etc." )
+	field( PREC,    "2" )
+	field( FLNK,	"$(P)$(R)CamGain" )
+}
+
+record( ao, "$(P)$(R)CamGain" )
+{
+	field( DOL,		"$(P)$(R)Gain" )
+	field( OMSL,	"closed_loop" )
+	field( HOPR,	"251" )
+	field( LOPR,	"1" )
+	field( EGU,     "1x, 4x, etc." )
+	field( PREC,    "2" )
+	field( FLNK,	"$(P)$(R)ImperxCalcGain" )
+}
+
+record( calc, "$(P)$(R)ImperxCalcGain" )
+{
+	field( INPA, "$(P)$(R)CamGain NPP NMS" )
+	field( CALC, "NINT(20*LOG(A)/0.1)" )
+	field( FLNK, "$(P)$(R)ImperxGain" )
+}
+
+record( ao, "$(P)$(R)ImperxGain" )
+{
+	field( DESC,	"Camera gain (0..480)" )
+	field( DOL,		"$(P)$(R)ImperxCalcGain" )
+	field( OMSL,	"closed_loop" )
+	field( DTYP,	"stream" )
+	field( OUT,     "@ImperxC1921.proto SetAnalogGain($(P)$(R)) $(PORT).SER" )
+	field( DRVH,	"480" )
+	field( DRVL,	"0" )
+	field( HOPR,	"480" )
+	field( LOPR,	"0" )
+	field( FLNK,	"$(P)$(R)ImperxGain_RBV" )
+}
+
+record( longin,	"$(P)$(R)ImperxGain_RBV" )
+{
+	field( DESC,	"Gain from camera report (0..480)" )
+	field( DTYP,	"stream" )
+	field( INP,		"@ImperxC1921.proto GetAnalogGain($(P)$(R)) $(PORT).SER" )
+    field( FLNK,	"$(P)$(R)ImperxCalcGain_RBV" )
+}
+
+# Use mathematical identity for the CALC field: 10^A=e^(A⋅ln(10))
+record( calcout, "$(P)$(R)ImperxCalcGain_RBV" )
+{
+	field( INPA, "$(P)$(R)ImperxGain_RBV NPP NMS" )
+	field( CALC, "EXP((0.1*A/20)*LN(10))" )
+	field( OUT,  "$(P)$(R)CamGain_RBV PP MS" )
+	field( PREC, "2" )
+}
+
+record( ao, "$(P)$(R)CamGain_RBV" )
+{
+	field( EGU,  "1x, 4x, etc." )
+	field( PREC, "2" )
+	field( OUT,  "$(P)$(R)Gain_RBV PP MS" )
 }
 
 # Include a serialMonitor.template monitor

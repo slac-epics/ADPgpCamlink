@@ -24,7 +24,7 @@
 
 using namespace	std;
 
-int	DEBUG_PGPCL_SER	= 2;
+int	DEBUG_PGPCL_SER	= 0;
 
 #if 1
 #include <sstream>
