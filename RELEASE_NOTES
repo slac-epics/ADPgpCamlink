@@ -2,6 +2,11 @@
 # SLAC RELEASE_NOTES
 #
 
+R3.2.0-5.0.0  2026-10-14 Michael Skoufis
+    Remove TREF alias, define TREF as a separate EPICS PV (EGU is nanoseconds)
+    Use TriggerEventBuffer.TriggerDelay register instead of EvrV2TriggerReg.Delay
+    Exclude buildroot from build targets, build on linuxRT instead
+
 R3.2.0-4.0.0  2026-09-03 Michael Skoufis
     Disable FEB auto-recovery logic
     Turn off Master Enable register by default for the Rogue IOC
