@@ -362,7 +362,7 @@ pgpRogueLib::pgpRogueLib(
 				// Try to read one simple register via DMA to verify hardware responsiveness
 				// This will fail gracefully with an exception if hardware has issues,
 				// but will hang forever if we proceed without this check (Rogue bug)
-				uint32_t testVal = getVariable( "ClinkDevRoot.Version.FirmwareVersion" );
+				getVariable( "ClinkDevRoot.Version.FirmwareVersion" );
 				printf( "%s: Hardware DMA responsive after FpgaReload.\n", functionName );
 				dmaReady = true;
 			}
