@@ -343,113 +343,174 @@ pgpRogueLib::pgpRogueLib(
 	//printf( "%s: %zu variables\n", functionName, mapVars.size() );
 	//printf( "m_pRogueLib: %zu variables\n", (m_pRogueLib->getVariableList()).size() );
 
-	// Force an initial read of all variables
-#if 1
-	printf( "%s: Reading %zu variables\n", functionName, getVariableList().size() );
-	try
+	// After FpgaReload, verify hardware DMA is responsive before attempting readAll()
+	// This prevents infinite retry loop in Rogue's AxiStreamDma::acceptReq() if hardware
+	// DMA engine is not fully initialized yet (Rogue issue: no max retry count)
+	bool proceedWithReadAll = true;
+	if ( doFebFpgaReload )
 	{
-		readAll();
+		printf( "%s: Verifying hardware DMA stability after FpgaReload...\n", functionName );
+		int dmaRetries = 0;
+		const int maxDmaRetries = 10;
+		bool dmaReady = false;
+		std::string lastError;
+
+		while ( dmaRetries < maxDmaRetries && !dmaReady )
+		{
+			try
+			{
+				// Try to read one simple register via DMA to verify hardware responsiveness
+				// This will fail gracefully with an exception if hardware has issues,
+				// but will hang forever if we proceed without this check (Rogue bug)
+				uint32_t testVal = getVariable( "ClinkDevRoot.Version.FirmwareVersion" );
+				printf( "%s: Hardware DMA responsive after FpgaReload.\n", functionName );
+				dmaReady = true;
+			}
+			catch ( std::exception & e )
+			{
+				lastError = e.what();
+				dmaRetries++;
+				if ( dmaRetries < maxDmaRetries )
+				{
+					printf( "%s: Hardware not fully ready after FpgaReload, retry %d/%d\n",
+							functionName, dmaRetries, maxDmaRetries );
+					sleep( 1 );
+				}
+			}
+		}
+
+		if ( !dmaReady )
+		{
+			printf( "%s: FATAL - Hardware DMA not responsive after FpgaReload (max retries exhausted).\n", functionName );
+			printf( "%s: Last error: %s\n", functionName, lastError.c_str() );
+			printf( "%s: Skipping readAll() to prevent infinite hang. Boot will continue with reduced functionality.\n", functionName );
+			proceedWithReadAll = false;
+		}
 	}
+
+	// Force an initial read of all variables (only if DMA verified responsive)
+	if ( proceedWithReadAll )
+	{
+#if 1
+		printf( "%s: Reading %zu variables\n", functionName, getVariableList().size() );
+		try
+		{
+			readAll();
+		}
 #else
-	printf( "%s: Reading %zu variables\n", functionName, (m_pRogueLib->getVariableList()).size() );
-	try
-	{
-		m_pRogueLib->readAll();
-	}
+		printf( "%s: Reading %zu variables\n", functionName, (m_pRogueLib->getVariableList()).size() );
+		try
+		{
+			m_pRogueLib->readAll();
+		}
 #endif
-	catch ( rogue::GeneralError & e )
-	{
-		printf( "%s error: %s!\n", functionName, e.what() );
-	}
-	catch ( std::exception & e )
-	{
-		printf( "%s error: %s!\n", functionName, e.what() );
-	}
-	catch ( ... )
-	{
-		printf( "%s unknown error!\n", functionName );
-	}
+		catch ( rogue::GeneralError & e )
+		{
+			printf( "%s error: %s!\n", functionName, e.what() );
+		}
+		catch ( std::exception & e )
+		{
+			printf( "%s error: %s!\n", functionName, e.what() );
+		}
+		catch ( ... )
+		{
+			printf( "%s unknown error!\n", functionName );
+		}
 #if 1
-	printf( "%s: Read %zu variables\n", functionName, getVariableList().size() );
+		printf( "%s: Read %zu variables\n", functionName, getVariableList().size() );
 #else
-	printf( "%s: Read %zu variables\n", functionName, (m_pRogueLib->getVariableList()).size() );
+		printf( "%s: Read %zu variables\n", functionName, (m_pRogueLib->getVariableList()).size() );
 #endif
-
-	if ( doFebConfig or true )
+	}
+	else
 	{
-		if ( FebReady(0) )
-		{
-			// Power up FEB Pll's
-			setVariable( "ClinkDevRoot.ClinkFeb[0].ClinkTop.Pll[0].POWER", 65535 );
-			setVariable( "ClinkDevRoot.ClinkFeb[0].ClinkTop.Pll[1].POWER", 65535 );
-			setVariable( "ClinkDevRoot.ClinkFeb[0].ClinkTop.Pll[2].POWER", 65535 );
-		}
-
-		if ( FebReady(1) )
-		{
-			setVariable( "ClinkDevRoot.ClinkFeb[1].ClinkTop.Pll[0].POWER", 65535 );
-			setVariable( "ClinkDevRoot.ClinkFeb[1].ClinkTop.Pll[1].POWER", 65535 );
-			setVariable( "ClinkDevRoot.ClinkFeb[1].ClinkTop.Pll[2].POWER", 65535 );
-		}
-
-		if ( FebReady(2) )
-		{
-			setVariable( "ClinkDevRoot.ClinkFeb[2].ClinkTop.Pll[0].POWER", 65535 );
-			setVariable( "ClinkDevRoot.ClinkFeb[2].ClinkTop.Pll[1].POWER", 65535 );
-			setVariable( "ClinkDevRoot.ClinkFeb[2].ClinkTop.Pll[2].POWER", 65535 );
-		}
-
-		if ( FebReady(3) )
-		{
-			setVariable( "ClinkDevRoot.ClinkFeb[3].ClinkTop.Pll[0].POWER", 65535 );
-			setVariable( "ClinkDevRoot.ClinkFeb[3].ClinkTop.Pll[1].POWER", 65535 );
-			setVariable( "ClinkDevRoot.ClinkFeb[3].ClinkTop.Pll[2].POWER", 65535 );
-		}
+		printf( "%s: Skipped reading variables due to hardware DMA not being responsive.\n", functionName );
 	}
 
-	// Hack: Configure for LCLS-I timing
-	ConfigureLclsTimingV1();
+	// Only proceed with hardware configuration if DMA is responsive
+	// These calls use setVariable() which triggers Rogue DMA operations
+	if ( proceedWithReadAll )
+	{
+		if ( doFebConfig or true )
+		{
+			if ( FebReady(0) )
+			{
+				// Power up FEB Pll's
+				setVariable( "ClinkDevRoot.ClinkFeb[0].ClinkTop.Pll[0].POWER", 65535 );
+				setVariable( "ClinkDevRoot.ClinkFeb[0].ClinkTop.Pll[1].POWER", 65535 );
+				setVariable( "ClinkDevRoot.ClinkFeb[0].ClinkTop.Pll[2].POWER", 65535 );
+			}
 
-	LoadConfigFile( "db/defaults_LCLS-I.txt", 0.003 );
-	//LoadConfigFile( "db/defaults_LCLS-II.txt", 0.003 );
+			if ( FebReady(1) )
+			{
+				setVariable( "ClinkDevRoot.ClinkFeb[1].ClinkTop.Pll[0].POWER", 65535 );
+				setVariable( "ClinkDevRoot.ClinkFeb[1].ClinkTop.Pll[1].POWER", 65535 );
+				setVariable( "ClinkDevRoot.ClinkFeb[1].ClinkTop.Pll[2].POWER", 65535 );
+			}
 
-	// Misc python resets, etc
+			if ( FebReady(2) )
+			{
+				setVariable( "ClinkDevRoot.ClinkFeb[2].ClinkTop.Pll[0].POWER", 65535 );
+				setVariable( "ClinkDevRoot.ClinkFeb[2].ClinkTop.Pll[1].POWER", 65535 );
+				setVariable( "ClinkDevRoot.ClinkFeb[2].ClinkTop.Pll[2].POWER", 65535 );
+			}
+
+			if ( FebReady(3) )
+			{
+				setVariable( "ClinkDevRoot.ClinkFeb[3].ClinkTop.Pll[0].POWER", 65535 );
+				setVariable( "ClinkDevRoot.ClinkFeb[3].ClinkTop.Pll[1].POWER", 65535 );
+				setVariable( "ClinkDevRoot.ClinkFeb[3].ClinkTop.Pll[2].POWER", 65535 );
+			}
+		}
+
+		// Hack: Configure for LCLS-I timing
+		ConfigureLclsTimingV1();
+
+		LoadConfigFile( "db/defaults_LCLS-I.txt", 0.003 );
+		//LoadConfigFile( "db/defaults_LCLS-II.txt", 0.003 );
+
+		// Misc python resets, etc
 #if 1
-	setVariable( "ClinkDevRoot.ClinkPcie.AxiPcieCore.DmaIbAxisMon.CntRst", 1 );
-	setVariable( "ClinkDevRoot.ClinkPcie.AxiPcieCore.DmaObAxisMon.CntRst", 1 );
-	setVariable( "ClinkDevRoot.ClinkPcie.Application.AppLane[0].EventBuilder.SoftRst", 1 );
-	setVariable( "ClinkDevRoot.ClinkPcie.Application.AppLane[0].EventBuilder.SoftRst", 0 );
-	setVariable( "ClinkDevRoot.ClinkPcie.Application.AppLane[1].EventBuilder.SoftRst", 1 );
-	setVariable( "ClinkDevRoot.ClinkPcie.Application.AppLane[1].EventBuilder.SoftRst", 0 );
-	setVariable( "ClinkDevRoot.ClinkPcie.Application.AppLane[2].EventBuilder.SoftRst", 1 );
-	setVariable( "ClinkDevRoot.ClinkPcie.Application.AppLane[2].EventBuilder.SoftRst", 0 );
-	setVariable( "ClinkDevRoot.ClinkPcie.Application.AppLane[3].EventBuilder.SoftRst", 1 );
-	setVariable( "ClinkDevRoot.ClinkPcie.Application.AppLane[3].EventBuilder.SoftRst", 0 );
+		setVariable( "ClinkDevRoot.ClinkPcie.AxiPcieCore.DmaIbAxisMon.CntRst", 1 );
+		setVariable( "ClinkDevRoot.ClinkPcie.AxiPcieCore.DmaObAxisMon.CntRst", 1 );
+		setVariable( "ClinkDevRoot.ClinkPcie.Application.AppLane[0].EventBuilder.SoftRst", 1 );
+		setVariable( "ClinkDevRoot.ClinkPcie.Application.AppLane[0].EventBuilder.SoftRst", 0 );
+		setVariable( "ClinkDevRoot.ClinkPcie.Application.AppLane[1].EventBuilder.SoftRst", 1 );
+		setVariable( "ClinkDevRoot.ClinkPcie.Application.AppLane[1].EventBuilder.SoftRst", 0 );
+		setVariable( "ClinkDevRoot.ClinkPcie.Application.AppLane[2].EventBuilder.SoftRst", 1 );
+		setVariable( "ClinkDevRoot.ClinkPcie.Application.AppLane[2].EventBuilder.SoftRst", 0 );
+		setVariable( "ClinkDevRoot.ClinkPcie.Application.AppLane[3].EventBuilder.SoftRst", 1 );
+		setVariable( "ClinkDevRoot.ClinkPcie.Application.AppLane[3].EventBuilder.SoftRst", 0 );
 //	setVariable( "ClinkDevRoot.ClinkPcie.Hsio.PgpMon[0].Flush", 1 );
 //	setVariable( "ClinkDevRoot.ClinkPcie.Hsio.PgpMon[0].Flush", 0 );
 //	setVariable( "ClinkDevRoot.ClinkPcie.Hsio.PgpTxAxisMon[0].CntRst", 1 );
-	setVariable( "ClinkDevRoot.ClinkPcie.Hsio.PgpRxVcMon[0].CntRst", 1 );
+		setVariable( "ClinkDevRoot.ClinkPcie.Hsio.PgpRxVcMon[0].CntRst", 1 );
 //	setVariable( "ClinkDevRoot.ClinkPcie.Hsio.PgpMon[1].Flush", 1 );
 //	setVariable( "ClinkDevRoot.ClinkPcie.Hsio.PgpMon[1].Flush", 0 );
 //	setVariable( "ClinkDevRoot.ClinkPcie.Hsio.PgpTxAxisMon[1].CntRst", 1 );
-	setVariable( "ClinkDevRoot.ClinkPcie.Hsio.PgpRxVcMon[1].CntRst", 1 );
+		setVariable( "ClinkDevRoot.ClinkPcie.Hsio.PgpRxVcMon[1].CntRst", 1 );
 //	setVariable( "ClinkDevRoot.ClinkPcie.Hsio.PgpMon[2].Flush", 1 );
 //	setVariable( "ClinkDevRoot.ClinkPcie.Hsio.PgpMon[2].Flush", 0 );
 //	setVariable( "ClinkDevRoot.ClinkPcie.Hsio.PgpTxAxisMon[2].CntRst", 1 );
-	setVariable( "ClinkDevRoot.ClinkPcie.Hsio.PgpRxVcMon[2].CntRst", 1 );
+		setVariable( "ClinkDevRoot.ClinkPcie.Hsio.PgpRxVcMon[2].CntRst", 1 );
 //	setVariable( "ClinkDevRoot.ClinkPcie.Hsio.PgpMon[3].Flush", 1 );
 //	setVariable( "ClinkDevRoot.ClinkPcie.Hsio.PgpMon[3].Flush", 0 );
 //	setVariable( "ClinkDevRoot.ClinkPcie.Hsio.PgpTxAxisMon[3].CntRst", 1 );
-	setVariable( "ClinkDevRoot.ClinkPcie.Hsio.PgpRxVcMon[3].CntRst", 1 );
-	setVariable( "ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TimingPhyMonitor.CntRst", 1 );
+		setVariable( "ClinkDevRoot.ClinkPcie.Hsio.PgpRxVcMon[3].CntRst", 1 );
+		setVariable( "ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TimingPhyMonitor.CntRst", 1 );
 #endif
 //	if ( doFebConfig )
 //		FebPllConfig();
 
-	setTriggerEnable( 0, false );
-	setTriggerEnable( 1, false );
-	setTriggerEnable( 2, false );
-	setTriggerEnable( 3, false );
+		setTriggerEnable( 0, false );
+		setTriggerEnable( 1, false );
+		setTriggerEnable( 2, false );
+		setTriggerEnable( 3, false );
+	}
+	else
+	{
+		printf( "%s: Skipped hardware configuration due to DMA not being responsive.\n", functionName );
+	}
 
 	//showVariableList( true );
 
