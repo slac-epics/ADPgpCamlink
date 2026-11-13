@@ -162,7 +162,8 @@ private:
 // Shared pointer alias
 typedef std::shared_ptr<pgpRogueLib> pgpRogueLibPtr;
 
-// Global pgpRogueLib instance for C wrapper functions
-extern pgpRogueLibPtr g_pgpRogueLib;
+// Global pgpRogueLib instance pointer for C wrapper functions
+// Note: This is a raw pointer. The object is managed by ADDriver/shared_ptr elsewhere.
+extern pgpRogueLib* g_pgpRogueLib;
 
 #endif	//	pgpRogueLib_H

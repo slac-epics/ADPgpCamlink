@@ -51,8 +51,8 @@ int		doFebFpgaReload	= 1;
 int		doFebConfig		= 0;
 bool	bUseMiniTpg		= 0;
 
-// Global pgpRogueLib instance for C wrapper functions
-pgpRogueLibPtr g_pgpRogueLib;
+// Global pgpRogueLib instance pointer for C wrapper functions
+pgpRogueLib* g_pgpRogueLib = NULL;
 
 // TODO Move to new file: src/rogue/memory/interfaces/memory/Constants.cpp
 // TODO Rename BlockProcessingType2String()?
@@ -247,8 +247,9 @@ pgpRogueLib::pgpRogueLib(
 	m_pAxiMemMap(			),
 	m_pSrpFeb(				)
 {
-	// Store global instance for C wrapper functions
-	g_pgpRogueLib = std::dynamic_pointer_cast<pgpRogueLib>(shared_from_this());
+	// Store global instance pointer for C wrapper functions
+	// Note: This raw pointer is set here; the object is kept alive by ADDriver's shared_ptr
+	g_pgpRogueLib = this;
 	const char		*	functionName	= "pgpRogueLib::pgpRogueLib";
 
 	/*
