@@ -37,7 +37,7 @@
 //#include <DmaDriver.h>
 
 // EPICS headers
-#include <epicsEnv.h>
+#include <envDefs.h>
 
 // ADPgpCamlink headers
 #include "pgpRogueLib.h"
