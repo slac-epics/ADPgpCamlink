@@ -31,10 +31,13 @@
 #include "rogue/Logging.h"
 #include "rogue/Version.h"
 
-// aes-stream-drivers headers 
+// aes-stream-drivers headers
 //#include <AxisDriver.h>
 #include <AxiVersion.h>
 //#include <DmaDriver.h>
+
+// EPICS headers
+#include <epicsEnv.h>
 
 // ADPgpCamlink headers
 #include "pgpRogueLib.h"
@@ -1343,10 +1346,13 @@ pgpRogueLibCheckFebReady(void)
 	if ( result == 1 )
 	{
 		printf( "pgpRogueLibCheckFebReady: SUCCESS - FEB hardware is responsive\n" );
+		// Set EPICS environment variable for conditional record loading in st.cmd
+		epicsEnvSet( "FEB_READY", "" );
 	}
 	else
 	{
 		printf( "pgpRogueLibCheckFebReady: FAILED - FEB hardware is NOT responsive\n" );
+		// FEB_READY will remain unset, allowing conditional database loading
 	}
 
 	return result;
