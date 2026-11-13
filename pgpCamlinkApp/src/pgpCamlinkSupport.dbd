@@ -4,8 +4,8 @@ registrar(	pgpCamlinkConfigFullRegister	)
 registrar(	ResetImageTimingRegister		)
 registrar(	ShowImageTimingRegister			)
 registrar(	ShowAllCamerasRegister			)
+registrar(	pgpRogueLibCheckFebReadyRegister	)
 function(	FebPllConfig	)
-function(	pgpRogueLibCheckFebReady	)
 
 # Camera specific support functions
 function( Up900Shutter_Process )

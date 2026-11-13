@@ -1351,3 +1351,13 @@ extern "C" int pgpRogueLibCheckFebReady()
 	return result;
 }
 
+//! EPICS registrar function to register pgpRogueLibCheckFebReady for iocsh
+extern "C"
+{
+	void pgpRogueLibCheckFebReadyRegister(void)
+	{
+		iocshRegister("pgpRogueLibCheckFebReady", "Check if FEB hardware is ready", (IOCSH_FUN_FUNC)pgpRogueLibCheckFebReady);
+	}
+	epicsExportRegistrar(pgpRogueLibCheckFebReadyRegister);
+}
+
