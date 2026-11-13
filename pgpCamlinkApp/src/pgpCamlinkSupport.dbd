@@ -4,7 +4,6 @@ registrar(	pgpCamlinkConfigFullRegister	)
 registrar(	ResetImageTimingRegister		)
 registrar(	ShowImageTimingRegister			)
 registrar(	ShowAllCamerasRegister			)
-registrar(	pgpRogueLibCheckFebReadyRegister	)
 function(	FebPllConfig	)
 
 # Camera specific support functions

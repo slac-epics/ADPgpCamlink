@@ -1032,6 +1032,19 @@ void rogueDevConfigRegister(void)
 	iocshRegister( &rogueDevConfigFuncDef, reinterpret_cast<iocshCallFunc>(rogueDevConfigCallFunc) );
 }
 
+// Registration for pgpRogueLibCheckFebReady (declared in pgpRogueLib.h)
+static const iocshFuncDef pgpRogueLibCheckFebReadyFuncDef = { "pgpRogueLibCheckFebReady", 0, NULL };
+
+static int pgpRogueLibCheckFebReadyCallFunc(const iocshArgBuf *args)
+{
+	return static_cast<int>(pgpRogueLibCheckFebReady());
+}
+
+void pgpRogueLibCheckFebReadyRegister(void)
+{
+	iocshRegister(&pgpRogueLibCheckFebReadyFuncDef, reinterpret_cast<iocshCallFunc>(pgpRogueLibCheckFebReadyCallFunc));
+}
+
 extern "C"
 {
 	epicsExportRegistrar( rogueDevConfigRegister );
@@ -1040,5 +1053,6 @@ extern "C"
 	epicsExportRegistrar( ShowAllRogueRegister );
 	epicsExportRegistrar( ShowPgpVarRegister );
 	epicsExportRegistrar( pgpLoadConfigRegister );
+	epicsExportRegistrar( pgpRogueLibCheckFebReadyRegister );
 	epicsExportAddress( int, DEBUG_PGP_ROGUE );
 }

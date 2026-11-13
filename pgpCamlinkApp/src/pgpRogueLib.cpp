@@ -1325,7 +1325,8 @@ void pgpRogueLib::disconnect( )
 
 //! C wrapper for checking FEB readiness from st.cmd
 //! Calls the pgpRogueLib member function to verify FEB hardware is responsive
-extern "C" int pgpRogueLibCheckFebReady()
+extern "C" int
+pgpRogueLibCheckFebReady(void)
 {
 	printf( "pgpRogueLibCheckFebReady: Checking FEB hardware and DMA readiness...\n" );
 
@@ -1349,15 +1350,5 @@ extern "C" int pgpRogueLibCheckFebReady()
 	}
 
 	return result;
-}
-
-//! EPICS registrar function to register pgpRogueLibCheckFebReady for iocsh
-extern "C"
-{
-	void pgpRogueLibCheckFebReadyRegister(void)
-	{
-		iocshRegister("pgpRogueLibCheckFebReady", "Check if FEB hardware is ready", (IOCSH_FUN_FUNC)pgpRogueLibCheckFebReady);
-	}
-	epicsExportRegistrar(pgpRogueLibCheckFebReadyRegister);
 }
 
