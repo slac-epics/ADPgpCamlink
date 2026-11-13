@@ -51,6 +51,9 @@ int		doFebFpgaReload	= 1;
 int		doFebConfig		= 0;
 bool	bUseMiniTpg		= 0;
 
+// Global pgpRogueLib instance for C wrapper functions
+pgpRogueLibPtr g_pgpRogueLib;
+
 // TODO Move to new file: src/rogue/memory/interfaces/memory/Constants.cpp
 // TODO Rename BlockProcessingType2String()?
 // TODO Rename rim::Variable::getTypeName()?
@@ -244,6 +247,8 @@ pgpRogueLib::pgpRogueLib(
 	m_pAxiMemMap(			),
 	m_pSrpFeb(				)
 {
+	// Store global instance for C wrapper functions
+	g_pgpRogueLib = std::dynamic_pointer_cast<pgpRogueLib>(shared_from_this());
 	const char		*	functionName	= "pgpRogueLib::pgpRogueLib";
 
 	/*
@@ -652,6 +657,42 @@ void pgpRogueLib::FebFpgaReload()
 			printf( "Timeout waiting for Feb[%zu]!\n", lane );
 	}
 	sleep(5);
+}
+
+int pgpRogueLib::CheckFebReady()
+{
+	const char * functionName = "pgpRogueLib::CheckFebReady";
+
+	printf( "%s: Checking FEB hardware and DMA readiness...\n", functionName );
+
+	int dmaRetries = 0;
+	const int maxDmaRetries = 5;
+	bool dmaReady = false;
+
+	while ( dmaRetries < maxDmaRetries && !dmaReady )
+	{
+		try
+		{
+			// Try to read one simple register via DMA to verify hardware responsiveness
+			getVariable( "ClinkDevRoot.Version.FirmwareVersion" );
+			printf( "%s: FEB hardware DMA is responsive - READY\n", functionName );
+			dmaReady = true;
+			return 1;
+		}
+		catch ( std::exception & e )
+		{
+			dmaRetries++;
+			if ( dmaRetries < maxDmaRetries )
+			{
+				printf( "%s: FEB not ready, retry %d/%d\n", functionName, dmaRetries, maxDmaRetries );
+				sleep( 1 );
+			}
+		}
+	}
+
+	printf( "%s: FEB hardware DMA is NOT responsive after %d retries - NOT READY\n",
+			functionName, maxDmaRetries );
+	return 0;
 }
 
 int pgpRogueLib::FebPllConfig( unsigned int iFeb, int pixelClk )
@@ -1279,5 +1320,33 @@ void pgpRogueLib::disconnect( )
 		//m_pRogueLib->rmMemory( m_pSrpFeb[lane] );
 		m_pFebMemMaster[lane].reset();
 	}
+}
+
+//! C wrapper for checking FEB readiness from st.cmd
+//! Calls the pgpRogueLib member function to verify FEB hardware is responsive
+extern "C" int pgpRogueLibCheckFebReady()
+{
+	printf( "pgpRogueLibCheckFebReady: Checking FEB hardware and DMA readiness...\n" );
+
+	// Use the global pgpRogueLib instance if available
+	if ( !g_pgpRogueLib )
+	{
+		printf( "pgpRogueLibCheckFebReady: Error - pgpRogueLib instance not initialized yet\n" );
+		return 0;
+	}
+
+	// Call the member function which properly uses Rogue's getVariable()
+	int result = g_pgpRogueLib->CheckFebReady();
+
+	if ( result == 1 )
+	{
+		printf( "pgpRogueLibCheckFebReady: SUCCESS - FEB hardware is responsive\n" );
+	}
+	else
+	{
+		printf( "pgpRogueLibCheckFebReady: FAILED - FEB hardware is NOT responsive\n" );
+	}
+
+	return result;
 }
 

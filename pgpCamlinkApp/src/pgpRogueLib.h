@@ -96,6 +96,9 @@ public:		//	Public member functions
 
 	int FebPllConfig( unsigned int iFeb, int pixelClk );
 
+	//! Check if FEB hardware and DMA are responsive (for early boot checks)
+	int CheckFebReady();
+
 	void GetEventBuilderBlowoffPath( unsigned int triggerNum, std::string & retPath );
 	void GetEventBuilderSoftRstPath( unsigned int triggerNum, std::string & retPath );
 	void GetTriggerMasterEnablePath( unsigned int triggerNum, std::string & retPath );
@@ -158,5 +161,8 @@ private:
 
 // Shared pointer alias
 typedef std::shared_ptr<pgpRogueLib> pgpRogueLibPtr;
+
+// Global pgpRogueLib instance for C wrapper functions
+extern pgpRogueLibPtr g_pgpRogueLib;
 
 #endif	//	pgpRogueLib_H
