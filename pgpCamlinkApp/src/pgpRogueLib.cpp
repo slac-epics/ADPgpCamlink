@@ -669,34 +669,54 @@ int pgpRogueLib::CheckFebReady()
 
 	printf( "%s: Checking FEB hardware and DMA readiness...\n", functionName );
 
-	int dmaRetries = 0;
 	const int maxDmaRetries = 5;
-	bool dmaReady = false;
+	int allFebsReady = 1;
 
-	while ( dmaRetries < maxDmaRetries && !dmaReady )
+	// Check all 4 FEBs
+	for ( int febIndex = 0; febIndex < 4; febIndex++ )
 	{
-		try
+		bool febReady = false;
+		int dmaRetries = 0;
+
+		while ( dmaRetries < maxDmaRetries && !febReady )
 		{
-			// Try to read one simple register via DMA to verify hardware responsiveness
-			getVariable( "ClinkDevRoot.Version.FirmwareVersion" );
-			printf( "%s: FEB hardware DMA is responsive - READY\n", functionName );
-			dmaReady = true;
-			return 1;
-		}
-		catch ( std::exception & e )
-		{
-			dmaRetries++;
-			if ( dmaRetries < maxDmaRetries )
+			try
 			{
-				printf( "%s: FEB not ready, retry %d/%d\n", functionName, dmaRetries, maxDmaRetries );
-				sleep( 1 );
+				// Try to read FEB-specific register via DMA to verify hardware responsiveness
+				ostringstream varPath;
+				varPath << "ClinkDevRoot.ClinkFeb[" << febIndex << "].AxiVersion.FpgaVersion";
+				getVariable( varPath.str() );
+				printf( "%s: FEB[%d] hardware is responsive - READY\n", functionName, febIndex );
+				febReady = true;
+			}
+			catch ( std::exception & e )
+			{
+				dmaRetries++;
+				if ( dmaRetries < maxDmaRetries )
+				{
+					printf( "%s: FEB[%d] not ready, retry %d/%d\n", functionName, febIndex, dmaRetries, maxDmaRetries );
+					sleep( 1 );
+				}
+				else
+				{
+					printf( "%s: FEB[%d] hardware is NOT responsive after %d retries - NOT READY\n",
+							functionName, febIndex, maxDmaRetries );
+					allFebsReady = 0;
+				}
 			}
 		}
 	}
 
-	printf( "%s: FEB hardware DMA is NOT responsive after %d retries - NOT READY\n",
-			functionName, maxDmaRetries );
-	return 0;
+	if ( allFebsReady )
+	{
+		printf( "%s: All FEB hardware is responsive - DMA is READY\n", functionName );
+		return 1;
+	}
+	else
+	{
+		printf( "%s: One or more FEB hardware NOT responsive - DMA is NOT READY\n", functionName );
+		return 0;
+	}
 }
 
 int pgpRogueLib::FebPllConfig( unsigned int iFeb, int pixelClk )
@@ -1328,10 +1348,11 @@ void pgpRogueLib::disconnect( )
 
 //! C wrapper for checking FEB readiness from st.cmd
 //! Calls the pgpRogueLib member function to verify FEB hardware is responsive
+//! Sets FEB_READY_0, FEB_READY_1, FEB_READY_2, FEB_READY_3 environment variables
 extern "C" int
 pgpRogueLibCheckFebReady(void)
 {
-	printf( "pgpRogueLibCheckFebReady: Checking FEB hardware and DMA readiness...\n" );
+	printf( "pgpRogueLibCheckFebReady: Checking all FEB hardware and DMA readiness...\n" );
 
 	// Use the global pgpRogueLib instance if available
 	if ( !g_pgpRogueLib )
@@ -1340,19 +1361,22 @@ pgpRogueLibCheckFebReady(void)
 		return 0;
 	}
 
-	// Call the member function which properly uses Rogue's getVariable()
+	// Call the member function which checks all 4 FEBs
 	int result = g_pgpRogueLib->CheckFebReady();
 
 	if ( result == 1 )
 	{
-		printf( "pgpRogueLibCheckFebReady: SUCCESS - FEB hardware is responsive\n" );
-		// Set EPICS environment variable for conditional record loading in st.cmd
-		epicsEnvSet( "FEB_READY", "" );
+		printf( "pgpRogueLibCheckFebReady: SUCCESS - All FEB hardware is responsive\n" );
+		// Set EPICS environment variables for each FEB for conditional record loading in st.cmd
+		epicsEnvSet( "FEB_READY_0", "" );
+		epicsEnvSet( "FEB_READY_1", "" );
+		epicsEnvSet( "FEB_READY_2", "" );
+		epicsEnvSet( "FEB_READY_3", "" );
 	}
 	else
 	{
-		printf( "pgpRogueLibCheckFebReady: FAILED - FEB hardware is NOT responsive\n" );
-		// FEB_READY will remain unset, allowing conditional database loading
+		printf( "pgpRogueLibCheckFebReady: FAILED - One or more FEB hardware is NOT responsive\n" );
+		// FEB_READY_* will remain unset, allowing conditional database loading per FEB
 	}
 
 	return result;
