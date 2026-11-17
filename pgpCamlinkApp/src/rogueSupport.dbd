@@ -5,6 +5,7 @@ registrar(	SetPgpVarRegister			)
 registrar(	ShowAllRogueRegister		)
 registrar(	ShowPgpVarRegister			)
 registrar(	pgpLoadConfigRegister		)
+registrar(	pgpRogueLibCheckFebReadyRegister	)
 
 variable(	DEBUG_PGP_ROGUE,	int		)
 

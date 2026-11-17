@@ -31,10 +31,13 @@
 #include "rogue/Logging.h"
 #include "rogue/Version.h"
 
-// aes-stream-drivers headers 
+// aes-stream-drivers headers
 //#include <AxisDriver.h>
 #include <AxiVersion.h>
 //#include <DmaDriver.h>
+
+// EPICS headers
+#include <envDefs.h>
 
 // ADPgpCamlink headers
 #include "pgpRogueLib.h"
@@ -50,6 +53,9 @@ extern	int		DEBUG_PGP_ROGUE;
 int		doFebFpgaReload	= 1;
 int		doFebConfig		= 0;
 bool	bUseMiniTpg		= 0;
+
+// Global pgpRogueLib instance pointer for C wrapper functions
+pgpRogueLib* g_pgpRogueLib = NULL;
 
 // TODO Move to new file: src/rogue/memory/interfaces/memory/Constants.cpp
 // TODO Rename BlockProcessingType2String()?
@@ -244,6 +250,9 @@ pgpRogueLib::pgpRogueLib(
 	m_pAxiMemMap(			),
 	m_pSrpFeb(				)
 {
+	// Store global instance pointer for C wrapper functions
+	// Note: This raw pointer is set here; the object is kept alive by ADDriver's shared_ptr
+	g_pgpRogueLib = this;
 	const char		*	functionName	= "pgpRogueLib::pgpRogueLib";
 
 	/*
@@ -343,113 +352,174 @@ pgpRogueLib::pgpRogueLib(
 	//printf( "%s: %zu variables\n", functionName, mapVars.size() );
 	//printf( "m_pRogueLib: %zu variables\n", (m_pRogueLib->getVariableList()).size() );
 
-	// Force an initial read of all variables
-#if 1
-	printf( "%s: Reading %zu variables\n", functionName, getVariableList().size() );
-	try
+	// After FpgaReload, verify hardware DMA is responsive before attempting readAll()
+	// This prevents infinite retry loop in Rogue's AxiStreamDma::acceptReq() if hardware
+	// DMA engine is not fully initialized yet (Rogue issue: no max retry count)
+	bool proceedWithReadAll = true;
+	if ( doFebFpgaReload )
 	{
-		readAll();
+		printf( "%s: Verifying hardware DMA stability after FpgaReload...\n", functionName );
+		int dmaRetries = 0;
+		const int maxDmaRetries = 10;
+		bool dmaReady = false;
+		std::string lastError;
+
+		while ( dmaRetries < maxDmaRetries && !dmaReady )
+		{
+			try
+			{
+				// Try to read one simple register via DMA to verify hardware responsiveness
+				// This will fail gracefully with an exception if hardware has issues,
+				// but will hang forever if we proceed without this check (Rogue bug)
+				getVariable( "ClinkDevRoot.Version.FirmwareVersion" );
+				printf( "%s: Hardware DMA responsive after FpgaReload.\n", functionName );
+				dmaReady = true;
+			}
+			catch ( std::exception & e )
+			{
+				lastError = e.what();
+				dmaRetries++;
+				if ( dmaRetries < maxDmaRetries )
+				{
+					printf( "%s: Hardware not fully ready after FpgaReload, retry %d/%d\n",
+							functionName, dmaRetries, maxDmaRetries );
+					sleep( 1 );
+				}
+			}
+		}
+
+		if ( !dmaReady )
+		{
+			printf( "%s: FATAL - Hardware DMA not responsive after FpgaReload (max retries exhausted).\n", functionName );
+			printf( "%s: Last error: %s\n", functionName, lastError.c_str() );
+			printf( "%s: Skipping readAll() to prevent infinite hang. Boot will continue with reduced functionality.\n", functionName );
+			proceedWithReadAll = false;
+		}
 	}
+
+	// Force an initial read of all variables (only if DMA verified responsive)
+	if ( proceedWithReadAll )
+	{
+#if 1
+		printf( "%s: Reading %zu variables\n", functionName, getVariableList().size() );
+		try
+		{
+			readAll();
+		}
 #else
-	printf( "%s: Reading %zu variables\n", functionName, (m_pRogueLib->getVariableList()).size() );
-	try
-	{
-		m_pRogueLib->readAll();
-	}
+		printf( "%s: Reading %zu variables\n", functionName, (m_pRogueLib->getVariableList()).size() );
+		try
+		{
+			m_pRogueLib->readAll();
+		}
 #endif
-	catch ( rogue::GeneralError & e )
-	{
-		printf( "%s error: %s!\n", functionName, e.what() );
-	}
-	catch ( std::exception & e )
-	{
-		printf( "%s error: %s!\n", functionName, e.what() );
-	}
-	catch ( ... )
-	{
-		printf( "%s unknown error!\n", functionName );
-	}
+		catch ( rogue::GeneralError & e )
+		{
+			printf( "%s error: %s!\n", functionName, e.what() );
+		}
+		catch ( std::exception & e )
+		{
+			printf( "%s error: %s!\n", functionName, e.what() );
+		}
+		catch ( ... )
+		{
+			printf( "%s unknown error!\n", functionName );
+		}
 #if 1
-	printf( "%s: Read %zu variables\n", functionName, getVariableList().size() );
+		printf( "%s: Read %zu variables\n", functionName, getVariableList().size() );
 #else
-	printf( "%s: Read %zu variables\n", functionName, (m_pRogueLib->getVariableList()).size() );
+		printf( "%s: Read %zu variables\n", functionName, (m_pRogueLib->getVariableList()).size() );
 #endif
-
-	if ( doFebConfig or true )
+	}
+	else
 	{
-		if ( FebReady(0) )
-		{
-			// Power up FEB Pll's
-			setVariable( "ClinkDevRoot.ClinkFeb[0].ClinkTop.Pll[0].POWER", 65535 );
-			setVariable( "ClinkDevRoot.ClinkFeb[0].ClinkTop.Pll[1].POWER", 65535 );
-			setVariable( "ClinkDevRoot.ClinkFeb[0].ClinkTop.Pll[2].POWER", 65535 );
-		}
-
-		if ( FebReady(1) )
-		{
-			setVariable( "ClinkDevRoot.ClinkFeb[1].ClinkTop.Pll[0].POWER", 65535 );
-			setVariable( "ClinkDevRoot.ClinkFeb[1].ClinkTop.Pll[1].POWER", 65535 );
-			setVariable( "ClinkDevRoot.ClinkFeb[1].ClinkTop.Pll[2].POWER", 65535 );
-		}
-
-		if ( FebReady(2) )
-		{
-			setVariable( "ClinkDevRoot.ClinkFeb[2].ClinkTop.Pll[0].POWER", 65535 );
-			setVariable( "ClinkDevRoot.ClinkFeb[2].ClinkTop.Pll[1].POWER", 65535 );
-			setVariable( "ClinkDevRoot.ClinkFeb[2].ClinkTop.Pll[2].POWER", 65535 );
-		}
-
-		if ( FebReady(3) )
-		{
-			setVariable( "ClinkDevRoot.ClinkFeb[3].ClinkTop.Pll[0].POWER", 65535 );
-			setVariable( "ClinkDevRoot.ClinkFeb[3].ClinkTop.Pll[1].POWER", 65535 );
-			setVariable( "ClinkDevRoot.ClinkFeb[3].ClinkTop.Pll[2].POWER", 65535 );
-		}
+		printf( "%s: Skipped reading variables due to hardware DMA not being responsive.\n", functionName );
 	}
 
-	// Hack: Configure for LCLS-I timing
-	ConfigureLclsTimingV1();
+	// Only proceed with hardware configuration if DMA is responsive
+	// These calls use setVariable() which triggers Rogue DMA operations
+	if ( proceedWithReadAll )
+	{
+		if ( doFebConfig or true )
+		{
+			if ( FebReady(0) )
+			{
+				// Power up FEB Pll's
+				setVariable( "ClinkDevRoot.ClinkFeb[0].ClinkTop.Pll[0].POWER", 65535 );
+				setVariable( "ClinkDevRoot.ClinkFeb[0].ClinkTop.Pll[1].POWER", 65535 );
+				setVariable( "ClinkDevRoot.ClinkFeb[0].ClinkTop.Pll[2].POWER", 65535 );
+			}
 
-	LoadConfigFile( "db/defaults_LCLS-I.txt", 0.003 );
-	//LoadConfigFile( "db/defaults_LCLS-II.txt", 0.003 );
+			if ( FebReady(1) )
+			{
+				setVariable( "ClinkDevRoot.ClinkFeb[1].ClinkTop.Pll[0].POWER", 65535 );
+				setVariable( "ClinkDevRoot.ClinkFeb[1].ClinkTop.Pll[1].POWER", 65535 );
+				setVariable( "ClinkDevRoot.ClinkFeb[1].ClinkTop.Pll[2].POWER", 65535 );
+			}
 
-	// Misc python resets, etc
+			if ( FebReady(2) )
+			{
+				setVariable( "ClinkDevRoot.ClinkFeb[2].ClinkTop.Pll[0].POWER", 65535 );
+				setVariable( "ClinkDevRoot.ClinkFeb[2].ClinkTop.Pll[1].POWER", 65535 );
+				setVariable( "ClinkDevRoot.ClinkFeb[2].ClinkTop.Pll[2].POWER", 65535 );
+			}
+
+			if ( FebReady(3) )
+			{
+				setVariable( "ClinkDevRoot.ClinkFeb[3].ClinkTop.Pll[0].POWER", 65535 );
+				setVariable( "ClinkDevRoot.ClinkFeb[3].ClinkTop.Pll[1].POWER", 65535 );
+				setVariable( "ClinkDevRoot.ClinkFeb[3].ClinkTop.Pll[2].POWER", 65535 );
+			}
+		}
+
+		// Hack: Configure for LCLS-I timing
+		ConfigureLclsTimingV1();
+
+		LoadConfigFile( "db/defaults_LCLS-I.txt", 0.003 );
+		//LoadConfigFile( "db/defaults_LCLS-II.txt", 0.003 );
+
+		// Misc python resets, etc
 #if 1
-	setVariable( "ClinkDevRoot.ClinkPcie.AxiPcieCore.DmaIbAxisMon.CntRst", 1 );
-	setVariable( "ClinkDevRoot.ClinkPcie.AxiPcieCore.DmaObAxisMon.CntRst", 1 );
-	setVariable( "ClinkDevRoot.ClinkPcie.Application.AppLane[0].EventBuilder.SoftRst", 1 );
-	setVariable( "ClinkDevRoot.ClinkPcie.Application.AppLane[0].EventBuilder.SoftRst", 0 );
-	setVariable( "ClinkDevRoot.ClinkPcie.Application.AppLane[1].EventBuilder.SoftRst", 1 );
-	setVariable( "ClinkDevRoot.ClinkPcie.Application.AppLane[1].EventBuilder.SoftRst", 0 );
-	setVariable( "ClinkDevRoot.ClinkPcie.Application.AppLane[2].EventBuilder.SoftRst", 1 );
-	setVariable( "ClinkDevRoot.ClinkPcie.Application.AppLane[2].EventBuilder.SoftRst", 0 );
-	setVariable( "ClinkDevRoot.ClinkPcie.Application.AppLane[3].EventBuilder.SoftRst", 1 );
-	setVariable( "ClinkDevRoot.ClinkPcie.Application.AppLane[3].EventBuilder.SoftRst", 0 );
+		setVariable( "ClinkDevRoot.ClinkPcie.AxiPcieCore.DmaIbAxisMon.CntRst", 1 );
+		setVariable( "ClinkDevRoot.ClinkPcie.AxiPcieCore.DmaObAxisMon.CntRst", 1 );
+		setVariable( "ClinkDevRoot.ClinkPcie.Application.AppLane[0].EventBuilder.SoftRst", 1 );
+		setVariable( "ClinkDevRoot.ClinkPcie.Application.AppLane[0].EventBuilder.SoftRst", 0 );
+		setVariable( "ClinkDevRoot.ClinkPcie.Application.AppLane[1].EventBuilder.SoftRst", 1 );
+		setVariable( "ClinkDevRoot.ClinkPcie.Application.AppLane[1].EventBuilder.SoftRst", 0 );
+		setVariable( "ClinkDevRoot.ClinkPcie.Application.AppLane[2].EventBuilder.SoftRst", 1 );
+		setVariable( "ClinkDevRoot.ClinkPcie.Application.AppLane[2].EventBuilder.SoftRst", 0 );
+		setVariable( "ClinkDevRoot.ClinkPcie.Application.AppLane[3].EventBuilder.SoftRst", 1 );
+		setVariable( "ClinkDevRoot.ClinkPcie.Application.AppLane[3].EventBuilder.SoftRst", 0 );
 //	setVariable( "ClinkDevRoot.ClinkPcie.Hsio.PgpMon[0].Flush", 1 );
 //	setVariable( "ClinkDevRoot.ClinkPcie.Hsio.PgpMon[0].Flush", 0 );
 //	setVariable( "ClinkDevRoot.ClinkPcie.Hsio.PgpTxAxisMon[0].CntRst", 1 );
-	setVariable( "ClinkDevRoot.ClinkPcie.Hsio.PgpRxVcMon[0].CntRst", 1 );
+		setVariable( "ClinkDevRoot.ClinkPcie.Hsio.PgpRxVcMon[0].CntRst", 1 );
 //	setVariable( "ClinkDevRoot.ClinkPcie.Hsio.PgpMon[1].Flush", 1 );
 //	setVariable( "ClinkDevRoot.ClinkPcie.Hsio.PgpMon[1].Flush", 0 );
 //	setVariable( "ClinkDevRoot.ClinkPcie.Hsio.PgpTxAxisMon[1].CntRst", 1 );
-	setVariable( "ClinkDevRoot.ClinkPcie.Hsio.PgpRxVcMon[1].CntRst", 1 );
+		setVariable( "ClinkDevRoot.ClinkPcie.Hsio.PgpRxVcMon[1].CntRst", 1 );
 //	setVariable( "ClinkDevRoot.ClinkPcie.Hsio.PgpMon[2].Flush", 1 );
 //	setVariable( "ClinkDevRoot.ClinkPcie.Hsio.PgpMon[2].Flush", 0 );
 //	setVariable( "ClinkDevRoot.ClinkPcie.Hsio.PgpTxAxisMon[2].CntRst", 1 );
-	setVariable( "ClinkDevRoot.ClinkPcie.Hsio.PgpRxVcMon[2].CntRst", 1 );
+		setVariable( "ClinkDevRoot.ClinkPcie.Hsio.PgpRxVcMon[2].CntRst", 1 );
 //	setVariable( "ClinkDevRoot.ClinkPcie.Hsio.PgpMon[3].Flush", 1 );
 //	setVariable( "ClinkDevRoot.ClinkPcie.Hsio.PgpMon[3].Flush", 0 );
 //	setVariable( "ClinkDevRoot.ClinkPcie.Hsio.PgpTxAxisMon[3].CntRst", 1 );
-	setVariable( "ClinkDevRoot.ClinkPcie.Hsio.PgpRxVcMon[3].CntRst", 1 );
-	setVariable( "ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TimingPhyMonitor.CntRst", 1 );
+		setVariable( "ClinkDevRoot.ClinkPcie.Hsio.PgpRxVcMon[3].CntRst", 1 );
+		setVariable( "ClinkDevRoot.ClinkPcie.Hsio.TimingRx.TimingPhyMonitor.CntRst", 1 );
 #endif
 //	if ( doFebConfig )
 //		FebPllConfig();
 
-	setTriggerEnable( 0, false );
-	setTriggerEnable( 1, false );
-	setTriggerEnable( 2, false );
-	setTriggerEnable( 3, false );
+		setTriggerEnable( 0, false );
+		setTriggerEnable( 1, false );
+		setTriggerEnable( 2, false );
+		setTriggerEnable( 3, false );
+	}
+	else
+	{
+		printf( "%s: Skipped hardware configuration due to DMA not being responsive.\n", functionName );
+	}
 
 	//showVariableList( true );
 
@@ -544,20 +614,26 @@ bool pgpRogueLib::FebReady( size_t iFeb )
 
 void pgpRogueLib::FebFpgaReload()
 {
-	const char * pszVarPathFpgaReload		= "ClinkDevRoot.ClinkFeb[%zu].AxiVersion.FpgaReload";
+	const char * functionName = "pgpRogueLib::FebFpgaReload";
 
-	bool	febFound[N_AXI_LANES] = { false, false, false, false };
+	const char * pszVarPathFpgaReload = "ClinkDevRoot.ClinkFeb[%zu].AxiVersion.FpgaReload";
+
+	bool febFound[N_AXI_LANES] = { false, false, false, false };
+
+	const char * febEpicsEnv[N_AXI_LANES] = { "FEB0_READY", "FEB1_READY", "FEB2_READY", "FEB3_READY" };
+	const char * laneEpicsEnv[N_AXI_LANES] = { "LANE0_CONNECTED", "LANE1_CONNECTED", "LANE2_CONNECTED", "LANE3_CONNECTED" };
+
 	for ( size_t lane = 0; lane < N_AXI_LANES; lane++ )
 	{
 		char		febVarPath[256];
 		if ( FebReady(lane) )
 		{
-			febFound[lane] = true;
-			printf( "Initiating Feb[%zu] FpgaReload\n", lane );
-			snprintf( febVarPath, 256, pszVarPathFpgaReload, lane );
-			setVariable( febVarPath, 1 );
-			//sleep(0.2);
-			//setVariable( febVarPath, 0 );
+            febFound[lane] = true;
+            printf( "Initiating Feb[%zu] FpgaReload\n", lane );
+            snprintf( febVarPath, 256, pszVarPathFpgaReload, lane );
+            setVariable( febVarPath, 1 );
+            epicsEnvSet( laneEpicsEnv[int(lane)], "" );
+            printf( "%s: Lane[%d] is connected\n", functionName, int(lane) );
 		}
 	}
 
@@ -577,9 +653,16 @@ void pgpRogueLib::FebFpgaReload()
 			if ( ! febWasReady )
 			{
 				if ( febReady[lane] )
-					printf( "Feb[%zu] Ready.\n", lane );
-				else
-					printf( "Feb[%zu] not ready.\n", lane );
+                {
+                    printf( "Feb[%zu] Ready.\n", lane );
+                    epicsEnvSet( febEpicsEnv[int(lane)], "" );
+                    printf( "%s: FEB[%d] hardware is responsive\n", functionName, int(lane) );
+                }
+                else
+                {
+		            printf( "Feb[%zu] not ready.\n", lane );
+		            printf( "%s: FEB[%d] hardware is NOT responsive\n", functionName, int(lane) );
+                }
 			}
 		}
 		if ( febReady[0] && febReady[1] && febReady[2] && febReady[3] )
@@ -591,6 +674,64 @@ void pgpRogueLib::FebFpgaReload()
 			printf( "Timeout waiting for Feb[%zu]!\n", lane );
 	}
 	sleep(5);
+}
+
+int pgpRogueLib::CheckFebReady()
+{
+	const char * functionName = "pgpRogueLib::CheckFebReady";
+
+	printf( "%s: Checking FEB hardware and DMA readiness...\n", functionName );
+
+	const char * febEpicsEnv[N_AXI_LANES] = { "FEB_READY_0", "FEB_READY_1", "FEB_READY_2", "FEB_READY_3" };
+
+	const int maxDmaRetries = 5;
+
+	int allFebsReady = 1;
+
+	// Check all 4 FEBs
+	for ( int febIndex = 0; febIndex < 4; febIndex++ )
+	{
+		bool febReady = false;
+		int dmaRetries = 0;
+
+		while ( dmaRetries < maxDmaRetries && !febReady )
+		{
+            febReady = FebReady( size_t(febIndex) );
+
+            if ( febReady )
+            {
+                printf( "%s: FEB[%d] hardware is responsive - READY\n", functionName, febIndex );
+		        // Set EPICS environment variables for each FEB for conditional record loading in st.cmd
+		        epicsEnvSet( febEpicsEnv[febIndex], "" );
+            }
+            else
+            {
+                dmaRetries++;
+				if ( dmaRetries < maxDmaRetries )
+			    {
+				    printf( "%s: FEB[%d] not ready, retry %d/%d\n", functionName, febIndex, dmaRetries, maxDmaRetries );
+					sleep( 1 );
+				}
+				else
+				{
+					printf( "%s: FEB[%d] hardware is NOT responsive after %d retries - NOT READY\n",
+							functionName, febIndex, maxDmaRetries );
+					allFebsReady = 0;
+				}
+            }
+		}
+	}
+
+	if ( allFebsReady )
+	{
+		printf( "%s: All FEB hardware is responsive - DMA is READY\n", functionName );
+		return 1;
+	}
+	else
+	{
+		printf( "%s: One or more FEB hardware NOT responsive - DMA is NOT READY\n", functionName );
+		return 0;
+	}
 }
 
 int pgpRogueLib::FebPllConfig( unsigned int iFeb, int pixelClk )
@@ -1218,5 +1359,35 @@ void pgpRogueLib::disconnect( )
 		//m_pRogueLib->rmMemory( m_pSrpFeb[lane] );
 		m_pFebMemMaster[lane].reset();
 	}
+}
+
+//! C wrapper for checking FEB readiness from st.cmd
+//! Calls the pgpRogueLib member function to verify FEB hardware is responsive
+//! Sets FEB_READY_0, FEB_READY_1, FEB_READY_2, FEB_READY_3 environment variables
+extern "C" int
+pgpRogueLibCheckFebReady(void)
+{
+	printf( "pgpRogueLibCheckFebReady: Checking all FEB hardware and DMA readiness...\n" );
+
+	// Use the global pgpRogueLib instance if available
+	if ( !g_pgpRogueLib )
+	{
+		printf( "pgpRogueLibCheckFebReady: Error - pgpRogueLib instance not initialized yet\n" );
+		return 0;
+	}
+
+	// Call the member function which checks all 4 FEBs
+	int result = g_pgpRogueLib->CheckFebReady();
+
+	if ( result == 1 )
+	{
+		printf( "pgpRogueLibCheckFebReady: SUCCESS - All FEB hardware is responsive\n" );
+	}
+	else
+	{
+		printf( "pgpRogueLibCheckFebReady: FAILED - One or more FEB hardware is NOT responsive\n" );
+	}
+
+	return result;
 }
 

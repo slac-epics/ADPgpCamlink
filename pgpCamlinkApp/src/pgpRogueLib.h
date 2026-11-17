@@ -96,6 +96,9 @@ public:		//	Public member functions
 
 	int FebPllConfig( unsigned int iFeb, int pixelClk );
 
+	//! Check if FEB hardware and DMA are responsive (for early boot checks)
+	int CheckFebReady();
+
 	void GetEventBuilderBlowoffPath( unsigned int triggerNum, std::string & retPath );
 	void GetEventBuilderSoftRstPath( unsigned int triggerNum, std::string & retPath );
 	void GetTriggerMasterEnablePath( unsigned int triggerNum, std::string & retPath );
@@ -158,5 +161,13 @@ private:
 
 // Shared pointer alias
 typedef std::shared_ptr<pgpRogueLib> pgpRogueLibPtr;
+
+// Global pgpRogueLib instance pointer for C wrapper functions
+// Note: This is a raw pointer. The object is managed by ADDriver/shared_ptr elsewhere.
+extern pgpRogueLib* g_pgpRogueLib;
+
+// C wrapper for checking FEB hardware readiness (callable from EPICS iocsh)
+// Returns 1 if FEB hardware is responsive, 0 if offline or not initialized
+extern "C" int pgpRogueLibCheckFebReady(void);
 
 #endif	//	pgpRogueLib_H
