@@ -614,20 +614,26 @@ bool pgpRogueLib::FebReady( size_t iFeb )
 
 void pgpRogueLib::FebFpgaReload()
 {
-	const char * pszVarPathFpgaReload		= "ClinkDevRoot.ClinkFeb[%zu].AxiVersion.FpgaReload";
+	const char * functionName = "pgpRogueLib::FebFpgaReload";
 
-	bool	febFound[N_AXI_LANES] = { false, false, false, false };
+	const char * pszVarPathFpgaReload = "ClinkDevRoot.ClinkFeb[%zu].AxiVersion.FpgaReload";
+
+	bool febFound[N_AXI_LANES] = { false, false, false, false };
+
+	const char * febEpicsEnv[N_AXI_LANES] = { "FEB0_READY", "FEB1_READY", "FEB2_READY", "FEB3_READY" };
+	const char * laneEpicsEnv[N_AXI_LANES] = { "LANE0_CONNECTED", "LANE1_CONNECTED", "LANE2_CONNECTED", "LANE3_CONNECTED" };
+
 	for ( size_t lane = 0; lane < N_AXI_LANES; lane++ )
 	{
 		char		febVarPath[256];
 		if ( FebReady(lane) )
 		{
-			febFound[lane] = true;
-			printf( "Initiating Feb[%zu] FpgaReload\n", lane );
-			snprintf( febVarPath, 256, pszVarPathFpgaReload, lane );
-			setVariable( febVarPath, 1 );
-			//sleep(0.2);
-			//setVariable( febVarPath, 0 );
+            febFound[lane] = true;
+            printf( "Initiating Feb[%zu] FpgaReload\n", lane );
+            snprintf( febVarPath, 256, pszVarPathFpgaReload, lane );
+            setVariable( febVarPath, 1 );
+            epicsEnvSet( laneEpicsEnv[int(lane)], "" );
+            printf( "%s: Lane[%d] is connected\n", functionName, int(lane) );
 		}
 	}
 
@@ -647,9 +653,16 @@ void pgpRogueLib::FebFpgaReload()
 			if ( ! febWasReady )
 			{
 				if ( febReady[lane] )
-					printf( "Feb[%zu] Ready.\n", lane );
-				else
-					printf( "Feb[%zu] not ready.\n", lane );
+                {
+                    printf( "Feb[%zu] Ready.\n", lane );
+                    epicsEnvSet( febEpicsEnv[int(lane)], "" );
+                    printf( "%s: FEB[%d] hardware is responsive\n", functionName, int(lane) );
+                }
+                else
+                {
+		            printf( "Feb[%zu] not ready.\n", lane );
+		            printf( "%s: FEB[%d] hardware is NOT responsive\n", functionName, int(lane) );
+                }
 			}
 		}
 		if ( febReady[0] && febReady[1] && febReady[2] && febReady[3] )
@@ -669,7 +682,10 @@ int pgpRogueLib::CheckFebReady()
 
 	printf( "%s: Checking FEB hardware and DMA readiness...\n", functionName );
 
+	const char * febEpicsEnv[N_AXI_LANES] = { "FEB_READY_0", "FEB_READY_1", "FEB_READY_2", "FEB_READY_3" };
+
 	const int maxDmaRetries = 5;
+
 	int allFebsReady = 1;
 
 	// Check all 4 FEBs
@@ -680,21 +696,20 @@ int pgpRogueLib::CheckFebReady()
 
 		while ( dmaRetries < maxDmaRetries && !febReady )
 		{
-			try
-			{
-				// Try to read FEB-specific register via DMA to verify hardware responsiveness
-				ostringstream varPath;
-				varPath << "ClinkDevRoot.ClinkFeb[" << febIndex << "].AxiVersion.FpgaVersion";
-				getVariable( varPath.str() );
-				printf( "%s: FEB[%d] hardware is responsive - READY\n", functionName, febIndex );
-				febReady = true;
-			}
-			catch ( std::exception & e )
-			{
-				dmaRetries++;
+            febReady = FebReady( size_t(febIndex) );
+
+            if ( febReady )
+            {
+                printf( "%s: FEB[%d] hardware is responsive - READY\n", functionName, febIndex );
+		        // Set EPICS environment variables for each FEB for conditional record loading in st.cmd
+		        epicsEnvSet( febEpicsEnv[febIndex], "" );
+            }
+            else
+            {
+                dmaRetries++;
 				if ( dmaRetries < maxDmaRetries )
-				{
-					printf( "%s: FEB[%d] not ready, retry %d/%d\n", functionName, febIndex, dmaRetries, maxDmaRetries );
+			    {
+				    printf( "%s: FEB[%d] not ready, retry %d/%d\n", functionName, febIndex, dmaRetries, maxDmaRetries );
 					sleep( 1 );
 				}
 				else
@@ -703,7 +718,7 @@ int pgpRogueLib::CheckFebReady()
 							functionName, febIndex, maxDmaRetries );
 					allFebsReady = 0;
 				}
-			}
+            }
 		}
 	}
 
@@ -1367,16 +1382,10 @@ pgpRogueLibCheckFebReady(void)
 	if ( result == 1 )
 	{
 		printf( "pgpRogueLibCheckFebReady: SUCCESS - All FEB hardware is responsive\n" );
-		// Set EPICS environment variables for each FEB for conditional record loading in st.cmd
-		epicsEnvSet( "FEB_READY_0", "" );
-		epicsEnvSet( "FEB_READY_1", "" );
-		epicsEnvSet( "FEB_READY_2", "" );
-		epicsEnvSet( "FEB_READY_3", "" );
 	}
 	else
 	{
 		printf( "pgpRogueLibCheckFebReady: FAILED - One or more FEB hardware is NOT responsive\n" );
-		// FEB_READY_* will remain unset, allowing conditional database loading per FEB
 	}
 
 	return result;
